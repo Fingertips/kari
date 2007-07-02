@@ -2,7 +2,7 @@ require File.dirname(File.expand_path(__FILE__)) + "/../CampKari.rb"
 
 describe CampKari do
   it "should start the backend in a separate process" do
-    camp_kari = CampKari.alloc.init
+    camp_kari = CampKari.new
     
     camp_kari.launch
     camp_kari.should be_running
