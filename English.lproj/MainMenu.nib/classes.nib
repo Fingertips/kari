@@ -4,7 +4,12 @@
             ACTIONS = {search = id; }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {searchProgressIndicator = id; webView = id; }; 
+            OUTLETS = {
+                backButton = id; 
+                forwardButton = id; 
+                searchProgressIndicator = id; 
+                webView = id; 
+            }; 
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 

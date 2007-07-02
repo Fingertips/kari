@@ -20,4 +20,13 @@ class WebViewController
   def url_request(url)
     OSX::NSURLRequest.requestWithURL OSX::NSURL.URLWithString(url)
   end
+  
+  def can_go_back?
+    @webview.canGoBack == 1
+  end
+  
+  def can_go_forward?
+    @webview.canGoForward == 1
+  end
+  
 end

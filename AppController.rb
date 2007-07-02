@@ -12,7 +12,7 @@ require "WebViewController"
 OSX.require_framework 'WebKit'
 
 class AppController < OSX::NSObject
-  ib_outlets :webView, :searchProgressIndicator
+  ib_outlets :webView, :searchProgressIndicator, :backButton, :forwardButton
   
   def init
     if super_init
@@ -36,6 +36,8 @@ class AppController < OSX::NSObject
   
   def webViewFinishedLoading(aNotification)
     @searchProgressIndicator.stopAnimation(nil)
+    @backButton.enabled = @webview_controller.can_go_back?
+    @forwardButton.enabled = @webview_controller.can_go_forward?
   end
   
   def applicationDidFinishLaunching(aNotification)
