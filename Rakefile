@@ -4,3 +4,13 @@ namespace :spec do
     RspecAutotest.run
   end
 end
+
+namespace :build do
+  task :all do
+    `xcodebuild`
+  end
+end
+
+task :run => :"build:all" do
+  `build/Release/Kari.app/Contents/MacOS/Kari`
+end
