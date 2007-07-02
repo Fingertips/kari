@@ -15,6 +15,7 @@
 		519D9AC80C38F02D00CAC573 /* AppController.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AC70C38F02D00CAC573 /* AppController.rb */; };
 		519D9ACE0C38F7B300CAC573 /* CampKari.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9ACD0C38F7B300CAC573 /* CampKari.rb */; };
 		519D9ADD0C39183100CAC573 /* WebViewController.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9ADC0C39183100CAC573 /* WebViewController.rb */; };
+		519D9AED0C39272B00CAC573 /* ToolbarController.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AEC0C39272B00CAC573 /* ToolbarController.rb */; };
 		51B008520C38EB90009130E3 /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B008510C38EB90009130E3 /* RubyCocoa.framework */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 		519D9AC70C38F02D00CAC573 /* AppController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = AppController.rb; sourceTree = "<group>"; };
 		519D9ACD0C38F7B300CAC573 /* CampKari.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = CampKari.rb; sourceTree = "<group>"; };
 		519D9ADC0C39183100CAC573 /* WebViewController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = WebViewController.rb; sourceTree = "<group>"; };
+		519D9AEC0C39272B00CAC573 /* ToolbarController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = ToolbarController.rb; sourceTree = "<group>"; };
 		51B008510C38EB90009130E3 /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
 		E8F5E25803AEB7C803A81C6F /* rb_main.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = rb_main.rb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -53,6 +55,7 @@
 				519D9ACD0C38F7B300CAC573 /* CampKari.rb */,
 				519D9AC70C38F02D00CAC573 /* AppController.rb */,
 				519D9ADC0C39183100CAC573 /* WebViewController.rb */,
+				519D9AEC0C39272B00CAC573 /* ToolbarController.rb */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 				519D9AC80C38F02D00CAC573 /* AppController.rb in Resources */,
 				519D9ACE0C38F7B300CAC573 /* CampKari.rb in Resources */,
 				519D9ADD0C39183100CAC573 /* WebViewController.rb in Resources */,
+				519D9AED0C39272B00CAC573 /* ToolbarController.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

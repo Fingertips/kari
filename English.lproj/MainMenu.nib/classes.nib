@@ -6,7 +6,18 @@
             OUTLETS = {webView = id; }; 
             SUPERCLASS = NSObject; 
         }, 
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = ToolbarController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                fontSmallerAndBiggerView = id; 
+                historyBackAndForwardView = id; 
+                searchView = id; 
+                window = id; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }
     ); 
     IBVersion = 1; 
 }
