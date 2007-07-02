@@ -34,8 +34,18 @@ class AppController < OSX::NSObject
     @webview_controller.load_url "http://127.0.0.1:3301/?q=#{search_field.stringValue.to_s}"
   end
   
+  def webViewFinishedLoading(aNotification)
+    @searchProgressIndicator.stopAnimation(nil)
+  end
+  
+  def applicationDidFinishLaunching(aNotification)
+    OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
+                                                      :selector,    'webViewFinishedLoading:',
+                                                      :name,        OSX::WebViewProgressFinishedNotification,
+                                                      :object,      nil
+  end
+  
   def applicationWillTerminate(aNotification)
-    puts 'quit'
     @camp_kari.terminate
   end
   
