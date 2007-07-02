@@ -50,6 +50,9 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				519D9ACD0C38F7B300CAC573 /* CampKari.rb */,
+				519D9AC70C38F02D00CAC573 /* AppController.rb */,
+				519D9ADC0C39183100CAC573 /* WebViewController.rb */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -74,7 +77,6 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				519D9ADC0C39183100CAC573 /* WebViewController.rb */,
 				4DDCA7120ACC9A6100E082CE /* Kari.app */,
 			);
 			name = Products;
@@ -106,10 +108,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				519D9ACD0C38F7B300CAC573 /* CampKari.rb */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				519D9AC70C38F02D00CAC573 /* AppController.rb */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
