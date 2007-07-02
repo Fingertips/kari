@@ -44,4 +44,10 @@ describe AppController do
     @app_controller.awakeFromNib
   end
 
+  it "should pass a query url on to the webview controller" do
+    search_field_mock = mock("SearchField")
+    search_field_mock.should_receive(:stringValue).and_return("Time".to_nsstring)
+    @app_controller.instance_variable_get(:@webview_controller).should_receive(:load_url).with("Time")
+    @app_controller.search(search_field_mock)
+  end
 end

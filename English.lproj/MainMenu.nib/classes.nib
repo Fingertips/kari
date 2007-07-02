@@ -1,9 +1,10 @@
 {
     IBClasses = (
         {
+            ACTIONS = {search = id; }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {webView = id; }; 
+            OUTLETS = {searchProgressIndicator = id; webView = id; }; 
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 

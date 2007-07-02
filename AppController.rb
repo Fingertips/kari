@@ -12,7 +12,7 @@ require "WebViewController"
 OSX.require_framework 'WebKit'
 
 class AppController < OSX::NSObject
-  ib_outlets :webView
+  ib_outlets :webView, :searchProgressIndicator
   
   def init
     if super_init
@@ -27,6 +27,11 @@ class AppController < OSX::NSObject
     @webview_controller = WebViewController.new(@webView)
     sleep 5 # FIXME: ugly, but just for now
     @webview_controller.load_url "http://127.0.0.1:3301"
+  end
+  
+  def search(search_field)
+    @searchProgressIndicator.startAnimation(nil)
+    @webview_controller.load_url "http://127.0.0.1:3301/?q=#{search_field.stringValue.to_s}"
   end
   
   def applicationWillTerminate(aNotification)
