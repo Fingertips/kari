@@ -1,2 +1,12 @@
 - The icons that are used for the custom views in the toolbar are copied from the Safari.app bundle.
   It might not be a problem because of the correct usage of said icons, however we should check with Apple.
+
+- Still need to add the "disabled" icon code for the history buttons.
+
+- Window title should be the title of the page (class name).
+
+- Don't store the history for all the search results, this should be fixed once the backend gets worked on.
+
+- Add latest history items to History menu.
+
+- Add bookmark functionality.
