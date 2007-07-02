@@ -22,6 +22,12 @@
 		519D9AFD0C393B6900CAC573 /* Forward.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AF70C393B6900CAC573 /* Forward.tif */; };
 		519D9AFE0C393B6900CAC573 /* ForwardDisabled.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AF80C393B6900CAC573 /* ForwardDisabled.tif */; };
 		519D9AFF0C393B6900CAC573 /* ForwardPressed.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AF90C393B6900CAC573 /* ForwardPressed.tif */; };
+		519D9B0B0C393DE400CAC573 /* FontBigger.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9B050C393DE400CAC573 /* FontBigger.tif */; };
+		519D9B0C0C393DE400CAC573 /* FontBiggerDisabled.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9B060C393DE400CAC573 /* FontBiggerDisabled.tif */; };
+		519D9B0D0C393DE400CAC573 /* FontBiggerPressed.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9B070C393DE400CAC573 /* FontBiggerPressed.tif */; };
+		519D9B0E0C393DE400CAC573 /* FontSmaller.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9B080C393DE400CAC573 /* FontSmaller.tif */; };
+		519D9B0F0C393DE400CAC573 /* FontSmallerDisabled.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9B090C393DE400CAC573 /* FontSmallerDisabled.tif */; };
+		519D9B100C393DE400CAC573 /* FontSmallerPressed.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9B0A0C393DE400CAC573 /* FontSmallerPressed.tif */; };
 		51B008520C38EB90009130E3 /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B008510C38EB90009130E3 /* RubyCocoa.framework */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +50,12 @@
 		519D9AF70C393B6900CAC573 /* Forward.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Forward.tif; sourceTree = "<group>"; };
 		519D9AF80C393B6900CAC573 /* ForwardDisabled.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ForwardDisabled.tif; sourceTree = "<group>"; };
 		519D9AF90C393B6900CAC573 /* ForwardPressed.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ForwardPressed.tif; sourceTree = "<group>"; };
+		519D9B050C393DE400CAC573 /* FontBigger.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = FontBigger.tif; sourceTree = "<group>"; };
+		519D9B060C393DE400CAC573 /* FontBiggerDisabled.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = FontBiggerDisabled.tif; sourceTree = "<group>"; };
+		519D9B070C393DE400CAC573 /* FontBiggerPressed.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = FontBiggerPressed.tif; sourceTree = "<group>"; };
+		519D9B080C393DE400CAC573 /* FontSmaller.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = FontSmaller.tif; sourceTree = "<group>"; };
+		519D9B090C393DE400CAC573 /* FontSmallerDisabled.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = FontSmallerDisabled.tif; sourceTree = "<group>"; };
+		519D9B0A0C393DE400CAC573 /* FontSmallerPressed.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = FontSmallerPressed.tif; sourceTree = "<group>"; };
 		51B008510C38EB90009130E3 /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
 		E8F5E25803AEB7C803A81C6F /* rb_main.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = rb_main.rb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,6 +130,12 @@
 				51B008510C38EB90009130E3 /* RubyCocoa.framework */,
 				519D9AF40C393B6900CAC573 /* Back.tif */,
 				519D9AF50C393B6900CAC573 /* BackDisabled.tif */,
+				519D9B050C393DE400CAC573 /* FontBigger.tif */,
+				519D9B060C393DE400CAC573 /* FontBiggerDisabled.tif */,
+				519D9B070C393DE400CAC573 /* FontBiggerPressed.tif */,
+				519D9B080C393DE400CAC573 /* FontSmaller.tif */,
+				519D9B090C393DE400CAC573 /* FontSmallerDisabled.tif */,
+				519D9B0A0C393DE400CAC573 /* FontSmallerPressed.tif */,
 				519D9AF60C393B6900CAC573 /* BackPressed.tif */,
 				519D9AF70C393B6900CAC573 /* Forward.tif */,
 				519D9AF80C393B6900CAC573 /* ForwardDisabled.tif */,
@@ -210,6 +228,12 @@
 				519D9AFD0C393B6900CAC573 /* Forward.tif in Resources */,
 				519D9AFE0C393B6900CAC573 /* ForwardDisabled.tif in Resources */,
 				519D9AFF0C393B6900CAC573 /* ForwardPressed.tif in Resources */,
+				519D9B0B0C393DE400CAC573 /* FontBigger.tif in Resources */,
+				519D9B0C0C393DE400CAC573 /* FontBiggerDisabled.tif in Resources */,
+				519D9B0D0C393DE400CAC573 /* FontBiggerPressed.tif in Resources */,
+				519D9B0E0C393DE400CAC573 /* FontSmaller.tif in Resources */,
+				519D9B0F0C393DE400CAC573 /* FontSmallerDisabled.tif in Resources */,
+				519D9B100C393DE400CAC573 /* FontSmallerPressed.tif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

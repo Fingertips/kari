@@ -24,7 +24,7 @@ class ToolbarController < OSX::NSObject
   end
   
   #TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'FontSmallerAndBiggerItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
-  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', OSX::NSToolbarFlexibleSpaceItemIdentifier]
+  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'FontSmallerAndBiggerItem', OSX::NSToolbarFlexibleSpaceItemIdentifier]
   def toolbarAllowedItemIdentifiers(toolbar)
     TOOLBAR_ITEMS
   end
