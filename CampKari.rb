@@ -13,9 +13,9 @@ class CampKari
     puts 'init camp kari'
     @camp_kari = OSX::NSTask.alloc.init
     @camp_kari.launchPath = '/opt/local/bin/camping'
-    @camp_kari.currentDirectoryPath = '/Users/eloy/code/KLANTEN/Fingertips/Kari/design/proof_of_concept/'
+    @camp_kari.currentDirectoryPath = File.expand_path('../../../../../../../design/proof_of_concept', File.dirname(__FILE__))
     @camp_kari.arguments = ['kari.rb']
-    @camp_kari.environment = { 'PATH' => '/opt/local/bin', 'HOME' => '/Users/eloy' }
+    @camp_kari.environment = { 'PATH' => ENV['PATH'], 'HOME' => ENV['HOME'] }
   end
   
   def launch
