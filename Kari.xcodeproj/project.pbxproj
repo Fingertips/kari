@@ -16,6 +16,12 @@
 		519D9ACE0C38F7B300CAC573 /* CampKari.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9ACD0C38F7B300CAC573 /* CampKari.rb */; };
 		519D9ADD0C39183100CAC573 /* WebViewController.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9ADC0C39183100CAC573 /* WebViewController.rb */; };
 		519D9AED0C39272B00CAC573 /* ToolbarController.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AEC0C39272B00CAC573 /* ToolbarController.rb */; };
+		519D9AFA0C393B6900CAC573 /* Back.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AF40C393B6900CAC573 /* Back.tif */; };
+		519D9AFB0C393B6900CAC573 /* BackDisabled.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AF50C393B6900CAC573 /* BackDisabled.tif */; };
+		519D9AFC0C393B6900CAC573 /* BackPressed.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AF60C393B6900CAC573 /* BackPressed.tif */; };
+		519D9AFD0C393B6900CAC573 /* Forward.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AF70C393B6900CAC573 /* Forward.tif */; };
+		519D9AFE0C393B6900CAC573 /* ForwardDisabled.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AF80C393B6900CAC573 /* ForwardDisabled.tif */; };
+		519D9AFF0C393B6900CAC573 /* ForwardPressed.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AF90C393B6900CAC573 /* ForwardPressed.tif */; };
 		51B008520C38EB90009130E3 /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B008510C38EB90009130E3 /* RubyCocoa.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +38,12 @@
 		519D9ACD0C38F7B300CAC573 /* CampKari.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = CampKari.rb; sourceTree = "<group>"; };
 		519D9ADC0C39183100CAC573 /* WebViewController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = WebViewController.rb; sourceTree = "<group>"; };
 		519D9AEC0C39272B00CAC573 /* ToolbarController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = ToolbarController.rb; sourceTree = "<group>"; };
+		519D9AF40C393B6900CAC573 /* Back.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Back.tif; sourceTree = "<group>"; };
+		519D9AF50C393B6900CAC573 /* BackDisabled.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = BackDisabled.tif; sourceTree = "<group>"; };
+		519D9AF60C393B6900CAC573 /* BackPressed.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = BackPressed.tif; sourceTree = "<group>"; };
+		519D9AF70C393B6900CAC573 /* Forward.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Forward.tif; sourceTree = "<group>"; };
+		519D9AF80C393B6900CAC573 /* ForwardDisabled.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ForwardDisabled.tif; sourceTree = "<group>"; };
+		519D9AF90C393B6900CAC573 /* ForwardPressed.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ForwardPressed.tif; sourceTree = "<group>"; };
 		51B008510C38EB90009130E3 /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
 		E8F5E25803AEB7C803A81C6F /* rb_main.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = rb_main.rb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -104,6 +116,12 @@
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				E8F5E25803AEB7C803A81C6F /* rb_main.rb */,
 				51B008510C38EB90009130E3 /* RubyCocoa.framework */,
+				519D9AF40C393B6900CAC573 /* Back.tif */,
+				519D9AF50C393B6900CAC573 /* BackDisabled.tif */,
+				519D9AF60C393B6900CAC573 /* BackPressed.tif */,
+				519D9AF70C393B6900CAC573 /* Forward.tif */,
+				519D9AF80C393B6900CAC573 /* ForwardDisabled.tif */,
+				519D9AF90C393B6900CAC573 /* ForwardPressed.tif */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -186,6 +204,12 @@
 				519D9ACE0C38F7B300CAC573 /* CampKari.rb in Resources */,
 				519D9ADD0C39183100CAC573 /* WebViewController.rb in Resources */,
 				519D9AED0C39272B00CAC573 /* ToolbarController.rb in Resources */,
+				519D9AFA0C393B6900CAC573 /* Back.tif in Resources */,
+				519D9AFB0C393B6900CAC573 /* BackDisabled.tif in Resources */,
+				519D9AFC0C393B6900CAC573 /* BackPressed.tif in Resources */,
+				519D9AFD0C393B6900CAC573 /* Forward.tif in Resources */,
+				519D9AFE0C393B6900CAC573 /* ForwardDisabled.tif in Resources */,
+				519D9AFF0C393B6900CAC573 /* ForwardPressed.tif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
