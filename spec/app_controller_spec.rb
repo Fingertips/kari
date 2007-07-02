@@ -36,4 +36,12 @@ describe AppController do
     @app_controller.applicationWillTerminate(nil)
     @app_controller.instance_variable_get(:@camp_kari).should_not be_running
   end
+  
+  it "should open the index page on awakeFromNib" do
+    webview_controller_mock = mock("WebViewController")
+    WebViewController.stub!(:new).and_return(webview_controller_mock)
+    webview_controller_mock.should_receive(:load_url).with("http://127.0.0.1:3301")
+    @app_controller.awakeFromNib
+  end
+
 end

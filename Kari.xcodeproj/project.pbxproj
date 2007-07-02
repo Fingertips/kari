@@ -14,6 +14,7 @@
 		4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		519D9AC80C38F02D00CAC573 /* AppController.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AC70C38F02D00CAC573 /* AppController.rb */; };
 		519D9ACE0C38F7B300CAC573 /* CampKari.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9ACD0C38F7B300CAC573 /* CampKari.rb */; };
+		519D9ADD0C39183100CAC573 /* WebViewController.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9ADC0C39183100CAC573 /* WebViewController.rb */; };
 		51B008520C38EB90009130E3 /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B008510C38EB90009130E3 /* RubyCocoa.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 		4DDCA7120ACC9A6100E082CE /* Kari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kari.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		519D9AC70C38F02D00CAC573 /* AppController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = AppController.rb; sourceTree = "<group>"; };
 		519D9ACD0C38F7B300CAC573 /* CampKari.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = CampKari.rb; sourceTree = "<group>"; };
+		519D9ADC0C39183100CAC573 /* WebViewController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = WebViewController.rb; sourceTree = "<group>"; };
 		51B008510C38EB90009130E3 /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
 		E8F5E25803AEB7C803A81C6F /* rb_main.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = rb_main.rb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,6 +74,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				519D9ADC0C39183100CAC573 /* WebViewController.rb */,
 				4DDCA7120ACC9A6100E082CE /* Kari.app */,
 			);
 			name = Products;
@@ -178,6 +181,7 @@
 				4DDCA7080ACC9A6100E082CE /* rb_main.rb in Resources */,
 				519D9AC80C38F02D00CAC573 /* AppController.rb in Resources */,
 				519D9ACE0C38F7B300CAC573 /* CampKari.rb in Resources */,
+				519D9ADD0C39183100CAC573 /* WebViewController.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

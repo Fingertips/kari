@@ -8,6 +8,7 @@
 
 require 'osx/cocoa'
 require "CampKari"
+require "WebViewController"
 OSX.require_framework 'WebKit'
 
 class AppController < OSX::NSObject
@@ -17,10 +18,15 @@ class AppController < OSX::NSObject
     if super_init
       @camp_kari = CampKari.new
       @camp_kari.launch
-      
       OSX::NSApplication.sharedApplication.setDelegate(self)
       return self
     end
+  end
+  
+  def awakeFromNib
+    @webview_controller = WebViewController.new(@webView)
+    sleep 5 # FIXME: ugly, but just for now
+    @webview_controller.load_url "http://127.0.0.1:3301"
   end
   
   def applicationWillTerminate(aNotification)
