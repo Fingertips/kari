@@ -1,10 +1,10 @@
-- Still need to add the "disabled" icon code for the history buttons.
+- Add "home" button.
 
 - Add latest history items to History menu.
 
 - Add bookmark functionality.
 
-- Remove the toolbar toggle button.
+- Still need to add the "disabled" icon code for the history buttons. (Wait until we know what we will do with the icons.)
 
 - The icons that are used for the custom views in the toolbar are copied from the Safari.app bundle.
   It might not be a problem because of the correct usage of said icons, however we should check with Apple.

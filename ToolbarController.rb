@@ -21,6 +21,7 @@ class ToolbarController < OSX::NSObject
   
   def awakeFromNib
     @window.toolbar = @toolbar
+    @window._borderView.toolbarButton.removeFromSuperview # remove the toggle toolbar button
   end
   
   TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'FontSmallerAndBiggerItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
