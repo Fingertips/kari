@@ -1,12 +1,14 @@
 {
     IBClasses = (
         {
-            ACTIONS = {search = id; }; 
+            ACTIONS = {bookmark = id; home = id; search = id; }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                addBookmarkButton = id; 
                 backButton = id; 
                 forwardButton = id; 
+                homeButton = id; 
                 searchProgressIndicator = id; 
                 webView = id; 
             }; 
@@ -17,8 +19,10 @@
             CLASS = ToolbarController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                addBookmarkView = id; 
                 fontSmallerAndBiggerView = id; 
                 historyBackAndForwardView = id; 
+                homeView = id; 
                 searchView = id; 
                 window = id; 
             }; 

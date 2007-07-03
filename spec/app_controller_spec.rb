@@ -47,7 +47,11 @@ describe AppController do
   it "should pass a query url on to the webview controller" do
     search_field_mock = mock("SearchField")
     search_field_mock.should_receive(:stringValue).and_return("Time".to_nsstring)
-    @app_controller.instance_variable_get(:@webview_controller).should_receive(:load_url).with("Time")
+    @app_controller.instance_variable_get(:@webview_controller).should_receive(:load_url).with("http://127.0.0.1:3301/?q=Time")
+    progress_indicator_mock = mock("Progress Indicator")
+    progress_indicator_mock.should_receive(:startAnimation)
+    @app_controller.instance_variable_set(:@searchProgressIndicator, progress_indicator_mock)
+    
     @app_controller.search(search_field_mock)
   end
 end

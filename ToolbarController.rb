@@ -9,7 +9,7 @@
 require 'osx/cocoa'
 
 class ToolbarController < OSX::NSObject
-  ib_outlet :window, :historyBackAndForwardView, :fontSmallerAndBiggerView, :searchView
+  ib_outlet :window, :historyBackAndForwardView, :fontSmallerAndBiggerView, :searchView, :homeView, :addBookmarkView
   
   def init
     if super_init
@@ -24,7 +24,7 @@ class ToolbarController < OSX::NSObject
     @window._borderView.toolbarButton.removeFromSuperview # remove the toggle toolbar button
   end
   
-  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'FontSmallerAndBiggerItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
+  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'FontSmallerAndBiggerItem', 'HomeItem', 'AddBookmarkItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
   def toolbarAllowedItemIdentifiers(toolbar)
     TOOLBAR_ITEMS
   end

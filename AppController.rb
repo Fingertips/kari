@@ -34,6 +34,14 @@ class AppController < OSX::NSObject
     @webview_controller.load_url "http://127.0.0.1:3301/?q=#{search_field.stringValue.to_s}"
   end
   
+  def home(button)
+    @webview_controller.load_url "http://127.0.0.1:3301"
+  end
+  
+  def bookmark(sender)
+    puts 'bookmark'
+  end
+  
   def webViewFinishedLoading(aNotification)
     @searchProgressIndicator.stopAnimation(nil)
     @backButton.enabled = @webview_controller.can_go_back?

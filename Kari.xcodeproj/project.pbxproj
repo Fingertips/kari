@@ -12,6 +12,12 @@
 		4DDCA7080ACC9A6100E082CE /* rb_main.rb in Resources */ = {isa = PBXBuildFile; fileRef = E8F5E25803AEB7C803A81C6F /* rb_main.rb */; };
 		4DDCA70A0ACC9A6100E082CE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		5139BE1F0C3A7DC300162D10 /* AddLink.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE190C3A7DC300162D10 /* AddLink.tif */; };
+		5139BE200C3A7DC300162D10 /* AddLinkDisabled.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE1A0C3A7DC300162D10 /* AddLinkDisabled.tif */; };
+		5139BE210C3A7DC300162D10 /* AddLinkPressed.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE1B0C3A7DC300162D10 /* AddLinkPressed.tif */; };
+		5139BE220C3A7DC300162D10 /* Home.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE1C0C3A7DC300162D10 /* Home.tif */; };
+		5139BE230C3A7DC300162D10 /* HomeDisabled.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE1D0C3A7DC300162D10 /* HomeDisabled.tif */; };
+		5139BE240C3A7DC300162D10 /* HomePressed.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE1E0C3A7DC300162D10 /* HomePressed.tif */; };
 		519D9AC80C38F02D00CAC573 /* AppController.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AC70C38F02D00CAC573 /* AppController.rb */; };
 		519D9ACE0C38F7B300CAC573 /* CampKari.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9ACD0C38F7B300CAC573 /* CampKari.rb */; };
 		519D9ADD0C39183100CAC573 /* WebViewController.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9ADC0C39183100CAC573 /* WebViewController.rb */; };
@@ -40,6 +46,12 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		4DDCA7110ACC9A6100E082CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DDCA7120ACC9A6100E082CE /* Kari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kari.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5139BE190C3A7DC300162D10 /* AddLink.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = AddLink.tif; sourceTree = "<group>"; };
+		5139BE1A0C3A7DC300162D10 /* AddLinkDisabled.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = AddLinkDisabled.tif; sourceTree = "<group>"; };
+		5139BE1B0C3A7DC300162D10 /* AddLinkPressed.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = AddLinkPressed.tif; sourceTree = "<group>"; };
+		5139BE1C0C3A7DC300162D10 /* Home.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Home.tif; sourceTree = "<group>"; };
+		5139BE1D0C3A7DC300162D10 /* HomeDisabled.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HomeDisabled.tif; sourceTree = "<group>"; };
+		5139BE1E0C3A7DC300162D10 /* HomePressed.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HomePressed.tif; sourceTree = "<group>"; };
 		519D9AC70C38F02D00CAC573 /* AppController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = AppController.rb; sourceTree = "<group>"; };
 		519D9ACD0C38F7B300CAC573 /* CampKari.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = CampKari.rb; sourceTree = "<group>"; };
 		519D9ADC0C39183100CAC573 /* WebViewController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = WebViewController.rb; sourceTree = "<group>"; };
@@ -105,6 +117,12 @@
 			isa = PBXGroup;
 			children = (
 				4DDCA7120ACC9A6100E082CE /* Kari.app */,
+				5139BE190C3A7DC300162D10 /* AddLink.tif */,
+				5139BE1A0C3A7DC300162D10 /* AddLinkDisabled.tif */,
+				5139BE1B0C3A7DC300162D10 /* AddLinkPressed.tif */,
+				5139BE1C0C3A7DC300162D10 /* Home.tif */,
+				5139BE1D0C3A7DC300162D10 /* HomeDisabled.tif */,
+				5139BE1E0C3A7DC300162D10 /* HomePressed.tif */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -234,6 +252,12 @@
 				519D9B0E0C393DE400CAC573 /* FontSmaller.tif in Resources */,
 				519D9B0F0C393DE400CAC573 /* FontSmallerDisabled.tif in Resources */,
 				519D9B100C393DE400CAC573 /* FontSmallerPressed.tif in Resources */,
+				5139BE1F0C3A7DC300162D10 /* AddLink.tif in Resources */,
+				5139BE200C3A7DC300162D10 /* AddLinkDisabled.tif in Resources */,
+				5139BE210C3A7DC300162D10 /* AddLinkPressed.tif in Resources */,
+				5139BE220C3A7DC300162D10 /* Home.tif in Resources */,
+				5139BE230C3A7DC300162D10 /* HomeDisabled.tif in Resources */,
+				5139BE240C3A7DC300162D10 /* HomePressed.tif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,12 +14,19 @@ describe ToolbarController do
   it "should assign it's toolbar to the window" do
     window_mock = mock("Main Window")
     window_mock.should_receive(:toolbar=).with @toolbar_controller.instance_variable_get(:@toolbar)
+    
+    toolbar_button_mock = mock("Toolbar Button")
+    toolbar_button_mock.should_receive(:removeFromSuperview)
+    border_view_mock = mock("_BorderView")
+    border_view_mock.should_receive(:toolbarButton).and_return(toolbar_button_mock)
+    window_mock.should_receive(:_borderView).and_return(border_view_mock)
+    
     @toolbar_controller.instance_variable_set(:@window, window_mock)
     @toolbar_controller.awakeFromNib
   end
   
   it "should return allowed/default toolbar item identifiers" do
-    items = ['HistoryBackAndForwardItem', 'FontSmallerAndBiggerItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
+    items = ['HistoryBackAndForwardItem', 'FontSmallerAndBiggerItem', 'HomeItem', 'AddBookmarkItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
     @toolbar_controller.toolbarAllowedItemIdentifiers(nil).should == items
     @toolbar_controller.toolbarDefaultItemIdentifiers(nil).should == items
   end
