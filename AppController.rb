@@ -12,7 +12,7 @@ require "WebViewController"
 OSX.require_framework 'WebKit'
 
 class AppController < OSX::NSObject
-  ib_outlets :webView, :searchProgressIndicator, :backButton, :forwardButton
+  ib_outlets :webView, :searchProgressIndicator, :backButton, :forwardButton, :bookmarkBar
   
   def init
     if super_init
@@ -24,9 +24,18 @@ class AppController < OSX::NSObject
   end
   
   def awakeFromNib
+    # just some temp items
+    labels = ['foo', 'bar', 'baz' 'bla', 'blabla', 'jajajajajajaajjajaj', 'hgfjhfjhfjfjfjfjhgfjhfjhfghjgf', 'ghfdhgdhgdfgfdghdgd']
+    @bookmarkBar.addItemsWithTitles_withSelector_withSender(labels, 'selectBookmarkItem', self)
+    @bookmarkBar.setGrayBackground
+    
     @webview_controller = WebViewController.new(@webView)
     sleep 5 # FIXME: ugly, but just for now
     @webview_controller.load_url "http://127.0.0.1:3301"
+  end
+  
+  def selectBookmarkItem
+    puts "selected: #{@bookmarkBar.getSelectedTitleInSegment(0)}"
   end
   
   def search(search_field)

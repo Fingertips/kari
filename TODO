@@ -2,6 +2,10 @@
 
 - Add bookmark functionality.
 
+- The original filter bar code creates the gradient colors itself, but since CTGradient 1.6 there are presets for often used color combinations. So we need to take a look at which preset fits the bookmark bar best.
+
+- With the filter bar added to the project Kari wil crash after resizing the window. This does not happen when using the filter bar in a app without a webview and I have seen this behaviour when using a webview. The webview probably tries to resolve outlets at runtime, which does not work well with every object. So need to look into this.
+
 - Still need to add the "disabled" icon code for the history buttons. (Wait until we know what we will do with the icons.)
 
 - The icons that are used for the custom views in the toolbar are copied from the Safari.app bundle.
