@@ -15,7 +15,7 @@ class CampKari
     @camp_kari.launchPath = '/opt/local/bin/camping'
     @camp_kari.currentDirectoryPath = File.expand_path('../../../../../../../design/proof_of_concept', File.dirname(__FILE__))
     @camp_kari.arguments = ['kari.rb']
-    @camp_kari.environment = { 'PATH' => '/opt/local/bin', 'HOME' => ENV['HOME'] }
+    @camp_kari.environment = { 'PATH' => ENV['PATH'], 'HOME' => ENV['HOME'] }
   end
   
   def launch
