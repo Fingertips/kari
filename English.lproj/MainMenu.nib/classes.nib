@@ -16,7 +16,7 @@
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = SAFilterBar; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
+        {CLASS = SABookmarkBar; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
         {
             CLASS = ToolbarController; 
             LANGUAGE = ObjC; 

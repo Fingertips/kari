@@ -7,7 +7,7 @@
 
 require 'osx/cocoa'
 
-class OSX::SAFilterButtonCell < OSX::NSButtonCell
+class OSX::SAButtonCell < OSX::NSButtonCell
   
   def drawInteriorWithFrame_inView(cellFrame, controlView)
     if self.state == OSX::NSOnState
@@ -37,9 +37,18 @@ class OSX::SAFilterButtonCell < OSX::NSButtonCell
     self.controlView.state = @originalState
   end
   
-  # For Kari we need to disable this behaviour
+end
+
+class OSX::SAFilterButtonCell < OSX::SAButtonCell
+  # This toggles the state of the button so it remains selected.
   def mouseDown(theEvent)
     @originalState = (@originalState == OSX::NSOnState) ? OSX::NSOffState : OSX::NSOnState
   end
-  
+end
+
+class OSX::SABookmarkButtonCell < OSX::SAButtonCell
+  # For a bookmark bar button it only needs to click and not remain in a state.
+  def mouseDown(theEvent)
+    @originalState = OSX::NSOffState
+  end
 end

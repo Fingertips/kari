@@ -7,7 +7,7 @@
 
 require 'osx/cocoa'
 
-class OSX::SAFilterBar < OSX::NSView
+class OSX::SABar < OSX::NSView
   LEFT_MARGIN = 5
   SPACING = 2
   
@@ -79,9 +79,6 @@ class OSX::SAFilterBar < OSX::NSView
   
   def addItemsWithTitles_withSelector_withSender(array, selector, sender)
     self._addItemsWithTitles_withSelector_withSender(array, selector, sender)
-    @buttonsDictionary.each do |dict|
-      dict[0].state = OSX::NSOnState
-    end
   end
   
   def _addItemsWithTitles_withSelector_withSender(titles, selector, sender)
@@ -131,7 +128,7 @@ class OSX::SAFilterBar < OSX::NSView
   end
   
   def createButtonWithTitle(title)
-    newButton = OSX::SAFilterButton.alloc.initWithOS(self.getOSVersion)
+    newButton = OSX.const_get("#{self.class.to_s[5..-4]}Button").alloc.initWithOS(self.getOSVersion)
     newButton.title = title
     newButton.sizeToFit
     return newButton
@@ -286,4 +283,17 @@ class OSX::SAFilterBar < OSX::NSView
   def stringForRedGreenBlueAlpha(red, green, blue, alpha)
     OSX::NSString.alloc.initWithString OSX::NSColor.colorWithCalibratedRed_green_blue_alpha(red/255.0, green/255.0, blue/255.0, alpha).description
   end
+end
+
+class OSX::SAFilterBar < OSX::SABar
+  def addItemsWithTitles_withSelector_withSender(array, selector, sender)
+    super
+    # Set the first button in each segment to NSOnState
+    @buttonsDictionary.each do |dict|
+      dict[0].state = OSX::NSOnState
+    end
+  end
+end
+
+class OSX::SABookmarkBar < OSX::SABar
 end

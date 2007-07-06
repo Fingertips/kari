@@ -25,8 +25,8 @@ class AppController < OSX::NSObject
   
   def awakeFromNib
     # just some temp items
-    labels = ['foo', 'bar', 'baz' 'bla', 'blabla', 'jajajajajajaajjajaj', 'hgfjhfjhfjfjfjfjhgfjhfjhfghjgf', 'ghfdhgdhgdfgfdghdgd']
-    @bookmarkBar.addItemsWithTitles_withSelector_withSender(labels, 'selectBookmarkItem', self)
+    labels = ['String', 'Array', 'Symbol', 'Proc', 'Numeric', 'Hash', 'ActiveRecord', 'ActiveSupport', 'ActionPack']
+    @bookmarkBar.addItemsWithTitles_withSelector_withSender(labels, 'selectedBookmark', self)
     @bookmarkBar.setGrayBackground
     
     @webview_controller = WebViewController.new(@webView)
@@ -34,8 +34,9 @@ class AppController < OSX::NSObject
     @webview_controller.load_url "http://127.0.0.1:3301"
   end
   
-  def selectBookmarkItem
+  def selectedBookmark
     puts "selected: #{@bookmarkBar.getSelectedTitleInSegment(0)}"
+    @webview_controller.load_url "http://127.0.0.1:3301/?q=#{@bookmarkBar.getSelectedTitleInSegment(0)}"
   end
   
   def search(search_field)
