@@ -47,8 +47,22 @@ class OSX::SAFilterButtonCell < OSX::SAButtonCell
 end
 
 class OSX::SABookmarkButtonCell < OSX::SAButtonCell
+  # def mouseEntered(theEvent)
+  #   puts 'entered'
+  #   super_view = self.controlView.superview
+  #   self.controlView.removeFromSuperview
+  #   super_view.addSubview(self.controlView)
+  #   super
+  # end
+  
   # For a bookmark bar button it only needs to click and not remain in a state.
   def mouseDown(theEvent)
     @originalState = OSX::NSOffState
   end
+  
+  def mouseExited(theEvent)
+    puts 'exxxxit'
+    self.controlView.state = OSX::NSOffState
+  end
+  
 end

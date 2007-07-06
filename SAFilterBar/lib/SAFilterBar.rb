@@ -8,12 +8,26 @@
 require 'osx/cocoa'
 
 class OSX::SABar < OSX::NSView
-  LEFT_MARGIN = 5
+  MARGIN = 5
   SPACING = 2
+  
+  def left_margin
+    MARGIN
+  end
+  def right_margin
+    unless @overflowMenu.nil?
+      MARGIN + @overflowButton.frame.width
+    else
+      MARGIN
+    end
+  end
+  def spacing
+    SPACING
+  end
   
   def initWithFrame(frame)
     if super_initWithFrame(frame)
-      @buttonX = LEFT_MARGIN
+      @buttonX = MARGIN
       
       @buttonsDictionary = [[]]
       
@@ -109,7 +123,7 @@ class OSX::SABar < OSX::NSView
     buttonXCoordinate = @buttonX
     
     newButton.frameOrigin = OSX::NSMakePoint(buttonXCoordinate, buttonYCoordinate)
-    
+
     # for next button
     @buttonX += newButton.frame.size.width + SPACING
     
@@ -118,12 +132,14 @@ class OSX::SABar < OSX::NSView
       self.addSubview newButton
       @buttonsDictionary.last.push newButton
       newButton.showsBorderOnlyWhileMouseInside = true
+      return newButton
     else
       self.createOverflowMenu if @overflowMenu.nil?
       newMenuItem = OSX::NSMenuItem.alloc.initWithTitle_action_keyEquivalent(title, "performActionForButton:", "")
       newMenuItem.target = self
       @overflowMenu.addItem newMenuItem
       @buttonsDictionary.last.push newMenuItem
+      return newMenuItem
     end
   end
   
@@ -296,4 +312,35 @@ class OSX::SAFilterBar < OSX::SABar
 end
 
 class OSX::SABookmarkBar < OSX::SABar
+  def addButtonWithTitle(title)
+    item = super
+    
+    unless item.is_a? OSX::NSMenuItem
+      # drag & drop support
+      @trackingRects ||= {}
+      @trackingRects[self.addTrackingRect_owner_userData_assumeInside(item.frame, self, nil, false)] = title
+    end
+  end
+  
+  def mouseEntered(theEvent)
+    puts "Mouse entered rect: #{@trackingRects[theEvent.trackingNumber]}"
+    
+    button = self.getButtonForTitle(@trackingRects[theEvent.trackingNumber])
+    button.state = OSX::NSOnState
+    button.removeFromSuperview
+    self.addSubview button
+  end
+  
+  def mouseExited(theEvent)
+    button = self.getButtonForTitle(@trackingRects[theEvent.trackingNumber])
+    button.state = OSX::NSOffState
+  end
+  
+  def getButtonForTitle(title)
+    @buttonsDictionary.each do |dict|
+      dict.each do |obj|
+        return obj if obj.title == title
+      end
+    end
+  end
 end
