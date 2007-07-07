@@ -37,18 +37,22 @@ end
 
 class OSX::SABookmarkButton < OSX::SABarButton
   def mouseDown(theEvent)
-    # If the button is dragged @clicked will be set to false
-    # But if the button isn't dragged the mouseUp event handler will call the original action
-    @clicked = true
+    # If the button is dragged @draggin will be set to true
+    # But if the button isn't dragged the mouseUp event handler will call the original action.
+    @dragging = false
   end
   
   def mouseUp(theEvent)
-    # FIXME: Is there a better way to call a original set action?
-    self.superview.performActionForButton(self) if @clicked
+    if @dragging
+      self.superview.doneDragging(self)
+    else
+      # FIXME: Is there a better way to call a original set action?
+      self.superview.performActionForButton(self)
+    end
   end
   
   def mouseDragged(theEvent)
-    @clicked = false
+    @dragging = true
     
     new_x = self.frame.origin.x + theEvent.deltaX
     if new_x < self.superview.left_margin
@@ -62,5 +66,8 @@ class OSX::SABookmarkButton < OSX::SABarButton
     self.frameOrigin = OSX::NSMakePoint(new_x, self.frame.origin.y)
     self.needsDisplay = true
     self.superview.needsDisplay = true
+    
+    # report position back to the bookmark bar
+    self.superview.draggingButton_xCoordinate(self)
   end
 end

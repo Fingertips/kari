@@ -15,6 +15,7 @@ class AppController < OSX::NSObject
   ib_outlets :webView, :searchProgressIndicator, :backButton, :forwardButton, :bookmarkBar
   
   def init
+    puts 'init'
     if super_init
       @camp_kari = CampKari.new
       @camp_kari.launch
@@ -24,14 +25,15 @@ class AppController < OSX::NSObject
   end
   
   def awakeFromNib
+    puts 'awake'
     # just some temp items
-    labels = ['String', 'Array', 'Symbol', 'Proc', 'Numeric', 'Hash', 'ActiveRecord', 'ActiveSupport', 'ActionPack']
+    labels = ['String', 'String', 'Symbol', 'Proc', 'Numeric', 'Hash', 'ActiveRecord', 'ActiveSupport', 'ActionPack']
     @bookmarkBar.addItemsWithTitles_withSelector_withSender(labels, 'selectedBookmark', self)
     @bookmarkBar.setGrayBackground
     
     @webview_controller = WebViewController.new(@webView)
-    sleep 5 # FIXME: ugly, but just for now
-    @webview_controller.load_url "http://127.0.0.1:3301"
+    #sleep 5 # FIXME: ugly, but just for now
+    #@webview_controller.load_url "http://127.0.0.1:3301"
   end
   
   def selectedBookmark
@@ -59,10 +61,10 @@ class AppController < OSX::NSObject
   end
   
   def applicationDidFinishLaunching(aNotification)
-    OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
-                                                      :selector,    'webViewFinishedLoading:',
-                                                      :name,        OSX::WebViewProgressFinishedNotification,
-                                                      :object,      nil
+    # OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
+    #                                                   :selector,    'webViewFinishedLoading:',
+    #                                                   :name,        OSX::WebViewProgressFinishedNotification,
+    #                                                   :object,      nil
   end
   
   def applicationWillTerminate(aNotification)

@@ -29,7 +29,7 @@ class OSX::SABar < OSX::NSView
     if super_initWithFrame(frame)
       @buttonX = MARGIN
       
-      @buttonsDictionary = [[]]
+      @segments = [[]]
       
       @overflowButton = OSX::SAOverflowButton.alloc.init
       @overflowButton.target = self
@@ -53,8 +53,8 @@ class OSX::SABar < OSX::NSView
   
   def resizeSubviewsWithOldSize(oldBoundsSize)
     selectedTitleArray = []
-    @buttonsDictionary.each do |dict|
-      dict.each do |obj|
+    @segments.each do |items|
+      items.each do |obj|
         # FIXME: when resizing for some reason the button state always returns NSOffState,
         # this should be fixed for a filter bar, but is not necessary for Kari.
         #p obj.state
@@ -62,7 +62,7 @@ class OSX::SABar < OSX::NSView
         obj.removeFromSuperview unless obj.is_a? OSX::NSMenuItem # remove old buttons
       end
       
-      dict.clear
+      items.clear
       @buttonX = LEFT_MARGIN
       
       # remove overflow button
@@ -71,15 +71,15 @@ class OSX::SABar < OSX::NSView
         @overflowMenu = nil
       end
     end
-    @buttonsDictionary = [[]]
+    @segments = [[]]
     
     # add new buttons
     self._addItemsWithTitles_withSelector_withSender(@originalArray, @originalSelector, @originalSender) if @originalArray != nil
     
-    @buttonsDictionary.each do |dict|
+    @segments.each do |items|
       # select previous button
       selectedButton = nil
-      dict.each_with_index do |obj, idx|
+      items.each_with_index do |obj, idx|
         if obj.title.isEqualTo selectedTitleArray[idx]
           selectedButton = obj
           break
@@ -130,7 +130,7 @@ class OSX::SABar < OSX::NSView
     # add to view
     if @buttonX < (self.frame.size.width - @overflowButton.frame.size.width)
       self.addSubview newButton
-      @buttonsDictionary.last.push newButton
+      @segments.last.push newButton
       newButton.showsBorderOnlyWhileMouseInside = true
       return newButton
     else
@@ -138,7 +138,7 @@ class OSX::SABar < OSX::NSView
       newMenuItem = OSX::NSMenuItem.alloc.initWithTitle_action_keyEquivalent(title, "performActionForButton:", "")
       newMenuItem.target = self
       @overflowMenu.addItem newMenuItem
-      @buttonsDictionary.last.push newMenuItem
+      @segments.last.push newMenuItem
       return newMenuItem
     end
   end
@@ -173,33 +173,33 @@ class OSX::SABar < OSX::NSView
       # add to view
       self.addSubview newButton
       
-      @buttonsDictionary.last.push newButton
+      @segments.last.push newButton
     else
       self.createOverflowMenu if @overflowMenu.nil?
       
       newMenuItem = OSX::NSMenuItem.separatorItem
       @overflowMenu.addItem newMenuItem
       
-      @buttonsDictionary.last.push newMenuItem
+      @segments.last.push newMenuItem
     end
     
-    @buttonsDictionary.push []
+    @segments.push []
   end
   
   def removeAllItems
-    @buttonsDictionary.each do |dict|
+    @segments.each do |items|
       # remove old buttons
-      dict.each do |obj|
+      items.each do |obj|
         obj.removeFromSuperview unless obj.is_a?(OSX::NSMenuItem)
       end
-      dict.clear
+      items.clear
       # remove overflow button
       if @overflowButton
         @overflowButton.removeFromSuperview
         @overflowMenu = nil
       end
     end
-    @buttonsDictionary = [[]]
+    @segments = [[]]
     @originalArray = @originalSelector = @originalSender = nil
     @buttonX = LEFT_MARGIN
   end
@@ -228,9 +228,9 @@ class OSX::SABar < OSX::NSView
   end
   
   def deselectAllButtonsExcept(button)
-    @buttonsDictionary.each do |dict|
-      if dict.include? button
-        dict.each { |obj| obj.state = OSX::NSOffState }
+    @segments.each do |items|
+      if items.include? button
+        items.each { |obj| obj.state = OSX::NSOffState }
         button.state = OSX::NSOnState
       end
     end
@@ -243,8 +243,8 @@ class OSX::SABar < OSX::NSView
   # accessor method
   
   def getSelectedButtonInSegment(segment)
-    if segment < @buttonsDictionary.length
-      @buttonsDictionary[segment].each_with_index do |obj, idx|
+    if segment < @segments.length
+      @segments[segment].each_with_index do |obj, idx|
         return [idx, obj] if obj.state == OSX::NSOnState
       end
     end
@@ -259,8 +259,8 @@ class OSX::SABar < OSX::NSView
   end
   
   def selectTitle_inSegment(title, segment)
-    if segment < @buttonsDictionary.length
-      @buttonsDictionary[segment].each do |obj|
+    if segment < @segments.length
+      @segments[segment].each do |obj|
         if obj.title == title
           obj.state = OSX::NSOnState
           self.performActionForButton obj
@@ -305,8 +305,8 @@ class OSX::SAFilterBar < OSX::SABar
   def addItemsWithTitles_withSelector_withSender(array, selector, sender)
     super
     # Set the first button in each segment to NSOnState
-    @buttonsDictionary.each do |dict|
-      dict[0].state = OSX::NSOnState
+    @segments.each do |items|
+      items[0].state = OSX::NSOnState
     end
   end
 end
@@ -317,30 +317,111 @@ class OSX::SABookmarkBar < OSX::SABar
     
     unless item.is_a? OSX::NSMenuItem
       # drag & drop support
-      @trackingRects ||= {}
-      @trackingRects[self.addTrackingRect_owner_userData_assumeInside(item.frame, self, nil, false)] = title
+      self.addTrackingRectForButton(item)
+      self.addOriginalPostitionForButton(item)
     end
   end
   
   def mouseEntered(theEvent)
-    puts "Mouse entered rect: #{@trackingRects[theEvent.trackingNumber]}"
-    
-    button = self.getButtonForTitle(@trackingRects[theEvent.trackingNumber])
+    button = @trackingRects[theEvent.trackingNumber]
+    puts "Mouse entered rect: #{button.title}"    
     button.state = OSX::NSOnState
     button.removeFromSuperview
     self.addSubview button
   end
   
   def mouseExited(theEvent)
-    button = self.getButtonForTitle(@trackingRects[theEvent.trackingNumber])
+    button = @trackingRects[theEvent.trackingNumber]
     button.state = OSX::NSOffState
   end
   
-  def getButtonForTitle(title)
-    @buttonsDictionary.each do |dict|
-      dict.each do |obj|
-        return obj if obj.title == title
+  def addOriginalPostitionForButton(button)
+    #puts button.class
+    (@originalPositions ||= []) << { :button => button, :original_x => button.frame.origin.x }
+  end
+  
+  def addTrackingRectForButton(button)
+    @trackingRects ||= {}
+    @trackingRects[self.addTrackingRect_owner_userData_assumeInside(button.frame, self, nil, false)] = button
+  end
+  
+  def trackingRectTagForButton(for_button)
+    @trackingRects.each do |tag, button|
+      return tag if button == for_button
+    end
+  end
+  
+  def draggingButton_xCoordinate(button)
+    if @dragging_button_index.nil?
+      @originalPositions.each_with_index do |button_and_orginal_x, idx|
+        if button_and_orginal_x[:button] == button
+          @dragging_button_index = idx
+          break
+        end
       end
     end
+    
+    @next_x_for_over_button ||= @originalPositions[@dragging_button_index.next][:original_x]
+    
+    # if there is a next button and if the current position of the dragging button is over a button that we haven't moved yet
+    if @originalPositions[@dragging_button_index.next] != nil && button.frame.origin.x > @next_x_for_over_button
+      # the button that will be moved
+      over_button = @originalPositions[@dragging_button_index.next][:button]
+      
+      # store a reference for where the dragging button should come if it was released now
+      @new_x_for_dragging_button = @originalPositions[@dragging_button_index][:original_x] + over_button.frame.width + SPACING
+      
+      # store a reference for where the next button will start
+      @next_x_for_over_button = @originalPositions[@dragging_button_index + 2][:original_x] unless @originalPositions[@dragging_button_index + 2].nil?
+      
+      # create the new x coordinate for the moving button
+      new_x_for_over_button = over_button.frame.origin.x - button.frame.width - SPACING
+      
+      # move the button
+      over_button.frameOrigin = OSX::NSMakePoint(new_x_for_over_button, over_button.frame.origin.y)
+      
+      # update the original_x values and switch the buttons in the @originalPositions array
+      @originalPositions[@dragging_button_index][:original_x] = @new_x_for_dragging_button
+      @originalPositions[@dragging_button_index.next][:original_x] = new_x_for_over_button
+      @originalPositions = @originalPositions.switch(@dragging_button_index, @dragging_button_index.next)
+      
+      @dragging_button_index = @dragging_button_index.next
+      
+    # elsif new_x < @originalPositions[@dragging_button_index - 1][:original_x]
+    #   over_button = @originalPositions[@dragging_button_index - 1][:button]
+    #   over_button.frameOrigin = OSX::NSMakePoint(@originalPositions[@dragging_button_index][:button], over_button.frame.origin.y)
+    end
+  end
+  
+  def doneDragging(button)
+    # snap the button to the last good location
+    button.frameOrigin = OSX::NSMakePoint(@new_x_for_dragging_button, button.frame.origin.y)
+    self.needsDisplay = true
+    
+    # reset the states
+    @dragging_button_index = @new_x_for_over_button = @new_x_for_dragging_button = nil
+    
+    # unregister all tracking rects
+    @trackingRects.each {|tag, button| self.removeTrackingRect(tag) }
+    # setup the new tracking rects hash and the original positions array
+    @trackingRects = {}
+    #@originalPositions = []
+    @segments.each do |items|
+      items.each do |item|
+        unless item.is_a? OSX::NSMenuItem
+          self.addTrackingRectForButton(item)
+          #self.addOriginalPostitionForButton(item)
+        end
+      end
+    end
+  end
+  
+end
+
+class Array
+  def switch(idx1, idx2)
+    self_dup = self.dup
+    self_dup[idx1], self_dup[idx2] = self_dup.values_at(idx2, idx1)
+    return self_dup
   end
 end
