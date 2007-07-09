@@ -16,7 +16,7 @@ class OSX::SAButtonCell < OSX::NSButtonCell
       topColor = self.controlView.superview.topColor
       bottomColor = self.controlView.superview.bottomColor
       
-      aGradient = OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.gradientWithBeginningColor_endingColor(bottomColor, topColor).retain ) )
+      aGradient = OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.gradientWithBeginningColor_endingColor(bottomColor, topColor) ) )
       aGradient.fillRect_angle(cellFrame, 90)
       
       attributes = { OSX::NSForegroundColorAttributeName => OSX::NSColor.blackColor, OSX::NSFontAttributeName => OSX::NSFont.systemFontOfSize(12) }

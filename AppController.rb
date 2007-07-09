@@ -15,20 +15,20 @@ class AppController < OSX::NSObject
   ib_outlets :webView, :searchProgressIndicator, :backButton, :forwardButton, :bookmarkBar
   
   def init
-    puts 'init'
     if super_init
-      @camp_kari = CampKari.new
-      @camp_kari.launch
+      # FIXME: It seems that running this in combination with a webview leads to the crashes...
+      # @camp_kari = CampKari.new
+      # @camp_kari.launch
       OSX::NSApplication.sharedApplication.setDelegate(self)
       return self
     end
   end
   
   def awakeFromNib
-    puts 'awake'
     # just some temp items
     labels = ['String', 'String', 'Symbol', 'Proc', 'Numeric', 'Hash', 'ActiveRecord', 'ActiveSupport', 'ActionPack']
     @bookmarkBar.addItemsWithTitles_withSelector_withSender(labels, 'selectedBookmark', self)
+    @bookmarkBar.setReorderedItemsDelegate_withSelector(self, 'reorderedBookmark')
     @bookmarkBar.setGrayBackground
     
     @webview_controller = WebViewController.new(@webView)
@@ -39,6 +39,10 @@ class AppController < OSX::NSObject
   def selectedBookmark
     puts "selected: #{@bookmarkBar.getSelectedTitleInSegment(0)}"
     @webview_controller.load_url "http://127.0.0.1:3301/?q=#{@bookmarkBar.getSelectedTitleInSegment(0)}"
+  end
+  
+  def reorderedBookmark(button, from_idx, to_idx)
+    puts "Button: #{button.title} moved from #{from_idx} to #{to_idx}"
   end
   
   def search(search_field)
@@ -61,10 +65,10 @@ class AppController < OSX::NSObject
   end
   
   def applicationDidFinishLaunching(aNotification)
-    # OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
-    #                                                   :selector,    'webViewFinishedLoading:',
-    #                                                   :name,        OSX::WebViewProgressFinishedNotification,
-    #                                                   :object,      nil
+    OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
+                                                      :selector,    'webViewFinishedLoading:',
+                                                      :name,        OSX::WebViewProgressFinishedNotification,
+                                                      :object,      nil
   end
   
   def applicationWillTerminate(aNotification)

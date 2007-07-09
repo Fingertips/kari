@@ -44,7 +44,7 @@ class OSX::SABar < OSX::NSView
   def drawRect(rect)
     topColorCopy, bottomColorCopy = self.topColor, self.bottomColor
     if topColorCopy and bottomColorCopy
-      aGradient = OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.gradientWithBeginningColor_endingColor(topColorCopy, bottomColorCopy).retain ) )
+      aGradient = OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.gradientWithBeginningColor_endingColor(topColorCopy, bottomColorCopy) ) )
       aGradient.fillRect_angle(rect, 90)
     end
     OSX::NSColor.blackColor.set
@@ -237,11 +237,11 @@ class OSX::SABar < OSX::NSView
   end
   
   def getOSVersion
+    # FIXME: There must be some Foundation API to get at this instead of this ugly parsing....
     @osVersion ||= OSX::NSDictionary.dictionaryWithContentsOfFile("/System/Library/CoreServices/SystemVersion.plist").objectForKey("ProductVersion").doubleValue
   end
   
-  # accessor method
-  
+  # accessor methods
   def getSelectedButtonInSegment(segment)
     if segment < @segments.length
       @segments[segment].each_with_index do |obj, idx|
@@ -312,22 +312,28 @@ class OSX::SAFilterBar < OSX::SABar
 end
 
 class OSX::SABookmarkBar < OSX::SABar
+  
+  def setReorderedItemsDelegate_withSelector(delegate, selector)
+    @reorderedItemsDelegate_withSelector = [delegate, selector]
+  end
+  
   def addButtonWithTitle(title)
     item = super
     
     unless item.is_a? OSX::NSMenuItem
       # drag & drop support
       self.addTrackingRectForButton(item)
-      self.addOriginalPostitionForButton(item)
+      self.addPostitionForButton(item)
     end
   end
   
   def mouseEntered(theEvent)
-    button = @trackingRects[theEvent.trackingNumber]
-    puts "Mouse entered rect: #{button.title}"    
-    button.state = OSX::NSOnState
-    button.removeFromSuperview
-    self.addSubview button
+    unless self.dragging?
+      button = @trackingRects[theEvent.trackingNumber]
+      button.state = OSX::NSOnState
+      button.removeFromSuperview
+      self.addSubview button
+    end
   end
   
   def mouseExited(theEvent)
@@ -335,9 +341,8 @@ class OSX::SABookmarkBar < OSX::SABar
     button.state = OSX::NSOffState
   end
   
-  def addOriginalPostitionForButton(button)
-    #puts button.class
-    (@originalPositions ||= []) << { :button => button, :original_x => button.frame.origin.x }
+  def addPostitionForButton(button)
+    (@buttonPositions ||= []) << { :button => button, :original_x => button.frame.origin.x }
   end
   
   def addTrackingRectForButton(button)
@@ -351,46 +356,80 @@ class OSX::SABookmarkBar < OSX::SABar
     end
   end
   
+  def dragging?
+    @dragging_button_index != nil
+  end
+  
   def draggingButton_xCoordinate(button)
-    if @dragging_button_index.nil?
-      @originalPositions.each_with_index do |button_and_orginal_x, idx|
+    unless self.dragging?
+      @buttonPositions.each_with_index do |button_and_orginal_x, idx|
         if button_and_orginal_x[:button] == button
-          @dragging_button_index = idx
+          # this is the button that is being dragged
+          @dragging_button_index = @dragging_button_original_index = idx
           break
         end
       end
+      # set this to it's own original value, this is needed if a button is dragged a bit but no reordering is done.
+      @new_x_for_dragging_button = @buttonPositions[@dragging_button_index][:original_x]
+      # setup the initial values for the move trigger x coordinates
+      self.setMoveTriggerCoordinates
     end
-    
-    @next_x_for_over_button ||= @originalPositions[@dragging_button_index.next][:original_x]
     
     # if there is a next button and if the current position of the dragging button is over a button that we haven't moved yet
-    if @originalPositions[@dragging_button_index.next] != nil && button.frame.origin.x > @next_x_for_over_button
+    if @next_x_for_move_trigger != nil && button.frame.origin.x > @next_x_for_move_trigger
       # the button that will be moved
-      over_button = @originalPositions[@dragging_button_index.next][:button]
-      
+      over_button = @buttonPositions[@dragging_button_index +1][:button]
       # store a reference for where the dragging button should come if it was released now
-      @new_x_for_dragging_button = @originalPositions[@dragging_button_index][:original_x] + over_button.frame.width + SPACING
-      
-      # store a reference for where the next button will start
-      @next_x_for_over_button = @originalPositions[@dragging_button_index + 2][:original_x] unless @originalPositions[@dragging_button_index + 2].nil?
-      
-      # create the new x coordinate for the moving button
+      @new_x_for_dragging_button = @buttonPositions[@dragging_button_index][:original_x] + over_button.frame.width + SPACING
+      # calculate the new x coordinate for the moving button
       new_x_for_over_button = over_button.frame.origin.x - button.frame.width - SPACING
+      # do it!
+      self.processMove(over_button, new_x_for_over_button, +1)
       
-      # move the button
-      over_button.frameOrigin = OSX::NSMakePoint(new_x_for_over_button, over_button.frame.origin.y)
-      
-      # update the original_x values and switch the buttons in the @originalPositions array
-      @originalPositions[@dragging_button_index][:original_x] = @new_x_for_dragging_button
-      @originalPositions[@dragging_button_index.next][:original_x] = new_x_for_over_button
-      @originalPositions = @originalPositions.switch(@dragging_button_index, @dragging_button_index.next)
-      
-      @dragging_button_index = @dragging_button_index.next
-      
-    # elsif new_x < @originalPositions[@dragging_button_index - 1][:original_x]
-    #   over_button = @originalPositions[@dragging_button_index - 1][:button]
-    #   over_button.frameOrigin = OSX::NSMakePoint(@originalPositions[@dragging_button_index][:button], over_button.frame.origin.y)
+    # if there is a previous button and if the current position of the dragging button is over a button that we haven't moved yet
+    elsif @prev_x_for_move_trigger != nil && button.frame.origin.x < @prev_x_for_move_trigger
+      # the button that will be moved
+      over_button = @buttonPositions[@dragging_button_index -1][:button]
+      # store a reference for where the dragging button should come if it was released now
+      @new_x_for_dragging_button = over_button.frame.origin.x
+      # calculate the new x coordinate for the moving button
+      new_x_for_over_button = (@buttonPositions[@dragging_button_index][:original_x] + button.frame.width) - over_button.frame.width # + SPACING
+      # do it!
+      self.processMove(over_button, new_x_for_over_button, -1)
     end
+  end
+  
+  def processMove(over_button, new_x_for_over_button, drag_direction)
+    # actually move the over_button
+    if getOSVersion >= 10.4
+      end_position = over_button.frame
+      end_position.origin.x = new_x_for_over_button
+      animation = OSX::NSViewAnimation.alloc.initWithViewAnimations([{ OSX::NSViewAnimationTargetKey => over_button, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(end_position) }])
+      animation.duration = 0.2
+      animation.startAnimation
+    else
+      over_button.frameOrigin = OSX::NSMakePoint(new_x_for_over_button, over_button.frame.origin.y)
+    end
+    
+    # update the original_x values and switch the buttons in the @buttonPositions array
+    @buttonPositions[@dragging_button_index][:original_x] = @new_x_for_dragging_button
+    @buttonPositions[@dragging_button_index + drag_direction][:original_x] = new_x_for_over_button
+    @buttonPositions = @buttonPositions.switch(@dragging_button_index, @dragging_button_index + drag_direction)
+    
+    # update the current dragging index
+    @dragging_button_index = @dragging_button_index + drag_direction
+    
+    # update the new move trigger
+    self.setMoveTriggerCoordinates
+  end
+  
+  def setMoveTriggerCoordinates
+    # Store a reference to the next x coordinate that will trigger a move if there is a next button.
+    # It should be triggered once the right side of the dragging button is at the point where the right side of the over_button is.
+    @next_x_for_move_trigger = @buttonPositions[@dragging_button_index +1].nil? ? nil : (@buttonPositions[@dragging_button_index +1][:original_x] + @buttonPositions[@dragging_button_index +1][:button].frame.width - @buttonPositions[@dragging_button_index][:button].frame.width)
+    # store a reference to the previous x coordinate that will trigger a move if there is a previous button.
+    # It should be triggered once the left side of the dragging button is at the left side of the over_button, but because of the margin at the left add one pixel.
+    @prev_x_for_move_trigger = (@dragging_button_index -1) < 0 ? nil : (@buttonPositions[@dragging_button_index -1][:original_x] + 1)
   end
   
   def doneDragging(button)
@@ -398,19 +437,23 @@ class OSX::SABookmarkBar < OSX::SABar
     button.frameOrigin = OSX::NSMakePoint(@new_x_for_dragging_button, button.frame.origin.y)
     self.needsDisplay = true
     
+    unless @dragging_button_index == @dragging_button_original_index
+      # callback
+      delegate, selector = @reorderedItemsDelegate_withSelector
+      delegate.send(selector.to_sym, button, @dragging_button_original_index, @dragging_button_index)
+    end
+    
     # reset the states
-    @dragging_button_index = @new_x_for_over_button = @new_x_for_dragging_button = nil
+    @dragging_button_index = @dragging_button_original_index = @new_x_for_dragging_button = @next_x_for_move_trigger = @prev_x_for_move_trigger = nil
     
     # unregister all tracking rects
     @trackingRects.each {|tag, button| self.removeTrackingRect(tag) }
-    # setup the new tracking rects hash and the original positions array
+    # setup the new tracking rects hash
     @trackingRects = {}
-    #@originalPositions = []
     @segments.each do |items|
       items.each do |item|
         unless item.is_a? OSX::NSMenuItem
           self.addTrackingRectForButton(item)
-          #self.addOriginalPostitionForButton(item)
         end
       end
     end

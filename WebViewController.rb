@@ -13,6 +13,10 @@ class WebViewController
     @webview = webview
   end
   
+  # def setWebView(webview)
+  #   @webview = webview
+  # end
+  
   def load_url(url)
     @webview.mainFrame.loadRequest url_request(url)
   end

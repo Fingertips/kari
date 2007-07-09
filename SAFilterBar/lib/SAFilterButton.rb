@@ -13,7 +13,8 @@ class OSX::SABarButton < OSX::NSButton
   
   def initWithOS(osVersion)
     if self.init
-      if osVersion >= 10.4
+      @osVersion = osVersion
+      if @osVersion >= 10.4
         self.cell = OSX.const_get("#{self.class.to_s[5..-1]}Cell").alloc.init
         self.buttonType = OSX::NSPushOnPushOffButton
         self.bezelStyle = OSX::NSRecessedBezelStyle
@@ -36,6 +37,8 @@ class OSX::SAFilterButton < OSX::SABarButton
 end
 
 class OSX::SABookmarkButton < OSX::SABarButton
+  # drag and drop support methods
+  
   def mouseDown(theEvent)
     # If the button is dragged @draggin will be set to true
     # But if the button isn't dragged the mouseUp event handler will call the original action.
