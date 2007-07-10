@@ -48,6 +48,8 @@ class OSX::SABookmarkButton < OSX::SABarButton
   def mouseUp(theEvent)
     if @dragging
       self.superview.doneDragging(self)
+      # If the mouse pointer is still within the bounds of the button then set it to NSOnState
+      self.state = OSX::NSOnState if OSX::NSMouseInRect(self.convertPoint_fromView(theEvent.locationInWindow, nil), self.bounds, false)
     else
       # FIXME: Is there a better way to call a original set action?
       self.superview.performActionForButton(self)
