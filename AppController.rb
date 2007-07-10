@@ -17,8 +17,8 @@ class AppController < OSX::NSObject
   def init
     if super_init
       # FIXME: It seems that running this in combination with a webview leads to the crashes...
-      # @camp_kari = CampKari.new
-      # @camp_kari.launch
+      @camp_kari = CampKari.new
+      @camp_kari.launch
       OSX::NSApplication.sharedApplication.setDelegate(self)
       return self
     end
