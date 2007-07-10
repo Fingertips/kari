@@ -42,10 +42,15 @@ class OSX::SABar < OSX::NSView
   end
   
   def drawRect(rect)
+    # this method is probably called on small portions of the rect,
+    # for the gradient we need the whole height of the bar to update.
+    rect_copy = rect.dup
+    rect_copy.size.height = self.frame.height
+    
     topColorCopy, bottomColorCopy = self.topColor, self.bottomColor
     if topColorCopy and bottomColorCopy
       aGradient = OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.gradientWithBeginningColor_endingColor(topColorCopy, bottomColorCopy) ) )
-      aGradient.fillRect_angle(rect, 90)
+      aGradient.fillRect_angle(rect_copy, 90)
     end
     OSX::NSColor.blackColor.set
     OSX::NSBezierPath.strokeLineFromPoint_toPoint OSX::NSMakePoint(0,0), OSX::NSMakePoint(rect.size.width, 0)
@@ -63,7 +68,7 @@ class OSX::SABar < OSX::NSView
       end
       
       items.clear
-      @buttonX = LEFT_MARGIN
+      @buttonX = MARGIN
       
       # remove overflow button
       if @overflowButton
@@ -313,6 +318,12 @@ end
 
 class OSX::SABookmarkBar < OSX::SABar
   
+  def resizeSubviewsWithOldSize(oldBoundsSize)
+    @buttonPositions = []
+    super
+    self.resetTrackingRects
+  end
+
   def setReorderedItemsDelegate_withSelector(delegate, selector)
     @reorderedItemsDelegate_withSelector = [delegate, selector]
   end
@@ -353,6 +364,20 @@ class OSX::SABookmarkBar < OSX::SABar
   def trackingRectTagForButton(for_button)
     @trackingRects.each do |tag, button|
       return tag if button == for_button
+    end
+  end
+  
+  def resetTrackingRects
+    # unregister all tracking rects
+    @trackingRects.each {|tag, button| self.removeTrackingRect(tag) }
+    # setup the new tracking rects hash
+    @trackingRects = {}
+    @segments.each do |items|
+      items.each do |item|
+        unless item.is_a? OSX::NSMenuItem
+          self.addTrackingRectForButton(item)
+        end
+      end
     end
   end
   
@@ -438,6 +463,7 @@ class OSX::SABookmarkBar < OSX::SABar
     self.needsDisplay = true
     
     unless @dragging_button_index == @dragging_button_original_index
+      @originalArray = @originalArray.move(@dragging_button_original_index, @dragging_button_index)
       # callback
       delegate, selector = @reorderedItemsDelegate_withSelector
       delegate.send(selector.to_sym, button, @dragging_button_original_index, @dragging_button_index)
@@ -446,17 +472,7 @@ class OSX::SABookmarkBar < OSX::SABar
     # reset the states
     @dragging_button_index = @dragging_button_original_index = @new_x_for_dragging_button = @next_x_for_move_trigger = @prev_x_for_move_trigger = nil
     
-    # unregister all tracking rects
-    @trackingRects.each {|tag, button| self.removeTrackingRect(tag) }
-    # setup the new tracking rects hash
-    @trackingRects = {}
-    @segments.each do |items|
-      items.each do |item|
-        unless item.is_a? OSX::NSMenuItem
-          self.addTrackingRectForButton(item)
-        end
-      end
-    end
+    self.resetTrackingRects
   end
   
 end
@@ -465,6 +481,11 @@ class Array
   def switch(idx1, idx2)
     self_dup = self.dup
     self_dup[idx1], self_dup[idx2] = self_dup.values_at(idx2, idx1)
+    return self_dup
+  end
+  def move(from, to)
+    self_dup = self.dup
+    self_dup = self_dup.insert(to, self_dup.delete_at(from))
     return self_dup
   end
 end
