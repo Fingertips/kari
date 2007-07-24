@@ -16,7 +16,9 @@ class OSX::SAButtonCell < OSX::NSButtonCell
       aGradient = self.controlView.superview.backgroundGradient
       aGradient.fillRect_angle(cellFrame, 270)
       
-      attributes = { OSX::NSForegroundColorAttributeName => OSX::NSColor.blackColor, OSX::NSFontAttributeName => OSX::NSFont.systemFontOfSize(12) }
+      attributes = { OSX::NSForegroundColorAttributeName => (self.controlView.superview.window.isKeyWindow ? OSX::NSColor.textColor : OSX::NSColor.disabledControlTextColor),
+                     OSX::NSFontAttributeName => OSX::NSFont.systemFontOfSize(12) }
+      
       title = OSX::NSAttributedString.alloc.initWithString_attributes(self.title, attributes)
       rect = OSX::NSMakeRect(cellFrame.origin.x + 8, cellFrame.origin.y - 1, cellFrame.size.width, cellFrame.size.height)
       self.drawTitle_withFrame_inView(title, rect, controlView)
