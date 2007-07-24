@@ -37,7 +37,22 @@ class OSX::SABar < OSX::NSView
       @topColor, @bottomColor = '', ''
       self.setBlueBackground
       
+      OSX::NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, :windowChangedKey, OSX::NSWindowDidResignKeyNotification, nil)
+      OSX::NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, :windowChangedKey, OSX::NSWindowDidBecomeKeyNotification, nil)
+      
       return self
+    end
+  end
+  
+  def windowChangedKey(aNotification)
+    self.needsDisplay = true
+  end
+
+  def backgroundGradient
+    if self.window.isKeyWindow
+      OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.unifiedDarkGradient ) )
+    else
+      OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.unifiedSelectedGradient ) )
     end
   end
   
@@ -47,11 +62,9 @@ class OSX::SABar < OSX::NSView
     rect_copy = rect.dup
     rect_copy.size.height = self.frame.height
     
-    topColorCopy, bottomColorCopy = self.topColor, self.bottomColor
-    if topColorCopy and bottomColorCopy
-      aGradient = OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.gradientWithBeginningColor_endingColor(topColorCopy, bottomColorCopy) ) )
-      aGradient.fillRect_angle(rect_copy, 90)
-    end
+    aGradient = self.backgroundGradient
+    aGradient.fillRect_angle(rect_copy, 90)
+    
     OSX::NSColor.blackColor.set
     OSX::NSBezierPath.strokeLineFromPoint_toPoint OSX::NSMakePoint(0,0), OSX::NSMakePoint(rect.size.width, 0)
   end

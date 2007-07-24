@@ -13,11 +13,8 @@ class OSX::SAButtonCell < OSX::NSButtonCell
     if self.state == OSX::NSOnState
       super_drawInteriorWithFrame_inView(cellFrame, controlView)
     else
-      topColor = self.controlView.superview.topColor
-      bottomColor = self.controlView.superview.bottomColor
-      
-      aGradient = OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.gradientWithBeginningColor_endingColor(bottomColor, topColor) ) )
-      aGradient.fillRect_angle(cellFrame, 90)
+      aGradient = self.controlView.superview.backgroundGradient
+      aGradient.fillRect_angle(cellFrame, 270)
       
       attributes = { OSX::NSForegroundColorAttributeName => OSX::NSColor.blackColor, OSX::NSFontAttributeName => OSX::NSFont.systemFontOfSize(12) }
       title = OSX::NSAttributedString.alloc.initWithString_attributes(self.title, attributes)
