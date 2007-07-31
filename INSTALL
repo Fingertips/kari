@@ -1,0 +1,27 @@
+== RubyCocoa
+
+During development I run the RubyCocoa edge code.
+
+Get it:
+$ svn co https://rubycocoa.svn.sourceforge.net/svnroot/rubycocoa/trunk/src rubycocoa
+
+Build it:
+$ cd rubycocoa
+$ ruby install.rb config
+$ ruby install.rb setup
+
+Test it (thread tests will fail! it needs a patched libruby):
+$ ruby install.rb test
+
+Install it:
+$ sudo ruby install.rb install
+
+== Kari.app
+
+Adjust CampKari.rb to your env. E.g. if you use a macports ruby:
+  @camp_kari.launchPath = '/opt/local/bin/camping'
+  ...
+  @camp_kari.environment = { 'PATH' => '/opt/local/bin', 'HOME' => ENV['HOME'] }
+
+Build/Run it:
+$ rake run
