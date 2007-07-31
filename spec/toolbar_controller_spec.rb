@@ -15,11 +15,11 @@ describe ToolbarController do
     window_mock = mock("Main Window")
     window_mock.should_receive(:toolbar=).with @toolbar_controller.instance_variable_get(:@toolbar)
     
-    toolbar_button_mock = mock("Toolbar Button")
-    toolbar_button_mock.should_receive(:removeFromSuperview)
-    border_view_mock = mock("_BorderView")
-    border_view_mock.should_receive(:toolbarButton).and_return(toolbar_button_mock)
-    window_mock.should_receive(:_borderView).and_return(border_view_mock)
+    #toolbar_button_mock = mock("Toolbar Button")
+    #toolbar_button_mock.should_receive(:removeFromSuperview)
+    #border_view_mock = mock("_BorderView")
+    #border_view_mock.should_receive(:toolbarButton).and_return(toolbar_button_mock)
+    #window_mock.should_receive(:_borderView).and_return(border_view_mock)
     
     @toolbar_controller.instance_variable_set(:@window, window_mock)
     @toolbar_controller.awakeFromNib
