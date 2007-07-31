@@ -27,18 +27,22 @@ class AppController < OSX::NSObject
   def awakeFromNib
     # just some temp items
     labels = ['String', 'String', 'Symbol', 'Proc', 'Numeric', 'Hash', 'ActiveRecord', 'ActiveSupport', 'ActionPack']
-    @bookmarkBar.addItemsWithTitles_withSelector_withSender(labels, 'selectedBookmark', self)
+    bookmarks = []
+    labels.each_with_index do |label, idx|
+      bookmarks.push OSX::SABookmark.alloc.initWithHash({:id => idx, :title => label, :url => "http://127.0.0.1:3301/?q=#{label}", :order_index => idx})
+    end
+    
+    @bookmarkBar.addBookmarks_withSelector_withSender(bookmarks, 'selectedBookmark', self)
     @bookmarkBar.setReorderedItemsDelegate_withSelector(self, 'reorderedBookmark')
-    @bookmarkBar.setGrayBackground
     
     @webview_controller = WebViewController.new(@webView)
     #sleep 5 # FIXME: ugly, but just for now
-    #@webview_controller.load_url "http://127.0.0.1:3301"
+    @webview_controller.load_url "http://127.0.0.1:3301"
   end
   
   def selectedBookmark
-    puts "selected: #{@bookmarkBar.getSelectedTitleInSegment(0)}"
-    @webview_controller.load_url "http://127.0.0.1:3301/?q=#{@bookmarkBar.getSelectedTitleInSegment(0)}"
+    #puts "selected: #{@bookmarkBar.getSelectedTitleInSegment(0)}"
+    #@webview_controller.load_url "http://127.0.0.1:3301/?q=#{@bookmarkBar.getSelectedTitleInSegment(0)}"
   end
   
   def reorderedBookmark(button, from_idx, to_idx)

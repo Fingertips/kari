@@ -8,8 +8,8 @@
 
 require "osx/cocoa"
 
-require "#{File.dirname(File.expand_path(__FILE__))}/lib/SAFilterBar"
-require "#{File.dirname(File.expand_path(__FILE__))}/lib/SAFilterButton"
-require "#{File.dirname(File.expand_path(__FILE__))}/lib/SAFilterButtonCell"
-require "#{File.dirname(File.expand_path(__FILE__))}/lib/SAFilterButtonPreTigerCell"
+require "#{File.dirname(File.expand_path(__FILE__))}/lib/SABookmarkBar"
+require "#{File.dirname(File.expand_path(__FILE__))}/lib/SABookmarkButton"
+require "#{File.dirname(File.expand_path(__FILE__))}/lib/SABookmarkButtonCell"
+require "#{File.dirname(File.expand_path(__FILE__))}/lib/SABookmarkButtonPreTigerCell"
 require "#{File.dirname(File.expand_path(__FILE__))}/lib/SAOverflowButton"

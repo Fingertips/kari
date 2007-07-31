@@ -37,7 +37,12 @@ describe AppController do
     @app_controller.instance_variable_get(:@camp_kari).should_not be_running
   end
   
-  it "should open the index page on awakeFromNib" do
+  it "should setup the bookmark bar and open the index page on awakeFromNib" do
+    bookmarkBar_mock = mock("BookmarkBar")
+    bookmarkBar_mock.should_receive(:addBookmarks_withSelector_withSender)
+    bookmarkBar_mock.should_receive(:setReorderedItemsDelegate_withSelector)
+    @app_controller.instance_variable_set(:@bookmarkBar, bookmarkBar_mock)
+    
     webview_controller_mock = mock("WebViewController")
     WebViewController.stub!(:new).and_return(webview_controller_mock)
     webview_controller_mock.should_receive(:load_url).with("http://127.0.0.1:3301")

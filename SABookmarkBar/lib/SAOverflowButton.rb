@@ -8,9 +8,11 @@
 require 'osx/cocoa'
 
 class OSX::SAOverflowButton < OSX::NSButton
+  IMAGE_DIR = File.join(File.dirname(File.expand_path(__FILE__)), '..', 'images')
+  
   def init
     if super_init
-      self.image = OSX::NSImage.imageNamed("OverflowButton.tif")
+      self.image = OSX::NSImage.alloc.initWithContentsOfFile(File.join(IMAGE_DIR, "OverflowButton.tif"))
       self.bordered = false
       self.sizeToFit
       return self
@@ -28,13 +30,13 @@ class OSX::SAOverflowButton < OSX::NSButton
 
   def mouseDown(theEvent)
     self.highlight false
-    self.image = OSX::NSImage.imageNamed("OverflowButtonPressed.tif")
+    self.image = OSX::NSImage.alloc.initWithContentsOfFile(File.join(IMAGE_DIR, "OverflowButtonPressed.tif"))
     timer = OSX::NSTimer.timerWithTimeInterval_target_selector_userInfo_repeats(0.0, self, 'displayMenu:', theEvent, false)
     OSX::NSRunLoop.currentRunLoop.addTimer_forMode(timer, "NSDefaultRunLoopMode")
   end
   
   def mouseUp(theEvent)
     self.highlight false
-    self.image = OSX::NSImage.imageNamed("OverflowButton.tif")
+    self.image = OSX::NSImage.alloc.initWithContentsOfFile(File.join(IMAGE_DIR, "OverflowButton.tif"))
   end
 end

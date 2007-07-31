@@ -18,6 +18,7 @@
 		5139BE220C3A7DC300162D10 /* Home.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE1C0C3A7DC300162D10 /* Home.tif */; };
 		5139BE230C3A7DC300162D10 /* HomeDisabled.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE1D0C3A7DC300162D10 /* HomeDisabled.tif */; };
 		5139BE240C3A7DC300162D10 /* HomePressed.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE1E0C3A7DC300162D10 /* HomePressed.tif */; };
+		514920780C5F8F5800ACE936 /* SABookmarkBar in Resources */ = {isa = PBXBuildFile; fileRef = 514920680C5F8F5800ACE936 /* SABookmarkBar */; };
 		519D9AC80C38F02D00CAC573 /* AppController.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9AC70C38F02D00CAC573 /* AppController.rb */; };
 		519D9ACE0C38F7B300CAC573 /* CampKari.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9ACD0C38F7B300CAC573 /* CampKari.rb */; };
 		519D9ADD0C39183100CAC573 /* WebViewController.rb in Resources */ = {isa = PBXBuildFile; fileRef = 519D9ADC0C39183100CAC573 /* WebViewController.rb */; };
@@ -37,15 +38,6 @@
 		51B008520C38EB90009130E3 /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B008510C38EB90009130E3 /* RubyCocoa.framework */; };
 		51C6A5F90C3E3A4D00E458BA /* CTGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 51C6A5F70C3E3A4D00E458BA /* CTGradient.h */; };
 		51C6A5FA0C3E3A4D00E458BA /* CTGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C6A5F80C3E3A4D00E458BA /* CTGradient.m */; };
-		51C6A6000C3E3A5B00E458BA /* SAFilterBar.rb in Resources */ = {isa = PBXBuildFile; fileRef = 51C6A5FB0C3E3A5B00E458BA /* SAFilterBar.rb */; };
-		51C6A6010C3E3A5B00E458BA /* SAFilterButton.rb in Resources */ = {isa = PBXBuildFile; fileRef = 51C6A5FC0C3E3A5B00E458BA /* SAFilterButton.rb */; };
-		51C6A6020C3E3A5B00E458BA /* SAFilterButtonCell.rb in Resources */ = {isa = PBXBuildFile; fileRef = 51C6A5FD0C3E3A5B00E458BA /* SAFilterButtonCell.rb */; };
-		51C6A6030C3E3A5B00E458BA /* SAFilterButtonPreTigerCell.rb in Resources */ = {isa = PBXBuildFile; fileRef = 51C6A5FE0C3E3A5B00E458BA /* SAFilterButtonPreTigerCell.rb */; };
-		51C6A6040C3E3A5B00E458BA /* SAOverflowButton.rb in Resources */ = {isa = PBXBuildFile; fileRef = 51C6A5FF0C3E3A5B00E458BA /* SAOverflowButton.rb */; };
-		51C6A6260C3E412000E458BA /* FilterBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 51C6A6220C3E412000E458BA /* FilterBarBackground.png */; };
-		51C6A6270C3E412000E458BA /* OverflowButton.tif in Resources */ = {isa = PBXBuildFile; fileRef = 51C6A6230C3E412000E458BA /* OverflowButton.tif */; };
-		51C6A6280C3E412000E458BA /* OverflowButtonPressed.tif in Resources */ = {isa = PBXBuildFile; fileRef = 51C6A6240C3E412000E458BA /* OverflowButtonPressed.tif */; };
-		51C6A6290C3E412000E458BA /* OverflowDivider.png in Resources */ = {isa = PBXBuildFile; fileRef = 51C6A6250C3E412000E458BA /* OverflowDivider.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +55,7 @@
 		5139BE1C0C3A7DC300162D10 /* Home.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Home.tif; sourceTree = "<group>"; };
 		5139BE1D0C3A7DC300162D10 /* HomeDisabled.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HomeDisabled.tif; sourceTree = "<group>"; };
 		5139BE1E0C3A7DC300162D10 /* HomePressed.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HomePressed.tif; sourceTree = "<group>"; };
+		514920680C5F8F5800ACE936 /* SABookmarkBar */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SABookmarkBar; sourceTree = "<group>"; };
 		519D9AC70C38F02D00CAC573 /* AppController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = AppController.rb; sourceTree = "<group>"; };
 		519D9ACD0C38F7B300CAC573 /* CampKari.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = CampKari.rb; sourceTree = "<group>"; };
 		519D9ADC0C39183100CAC573 /* WebViewController.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = WebViewController.rb; sourceTree = "<group>"; };
@@ -82,15 +75,6 @@
 		51B008510C38EB90009130E3 /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
 		51C6A5F70C3E3A4D00E458BA /* CTGradient.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CTGradient.h; path = CTGradient/CTGradient.h; sourceTree = "<group>"; };
 		51C6A5F80C3E3A4D00E458BA /* CTGradient.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = CTGradient.m; path = CTGradient/CTGradient.m; sourceTree = "<group>"; };
-		51C6A5FB0C3E3A5B00E458BA /* SAFilterBar.rb */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.ruby; name = SAFilterBar.rb; path = SAFilterBar/lib/SAFilterBar.rb; sourceTree = "<group>"; };
-		51C6A5FC0C3E3A5B00E458BA /* SAFilterButton.rb */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.ruby; name = SAFilterButton.rb; path = SAFilterBar/lib/SAFilterButton.rb; sourceTree = "<group>"; };
-		51C6A5FD0C3E3A5B00E458BA /* SAFilterButtonCell.rb */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.ruby; name = SAFilterButtonCell.rb; path = SAFilterBar/lib/SAFilterButtonCell.rb; sourceTree = "<group>"; };
-		51C6A5FE0C3E3A5B00E458BA /* SAFilterButtonPreTigerCell.rb */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.ruby; name = SAFilterButtonPreTigerCell.rb; path = SAFilterBar/lib/SAFilterButtonPreTigerCell.rb; sourceTree = "<group>"; };
-		51C6A5FF0C3E3A5B00E458BA /* SAOverflowButton.rb */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.ruby; name = SAOverflowButton.rb; path = SAFilterBar/lib/SAOverflowButton.rb; sourceTree = "<group>"; };
-		51C6A6220C3E412000E458BA /* FilterBarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FilterBarBackground.png; path = SAFilterBar/images/FilterBarBackground.png; sourceTree = "<group>"; };
-		51C6A6230C3E412000E458BA /* OverflowButton.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = OverflowButton.tif; path = SAFilterBar/images/OverflowButton.tif; sourceTree = "<group>"; };
-		51C6A6240C3E412000E458BA /* OverflowButtonPressed.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = OverflowButtonPressed.tif; path = SAFilterBar/images/OverflowButtonPressed.tif; sourceTree = "<group>"; };
-		51C6A6250C3E412000E458BA /* OverflowDivider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OverflowDivider.png; path = SAFilterBar/images/OverflowDivider.png; sourceTree = "<group>"; };
 		E8F5E25803AEB7C803A81C6F /* rb_main.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = rb_main.rb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,10 +128,6 @@
 				5139BE1B0C3A7DC300162D10 /* AddLinkPressed.tif */,
 				5139BE1C0C3A7DC300162D10 /* Home.tif */,
 				5139BE1D0C3A7DC300162D10 /* HomeDisabled.tif */,
-				51C6A6220C3E412000E458BA /* FilterBarBackground.png */,
-				51C6A6230C3E412000E458BA /* OverflowButton.tif */,
-				51C6A6240C3E412000E458BA /* OverflowButtonPressed.tif */,
-				51C6A6250C3E412000E458BA /* OverflowDivider.png */,
 				51C6A5F70C3E3A4D00E458BA /* CTGradient.h */,
 				51C6A5F80C3E3A4D00E458BA /* CTGradient.m */,
 				5139BE1E0C3A7DC300162D10 /* HomePressed.tif */,
@@ -179,12 +159,8 @@
 				519D9B050C393DE400CAC573 /* FontBigger.tif */,
 				519D9B060C393DE400CAC573 /* FontBiggerDisabled.tif */,
 				519D9B070C393DE400CAC573 /* FontBiggerPressed.tif */,
+				514920680C5F8F5800ACE936 /* SABookmarkBar */,
 				519D9B080C393DE400CAC573 /* FontSmaller.tif */,
-				51C6A5FB0C3E3A5B00E458BA /* SAFilterBar.rb */,
-				51C6A5FC0C3E3A5B00E458BA /* SAFilterButton.rb */,
-				51C6A5FD0C3E3A5B00E458BA /* SAFilterButtonCell.rb */,
-				51C6A5FE0C3E3A5B00E458BA /* SAFilterButtonPreTigerCell.rb */,
-				51C6A5FF0C3E3A5B00E458BA /* SAOverflowButton.rb */,
 				519D9B090C393DE400CAC573 /* FontSmallerDisabled.tif */,
 				519D9B0A0C393DE400CAC573 /* FontSmallerPressed.tif */,
 				519D9AF60C393B6900CAC573 /* BackPressed.tif */,
@@ -292,15 +268,7 @@
 				5139BE220C3A7DC300162D10 /* Home.tif in Resources */,
 				5139BE230C3A7DC300162D10 /* HomeDisabled.tif in Resources */,
 				5139BE240C3A7DC300162D10 /* HomePressed.tif in Resources */,
-				51C6A6000C3E3A5B00E458BA /* SAFilterBar.rb in Resources */,
-				51C6A6010C3E3A5B00E458BA /* SAFilterButton.rb in Resources */,
-				51C6A6020C3E3A5B00E458BA /* SAFilterButtonCell.rb in Resources */,
-				51C6A6030C3E3A5B00E458BA /* SAFilterButtonPreTigerCell.rb in Resources */,
-				51C6A6040C3E3A5B00E458BA /* SAOverflowButton.rb in Resources */,
-				51C6A6260C3E412000E458BA /* FilterBarBackground.png in Resources */,
-				51C6A6270C3E412000E458BA /* OverflowButton.tif in Resources */,
-				51C6A6280C3E412000E458BA /* OverflowButtonPressed.tif in Resources */,
-				51C6A6290C3E412000E458BA /* OverflowDivider.png in Resources */,
+				514920780C5F8F5800ACE936 /* SABookmarkBar in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
