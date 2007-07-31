@@ -1,20 +1,19 @@
 == RubyCocoa
 
-During development I run the RubyCocoa edge code.
+During development I run the RubyCocoa edge code (at least r1983).
 
 Get it:
 $ svn co https://rubycocoa.svn.sourceforge.net/svnroot/rubycocoa/trunk/src rubycocoa
 
-Build it:
+Build it (thread tests will fail! it needs a patched libruby):
 $ cd rubycocoa
-$ ruby install.rb config
-$ ruby install.rb setup
+$ rake build
 
-Test it (thread tests will fail! it needs a patched libruby):
-$ ruby install.rb test
+Optionally build Ruby-style Cocoa API reference (needs Hpricot & latest reference update (july 2007), Xcode.app -> Prefs -> Doc. -> Update):
+$ rake doc
 
 Install it:
-$ sudo ruby install.rb install
+$ sudo rake install
 
 == Kari.app
 
