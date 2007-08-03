@@ -15,6 +15,9 @@
 
 - Don't store the history for all the search results, this should be fixed once the backend gets worked on.
 
+- Quit the application when the main window is closed.
+- Should be able to disable the bookmark bar.
+
 Manfred:
 
 - Strip the libraries in lib/ to only contain stuff we actually need.

@@ -1,0 +1,28 @@
+html,
+body
+{
+  background-color: #fff;
+  color: #000;
+}
+body
+{
+  padding: .4em 50px;
+}
+h1
+{
+  font-weight: normal;
+  font-size: 1.6em;
+}
+h2
+{
+  font-weight: normal;
+  font-size: 1.4em;
+  color: #222;
+}
+
+h1.splash
+{
+  font-size: 250%;
+  text-align: center;
+  color: #ddd;
+}

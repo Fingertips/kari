@@ -9,6 +9,13 @@ module Kari
         render :index
       end
     end
+
+    class Files < R '/stylesheets/([^/]+)'
+      def get(path)
+        @headers['Content-Type'] = 'text/css'
+        File.read(File.expand_path(File.join(File.dirname(__FILE__), '..', 'resources', 'stylesheets', path)))
+      end
+    end
   end
 
   module Views
@@ -16,6 +23,7 @@ module Kari
       xhtml_transitional do
         head do
           title 'Kari · Search for Ruby documentation'
+          link :href => '/stylesheets/default.css', :rel => 'stylesheet', :type => 'text/css'
         end
         body do
           yield
@@ -24,25 +32,7 @@ module Kari
     end
 
     def index
-      h1 'Welcome to Kari, please enter your search'
-      _form
-    end
-
-    def result
-      h1 "Results for: #{@q}"
-      _form
-      self << @results
-    end
-
-    def _form
-      form :action => '/', :method => 'get' do
-        div do
-          label do
-            text 'Search:'
-            input :type => 'text', :name => 'q', :class => 'search', :value => '', :size => 60
-          end
-        end
-      end
+      h1.splash 'KARI'
     end
   end
 end
