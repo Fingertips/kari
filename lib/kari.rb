@@ -1,12 +1,38 @@
+$KCODE = 'u'
+
 require 'camping'
+require 'kari/search'
 
 Camping.goes :Kari
+I = Kari::Search::Index.new
 
 module Kari
   module Controllers
     class Index < R '/'
       def get
         render :index
+      end
+    end
+
+    class Search < R '/search'
+      def get
+        if input.q.blank?
+          render :index
+        else
+          @q = input.q
+          begin
+            @results = I.search @q
+            @results.gsub!('&lt;tt&gt;', '<tt>')
+            @results.gsub!('&lt;/tt&gt;', '</tt>')
+          rescue RiError => e
+            unless e.message.starts_with?('Nothing known about')
+              @results = "<pre>#{e.message}</pre>"
+            else
+              @results = nil
+            end
+          end
+          render :result
+        end
       end
     end
 
@@ -33,6 +59,14 @@ module Kari
 
     def index
       h1.splash 'KARI'
+    end
+
+    def result
+      unless results.blank?
+        self << results
+      else
+        h1.splash "Nothing found."
+      end
     end
   end
 end

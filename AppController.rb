@@ -29,7 +29,7 @@ class AppController < OSX::NSObject
     labels = ['String', 'String', 'Symbol', 'Proc', 'Numeric', 'Hash', 'ActiveRecord', 'ActiveSupport', 'ActionPack']
     bookmarks = []
     labels.each_with_index do |label, idx|
-      bookmarks.push OSX::SABookmark.alloc.initWithHash({:id => idx, :title => label, :url => "http://127.0.0.1:3301/?q=#{label}", :order_index => idx})
+      bookmarks.push OSX::SABookmark.alloc.initWithHash({:id => idx, :title => label, :url => "http://127.0.0.1:3301/search?q=#{label}", :order_index => idx})
     end
     
     @bookmarkBar.addBookmarks_withSelector_withSender(bookmarks, 'selectedBookmark', self)
