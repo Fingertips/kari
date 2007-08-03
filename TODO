@@ -14,3 +14,7 @@
 - Window title should be the title of the page (class name), but this is not yet implemented in html coming from the backend.
 
 - Don't store the history for all the search results, this should be fixed once the backend gets worked on.
+
+Manfred:
+
+- Strip the libraries in lib/ to only contain stuff we actually need.
