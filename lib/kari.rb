@@ -13,7 +13,7 @@ module Kari
 
   module Views
     def layout
-      xhtml_strict do
+      xhtml_transitional do
         head do
           title 'Kari · Search for Ruby documentation'
         end
