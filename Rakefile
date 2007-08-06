@@ -5,6 +5,7 @@ namespace :spec do
   end
 end
 
+
 namespace :build do
   task :all do
     `xcodebuild`
@@ -13,4 +14,10 @@ end
 
 task :run => :"build:all" do
   `build/Release/Kari.app/Contents/MacOS/Kari`
+end
+
+task :test do
+  Dir['test/**/test_*.rb'].each do |file|
+    ruby file
+  end
 end
