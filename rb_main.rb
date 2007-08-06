@@ -8,6 +8,7 @@
 
 require 'osx/cocoa'
 #$DEBUG = true
+$KARI_DEBUG = true
 
 require "SABookmarkBar/SABookmarkBar"
 

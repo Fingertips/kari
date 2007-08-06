@@ -10,12 +10,15 @@ require 'osx/cocoa'
 
 class CampKari
   def initialize
-    puts 'init camp kari'
-    libdir = File.expand_path('lib/', File.dirname(__FILE__))
+    libdir = $KARI_DEBUG ? File.expand_path('../../../../../lib/', File.dirname(__FILE__)) : File.expand_path('lib/', File.dirname(__FILE__))
+    puts "Backend libdir: #{libdir}" if $KARI_DEBUG
+    
     @camp_kari = OSX::NSTask.alloc.init
-    @camp_kari.launchPath = File.join(libdir, 'server.rb')
+    @camp_kari.launchPath = '/usr/bin/env'
+    @camp_kari.arguments = ['ruby', File.join(libdir, 'server.rb')]
     @camp_kari.currentDirectoryPath = libdir
     @camp_kari.environment = { 'PATH' => ENV['PATH'], 'HOME' => ENV['HOME'] }
+    #@camp_kari.environment = { 'PATH' => '/opt/local/bin', 'HOME' => ENV['HOME'] }
   end
   
   def launch
