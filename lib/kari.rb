@@ -38,7 +38,7 @@ module Kari
 
     class Files < R '/stylesheets/([^/]+)'
       def get(path)
-        @headers['Content-Type'] = 'text/css'
+        @headers['Content-Type'] = 'text/css; charset=utf-8'
         File.read(File.expand_path(File.join(File.dirname(__FILE__), '..', 'resources', 'stylesheets', path)))
       end
     end
