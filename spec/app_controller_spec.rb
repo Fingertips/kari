@@ -37,11 +37,10 @@ describe AppController do
     @app_controller.instance_variable_get(:@camp_kari).should_not be_running
   end
   
-  it "should setup the bookmark bar and open the index page on awakeFromNib" do
-    bookmarkBar_mock = mock("BookmarkBar")
-    bookmarkBar_mock.should_receive(:addBookmarks_withSelector_withSender)
-    bookmarkBar_mock.should_receive(:setReorderedItemsDelegate_withSelector)
-    @app_controller.instance_variable_set(:@bookmarkBar, bookmarkBar_mock)
+  it "should assign itself as the delegate for the bookmark controller open the index page on awakeFromNib" do
+    bookmark_controller_mock = mock("BookmarkController")
+    bookmark_controller_mock.should_receive(:delegate=).once.with(@app_controller)
+    @app_controller.instance_variable_set(:@bookmarkController, bookmark_controller_mock)
     
     webview_controller_mock = mock("WebViewController")
     WebViewController.stub!(:new).and_return(webview_controller_mock)

@@ -45,7 +45,7 @@ class OSX::SABookmarkButton < OSX::NSButton
       self.state = OSX::NSOnState if OSX::NSMouseInRect(self.convertPoint_fromView(theEvent.locationInWindow, nil), self.bounds, false)
     else
       # FIXME: Is there a better way to call a original set action?
-      self.superview.performActionForButton(self)
+      self.superview.bookmarkClicked(@bookmark)
     end
   end
   

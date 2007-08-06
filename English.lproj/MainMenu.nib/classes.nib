@@ -7,12 +7,18 @@
             OUTLETS = {
                 addBookmarkButton = id; 
                 backButton = id; 
-                bookmarkBar = id; 
+                bookmarkController = id; 
                 forwardButton = id; 
                 homeButton = id; 
                 searchProgressIndicator = id; 
                 webView = id; 
             }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = BookmarkController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {bookmarkBar = id; }; 
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 

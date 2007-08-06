@@ -32,6 +32,8 @@ class OSX::SABookmark < OSX::NSObject
 end
 
 class OSX::SABookmarkBar < OSX::NSView
+  attr_accessor :delegate, :bookmarks
+  
   MARGIN = 5
   SPACING = 2
   
@@ -65,6 +67,19 @@ class OSX::SABookmarkBar < OSX::NSView
     end
   end
   
+  def bookmarks=(bookmarks)
+    @bookmarks = bookmarks
+    sorted = @bookmarks.sort_by { |b| b.order_index }
+    sorted.each do |bookmark|
+      self.addBookmarkButton(bookmark)
+    end
+    # if @originalArray.nil?
+    #   @originalArray = bookmarks
+    #   # @originalSelector = selector
+    #   # @originalSender = sender
+    # end
+  end
+  
   def windowChangedKey(aNotification)
     self.needsDisplay = true
   end
@@ -95,9 +110,8 @@ class OSX::SABookmarkBar < OSX::NSView
     OSX::NSBezierPath.strokeLineFromPoint_toPoint OSX::NSMakePoint(0,0), OSX::NSMakePoint(rect.size.width, 0)
   end
   
-  def performActionForButton(button)
-    puts 'button clicked'
-    @originalSender.performSelector @originalSelector
+  def bookmarkClicked(bookmark)
+    @delegate.bookmarkClicked(bookmark)
   end
   
   def createOverflowMenu
@@ -118,23 +132,23 @@ class OSX::SABookmarkBar < OSX::NSView
     self.addSubview @overflowButton
   end
   
-  def addBookmarks_withSelector_withSender(bookmarks, selector, sender)
-    self._addBookmarks_withSelector_withSender(bookmarks, selector, sender)
-  end
-  
-  def _addBookmarks_withSelector_withSender(bookmarks, selector, sender)
-    sorted = bookmarks.sort_by { |b| b.order_index }
-    
-    sorted.each do |bookmark|
-      self.addBookmarkButton(bookmark)
-    end
-    
-    if @originalArray.nil?
-      @originalArray = bookmarks
-      @originalSelector = selector
-      @originalSender = sender
-    end
-  end
+  # def addBookmarks_withSelector_withSender(bookmarks, selector, sender)
+  #   self._addBookmarks_withSelector_withSender(bookmarks, selector, sender)
+  # end
+  # 
+  # def _addBookmarks_withSelector_withSender(bookmarks, selector, sender)
+  #   sorted = bookmarks.sort_by { |b| b.order_index }
+  #   
+  #   sorted.each do |bookmark|
+  #     self.addBookmarkButton(bookmark)
+  #   end
+  #   
+  #   if @originalArray.nil?
+  #     @originalArray = bookmarks
+  #     @originalSelector = selector
+  #     @originalSender = sender
+  #   end
+  # end
   
   def addBookmarkButton(bookmark)
     newButton = OSX::SABookmarkButton.alloc.initWithBookmark_target_OSVersion(bookmark, self, self.getOSVersion)
@@ -188,7 +202,7 @@ class OSX::SABookmarkBar < OSX::NSView
     # add new stuff
     @buttonX = MARGIN
     self.removeAllTrackingRects
-    self._addBookmarks_withSelector_withSender(@originalArray, @originalSelector, @originalSender) if @originalArray != nil
+    self.bookmarks = @bookmarks
   end
 
   def setReorderedItemsDelegate_withSelector(delegate, selector)
@@ -357,7 +371,7 @@ class OSX::SABookmarkBar < OSX::NSView
     self.needsDisplay = true
     
     unless @dragging_button_index == @dragging_button_original_index
-      @originalArray = @originalArray.move(@dragging_button_original_index, @dragging_button_index)
+      @bookmarks = @bookmarks.move(@dragging_button_original_index, @dragging_button_index)
       # callback
       delegate, selector = @reorderedItemsDelegate_withSelector
       delegate.send(selector.to_sym, button, @dragging_button_original_index, @dragging_button_index)
