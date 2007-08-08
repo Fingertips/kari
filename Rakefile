@@ -21,3 +21,7 @@ task :test do
     ruby file
   end
 end
+
+task :clean do
+  `rm ~/Library/Preferences/nl.fngtps.Kari.plist`
+end

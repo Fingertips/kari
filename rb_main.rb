@@ -10,7 +10,11 @@ require 'osx/cocoa'
 #$DEBUG = true
 $KARI_DEBUG = true
 
-require "SABookmarkBar/SABookmarkBar"
+if $KARI_DEBUG
+  require File.expand_path('../../../../../SABookmarkBar/SABookmarkBar', File.dirname(__FILE__))
+else
+  require "SABookmarkBar/SABookmarkBar"
+end
 
 def rb_main_init
   path = OSX::NSBundle.mainBundle.resourcePath.fileSystemRepresentation

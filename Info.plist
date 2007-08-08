@@ -21,7 +21,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.apple.rubycocoa.KariApp</string>
+	<string>nl.fngtps.Kari</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 </dict>

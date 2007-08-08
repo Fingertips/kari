@@ -47,7 +47,7 @@ class AppController < OSX::NSObject
   # BookmarController delegate methods
   
   def bookmarkClicked(bookmark)
-    puts "Bookmark clicked: #{bookmark.title}"
+    puts '', "Bookmark clicked: #{bookmark.title}", bookmark.url
     @webview_controller.load_url bookmark.url
   end
   

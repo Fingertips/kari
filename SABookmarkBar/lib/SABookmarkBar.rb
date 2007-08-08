@@ -25,7 +25,7 @@ class OSX::SABookmark < OSX::NSObject
   attr_accessor :id, :title, :url, :order_index
   def initWithHash(options)
     if self.init
-      @id, @title, @url, @order_index = options[:id], options[:title], options[:url], options[:order_index]
+      @id, @title, @url, @order_index = options[:id].to_i, options[:title].to_s, options[:url].to_s, options[:order_index].to_i
       return self
     end
   end
