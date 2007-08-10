@@ -24,5 +24,15 @@ h1.splash
 {
   font-size: 250%;
   text-align: center;
+}
+h1.splash,
+p.missing
+{
   color: #ddd;
+}
+
+p.signature
+{
+  font-size: 90%;
+  color: #222;
 }

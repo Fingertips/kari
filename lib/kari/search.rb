@@ -41,22 +41,31 @@ module Kari
         namespaces = found if found.size == 1
 
         if descriptor.method_name.nil? # We've found classes
-          render_classes(namespaces)
+          classes_from(namespaces)
         else # We've found methods
           methods = @reader.find_methods(descriptor.method_name, descriptor.is_class_method, namespaces)
-          render_methods(methods, descriptor.method_name)
+          methods_from(methods, descriptor.method_name)
         end
       end
 
-      def render_classes(classes)
-        classes.to_s
+      def classes_from(classes)
+        if classes.length == 1
+          [:class, @reader.get_class(classes.first)]
+        else
+          [:classes, classes]
+        end
       end
 
-      def render_methods(methods, method_name)
+      def methods_from(methods, method_name)
         if methods.length == 1
-          method = @reader.get_method(methods.first)
+          [:method, @reader.get_method(methods.first)]
         else
           entries = methods.find_all { |m| m.name == method_name }
+          if entries.length == 1
+            [:method, @reader.get_method(entries.first)]
+          else
+            [:methods, methods]
+          end
         end
       end
 
@@ -67,5 +76,3 @@ module Kari
     end
   end
 end
-
-puts Kari::Search::Index.search('link_to')
