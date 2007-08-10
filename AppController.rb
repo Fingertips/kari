@@ -33,7 +33,7 @@ class AppController < OSX::NSObject
   
   def search(search_field)
     @searchProgressIndicator.startAnimation(nil)
-    @webview_controller.load_url "http://127.0.0.1:3301/?q=#{search_field.stringValue.to_s}"
+    @webview_controller.load_url "http://127.0.0.1:3301/search?q=#{search_field.stringValue.to_s}"
   end
   
   def home(button)
