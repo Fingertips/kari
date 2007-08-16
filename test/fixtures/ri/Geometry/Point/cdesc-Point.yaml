@@ -1,0 +1,25 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: x
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: y
+  rw: RW
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Point describes a point in a two dimensional space.
+constants: []
+
+full_name: Geometry::Point
+includes: []
+
+instance_methods: []
+
+name: Point
+superclass: Object
