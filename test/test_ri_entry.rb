@@ -1,8 +1,8 @@
 require File.join(File.dirname(__FILE__), 'helpers')
-require 'kari/ri/match'
+require 'kari/ri/entry'
 require 'kari/ri/index'
 
-class TestRiMatch < Test::Unit::TestCase
+class TestRiEntry < Test::Unit::TestCase
   include Kari::RI
 
   def setup
@@ -11,9 +11,9 @@ class TestRiMatch < Test::Unit::TestCase
   end
 
   def test_method_missing_should_allow_access_to_definition
-    match = Match.new(@index.get("Geometry::Point"), @index)
-    assert_equal "Point", match.name
-    assert match.comment
+    entry = Entry.new(@index.get("Geometry::Point"), @index)
+    assert_equal "Point", entry.name
+    assert entry.comment
   end
 
   def test_should_return_path
@@ -23,16 +23,16 @@ class TestRiMatch < Test::Unit::TestCase
       "Geometry::Square::rotate" => "Geometry::Square",
       "Geometry" => ""
     }.each do |full_name, expected|
-      assert_equal expected, Match.new({:full_name => full_name}, nil).path
+      assert_equal expected, Entry.new({:full_name => full_name}, nil).path
     end
   end
 
   %w(instance_methods class_methods).each do |t|
     define_method "test_should_return_#{t}" do
       interest = "Geometry::Square"
-      match = Match.new(@index.get(interest), @index)
-      match.send(t).each do |method|
-        assert method.is_a?(Match)
+      entry = Entry.new(@index.get(interest), @index)
+      entry.send(t).each do |method|
+        assert method.is_a?(Entry)
         assert method.full_name.starts_with?(interest)
       end
     end
