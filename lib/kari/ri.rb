@@ -9,7 +9,8 @@ module Kari #:nodoc:
     # Searches for matching entries in the RI database, returns those matches as Entry objects.
     def search(term)
       index = Index.load
-      index.find(term).map { |entry| Entry.new(entry, index) }
+      matches = index.find(term).map { |entry| Entry.new(entry, index) }
+      matches.sort_by { |match| [match.name.length, match.name] }
     end
     module_function :search
   end
