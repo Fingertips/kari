@@ -88,4 +88,16 @@ class TestRiIndex < Test::Unit::TestCase
     results = index.find('')
     assert_equal 0, results.length
   end
+
+  def test_should_get_index_for_full_name
+    index = Index.new; index.read_from(File.join(@fixture_path, 'index.marshal'))
+    
+    %w(Geometry::Defaults Geometry::Point::new Geometry::Square#rotate).each do |full_name|
+      entry = index.get(full_name)
+      assert_equal full_name, entry[:full_name]
+    end
+    assert_nil index.get("unknown")
+    assert_nil index.get("")
+    assert_nil index.get(nil)
+  end
 end

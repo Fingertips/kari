@@ -1,5 +1,6 @@
 require 'yaml'
 require 'logger'
+require 'fileutils'
 require 'rdoc/ri/ri_paths'
 require 'rdoc/ri/ri_descriptions'
 require 'rdoc/markup/simple_markup/to_flow'
@@ -51,6 +52,14 @@ module Kari #:nodoc:
       end
       alias_method :[], :find
 
+      # Returns the record for the specified full_name
+      def get(full_name)
+        # TODO: optimize all the splitting? methods can contain multibyte characters?
+        @data[full_name.split('::').last.split('#').last].find { |record| record[:full_name] == full_name }
+      rescue IndexError, NoMethodError
+        nil
+      end
+
       # Convert a query to a regular expression
       def prepare_query(query)
         return query if query.is_a?(Regexp)
@@ -67,6 +76,12 @@ module Kari #:nodoc:
       end
 
       class << self
+        # Creates a new index instance and loads the index from the users' homedir.
+        def load
+          index = new
+          index.read_from default_path
+          index
+        end
 
         # Builds the index for a specifix RI path and returns the resulting data
         def build_for(path)
@@ -102,10 +117,19 @@ module Kari #:nodoc:
         # from, by default an index for all the RI files will be built.
         def build(options={})
           options[:paths] ||= ::RI::Paths.path(true, true, true, true)
-          options[:output_file] ||= File.expand_path(File.join(ENV["HOME"], '.kari', 'index.marshal'))
+          options[:output_file] ||= default_path
+
           index = new
           index.build options[:paths]
+
+          directory = File.dirname(options[:output_file])
+          FileUtils.mkdir_p(directory) unless File.exist?(directory)
           index.write_to options[:output_file]
+        end
+
+        # Returns the default storage path for the index
+        def default_path
+          File.expand_path(File.join(ENV["HOME"], '.kari', 'index.marshal'))
         end
       end
     end
