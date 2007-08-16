@@ -1,4 +1,5 @@
 require 'yaml'
+require 'logger'
 require 'rdoc/ri/ri_paths'
 require 'rdoc/ri/ri_descriptions'
 require 'rdoc/markup/simple_markup/to_flow'
@@ -31,14 +32,31 @@ module Kari #:nodoc:
         @data = Marshal.load(File.read(filename))
       end
 
-      # Builds the index and returns the resulting data
-      def build
-        require 'logger'
-        paths = ::RI::Paths.path(true, true, true, true)
+      # Builds the index for the specified list of paths.
+      def build(paths)
         @data = paths.inject({}) do |index, path|
           logger.debug "Building index for #{path}"
           index.merge self.class.build_for(path)
         end
+      end
+
+      # Find results for a query in the index
+      def find(query)
+        return [] if query.nil? or query == ''
+        query = prepare_query(query)
+        @data.inject([]) do |matches, (key, records)|
+          matches += records if key =~ query
+          matches
+        end
+      end
+      alias_method :[], :find
+
+      # Convert a query to a regular expression
+      def prepare_query(query)
+        return query if query.is_a?(Regexp)
+        Regexp.new(query.split.map do |term|
+          Regexp.quote(term)
+        end.join('|'), Regexp::IGNORECASE, 'u')
       end
 
       private
@@ -58,10 +76,20 @@ module Kari #:nodoc:
             current_file = File.join(path, filename)
             if filename =~ /^cdesc-.*.yaml$|(c|i).yaml$/
               definition = YAML::load_file(current_file)
-              index[definition.full_name] = current_file
+              index[definition.name] ||= []
+              index[definition.name] << {
+                :full_name => definition.full_name,
+                :definition_file => current_file
+              }
             else
               if File.directory?(current_file)
-                index.merge! build_for(current_file)
+                build_for(current_file).each do |key, value|
+                  if index.has_key?(key)
+                    index[key] += value
+                  else
+                    index[key] = value
+                  end
+                end
               else
                 logger.debug "Don't know how to build index for: #{current_file}"
               end
@@ -70,11 +98,14 @@ module Kari #:nodoc:
           index
         end
 
-        # Builds the index and writes it to the standard location
-        def build
+        # Builds the index and writes it to the standard location. You can specify a list of paths to build the index
+        # from, by default an index for all the RI files will be built.
+        def build(options={})
+          options[:paths] ||= ::RI::Paths.path(true, true, true, true)
+          options[:output_file] ||= File.expand_path('index.marshal', File.dirname(__FILE__))
           index = new
-          index.build
-          index.write_to(File.expand_path(File.dirname(__FILE__), 'index.marshal'))
+          index.build options[:paths]
+          index.write_to options[:output_file]
         end
       end
     end

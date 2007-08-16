@@ -33,4 +33,11 @@ module Geometry
       @width, @height = @height, @width
     end
   end
+
+  # Defaults for the various parameters
+  module Defaults
+    ORIGIN = Point.new(0, 0)
+    X = 0
+    Y = 0
+  end
 end
