@@ -3,16 +3,6 @@ require 'rdoc/ri/ri_paths'
 require 'rdoc/ri/ri_reader'
 require 'rdoc/ri/ri_cache'
 
-module RI
-  class KariFormatter
-    def display_header(text, level, ident)
-      level = 4 if level > 4
-      tag("h#{level}") { "Pew pew: #{text}" }
-      puts
-    end
-  end
-end
-
 module Kari
   module Search
     class NotFound < Exception; end
