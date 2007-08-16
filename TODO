@@ -23,4 +23,5 @@
 
 Manfred:
 
+- Add proper documentation to the kari/**/* files.
 - Strip the libraries in lib/ to only contain stuff we actually need.

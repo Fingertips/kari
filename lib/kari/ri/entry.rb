@@ -37,7 +37,7 @@ module Kari #:nodoc:
           Entry.new(@index.get("#{full_name}##{method.name}"), @index)
         end
       end
-      
+
       # Returns as array of Entry instances describing the included modules
       def includes
         definition.includes.map do |inc|
