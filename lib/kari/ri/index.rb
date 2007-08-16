@@ -102,7 +102,7 @@ module Kari #:nodoc:
         # from, by default an index for all the RI files will be built.
         def build(options={})
           options[:paths] ||= ::RI::Paths.path(true, true, true, true)
-          options[:output_file] ||= File.expand_path('index.marshal', File.dirname(__FILE__))
+          options[:output_file] ||= File.expand_path(File.join(ENV["HOME"], '.kari', 'index.marshal'))
           index = new
           index.build options[:paths]
           index.write_to options[:output_file]
