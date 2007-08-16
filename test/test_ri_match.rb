@@ -1,15 +1,8 @@
-$:.unshift(File.expand_path('../lib', File.dirname(__FILE__)))
-
-require 'rubygems' rescue LoadError
-
-require 'test/unit'
-require 'mocha'
-
+require File.join(File.dirname(__FILE__), 'helpers')
 require 'kari/ri/match'
 require 'kari/ri/index'
-require 'active_support'
 
-class TestRiIndex < Test::Unit::TestCase
+class TestRiMatch < Test::Unit::TestCase
   include Kari::RI
 
   def setup
