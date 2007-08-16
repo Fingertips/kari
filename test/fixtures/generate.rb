@@ -33,8 +33,8 @@ module Kari
 end
 
 if __FILE__ == $0
-  #puts "Generating RI fixtures"
-  #Kari::RI::Generator.generate_ri_fixtures
+  puts "Generating RI fixtures"
+  Kari::RI::Generator.generate_ri_fixtures
   puts "Generating search index for the RI fixtures"
   Kari::RI::Generator.generate_search_index
 end

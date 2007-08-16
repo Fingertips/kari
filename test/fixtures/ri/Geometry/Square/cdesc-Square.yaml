@@ -21,8 +21,9 @@ comment:
 constants: []
 
 full_name: Geometry::Square
-includes: []
-
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: Introspection
 instance_methods: 
 - !ruby/object:RI::MethodSummary 
   name: rotate

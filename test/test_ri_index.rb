@@ -95,4 +95,18 @@ class TestRiIndex < Test::Unit::TestCase
     assert_nil index.get("")
     assert_nil index.get(nil)
   end
+
+  def test_should_find_included_class_in_namespace
+    index = Index.new; index.read_from(File.join(@fixture_path, 'index.marshal'))
+    
+    {
+      ["Geometry::Point::ClassMethods", "Defaults"] => "Geometry::Defaults",
+      ["Geometry::Point", "Defaults"] => "Geometry::Defaults",
+      ["Geometry::Point", "Unknown"] => nil,
+      ["Unknown::Point::ClassMethods", "Defaults"] => nil,
+    }.each do |(namespace, needle), expected|
+      result = index.find_included_class(namespace, needle)
+      expected.nil? ? assert_nil(result) : assert_equal(expected, result[:full_name])
+    end
+  end
 end

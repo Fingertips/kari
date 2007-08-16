@@ -37,7 +37,13 @@ module Kari #:nodoc:
       def build(paths)
         @data = paths.inject({}) do |index, path|
           logger.debug "Building index for #{path}"
-          index.merge self.class.build_for(path)
+          self.class.build_for(path).each do |key, value|
+            if index.has_key?(key)
+              index[key] += value
+            else
+              index[key] = value
+            end
+          end; index
         end
       end
 
@@ -60,12 +66,14 @@ module Kari #:nodoc:
         nil
       end
 
-      # Convert a query to a regular expression
-      def prepare_query(query)
-        return query if query.is_a?(Regexp)
-        Regexp.new(query.split.map do |term|
-          Regexp.quote(term)
-        end.join('|'), Regexp::IGNORECASE, 'u')
+      # Search the 'needle' in the specified namespace, simulating the way Ruby finds include module.
+      def find_included_class(namespace, needle)
+        namespace = namespace.split('::')
+        (0..namespace.length-1).to_a.each do |index|
+          entry = get("#{namespace[0..-(index+1)].join('::')}::#{needle}")
+          return entry if entry
+        end
+        get(needle)
       end
 
       private
@@ -73,6 +81,14 @@ module Kari #:nodoc:
       # Returns a singleton logger instance for this class
       def logger
         @logger ||= Logger.new(STDOUT)
+      end
+
+      # Convert a query to a regular expression
+      def prepare_query(query)
+        return query if query.is_a?(Regexp)
+        Regexp.new(query.split.map do |term|
+          Regexp.quote(term)
+        end.join('|'), Regexp::IGNORECASE, 'u')
       end
 
       class << self
@@ -87,9 +103,9 @@ module Kari #:nodoc:
         def build_for(path)
           index = {}
           Dir.foreach(path) do |filename|
-            next if filename =~ /(^\.)|(.rid$)/
+            next if filename =~ /(^\.)|(\.rid$)/
             current_file = File.join(path, filename)
-            if filename =~ /^cdesc-.*.yaml$|(c|i).yaml$/
+            if filename =~ /^cdesc-.*\.yaml$|(c|i)\.yaml$/
               definition = YAML::load_file(current_file)
               index[definition.name] ||= []
               index[definition.name] << {

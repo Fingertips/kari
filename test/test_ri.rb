@@ -10,6 +10,7 @@ class TestRi < Test::Unit::TestCase
 
   def test_search
     matches = search('point')
-    p matches.first.definition
+    assert_equal 1, matches.length
+    assert matches.first.is_a?(Entry)
   end
 end

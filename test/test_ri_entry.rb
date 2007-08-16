@@ -27,7 +27,7 @@ class TestRiEntry < Test::Unit::TestCase
     end
   end
 
-  %w(instance_methods class_methods).each do |t|
+  %w(instance_methods class_methods includes).each do |t|
     define_method "test_should_return_#{t}" do
       interest = "Geometry::Square"
       entry = Entry.new(@index.get(interest), @index)

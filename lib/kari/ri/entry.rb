@@ -24,17 +24,26 @@ module Kari #:nodoc:
         @entry[:full_name].split('::')[0..-2].join('::')
       end
 
-      # Returns an array of Entry instances which represent the methods
+      # Returns an array of Entry instances describing the class methods
       def class_methods
         definition.class_methods.map do |method|
           Entry.new(@index.get("#{full_name}::#{method.name}"), @index)
         end
       end
 
+      # Returns an array of Entry instances describing the instance methods
       def instance_methods
         definition.instance_methods.map do |method|
           Entry.new(@index.get("#{full_name}##{method.name}"), @index)
         end
+      end
+      
+      # Returns as array of Entry instances describing the included modules
+      def includes
+        definition.includes.map do |inc|
+          entry = @index.find_included_class(path, inc.name)
+          entry ? Entry.new(entry, @index) : inc.name
+        end if definition.respond_to?(:includes)
       end
 
       # Allows us to call attributes on the definition directly through the Entry instance
