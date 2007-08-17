@@ -33,7 +33,8 @@ class TestRiEntry < Test::Unit::TestCase
       entry = Entry.new(@index.get(interest), @index)
       entry.send(t).each do |method|
         assert method.is_a?(Entry)
-        assert method.full_name.starts_with?(interest)
+        assert method.full_name.index("::")
+        assert_not_nil method.name
       end
     end
   end

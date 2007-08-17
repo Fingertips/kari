@@ -39,7 +39,7 @@ class TestRiIndex < Test::Unit::TestCase
   def test_should_build_a_usable_index
     index = Index.build_for(@ri_fixture_path)
     assert !index.empty?
-    assert_equal %w(Defaults Geometry Point Square new rotate), index.keys.sort
+    assert_equal %w(Defaults Geometry Introspection Point Square inspect new rotate), index.keys.sort
     assert_equal 1, index["Point"].length
     assert_equal 2, index["new"].length
     assert index["new"].first.has_key?(:full_name)
