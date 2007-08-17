@@ -18,8 +18,8 @@ module Kari
         if input.q.blank?
           render :index
         else
-          @q = input.q
-          @matches = Kari::RI.search @q
+          @query = input.q
+          @matches = Kari::RI.search @query
           if @matches.empty?
             @message = "Found nothing."
             render :error
@@ -63,7 +63,7 @@ module Kari
     end
 
     def overview
-      h1 "Found multiple entries"
+      h1 "#{matches.length} entries found for “#{query}”"
       ul do
         matches.each do |entry|
           li entry.full_name
@@ -72,16 +72,24 @@ module Kari
     end
 
     def entry
-      h1 match.name
-      hr
-      signature = match.is_singleton ? match.full_name + match.params : match.name + match.params
-      p.signature signature
-      unless match.comment.blank?
-        div.comment do
-          _flow(match.comment)
+      if match.class?
+        _class_entry(match)
+      else
+        h1 match.name
+        hr
+        signature = match.is_singleton ? match.full_name + match.params : match.name + match.params
+        p.signature signature
+        unless match.comment.blank?
+          div.comment do
+            _flow(match.comment)
+          end
         end
       end
       div match.definition.inspect
+    end
+
+    def _class_entry(klass)
+      h1 klass.full_name
     end
 
     def _flow(flow)

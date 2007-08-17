@@ -46,6 +46,11 @@ module Kari #:nodoc:
         end if definition.respond_to?(:includes)
       end
 
+      # Returns true when the entry is describing a class
+      def class?
+        definition.class.to_s =~ /Class/
+      end
+
       # Allows us to call attributes on the definition directly through the Entry instance
       def method_missing(m, *a, &b)
         definition.send(m, *a, &b)
