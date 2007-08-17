@@ -13,4 +13,11 @@ class TestRi < Test::Unit::TestCase
     assert_equal 1, matches.length
     assert matches.first.is_a?(Entry)
   end
+
+  def test_get
+    entry = get('Geometry::Square')
+    assert entry.class?
+    assert_not_nil entry.full_name
+    assert_not_nil entry.name
+  end
 end
