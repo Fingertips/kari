@@ -26,4 +26,4 @@
 - Add proper documentation to the kari/**/* files.
 - Strip the libraries in lib/ to only contain stuff we actually need.
 - Show all the comments for a class or method when a 'get' returns more than one object.
-- Improve performance more.
+- Benchmark and improve performance more.

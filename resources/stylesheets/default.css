@@ -43,6 +43,10 @@ p.missing
 {
   color: #ddd;
 }
+h1.splash a
+{
+  color: #ddd;
+}
 h2
 {
   font-weight: normal;

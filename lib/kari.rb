@@ -45,10 +45,34 @@ module Kari
       end
     end
 
-    class Files < R '/stylesheets/([^/]+)'
-      def get(path)
-        @headers['Content-Type'] = 'text/css; charset=utf-8'
-        File.read(File.expand_path(File.join(File.dirname(__FILE__), '..', 'resources', 'stylesheets', path)))
+    class Files < R '/(stylesheets|javascripts)/([^/]+)'
+      def get(sort, path)
+        @headers['Content-Type'] = "text/#{sort == 'stylesheets' ? 'css' : 'javascript'}; charset=utf-8"
+        File.read(File.expand_path(File.join(File.dirname(__FILE__), '..', 'resources', sort, path)))
+      end
+    end
+
+    class ServerError
+      def get(k, m, e)
+        r(500, Mab.new do
+          xhtml_transitional do
+            head do
+              title "Something went wrong"
+              script :src => R(Files, "javascripts", "error.js"), :type => "text/javascript"
+              link :href => R(Files, "stylesheets", "default.css"), :rel => "stylesheet", :type => "text/css"
+            end
+            body do
+              h1.splash do
+                a "Something went wrong.", :onclick => "Error.show();return false", :href => "#"
+              end
+              div.error! :style => 'display:none;' do
+                h2 "#{m} #{k}"
+                h3 "#{e.class} #{e.message}"
+                ul { e.backtrace.each { |bt| li(bt) } }
+              end
+            end
+          end
+        end.to_s)
       end
     end
   end
