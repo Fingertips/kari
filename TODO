@@ -20,7 +20,7 @@
 
 # MANFRED
 
-- Merge updated indices instead of adding it.
+- Index should also remove missing RI documentation on update.
 - Write JS to allow result selection with the arrow keys and enter to select a link.
 - Override CampingError for nicer error messages.
 - Add proper documentation to the kari/**/* files.

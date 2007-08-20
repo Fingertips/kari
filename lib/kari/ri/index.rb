@@ -40,6 +40,9 @@ module Kari #:nodoc:
         @data = paths.inject(@data) do |index, path|
           self.class.build_for(path, options).each do |key, value|
             if index.has_key?(key)
+              value.each do |new_entry|
+                index[key].delete_if { |entry| entry[:full_name] == new_entry[:full_name] }
+              end
               index[key] += value
             else
               index[key] = value
@@ -67,7 +70,7 @@ module Kari #:nodoc:
       end
 
       # Search the 'needle' in the specified namespace, simulating the way Ruby finds include module.
-      def find_included_class(namespace, needle)
+      def find_class_in_path(namespace, needle)
         namespace = namespace.split('::')
         (0..namespace.length-1).to_a.each do |index|
           entry = get("#{namespace[0..-(index+1)].join('::')}::#{needle}")
@@ -90,7 +93,7 @@ module Kari #:nodoc:
         # Creates a new index instance and loads the index from the users' homedir.
         def load
           index = new
-          index.read_from default_path
+          index.read_from default_index_path
           index
         end
 
@@ -143,14 +146,14 @@ module Kari #:nodoc:
         # * <tt>:from</tt>: Don't build and index for RI files older than :from, expects a Time instance
         def rebuild(options={})
           options[:paths] ||= ENV["KARI_RI_PATH"] ? [ENV["KARI_RI_PATH"]] : ::RI::Paths.path(true, true, true, true)
-          options[:output_file] ||= default_path
+          options[:output_file] ||= default_index_path
 
           index = new
 
           if File.exist?(options[:output_file])
             options[:from] ||= File.ctime(options[:output_file])
-            index.read_from default_path
-            $stderr.write ">> Read index from: #{default_path}\n"
+            index.read_from default_index_path
+            $stderr.write ">> Read index from: #{default_index_path}\n"
           end
 
           index.rebuild options.delete(:paths), options
@@ -162,7 +165,7 @@ module Kari #:nodoc:
         end
 
         # Returns the default storage path for the index
-        def default_path
+        def default_index_path
           File.expand_path(File.join(ENV["KARI_HOME"]||ENV["HOME"], '.kari', 'index.marshal'))
         end
       end

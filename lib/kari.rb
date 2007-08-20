@@ -108,7 +108,14 @@ module Kari
         else
           span match.name
         end
-        span.superclass " < #{klass.superclass}" unless klass.superclass.blank?
+        unless klass.superclass.blank?
+          span " < "
+          if klass.superclass.kind_of?(String) and 
+            span.superclass "#{klass.superclass}"
+          else
+            span.superclass { a klass.definition.superclass, :href => R(Show, klass.superclass.full_name) }
+          end
+        end
       end
       hr
       unless klass.comment.blank?

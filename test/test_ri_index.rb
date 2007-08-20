@@ -46,6 +46,13 @@ class TestRiIndex < Test::Unit::TestCase
     assert index["new"].first.has_key?(:definition_file)
   end
 
+  def test_should_merge_updated_index
+    index = Index.rebuild
+    assert_equal 1, index["Point"].length
+    index.rebuild([ENV["KARI_RI_PATH"]], :from => 10.years.ago)
+    assert_equal 1, index["Point"].length
+  end
+
   def test_should_write_to_marshalled_file
     index = Index.new
     filename = File.join(@tmpdir, 'index.marshal')
@@ -86,7 +93,7 @@ class TestRiIndex < Test::Unit::TestCase
 
   def test_should_get_index_for_full_name
     index = Index.load
-    
+
     %w(Geometry::Defaults Geometry::Point::new Geometry::Square#rotate).each do |full_name|
       entry = index.get(full_name)
       assert_equal full_name, entry[:full_name]
@@ -96,17 +103,32 @@ class TestRiIndex < Test::Unit::TestCase
     assert_nil index.get(nil)
   end
 
-  def test_should_find_included_class_in_namespace
+  def test_should_find_class_in_path_in_namespace
     index = Index.load
-    
+
     {
       ["Geometry::Point::ClassMethods", "Defaults"] => "Geometry::Defaults",
       ["Geometry::Point", "Defaults"] => "Geometry::Defaults",
       ["Geometry::Point", "Unknown"] => nil,
       ["Unknown::Point::ClassMethods", "Defaults"] => nil,
     }.each do |(namespace, needle), expected|
-      result = index.find_included_class(namespace, needle)
+      result = index.find_class_in_path(namespace, needle)
       expected.nil? ? assert_nil(result) : assert_equal(expected, result[:full_name])
+    end
+  end
+
+  def test_default_index_path
+    assert Index.default_index_path.starts_with?(File.expand_path(File.dirname(__FILE__)))
+  end
+
+  def test_prepare_query
+    index = Index.new
+    {
+      'point' => "point",
+      'my point' => "my|point",
+      'my / point' => "my|/|point"
+    }.each do |term, expected|
+      assert_equal(Regexp.new(expected, Regexp::IGNORECASE, 'u'), index.send(:prepare_query, term))
     end
   end
 end

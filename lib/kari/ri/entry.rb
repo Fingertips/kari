@@ -52,9 +52,17 @@ module Kari #:nodoc:
       # Returns as array of Entry instances describing the included modules
       def includes
         @includes ||= definition.includes.map do |inc|
-          entry = @index.find_included_class(path, inc.name)
+          entry = @index.find_class_in_path(path, inc.name)
           entry ? Entry.new(entry, @index) : inc.name
         end if definition.respond_to?(:includes)
+      end
+
+      # Returns an Entry for the superclass, returns a string with the name of the superclass if no entry could be
+      # found.
+      def superclass
+        entry = @index.find_class_in_path(path, definition.superclass)
+        entry ||= @index.get(definition.superclass)
+        entry ? Entry.new(entry, @index) : definition.superclass
       end
 
       # Returns true when the entry is describing a class
