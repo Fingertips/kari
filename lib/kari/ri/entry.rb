@@ -37,21 +37,21 @@ module Kari #:nodoc:
 
       # Returns an array of Entry instances describing the class methods
       def class_methods
-        definition.class_methods.map do |method|
+        @class_methods ||= definition.class_methods.map do |method|
           Entry.new(@index.get("#{full_name}::#{method.name}"), @index)
-        end
+        end if definition.respond_to?(:class_methods)
       end
 
       # Returns an array of Entry instances describing the instance methods
       def instance_methods
-        definition.instance_methods.map do |method|
+        @instance_methods ||= definition.instance_methods.map do |method|
           Entry.new(@index.get("#{full_name}##{method.name}"), @index)
-        end
+        end if definition.respond_to?(:instance_methods)
       end
 
       # Returns as array of Entry instances describing the included modules
       def includes
-        definition.includes.map do |inc|
+        @includes ||= definition.includes.map do |inc|
           entry = @index.find_included_class(path, inc.name)
           entry ? Entry.new(entry, @index) : inc.name
         end if definition.respond_to?(:includes)

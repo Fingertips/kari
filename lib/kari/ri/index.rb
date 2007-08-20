@@ -61,7 +61,6 @@ module Kari #:nodoc:
 
       # Returns the record for the specified full_name
       def get(full_name)
-        # TODO: optimize all the splitting? methods can contain multibyte characters?
         @data[full_name.split('::').last.split('#').last].find { |record| record[:full_name] == full_name }
       rescue IndexError, NoMethodError
         nil
