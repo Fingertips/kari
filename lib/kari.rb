@@ -192,7 +192,7 @@ module Kari
       h1 do
         unless method.path.blank?
           a method.path, :href => R(Show, method.path)
-          span "::#{method.name}"
+          span "#{method.separator}#{method.name}"
         else
           span method.full_name
         end
@@ -251,7 +251,7 @@ module Kari
         _flow_list(part)
       when SM::Flow::VERB
         pre do
-          self << part.body
+          self << part.body.split("\n").map { |l| l[2..-1] }.join("\n")
         end
       when SM::Flow::H
         self << "<h#{part.level}>#{part.text}</h#{part.level}>"

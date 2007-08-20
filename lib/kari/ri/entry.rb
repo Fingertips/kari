@@ -21,7 +21,18 @@ module Kari #:nodoc:
 
       # Returns the nesting path for the matched object
       def path
-        @entry[:full_name].split('::')[0..-2].join('::')
+        @entry[:full_name].split(/::|#|\./)[0..-2].join('::')
+      end
+
+      # Returns the separator use between the path and the name
+      def separator
+        if @entry[:full_name] =~ /#/
+          '#'
+        elsif @entry[:full_name] =~ /\./
+          '.'
+        else
+          '::'
+        end
       end
 
       # Returns an array of Entry instances describing the class methods

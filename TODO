@@ -20,10 +20,10 @@
 
 # MANFRED
 
-- Fix an issue with Entry#path and add Entry#separator. See http://localhost:3301/show/Enumerable%23find_all
 - Finish styling all the possible search results.
 - Write JS to allow result selection with the arrow keys and enter to select a link.
 - Override CampingError for nicer error messages.
 - Add proper documentation to the kari/**/* files.
 - Strip the libraries in lib/ to only contain stuff we actually need.
 - Improve performance.
+- Show all the comments for a class or method when a 'get' returns more than one object.
