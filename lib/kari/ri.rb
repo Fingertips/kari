@@ -19,7 +19,7 @@ module Kari #:nodoc:
     # <code>:full_name</code> and <code>:definition_file</code>.
     def quick_search(term)
       matches = INDEX.find(term)
-      matches.sort_by { |match| match[:full_name].split('::').last.split('#').last }
+      matches.sort_by { |match| match[:full_name].split('::').last.split('#').last.length }
     end
 
     # Returns the entry for the module, class or method with the specified name or nil if no match was found.
