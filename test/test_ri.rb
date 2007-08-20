@@ -9,9 +9,17 @@ class TestRi < Test::Unit::TestCase
   end
 
   def test_search
-    matches = search('point')
+    matches = search("point")
     assert_equal 1, matches.length
     assert matches.first.is_a?(Entry)
+    assert_equal "Geometry::Point", matches.first.full_name
+  end
+
+  def test_quick_search
+    matches = quick_search("point")
+    assert_equal 1, matches.length
+    assert matches.first.is_a?(Hash)
+    assert_equal "Geometry::Point", matches.first[:full_name]
   end
 
   def test_get

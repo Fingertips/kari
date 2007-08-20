@@ -46,4 +46,11 @@ class TestKari < Camping::FunctionalTest
     assert_match_body %r(body)
     assert_equal 'text/html', @response.headers['Content-Type']
   end
+
+  def test_should_404_on_unknown_uri
+    get '/unknown'
+    assert_response :not_found
+    assert_match_body %r(body)
+    assert_equal 'text/html', @response.headers['Content-Type']
+  end
 end

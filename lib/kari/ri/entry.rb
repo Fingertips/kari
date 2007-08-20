@@ -57,6 +57,13 @@ module Kari #:nodoc:
         end if definition.respond_to?(:includes)
       end
 
+      # Returns as array of Entry instances describing the included modules
+      def aliases
+        @aliases ||= definition.aliases.map do |method|
+          Entry.new(@index.get("#{path}##{method.name}"), @index)
+        end if definition.respond_to?(:aliases)
+      end
+
       # Returns an Entry for the superclass, returns a string with the name of the superclass if no entry could be
       # found.
       def superclass

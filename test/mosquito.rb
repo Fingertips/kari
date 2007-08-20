@@ -159,6 +159,8 @@ module Camping
         assert_equal 200, @response.status
       when :redirect
         assert_equal 302, @response.status
+      when :not_found
+        assert_equal 404, @response.status
       when :error
         assert @response.status >= 500
       else

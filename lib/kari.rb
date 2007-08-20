@@ -19,14 +19,14 @@ module Kari
           render :index
         else
           @query = input.q
-          @matches = Kari::RI.search @query
+          @matches = Kari::RI.quick_search @query
           if @matches.empty?
             @message = "Found nothing."
             render :error
           elsif @matches.length > 1
             render :overview
           else
-            @match = @matches.first
+            @match = Kari::RI.get(@matches.first[:full_name])
             render :entry
           end
         end
@@ -53,7 +53,7 @@ module Kari
     end
 
     class ServerError
-      def get(k, m, e)
+      def get(klass, method, exception)
         r(500, Mab.new do
           xhtml_transitional do
             head do
@@ -66,10 +66,26 @@ module Kari
                 a "Something went wrong.", :onclick => "Error.show();return false", :href => "#"
               end
               div.error! :style => 'display:none;' do
-                h2 "#{m} #{k}"
-                h3 "#{e.class} #{e.message}"
-                ul { e.backtrace.each { |bt| li(bt) } }
+                h2 "#{method} #{klass}"
+                h3 "#{exception.class} #{exception.message}"
+                ul { exception.backtrace.each { |bt| li(bt) } }
               end
+            end
+          end
+        end.to_s)
+      end
+    end
+
+    class NotFound
+      def get(page)
+        r(404, Mab.new do
+          xhtml_transitional do
+            head do
+              title "Not found"
+              link :href => R(Files, "stylesheets", "default.css"), :rel => "stylesheet", :type => "text/css"
+            end
+            body do
+              h1.splash "Not found."
             end
           end
         end.to_s)
@@ -110,7 +126,7 @@ module Kari
       ul do
         matches.each do |entry|
           li do
-            a entry.full_name, :href => R(Show, entry.full_name)
+            a entry[:full_name], :href => R(Show, entry[:full_name])
           end
         end
       end
@@ -246,7 +262,7 @@ module Kari
       unless method.aliases.empty?
         h2 "Aliases"
         ul do
-          method.aliases do |method|
+          method.aliases.each do |method|
             li { a method.name, :href => R(Show, method.full_name) }
           end
         end
