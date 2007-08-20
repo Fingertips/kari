@@ -27,12 +27,12 @@ class TestRiIndex < Test::Unit::TestCase
 
   def test_should_build_index_to_file
     Index.any_instance.expects(:write_to).returns(true)
-    assert_nothing_raised { Index.build }
+    assert_nothing_raised { Index.rebuild(:from => 10.years.ago) }
   end
 
   def test_should_build_index
     index = Index.new
-    assert_nothing_raised { index.build([@ri_fixture_path]) }
+    assert_nothing_raised { index.rebuild([@ri_fixture_path], :from => 10.years.ago) }
     assert_not_nil index.data
   end
 

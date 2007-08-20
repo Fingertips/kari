@@ -20,7 +20,7 @@
 
 # MANFRED
 
-- Use the created.rid files to partially update the index.
+- Merge updated indices instead of adding it.
 - Write JS to allow result selection with the arrow keys and enter to select a link.
 - Override CampingError for nicer error messages.
 - Add proper documentation to the kari/**/* files.

@@ -1,5 +1,4 @@
 require 'yaml'
-require 'logger'
 require 'fileutils'
 require 'rdoc/ri/ri_paths'
 require 'rdoc/ri/ri_descriptions'
@@ -16,7 +15,7 @@ module Kari #:nodoc:
 
       # Creates a new Index instance.
       def initialize
-        @data = nil
+        @data = {}
       end
 
       # Writes the index to a filename
@@ -34,10 +33,12 @@ module Kari #:nodoc:
       end
 
       # Builds the index for the specified list of paths.
-      def build(paths)
-        @data = paths.inject({}) do |index, path|
-          logger.debug "Building index for #{path}"
-          self.class.build_for(path).each do |key, value|
+      #
+      # Options:
+      # * <tt>:from</tt>: Don't build and index for RI files older than :from, expects a Time instance
+      def rebuild(paths, options={})
+        @data = paths.inject(@data) do |index, path|
+          self.class.build_for(path, options).each do |key, value|
             if index.has_key?(key)
               index[key] += value
             else
@@ -78,11 +79,6 @@ module Kari #:nodoc:
 
       private
 
-      # Returns a singleton logger instance for this class
-      def logger
-        @logger ||= Logger.new(STDOUT)
-      end
-
       # Convert a query to a regular expression
       def prepare_query(query)
         return query if query.is_a?(Regexp)
@@ -100,8 +96,18 @@ module Kari #:nodoc:
         end
 
         # Builds the index for a specifix RI path and returns the resulting data
-        def build_for(path)
+        #
+        # Options:
+        # * <tt>:from</tt>: Don't build and index for RI files older than :from, expects a Time instance
+        def build_for(path, options={})
           index = {}
+
+          created = File.join(path, 'created.rid')
+          if File.exist?(created)
+            created = Time.parse(File.read(created))
+            return index if options[:from] and options[:from] > created
+          end
+
           Dir.foreach(path) do |filename|
             next if filename =~ /(^\.)|(\.rid$)/
             current_file = File.join(path, filename)
@@ -114,7 +120,7 @@ module Kari #:nodoc:
               }
             else
               if File.directory?(current_file)
-                build_for(current_file).each do |key, value|
+                build_for(current_file, options).each do |key, value|
                   if index.has_key?(key)
                     index[key] += value
                   else
@@ -122,26 +128,38 @@ module Kari #:nodoc:
                   end
                 end
               else
-                logger.debug "Don't know how to build index for: #{current_file}"
+                $stderr.write ">> Don't know how to build index for: #{current_file}\n"
               end
             end
           end
           index
         end
 
-        # Builds the index and writes it to the standard location. You can specify a list of paths to build the index
-        # from, by default an index for all the RI files will be built.
-        def build(options={})
-          
+        # Builds or rebuilds the index, writes it to disk and returns it. You can specify a list of paths to build
+        # the index from, by default an index for all the RI files will be built.
+        #
+        # Options:
+        # * <tt>:paths</tt>: Paths to load the RI documentation from
+        # * <tt>:output_file</tt>: Write the updated index to this path
+        # * <tt>:from</tt>: Don't build and index for RI files older than :from, expects a Time instance
+        def rebuild(options={})
           options[:paths] ||= ENV["KARI_RI_PATH"] ? [ENV["KARI_RI_PATH"]] : ::RI::Paths.path(true, true, true, true)
           options[:output_file] ||= default_path
 
           index = new
-          index.build options[:paths]
+
+          if File.exist?(options[:output_file])
+            options[:from] ||= File.ctime(options[:output_file])
+            index.read_from default_path
+            $stderr.write ">> Read index from: #{default_path}\n"
+          end
+
+          index.rebuild options.delete(:paths), options
 
           directory = File.dirname(options[:output_file])
           FileUtils.mkdir_p(directory) unless File.exist?(directory)
           index.write_to options[:output_file]
+          index
         end
 
         # Returns the default storage path for the index
