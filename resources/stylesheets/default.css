@@ -73,6 +73,15 @@ ul
   margin: 0;
   padding: 0;
 }
+ul.overview
+{
+  list-style-type: none;
+}
+ul.overview li
+{
+  padding: .2em 0;
+  list-style-type: none;
+}
 /* Additional styling */
 span.visibility,
 span.rw

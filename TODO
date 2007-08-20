@@ -20,10 +20,9 @@
 
 # MANFRED
 
-- Index should also remove missing RI documentation on update.
 - Write JS to allow result selection with the arrow keys and enter to select a link.
-- Override CampingError for nicer error messages.
 - Add proper documentation to the kari/**/* files.
+- Index should also remove missing RI documentation on update.
 - Strip the libraries in lib/ to only contain stuff we actually need.
 - Show all the comments for a class or method when a 'get' returns more than one object.
 - Benchmark and improve performance more.

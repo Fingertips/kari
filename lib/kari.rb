@@ -123,7 +123,7 @@ module Kari
 
     def overview
       h1 "#{matches.length} entries found for “#{query}”"
-      ul do
+      ul.overview do
         matches.each do |entry|
           li do
             a entry[:full_name], :href => R(Show, entry[:full_name])

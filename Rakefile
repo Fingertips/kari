@@ -1,3 +1,5 @@
+require 'rake/testtask'
+
 namespace :spec do
   task :autotest do
     require './spec/rspec_autotest'
@@ -16,10 +18,16 @@ task :run => :"build:all" do
   `build/Release/Kari.app/Contents/MacOS/Kari`
 end
 
-task :test do
-  Dir['test/**/test_*.rb'].each do |file|
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.test_files = FileList['test/test_*.rb']
+  t.verbose = true
+end
+
+task :bench do
+  Dir['bench/**/bench_*.rb'].each do |file|
     ruby file
-  end
+  end  
 end
 
 task :clean do

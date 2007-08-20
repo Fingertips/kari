@@ -153,7 +153,7 @@ module Kari #:nodoc:
           if File.exist?(options[:output_file])
             options[:from] ||= File.ctime(options[:output_file])
             index.read_from default_index_path
-            $stderr.write ">> Read index from: #{default_index_path}\n"
+            #$stderr.write ">> Read index from: #{default_index_path}\n"
           end
 
           index.rebuild options.delete(:paths), options
