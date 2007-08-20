@@ -141,10 +141,12 @@ module Kari
             else
               li do
                 a inc.full_name, :href => R(Show, inc.full_name)
-                span do
-                  self << " ("
-                  self << inc.instance_methods.map { |m| a m.name, :href => R(Show, m.full_name) }.to_sentence
-                  self << ")"
+                unless inc.instance_methods.empty?
+                  span do
+                    self << " ("
+                    self << inc.instance_methods.map { |m| a m.name, :href => R(Show, m.full_name) }.to_sentence
+                    self << ")"
+                  end
                 end
               end
             end
@@ -156,11 +158,11 @@ module Kari
         ul do
           klass.attributes.each do |attribute|
             li do
-              span.rw attribute.rw
+              span.rw attribute.rw.downcase
               span " – "
               span attribute.name
               if attribute.comment
-                span " (#{attribute.comment})"
+                _flow attribute.comment
               end
             end
           end
@@ -196,8 +198,8 @@ module Kari
         end
       end
       hr
-      p.signature do
-        span method.visibility
+      p do
+        span.visibility method.visibility
         self << " "
         if method.params.starts_with?('(')
           span method.name + method.params
