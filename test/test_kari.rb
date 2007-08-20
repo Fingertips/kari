@@ -1,8 +1,14 @@
 $:.unshift(File.expand_path(File.dirname(__FILE__)))
 $:.unshift(File.expand_path('../lib', File.dirname(__FILE__)))
 
+ENV['KARI_HOME'] = File.expand_path('fixtures', File.dirname(__FILE__))
+ENV['KARI_RI_PATH'] = File.expand_path('fixtures/ri', File.dirname(__FILE__))
+
 require 'mosquito'
 require 'kari'
+
+require 'rubygems' rescue LoadError
+require 'mocha'
 
 class TestKari < Camping::FunctionalTest
 
@@ -14,7 +20,7 @@ class TestKari < Camping::FunctionalTest
   end
 
   def test_should_get_search_response
-    get '/search', :q => 'link_to'
+    get '/search', :q => 'square'
     assert_response :success
     # TODO: search is broken for now, just expect a 200
     assert_equal 'text/html', @response.headers['Content-Type']

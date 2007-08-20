@@ -132,7 +132,8 @@ module Kari #:nodoc:
         # Builds the index and writes it to the standard location. You can specify a list of paths to build the index
         # from, by default an index for all the RI files will be built.
         def build(options={})
-          options[:paths] ||= ::RI::Paths.path(true, true, true, true)
+          
+          options[:paths] ||= ENV["KARI_RI_PATH"] ? [ENV["KARI_RI_PATH"]] : ::RI::Paths.path(true, true, true, true)
           options[:output_file] ||= default_path
 
           index = new

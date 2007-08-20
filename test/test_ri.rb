@@ -4,6 +4,10 @@ require 'kari/ri'
 class TestRi < Test::Unit::TestCase
   include Kari::RI
 
+  def setup
+    Logger.any_instance.stubs(:debug).returns(nil)
+  end
+
   def test_search
     matches = search('point')
     assert_equal 1, matches.length

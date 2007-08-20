@@ -5,6 +5,7 @@ module Kari #:nodoc:
   
   # The RI module holds all the classes and methods related to indexing and searching the RI YAML store.
   module RI
+    Index.build
     INDEX = Index.load
     
     module_function

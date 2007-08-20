@@ -20,8 +20,6 @@
 
 # MANFRED
 
-- Improve performance.
-- Make sure the index is built automatically.
 - Use the created.rid files to partially update the index.
 - Write JS to allow result selection with the arrow keys and enter to select a link.
 - Override CampingError for nicer error messages.
