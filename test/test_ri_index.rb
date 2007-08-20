@@ -64,7 +64,7 @@ class TestRiIndex < Test::Unit::TestCase
   end
 
   def test_should_find_results_in_index
-    index = Index.new; index.read_from(File.join(@fixture_path, 'index.marshal'))
+    index = Index.load
     
     results = index.find('new')
     assert_equal ["Geometry::Point::new", "Geometry::Square::new"], results.map { |r| r[:full_name] }.sort
@@ -85,7 +85,7 @@ class TestRiIndex < Test::Unit::TestCase
   end
 
   def test_should_get_index_for_full_name
-    index = Index.new; index.read_from(File.join(@fixture_path, 'index.marshal'))
+    index = Index.load
     
     %w(Geometry::Defaults Geometry::Point::new Geometry::Square#rotate).each do |full_name|
       entry = index.get(full_name)
@@ -97,7 +97,7 @@ class TestRiIndex < Test::Unit::TestCase
   end
 
   def test_should_find_included_class_in_namespace
-    index = Index.new; index.read_from(File.join(@fixture_path, 'index.marshal'))
+    index = Index.load
     
     {
       ["Geometry::Point::ClassMethods", "Defaults"] => "Geometry::Defaults",

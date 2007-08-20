@@ -145,7 +145,7 @@ module Kari #:nodoc:
 
         # Returns the default storage path for the index
         def default_path
-          File.expand_path(File.join(ENV["HOME"], '.kari', 'index.marshal'))
+          File.expand_path(File.join(ENV["KARI_HOME"]||ENV["HOME"], '.kari', 'index.marshal'))
         end
       end
     end

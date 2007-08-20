@@ -6,7 +6,6 @@ class TestRiEntry < Test::Unit::TestCase
   include Kari::RI
 
   def setup
-    Index.stubs(:default_path).returns(File.expand_path("fixtures/index.marshal", File.dirname(__FILE__)))
     @index = Index.load
   end
 

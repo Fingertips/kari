@@ -24,7 +24,7 @@ module Kari
         def generate_search_index
           Index.build(
             :paths => [File.join(ROOT, 'ri')],
-            :output_file => File.join(ROOT, 'index.marshal')
+            :output_file => File.join(ROOT, '.kari', 'index.marshal')
           )
         end
       end
