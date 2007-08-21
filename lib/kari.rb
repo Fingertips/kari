@@ -9,6 +9,7 @@ module Kari
   module Controllers
     class Index < R '/'
       def get
+        @page_title = "Index"
         render :index_page
       end
     end
@@ -16,17 +17,21 @@ module Kari
     class Search < R '/search'
       def get
         if input.q.blank?
+          @page_title = "Index"
           render :index_page
         else
           @query = input.q
           @matches = Kari::RI.quick_search @query
           if @matches.empty?
             @message = "Found nothing."
+            @page_title = @message[0..-2]
             render :error_page
           elsif @matches.length > 1
+            @page_title = "Multiple entries found"
             render :overview_page
           else
-            @match = Kari::RI.get(@matches.first[:full_name])
+            @page_title = @matches.first[:full_name]
+            @match = Kari::RI.get(@page_title)
             render :entry_page
           end
         end
@@ -38,8 +43,10 @@ module Kari
         @match = Kari::RI.get name
         if @match.nil?
           @message = "Can't find “#{name}”."
+          @page_title = @message[0..-2]
           render :error_page
         else
+          @page_title = @match.full_name
           render :entry_page
         end
       end
@@ -47,7 +54,7 @@ module Kari
 
     class Status < R '/status'
       def get
-        @index_status = Kari::RI.status
+        @page_title = @index_status = Kari::RI.status
         headers['X-Status'] = @index_status
         render :status_page
       end
@@ -105,7 +112,13 @@ module Kari
     def layout
       xhtml_transitional do
         head do
-          title "Kari · Search for Ruby documentation"
+          title do
+            begin
+              page_title
+            rescue NoMethodError
+              'Kari'
+            end
+          end
           link :href => "/stylesheets/default.css", :rel => "stylesheet", :type => "text/css"
         end
         body do
