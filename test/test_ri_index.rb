@@ -6,7 +6,6 @@ require 'tmpdir'
 require 'kari/ri/index'
 
 class TestRiIndex < Test::Unit::TestCase
-  include Kari::RI
 
   def setup
     # Create a disposable output directory
@@ -26,18 +25,18 @@ class TestRiIndex < Test::Unit::TestCase
   end
 
   def test_should_build_index_to_file
-    Index.any_instance.expects(:write_to).returns(true)
-    assert_nothing_raised { Index.rebuild(:from => 10.years.ago) }
+    Kari::RI::Index.any_instance.expects(:write_to).returns(true)
+    assert_nothing_raised { Kari::RI::Index.rebuild(:from => 10.years.ago) }
   end
 
   def test_should_build_index
-    index = Index.new
+    index = Kari::RI::Index.new
     assert_nothing_raised { index.rebuild([@ri_fixture_path], :from => 10.years.ago) }
     assert_not_nil index.data
   end
 
   def test_should_build_a_usable_index
-    index = Index.build_for(@ri_fixture_path)
+    index = Kari::RI::Index.build_for(@ri_fixture_path)
     assert !index.empty?
     assert_equal %w(Defaults Geometry Introspection Point Square inspect new rotate), index.keys.sort
     assert_equal 1, index["Point"].length
@@ -47,21 +46,21 @@ class TestRiIndex < Test::Unit::TestCase
   end
 
   def test_should_merge_updated_index
-    index = Index.rebuild
+    index = Kari::RI::Index.rebuild
     assert_equal 1, index["Point"].length
     index.rebuild([ENV["KARI_RI_PATH"]], :from => 10.years.ago)
     assert_equal 1, index["Point"].length
   end
 
   def test_should_write_to_marshalled_file
-    index = Index.new
+    index = Kari::RI::Index.new
     filename = File.join(@tmpdir, 'index.marshal')
     index.write_to(filename)
     assert File.exist?(filename)
   end
 
   def test_should_read_from_marshalled_file
-    index = Index.new
+    index = Kari::RI::Index.new
     data = "I was read"
     filename = File.join(@tmpdir, 'index.marshal')
     File.expects(:read).with(filename).returns(Marshal.dump(data))
@@ -71,7 +70,7 @@ class TestRiIndex < Test::Unit::TestCase
   end
 
   def test_should_find_results_in_index
-    index = Index.load
+    index = Kari::RI::Index.load
     
     results = index.find('new')
     assert_equal ["Geometry::Point::new", "Geometry::Square::new"], results.map { |r| r[:full_name] }.sort
@@ -92,7 +91,7 @@ class TestRiIndex < Test::Unit::TestCase
   end
 
   def test_should_get_index_for_full_name
-    index = Index.load
+    index = Kari::RI::Index.load
 
     %w(Geometry::Defaults Geometry::Point::new Geometry::Square#rotate).each do |full_name|
       entry = index.get(full_name)
@@ -104,7 +103,7 @@ class TestRiIndex < Test::Unit::TestCase
   end
 
   def test_should_find_class_in_path_in_namespace
-    index = Index.load
+    index = Kari::RI::Index.load
 
     {
       ["Geometry::Point::ClassMethods", "Defaults"] => "Geometry::Defaults",
@@ -118,11 +117,11 @@ class TestRiIndex < Test::Unit::TestCase
   end
 
   def test_default_index_path
-    assert Index.default_index_path.starts_with?(File.expand_path(File.dirname(__FILE__)))
+    assert Kari::RI::Index.default_index_path.starts_with?(File.expand_path(File.dirname(__FILE__)))
   end
 
   def test_prepare_query
-    index = Index.new
+    index = Kari::RI::Index.new
     {
       'point' => "point",
       'my point' => "my|point",

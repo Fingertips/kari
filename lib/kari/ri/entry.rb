@@ -1,5 +1,5 @@
 module Kari #:nodoc:
-  module RI #:nodoc:
+  class RI #:nodoc:
 
     # A Entry object wraps RI definition objects in order to get a nice and consistant interface to the underlying data.
     class Entry

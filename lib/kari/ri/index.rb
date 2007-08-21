@@ -5,7 +5,7 @@ require 'rdoc/ri/ri_descriptions'
 require 'rdoc/markup/simple_markup/to_flow'
 
 module Kari #:nodoc:
-  module RI #:nodoc:
+  class RI #:nodoc:
     
     # Kari's indexer creates a search index for RI's yaml files for easier and faster searching. The index is nothing
     # more than a large hash with string keys for the various methods, classes and modules. Each of the string keys

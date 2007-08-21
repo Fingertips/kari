@@ -9,7 +9,7 @@ module Kari
   module Controllers
     class Index < R '/'
       def get
-        render :index
+        render :index_page
       end
     end
 
