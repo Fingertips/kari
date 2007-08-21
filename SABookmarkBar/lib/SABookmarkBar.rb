@@ -16,6 +16,7 @@ class Array
   def move(from, to)
     self_dup = self.dup
     self_dup = self_dup.insert(to, self_dup.delete_at(from))
+    self_dup.each_with_index {|bookmark, index| bookmark.order_index = index }
     return self_dup
   end
 end
@@ -28,6 +29,9 @@ class OSX::SABookmark < OSX::NSObject
       @id, @title, @url, @order_index = options[:id].to_i, options[:title].to_s, options[:url].to_s, options[:order_index].to_i
       return self
     end
+  end
+  def to_hash
+    { :id => @id, :title => @title, :url => @url, :order_index => @order_index }
   end
 end
 
@@ -110,8 +114,8 @@ class OSX::SABookmarkBar < OSX::NSView
     OSX::NSBezierPath.strokeLineFromPoint_toPoint OSX::NSMakePoint(0,0), OSX::NSMakePoint(rect.size.width, 0)
   end
   
-  def bookmarkClicked(bookmark)
-    @delegate.bookmarkClicked(bookmark)
+  def bookmarkButtonClicked(button)
+    @delegate.bookmarkClicked(button.bookmark)
   end
   
   def createOverflowMenu
@@ -373,8 +377,7 @@ class OSX::SABookmarkBar < OSX::NSView
     unless @dragging_button_index == @dragging_button_original_index
       @bookmarks = @bookmarks.move(@dragging_button_original_index, @dragging_button_index)
       # callback
-      delegate, selector = @reorderedItemsDelegate_withSelector
-      delegate.send(selector.to_sym, button, @dragging_button_original_index, @dragging_button_index)
+      @delegate.bookmarksReordered(button.bookmark)
     end
     
     # reset the states

@@ -1,18 +1,10 @@
-#
-#  AppController.rb
-#  Kari
-#
-#  Created by Eloy Duran on 7/2/07.
-#  Copyright (c) 2007 __MyCompanyName__. All rights reserved.
-#
-
 require 'osx/cocoa'
 require "Backend"
 require "WebViewController"
 OSX.require_framework 'WebKit'
 
 class AppController < OSX::NSObject
-  ib_outlets :webView, :searchProgressIndicator, :backButton, :forwardButton, :bookmarkController
+  ib_outlets :window, :webView, :webViewController, :searchProgressIndicator, :backButton, :forwardButton, :bookmarkController, :addBookmarkPanel, :bookmarkNameTextField
   
   def init
     if super_init
@@ -24,49 +16,63 @@ class AppController < OSX::NSObject
   end
   
   def awakeFromNib
+    OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
+                                                      :selector,    'windowWillClose:',
+                                                      :name,        OSX::NSWindowWillCloseNotification,
+                                                      :object,      nil
+    
+    @webViewController.delegate = self
     @bookmarkController.delegate = self
     
-    @webview_controller = WebViewController.new(@webView)
-    sleep 5 # FIXME: ugly, but just for now
-    @webview_controller.load_url "http://127.0.0.1:9999"
+    #sleep 5 # FIXME: ugly, but just for now
+    @webViewController.load_url "http://127.0.0.1:9999"
   end
   
   def search(search_field)
     @searchProgressIndicator.startAnimation(nil)
-    @webview_controller.load_url "http://127.0.0.1:9999/search?q=#{search_field.stringValue.to_s}"
+    @webViewController.load_url "http://127.0.0.1:9999/search?q=#{search_field.stringValue.to_s}"
   end
   
   def home(button)
-    @webview_controller.load_url "http://127.0.0.1:9999"
+    @webViewController.load_url "http://127.0.0.1:9999"
   end
   
   def bookmark(sender)
     puts 'bookmark'
+    @addBookmarkPanel.makeKeyAndOrderFront(self)
+  end
+  
+  def addBookmark(sender)
+    bookmark_name = @bookmarkNameTextField.stringValue
+    url = @webViewController.url
+    @bookmarkController.addBookmark(bookmark_name, url)
+  end
+  
+  # Window delegate matehods
+  
+  def windowWillClose(aNotification)
+    OSX::NSApplication.sharedApplication.terminate(self)
   end
   
   # BookmarController delegate methods
   
   def bookmarkClicked(bookmark)
     puts '', "Bookmark clicked: #{bookmark.title}", bookmark.url
-    @webview_controller.load_url bookmark.url
+    @webViewController.load_url bookmark.url
   end
   
-  
-  # WebView delegate methods
+  # WebViewController delegate methods
   
   def webViewFinishedLoading(aNotification)
+    @window.title = "Kari - #{@webViewController.doc_title}" unless @webViewController.doc_title.nil?
     @searchProgressIndicator.stopAnimation(nil)
-    @backButton.enabled = @webview_controller.can_go_back?
-    @forwardButton.enabled = @webview_controller.can_go_forward?
+    @backButton.enabled = @webViewController.can_go_back?
+    @forwardButton.enabled = @webViewController.can_go_forward?
   end
   
   # Application delegate methods
   
   def applicationDidFinishLaunching(aNotification)
-    OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
-                                                      :selector,    'webViewFinishedLoading:',
-                                                      :name,        OSX::WebViewProgressFinishedNotification,
-                                                      :object,      nil
   end
   
   def applicationWillTerminate(aNotification)

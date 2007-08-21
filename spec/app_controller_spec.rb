@@ -43,7 +43,7 @@ describe AppController do
     @app_controller.instance_variable_set(:@bookmarkController, bookmark_controller_mock)
     
     webview_controller_mock = mock("WebViewController")
-    WebViewController.stub!(:new).and_return(webview_controller_mock)
+    @app_controller.instance_variable_set(:@webViewController, webview_controller_mock)
     webview_controller_mock.should_receive(:load_url).with("http://127.0.0.1:9999")
     @app_controller.awakeFromNib
   end

@@ -1,11 +1,3 @@
-#
-#  BookmarkController.rb
-#  Kari
-#
-#  Created by Eloy Duran on 8/6/07.
-#  Copyright (c) 2007 __MyCompanyName__. All rights reserved.
-#
-
 require 'osx/cocoa'
 
 class BookmarkController < OSX::NSObject
@@ -37,4 +29,14 @@ class BookmarkController < OSX::NSObject
   def bookmarkClicked(bookmark)
     @delegate.bookmarkClicked(bookmark)
   end
+  
+  def bookmarksReordered(dragged_bookmark)
+    bookmarks = @bookmarkBar.bookmarks.map { |b| b.to_hash }
+    OSX::NSUserDefaults.standardUserDefaults.setObject_forKey(bookmarks, 'Bookmarks')  
+  end
+  
+  def addBookmark(name, url)
+    puts name, url
+  end
+  
 end

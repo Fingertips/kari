@@ -1,21 +1,30 @@
-#
-#  WebViewController.rb
-#  Kari
-#
-#  Created by Eloy Duran on 7/2/07.
-#  Copyright (c) 2007 __MyCompanyName__. All rights reserved.
-#
-
 require "osx/cocoa"
 
-class WebViewController
-  def initialize(webview)
-    @webview = webview
+class WebViewController < OSX::NSObject
+  ib_outlet :webview
+  attr_accessor :delegate
+  attr_reader :doc_title
+  
+  def awakeFromNib
+    @webview.frameLoadDelegate = self
+    
+    OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
+                                                      :selector,    'webViewFinishedLoading:',
+                                                      :name,        OSX::WebViewProgressFinishedNotification,
+                                                      :object,      nil
   end
   
-  # def setWebView(webview)
-  #   @webview = webview
-  # end
+  def webViewFinishedLoading(aNotification)
+    @delegate.webViewFinishedLoading(aNotification)
+  end
+  
+  def webView_didReceiveTitle_forFrame(sender, title, frame)
+    @doc_title = title
+  end
+  
+  def url
+    @url
+  end
   
   def load_url(url)
     @webview.mainFrame.loadRequest url_request(url)

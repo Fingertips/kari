@@ -1,11 +1,3 @@
-#
-#  rb_main.rb
-#  Kari
-#
-#  Created by Eloy Duran on 7/2/07.
-#  Copyright (c) 2007 __MyCompanyName__. All rights reserved.
-#
-
 require 'osx/cocoa'
 #$DEBUG = true
 $KARI_DEBUG = true

@@ -9,6 +9,7 @@
 require 'osx/cocoa'
 
 class OSX::SABookmarkButton < OSX::NSButton
+  attr_reader :bookmark
   
   def initWithBookmark_target_OSVersion(bookmark, target, osVersion)
     if self.init
@@ -45,7 +46,7 @@ class OSX::SABookmarkButton < OSX::NSButton
       self.state = OSX::NSOnState if OSX::NSMouseInRect(self.convertPoint_fromView(theEvent.locationInWindow, nil), self.bounds, false)
     else
       # FIXME: Is there a better way to call a original set action?
-      self.superview.bookmarkClicked(@bookmark)
+      self.superview.bookmarkButtonClicked(self)
     end
   end
   

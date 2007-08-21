@@ -1,17 +1,21 @@
 {
     IBClasses = (
         {
-            ACTIONS = {bookmark = id; home = id; search = id; }; 
+            ACTIONS = {addBookmark = id; bookmark = id; home = id; search = id; }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
                 addBookmarkButton = id; 
+                addBookmarkPanel = id; 
                 backButton = id; 
                 bookmarkController = id; 
+                bookmarkNameTextField = id; 
                 forwardButton = id; 
                 homeButton = id; 
                 searchProgressIndicator = id; 
                 webView = id; 
+                webViewController = id; 
+                window = id; 
             }; 
             SUPERCLASS = NSObject; 
         }, 
@@ -34,6 +38,12 @@
                 searchView = id; 
                 window = id; 
             }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = WebViewController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {webview = id; }; 
             SUPERCLASS = NSObject; 
         }
     ); 

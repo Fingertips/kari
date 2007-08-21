@@ -10,7 +10,7 @@ class Backend
     @backend.arguments = ['ruby', File.join(libdir, 'server.rb')]
     @backend.arguments << "--port #{port}" unless port.nil?
     @backend.currentDirectoryPath = libdir
-    @backend.environment = { 'PATH' => ENV['PATH'], 'HOME' => ENV['HOME'] }
+    @backend.environment = { 'PATH' => '/opt/local/bin', 'HOME' => ENV['HOME'] }
   end
   
   def launch
