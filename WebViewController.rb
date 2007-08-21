@@ -6,6 +6,8 @@ class WebViewController < OSX::NSObject
   attr_reader :doc_title
   
   def awakeFromNib
+    @doc_title = "Kari - Search for Ruby documentation"
+    
     @webview.frameLoadDelegate = self
     
     OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
@@ -19,7 +21,7 @@ class WebViewController < OSX::NSObject
   end
   
   def webView_didReceiveTitle_forFrame(sender, title, frame)
-    @doc_title = title
+    @doc_title = "Kari - #{title}"
   end
   
   def url

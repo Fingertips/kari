@@ -64,7 +64,7 @@ class AppController < OSX::NSObject
   # WebViewController delegate methods
   
   def webViewFinishedLoading(aNotification)
-    @window.title = "Kari - #{@webViewController.doc_title}" unless @webViewController.doc_title.nil?
+    @window.title = @webViewController.doc_title unless @webViewController.doc_title.nil?
     @searchProgressIndicator.stopAnimation(nil)
     @backButton.enabled = @webViewController.can_go_back?
     @forwardButton.enabled = @webViewController.can_go_forward?
