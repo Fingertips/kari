@@ -184,7 +184,7 @@ module Kari
         ul do
           klass.includes.each do |inc|
             if inc.is_a?(String)
-              li inc.name
+              li inc
             else
               li do
                 a inc.full_name, :href => R(Show, inc.full_name)
