@@ -30,6 +30,8 @@ module Kari #:nodoc:
       def read_from(filename)
         # OPTIMIZE: buffered reads please
         @data = Marshal.load(File.read(filename))
+      rescue Exception
+        @data = {}
       end
 
       # Builds the index for the specified list of paths.
@@ -77,6 +79,11 @@ module Kari #:nodoc:
           return entry if entry
         end
         get(needle)
+      end
+
+      # Returns true if the index doesn't have any index data
+      def empty?
+        @data.empty?
       end
 
       private

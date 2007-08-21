@@ -29,14 +29,13 @@ class TestRi < Test::Unit::TestCase
   end
 
   def test_status
-    Kari::RI::Index.expects(:rebuild).returns(nil)
-    load 'kari/ri.rb'
-    assert_equal 'indexing', Kari::RI.status
-    Kari::RI::Index.expects(:rebuild).returns(Kari::RI::Index.new)
-    load 'kari/ri.rb'
+    Thread.any_instance.stubs(:status).returns(false)
     assert_equal 'ready', Kari::RI.status
-    Kari::RI::Index.expects(:rebuild).returns("Something else")
-    load 'kari/ri.rb'
-    assert_equal 'indexing failed', Kari::RI.status
+    Thread.any_instance.stubs(:status).returns(nil)
+    assert_equal 'failed', Kari::RI.status
+    Thread.any_instance.stubs(:status).returns('run')
+    assert_equal 'rebuilding', Kari::RI.status
+    Kari::RI.stubs(:index).returns(Kari::RI::Index.new)
+    assert_equal 'building', Kari::RI.status
   end
 end

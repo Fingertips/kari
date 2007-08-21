@@ -141,7 +141,7 @@ module Kari
     end
 
     def status_page
-      h1 index_status
+      h1.splash "#{index_status.capitalize}."
     end
 
     def entry_page

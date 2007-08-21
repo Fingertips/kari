@@ -20,9 +20,10 @@
 
 # MANFRED
 
-- Write JS to allow result selection with the arrow keys and enter to select a link.
 - Index should also remove missing RI documentation on update.
+- Write JS to allow result selection with the arrow keys and enter to select a link.
 - Add proper documentation to the kari/**/* files.
 - Strip the libraries in lib/ to only contain stuff we actually need.
 - Show all the comments for a class or method when a 'get' returns more than one object.
 - Benchmark and improve performance more.
+- Read the plist so we can share configuration between the frontend and backend.
