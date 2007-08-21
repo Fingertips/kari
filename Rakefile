@@ -31,5 +31,5 @@ task :bench do
 end
 
 task :clean do
-  `rm ~/Library/Preferences/nl.fngtps.Kari.plist`
+  `rm ~/Library/Preferences/com.fngtps.Kari.plist`
 end

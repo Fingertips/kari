@@ -26,7 +26,7 @@ class BookmarkController < OSX::NSObject
     unless hash_bookmarks = OSX::NSUserDefaults.standardUserDefaults.objectForKey('Bookmarks')
       hash_bookmarks = []
       DEFAULT_BOOKMARKS.each_with_index do |title, idx|
-        hash_bookmarks.push({:id => idx, :title => title, :url => "http://127.0.0.1:3301/search?q=#{title}", :order_index => idx})
+        hash_bookmarks.push({:id => idx, :title => title, :url => "http://127.0.0.1:9999/search?q=#{title}", :order_index => idx})
       end
       # store the standard bookmarks in the preference file
       OSX::NSUserDefaults.standardUserDefaults.setObject_forKey(hash_bookmarks, 'Bookmarks')

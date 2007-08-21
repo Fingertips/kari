@@ -1,14 +1,14 @@
-require File.dirname(File.expand_path(__FILE__)) + "/../CampKari.rb"
+require File.dirname(File.expand_path(__FILE__)) + "/../Backend.rb"
 
-describe CampKari do
+describe Backend do
   it "should start the backend in a separate process" do
-    camp_kari = CampKari.new
+    backend = Backend.new
     
-    camp_kari.launch
-    camp_kari.should be_running
+    backend.launch
+    backend.should be_running
     
-    camp_kari.terminate
+    backend.terminate
     sleep 2
-    camp_kari.should_not be_running
+    backend.should_not be_running
   end
 end

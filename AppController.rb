@@ -7,7 +7,7 @@
 #
 
 require 'osx/cocoa'
-require "CampKari"
+require "Backend"
 require "WebViewController"
 OSX.require_framework 'WebKit'
 
@@ -16,8 +16,8 @@ class AppController < OSX::NSObject
   
   def init
     if super_init
-      @camp_kari = CampKari.new
-      @camp_kari.launch
+      @backend = Backend.new
+      @backend.launch
       OSX::NSApplication.sharedApplication.setDelegate(self)
       return self
     end
@@ -28,16 +28,16 @@ class AppController < OSX::NSObject
     
     @webview_controller = WebViewController.new(@webView)
     sleep 5 # FIXME: ugly, but just for now
-    @webview_controller.load_url "http://127.0.0.1:3301"
+    @webview_controller.load_url "http://127.0.0.1:9999"
   end
   
   def search(search_field)
     @searchProgressIndicator.startAnimation(nil)
-    @webview_controller.load_url "http://127.0.0.1:3301/search?q=#{search_field.stringValue.to_s}"
+    @webview_controller.load_url "http://127.0.0.1:9999/search?q=#{search_field.stringValue.to_s}"
   end
   
   def home(button)
-    @webview_controller.load_url "http://127.0.0.1:3301"
+    @webview_controller.load_url "http://127.0.0.1:9999"
   end
   
   def bookmark(sender)
@@ -70,7 +70,7 @@ class AppController < OSX::NSObject
   end
   
   def applicationWillTerminate(aNotification)
-    @camp_kari.terminate
+    @backend.terminate
   end
   
 end

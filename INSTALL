@@ -15,12 +15,5 @@ $ rake doc
 Install it:
 $ sudo rake install
 
-== Kari.app
-
-Adjust CampKari.rb to your env. E.g. if you use a macports ruby:
-  @camp_kari.launchPath = '/opt/local/bin/camping'
-  ...
-  @camp_kari.environment = { 'PATH' => '/opt/local/bin', 'HOME' => ENV['HOME'] }
-
 Build/Run it:
 $ rake run

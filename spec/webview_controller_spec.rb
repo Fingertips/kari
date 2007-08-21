@@ -7,7 +7,7 @@ describe WebViewController do
   end
   
   it "should create a NSURLRequest for a ruby string" do
-    url = "http://127.0.0.1:3301"
+    url = "http://127.0.0.1:9999"
     result = @webview_controller.url_request(url)
     result.should be_instance_of(OSX::NSURLRequest)
     result.URL.absoluteString.should == url
@@ -20,7 +20,7 @@ describe WebViewController do
     mainFrame_mock.should_receive(:loadRequest).with(urlrequest_mock)
     @webview_mock.should_receive(:mainFrame).and_return(mainFrame_mock)
     
-    @webview_controller.load_url "http://127.0.0.1:3301"
+    @webview_controller.load_url "http://127.0.0.1:9999"
   end
   
   # it "should load a url in the webview" do
@@ -33,7 +33,7 @@ describe WebViewController do
   #   webview_mainframe_mock.should_receive(:loadRequest).once.with(urlrequest_mock)
   #   @app_controller.instance_variable_get(:@webview_controller).should_receive(:load_url)
   #   
-  #   @app_controller.load_url "http://127.0.0.1:3301"
+  #   @app_controller.load_url "http://127.0.0.1:9999"
   #   
   # end
   
