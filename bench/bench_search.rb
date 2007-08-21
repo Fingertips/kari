@@ -14,7 +14,7 @@ class SearchBench
 
   def new
     Kari::RI::Index.rebuild
-    2.times { Kari::RI.quick_search('b') }
+    2.times { Kari::RI.search('benchmark') }
   end
 
   def bench_quick_search(n=1)
@@ -50,8 +50,8 @@ class SearchBench
   end
 
   def run
-    bench_quick_search(1)
-    bench_search(1)
+    bench_quick_search(10)
+    bench_search(10)
   end
   
   private
