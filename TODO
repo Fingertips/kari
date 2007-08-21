@@ -20,7 +20,6 @@
 
 # MANFRED
 
-- Provide a way to control the camping application from the Cocoa part.
 - Write JS to allow result selection with the arrow keys and enter to select a link.
 - Index should also remove missing RI documentation on update.
 - Add proper documentation to the kari/**/* files.

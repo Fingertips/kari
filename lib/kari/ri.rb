@@ -27,5 +27,16 @@ module Kari #:nodoc:
       entry = INDEX.get(name)
       entry ? Entry.new(entry, INDEX) : nil
     end
+
+    # Returns a string with the status of the indexining process.
+    def status
+      if INDEX.nil?
+        'indexing'
+      elsif INDEX.kind_of?(Kari::RI::Index)
+        'ready'
+      else
+        'indexing failed'
+      end
+    end
   end
 end

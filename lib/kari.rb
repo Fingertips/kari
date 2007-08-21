@@ -16,18 +16,18 @@ module Kari
     class Search < R '/search'
       def get
         if input.q.blank?
-          render :index
+          render :index_page
         else
           @query = input.q
           @matches = Kari::RI.quick_search @query
           if @matches.empty?
             @message = "Found nothing."
-            render :error
+            render :error_page
           elsif @matches.length > 1
-            render :overview
+            render :overview_page
           else
             @match = Kari::RI.get(@matches.first[:full_name])
-            render :entry
+            render :entry_page
           end
         end
       end
@@ -38,10 +38,18 @@ module Kari
         @match = Kari::RI.get name
         if @match.nil?
           @message = "Can't find “#{name}”."
-          render :error
+          render :error_page
         else
-          render :entry
+          render :entry_page
         end
+      end
+    end
+
+    class Status < R '/status'
+      def get
+        @index_status = Kari::RI.status
+        headers['X-Status'] = @index_status
+        render :status_page
       end
     end
 
@@ -106,7 +114,7 @@ module Kari
       end
     end
 
-    def index
+    def index_page
       h1.splash "KARI"
       ul do
         %w(String ActiveSupport::Multibyte::Chars ActiveSupport::Multibyte::Handlers::UTF8Handler).each do |full_name|
@@ -117,11 +125,11 @@ module Kari
       end
     end
 
-    def error
+    def error_page
       h1.splash message
     end
 
-    def overview
+    def overview_page
       h1 "#{matches.length} entries found for “#{query}”"
       ul.overview do
         matches.each do |entry|
@@ -132,7 +140,11 @@ module Kari
       end
     end
 
-    def entry
+    def status_page
+      h1 index_status
+    end
+
+    def entry_page
       if match.class?
         _class_entry(match)
       else
