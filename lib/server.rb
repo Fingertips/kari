@@ -7,9 +7,25 @@ require 'ostruct'
 require 'camping'
 require 'camping/server'
 
-conf = OpenStruct.new(:host => '0.0.0.0', :port => 3301)
+require 'optparse'
+
+conf = OpenStruct.new(:host => '0.0.0.0', :port => 9999)
 conf.db = '/dev/null'
 conf.rc = '/dev/null'
+
+opts = OptionParser.new do |opts|
+  opts.banner = "Usage: #{File.basename($0)} [options]"
+  opts.separator ""
+  opts.separator "Options:"
+
+  opts.on("-h", "--host HOSTNAME", "Host for web server to bind to (default is all IPs)") { |conf.host| }
+  opts.on("-p", "--port NUM", "Port for web server (defaults to #{conf.port})") { |conf.port| }
+  opts.on_tail("-?", "--help", "Show this message") do
+      puts opts
+      exit
+  end
+end
+opts.parse! ARGV
 
 # Check that mongrel exists
 unless conf.server 
