@@ -30,7 +30,7 @@ class OSX::SABookmark < OSX::NSObject
       @@bookmarks ||= {}
       id = @@bookmarks.empty? ? 0 : @@bookmarks.keys.sort.last.next
       order_index = @@bookmarks.length
-      return self.alloc.initWithHash options.merge({:id => id, :order_index => order_index})
+      return self.alloc.initWithHash(options.merge({:id => id, :order_index => order_index}))
     end
     
     def bookmarkForID(id)

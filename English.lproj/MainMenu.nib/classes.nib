@@ -20,6 +20,8 @@
                 forwardButton = id; 
                 homeButton = id; 
                 searchProgressIndicator = id; 
+                statusMessage = id; 
+                statusSpinner = id; 
                 webView = id; 
                 webViewController = id; 
                 window = id; 

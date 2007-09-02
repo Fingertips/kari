@@ -5,10 +5,12 @@ OSX.require_framework 'WebKit'
 
 class AppController < OSX::NSObject
   ib_outlets :window, :webView, :webViewController, :searchProgressIndicator, :backButton, :forwardButton, :bookmarkController, :addBookmarkSheet, :addBookmarkSheetAddButton, :bookmarkNameTextField
+  ib_outlets :statusMessage, :statusSpinner
   
   def init
     if super_init
-      @backend = Backend.new
+      @backend = Backend.alloc.init
+      @backend.delegate = self
       @backend.launch
       OSX::NSApplication.sharedApplication.setDelegate(self)
       return self
@@ -16,6 +18,8 @@ class AppController < OSX::NSObject
   end
   
   def awakeFromNib
+    @statusSpinner.startAnimation(self)
+    
     OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
                                                       :selector,    'windowWillClose:',
                                                       :name,        OSX::NSWindowWillCloseNotification,
@@ -23,8 +27,12 @@ class AppController < OSX::NSObject
     
     @webViewController.delegate = self
     @bookmarkController.delegate = self
-    
-    #sleep 5 # FIXME: ugly, but just for now
+  end
+  
+  def backendDidStart(sender)
+    @statusSpinner.stopAnimation(self)
+    @statusSpinner.hidden = true
+    @statusMessage.hidden = true
     @webViewController.load_url "http://127.0.0.1:9999"
   end
   
