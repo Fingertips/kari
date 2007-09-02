@@ -12,6 +12,8 @@
 		4DDCA7080ACC9A6100E082CE /* rb_main.rb in Resources */ = {isa = PBXBuildFile; fileRef = E8F5E25803AEB7C803A81C6F /* rb_main.rb */; };
 		4DDCA70A0ACC9A6100E082CE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		511EF93A0C8B269B00981C54 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 511EF9390C8B269B00981C54 /* Sparkle.framework */; };
+		511EF9530C8B26C100981C54 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 511EF9390C8B269B00981C54 /* Sparkle.framework */; };
 		5139BE1F0C3A7DC300162D10 /* AddLink.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE190C3A7DC300162D10 /* AddLink.tif */; };
 		5139BE200C3A7DC300162D10 /* AddLinkDisabled.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE1A0C3A7DC300162D10 /* AddLinkDisabled.tif */; };
 		5139BE210C3A7DC300162D10 /* AddLinkPressed.tif in Resources */ = {isa = PBXBuildFile; fileRef = 5139BE1B0C3A7DC300162D10 /* AddLinkPressed.tif */; };
@@ -42,6 +44,19 @@
 		51C6A5FA0C3E3A4D00E458BA /* CTGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C6A5F80C3E3A4D00E458BA /* CTGradient.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		511EF94F0C8B26AE00981C54 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				511EF9530C8B26C100981C54 /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -51,6 +66,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		4DDCA7110ACC9A6100E082CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DDCA7120ACC9A6100E082CE /* Kari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kari.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		511EF9390C8B269B00981C54 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		5139BE190C3A7DC300162D10 /* AddLink.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = AddLink.tif; sourceTree = "<group>"; };
 		5139BE1A0C3A7DC300162D10 /* AddLinkDisabled.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = AddLinkDisabled.tif; sourceTree = "<group>"; };
 		5139BE1B0C3A7DC300162D10 /* AddLinkPressed.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = AddLinkPressed.tif; sourceTree = "<group>"; };
@@ -89,6 +105,7 @@
 			files = (
 				4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */,
 				51B008520C38EB90009130E3 /* RubyCocoa.framework in Frameworks */,
+				511EF93A0C8B269B00981C54 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +127,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				511EF9390C8B269B00981C54 /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -217,6 +235,7 @@
 				4DDCA7050ACC9A6100E082CE /* Resources */,
 				4DDCA7090ACC9A6100E082CE /* Sources */,
 				4DDCA70B0ACC9A6100E082CE /* Frameworks */,
+				511EF94F0C8B26AE00981C54 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -336,6 +355,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -351,6 +375,11 @@
 		4DDCA7100ACC9A6100E082CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
