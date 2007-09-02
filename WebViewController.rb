@@ -6,7 +6,7 @@ class WebViewController < OSX::NSObject
   attr_reader :doc_title
   
   def awakeFromNib
-    @doc_title = "Kari - Search for Ruby documentation"
+    @doc_title = "Index"
     
     @webview.frameLoadDelegate = self
     
@@ -21,11 +21,11 @@ class WebViewController < OSX::NSObject
   end
   
   def webView_didReceiveTitle_forFrame(sender, title, frame)
-    @doc_title = "Kari - #{title}"
+    @doc_title = title
   end
   
   def url
-    @url
+    @webview.mainFrame.dataSource.request.URL.absoluteString
   end
   
   def load_url(url)

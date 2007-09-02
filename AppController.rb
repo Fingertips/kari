@@ -4,7 +4,7 @@ require "WebViewController"
 OSX.require_framework 'WebKit'
 
 class AppController < OSX::NSObject
-  ib_outlets :window, :webView, :webViewController, :searchProgressIndicator, :backButton, :forwardButton, :bookmarkController, :addBookmarkPanel, :bookmarkNameTextField
+  ib_outlets :window, :webView, :webViewController, :searchProgressIndicator, :backButton, :forwardButton, :bookmarkController, :addBookmarkSheet, :addBookmarkSheetAddButton, :bookmarkNameTextField
   
   def init
     if super_init
@@ -30,7 +30,7 @@ class AppController < OSX::NSObject
   
   def search(search_field)
     @searchProgressIndicator.startAnimation(nil)
-    @webViewController.load_url "http://127.0.0.1:9999/search?q=#{search_field.stringValue.to_s}"
+    @webViewController.load_url "http://127.0.0.1:9999/search?q=#{search_field.stringValue.to_s.gsub(/\s/, '+')}"
   end
   
   def home(button)
@@ -38,14 +38,20 @@ class AppController < OSX::NSObject
   end
   
   def bookmark(sender)
-    puts 'bookmark'
-    @addBookmarkPanel.makeKeyAndOrderFront(self)
+    @bookmarkNameTextField.stringValue = @webViewController.doc_title
+    #@addBookmarkSheetAddButton.highlight(true)
+    OSX::NSApp.beginSheet_modalForWindow_modalDelegate_didEndSelector_contextInfo(@addBookmarkSheet, @window, self, 'addBookmarkSheetDidEnd:', nil)
+  end
+  def closeAddBookmarkSheet(sender)
+    OSX::NSApp.endSheet @addBookmarkSheet
+  end
+  def addBookmarkSheetDidEnd(sender, return_code, context_info)
+    @addBookmarkSheet.orderOut(self)
   end
   
   def addBookmark(sender)
-    bookmark_name = @bookmarkNameTextField.stringValue
-    url = @webViewController.url
-    @bookmarkController.addBookmark(bookmark_name, url)
+    @bookmarkController.addBookmark(@bookmarkNameTextField.stringValue, @webViewController.url)
+    self.closeAddBookmarkSheet(self)
   end
   
   # Window delegate matehods
@@ -57,7 +63,6 @@ class AppController < OSX::NSObject
   # BookmarController delegate methods
   
   def bookmarkClicked(bookmark)
-    puts '', "Bookmark clicked: #{bookmark.title}", bookmark.url
     @webViewController.load_url bookmark.url
   end
   
