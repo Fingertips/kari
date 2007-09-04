@@ -4,7 +4,7 @@ require "WebViewController"
 OSX.require_framework 'WebKit'
 
 class AppController < OSX::NSObject
-  ib_outlets :window, :webView, :webViewController, :searchProgressIndicator, :backButton, :forwardButton, :bookmarkController, :addBookmarkSheet, :addBookmarkSheetAddButton, :bookmarkNameTextField
+  ib_outlets :window, :webView, :webViewController, :searchProgressIndicator, :backButton, :forwardButton, :bookmarkController
   ib_outlets :statusMessage, :statusSpinner
   
   def init
@@ -43,23 +43,6 @@ class AppController < OSX::NSObject
   
   def home(button)
     @webViewController.load_url "http://127.0.0.1:9999"
-  end
-  
-  def bookmark(sender)
-    @bookmarkNameTextField.stringValue = @webViewController.doc_title
-    #@addBookmarkSheetAddButton.highlight(true)
-    OSX::NSApp.beginSheet_modalForWindow_modalDelegate_didEndSelector_contextInfo(@addBookmarkSheet, @window, self, 'addBookmarkSheetDidEnd:', nil)
-  end
-  def closeAddBookmarkSheet(sender)
-    OSX::NSApp.endSheet @addBookmarkSheet
-  end
-  def addBookmarkSheetDidEnd(sender, return_code, context_info)
-    @addBookmarkSheet.orderOut(self)
-  end
-  
-  def addBookmark(sender)
-    @bookmarkController.addBookmark(@bookmarkNameTextField.stringValue, @webViewController.url)
-    self.closeAddBookmarkSheet(self)
   end
   
   # Window delegate matehods

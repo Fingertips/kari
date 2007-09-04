@@ -1,19 +1,11 @@
 {
     IBClasses = (
         {
-            ACTIONS = {
-                addBookmark = id; 
-                bookmark = id; 
-                closeAddBookmarkSheet = id; 
-                home = id; 
-                search = id; 
-            }; 
+            ACTIONS = {home = id; search = id; }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
                 addBookmarkButton = id; 
-                addBookmarkSheet = id; 
-                addBookmarkSheetAddButton = id; 
                 backButton = id; 
                 bookmarkController = id; 
                 bookmarkNameTextField = id; 
@@ -29,9 +21,27 @@
             SUPERCLASS = NSObject; 
         }, 
         {
+            ACTIONS = {
+                addBookmark = id; 
+                clearBookmarks = id; 
+                closeAddBookmarkSheet = id; 
+                closeRemoveBookmarkSheet = id; 
+                openAddBookmarkSheet = id; 
+                openRemoveBookmarkSheet = id; 
+                removeBookmark = id; 
+            }; 
             CLASS = BookmarkController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {bookmarkBar = id; bookmarkMenuItem = id; bookmarkSheet = id; }; 
+            OUTLETS = {
+                addBookmarkSheet = id; 
+                addBookmarkTitleTextField = id; 
+                bookmarkBar = id; 
+                bookmarkMenuItem = id; 
+                removeBookmarkPopup = id; 
+                removeBookmarkSheet = id; 
+                webViewController = id; 
+                window = id; 
+            }; 
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 

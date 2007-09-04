@@ -51,7 +51,7 @@ class OSX::SABookmark < OSX::NSObject
   
   def to_hash
     { :id => @id, :title => @title, :url => @url, :order_index => @order_index }
-  end
+  end  
 end
 
 class OSX::SABookmarkBar < OSX::NSView
@@ -79,6 +79,7 @@ class OSX::SABookmarkBar < OSX::NSView
       @buttonX = MARGIN
       
       @buttons = []
+      @trackingRects = []
       
       @overflowButton = OSX::SAOverflowButton.alloc.init
       @overflowButton.target = self
@@ -91,16 +92,15 @@ class OSX::SABookmarkBar < OSX::NSView
   end
   
   def bookmarks=(bookmarks)
+    self.removeBookmarks
+    @buttonX = MARGIN
+    
     @bookmarks = bookmarks
     sorted = @bookmarks.sort_by { |b| b.order_index }
     sorted.each do |bookmark|
       self.addBookmarkButton(bookmark)
     end
-    # if @originalArray.nil?
-    #   @originalArray = bookmarks
-    #   # @originalSelector = selector
-    #   # @originalSender = sender
-    # end
+    self.needsDisplay = true
   end
   
   def addBookmark(bookmark)
@@ -213,7 +213,7 @@ class OSX::SABookmarkBar < OSX::NSView
     end
   end
   
-  def resizeSubviewsWithOldSize(oldBoundsSize)
+  def removeBookmarks
     # remove old stuff
     @buttonPositions = []
     
@@ -227,9 +227,11 @@ class OSX::SABookmarkBar < OSX::NSView
       @overflowMenu = nil
     end
     
-    # add new stuff
-    @buttonX = MARGIN
     self.removeAllTrackingRects
+  end
+  
+  def resizeSubviewsWithOldSize(oldBoundsSize)
+    # add new stuff
     self.bookmarks = @bookmarks
   end
 
