@@ -1,7 +1,7 @@
 require 'osx/cocoa'
 
 class BookmarkController < OSX::NSObject
-  ib_outlet :window, :bookmarkBar, :bookmarkMenuItem
+  ib_outlet :window, :bookmarkBar, :bookmarkMenu
   ib_outlet :addBookmarkSheet, :addBookmarkTitleTextField
   ib_outlet :removeBookmarkSheet, :removeBookmarkPopup
   ib_outlet :webViewController
@@ -61,7 +61,7 @@ class BookmarkController < OSX::NSObject
     @delegate.bookmarkClicked(bookmark)
   end
   
-  def bookmarkMenuItemSelected(menuItem)
+  def bookmarkMenuSelected(menuItem)
     self.bookmarkClicked OSX::SABookmark.bookmarkForID(menuItem.tag)
   end
   
@@ -80,7 +80,7 @@ class BookmarkController < OSX::NSObject
   
   def populateBookmarkMenu
     self.bookmarks.sort_by { |bookmark| bookmark.order_index }.each do |bookmark|
-      @bookmarkMenuItem.submenu.addItem createMenuItemForBookmark(bookmark)
+      @bookmarkMenu.addItem createMenuItemForBookmark(bookmark)
     end
   end
   
@@ -90,8 +90,8 @@ class BookmarkController < OSX::NSObject
     item.tag = bookmark.id
     item.enabled = true
     item.target = self
-    item.action = 'bookmarkMenuItemSelected:'
-    key_equivalent = @bookmarkMenuItem.submenu.numberOfItems.to_i - 3
+    item.action = 'bookmarkMenuSelected:'
+    key_equivalent = @bookmarkMenu.numberOfItems.to_i - 3
     if key_equivalent < 11
       item.keyEquivalent = key_equivalent == 10 ? '0' : key_equivalent.to_s
       item.keyEquivalentModifierMask = OSX::NSCommandKeyMask
@@ -100,7 +100,7 @@ class BookmarkController < OSX::NSObject
   end
   
   def resetBookmarkMenu
-    (@bookmarkMenuItem.submenu.numberOfItems.to_i - 1).downto(4) { |idx| @bookmarkMenuItem.submenu.removeItemAtIndex(idx) }
+    (@bookmarkMenu.numberOfItems.to_i - 1).downto(4) { |idx| @bookmarkMenu.removeItemAtIndex(idx) }
     self.populateBookmarkMenu
   end
   

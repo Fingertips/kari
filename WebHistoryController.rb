@@ -1,0 +1,92 @@
+#
+#  WebHistoryController.rb
+#  Kari
+#
+#  Created by Eloy Duran on 9/6/07.
+#  Copyright (c) 2007 __MyCompanyName__. All rights reserved.
+#
+
+require 'osx/cocoa'
+
+class OSX::WebHistory
+  def allItems
+    self.orderedLastVisitedDays.collect{ |day| self.orderedItemsLastVisitedOnDay(day).to_a }.flatten.reverse
+  end
+end
+
+class WebHistoryController < OSX::NSObject
+  ib_outlet :historyMenu
+  ib_outlet :webViewController
+  
+  def init
+    if super_init
+      @history = OSX::WebHistory.alloc.init
+      OSX::WebHistory.setOptionalSharedHistory(@history)
+      
+      @history_file_path = File.expand_path('~/Library/Application Support/Kari/BrowseHistory')
+
+      nc = OSX::NSNotificationCenter.defaultCenter
+      
+      nc.objc_send :addObserver, self, 
+                   :selector,    'historyDidAddItems:',
+                   :name,        OSX::WebHistoryItemsAddedNotification,
+                   :object,      @history
+      
+      return self
+    end
+  end
+  
+  def awakeFromNib
+    self.loadHistory
+  end
+  
+  def loadHistory
+    OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self, 
+                                                      :selector,    'doneLoadingHistory:',
+                                                      :name,        OSX::WebHistoryLoadedNotification,
+                                                      :object,      nil
+    
+    @history.loadFromURL_error(OSX::NSURL.fileURLWithPath(@history_file_path))
+  end
+  
+  def doneLoadingHistory(aNotification)
+    @history.allItems.each { |history_item| self.addMenuItemForHistoryItem history_item }
+  end
+  
+  def saveHistory
+    @history.saveToURL_error(OSX::NSURL.fileURLWithPath(@history_file_path))
+  end
+  
+  def historyDidAddItems(aNotification)
+    aNotification.userInfo.objectForKey(OSX::WebHistoryItemsKey).each do |history_item|
+      if history_item.URLString.to_s =~ /^http:\/\/127.0.0.1:9999\/show\/(.+)$/
+        history_item.alternateTitle = $1.gsub(/%3A/, ':').gsub(/%23/, '#').gsub(/%3F/, '?').gsub(/%21/, '!')
+        self.saveHistory
+        self.addMenuItemForHistoryItem(history_item)
+      else
+        # we don't want to store any history item which is not a url like: http://127.0.0.1:9999/show/...
+        @history.removeItems [history_item]
+      end
+    end
+  end
+  
+  def addMenuItemForHistoryItem(history_item)
+    menu_item = OSX::NSMenuItem.alloc.objc_send :initWithTitle, history_item.alternateTitle,
+                                                :action, "goToHistoryItem:",
+                                                :keyEquivalent, ""
+
+    menu_item.target = self
+    menu_item.representedObject = history_item
+    @historyMenu.addItem menu_item
+  end
+  
+  def goToHistoryItem(sender)
+    @webViewController.load_url sender.representedObject.URLString
+  end
+  
+  def clearHistory(sender)
+    @history.removeAllItems
+    (@historyMenu.numberOfItems.to_i - 1).downto(4) { |idx| @historyMenu.removeItemAtIndex(idx) }
+    File.delete(@history_file_path)
+  end
+end

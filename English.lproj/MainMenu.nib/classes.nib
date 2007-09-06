@@ -36,7 +36,7 @@
                 addBookmarkSheet = id; 
                 addBookmarkTitleTextField = id; 
                 bookmarkBar = id; 
-                bookmarkMenuItem = id; 
+                bookmarkMenu = id; 
                 removeBookmarkPopup = id; 
                 removeBookmarkSheet = id; 
                 webViewController = id; 
@@ -63,6 +63,13 @@
                 searchView = id; 
                 window = id; 
             }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {clearHistory = id; }; 
+            CLASS = WebHistoryController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {historyMenu = id; webViewController = id; }; 
             SUPERCLASS = NSObject; 
         }, 
         {
