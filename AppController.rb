@@ -20,7 +20,15 @@ class AppController < OSX::NSObject
   end
   
   def awakeFromNib
-    @statusSpinner.startAnimation(self)
+    @statusSpinner.startAnimation(self)\
+    
+    OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
+      :addObserver, self,
+         :selector, 'externalRequestForDocumentation:',
+             :name, 'KariOpenDocumentation',
+           :object, nil
+    )
+    
     @window.delegate = self
     @webViewController.delegate = self
     @bookmarkController.delegate = self
@@ -30,20 +38,25 @@ class AppController < OSX::NSObject
     @statusSpinner.stopAnimation(self)
     @statusSpinner.hidden = true
     @statusMessage.hidden = true
-    @webViewController.load_url "http://127.0.0.1:9999"
+    @webViewController.home
   end
   
   def search(search_field)
     @searchProgressIndicator.startAnimation(nil)
-    @webViewController.load_url "http://127.0.0.1:9999/search?q=#{search_field.stringValue.to_s.gsub(/\s/, '+')}"
+    @webViewController.search search_field.stringValue.to_s
   end
   
   def home(button)
-    @webViewController.load_url "http://127.0.0.1:9999"
+    @webViewController.home
   end
   
   def openPreferencesWindow(sender)
     PreferencesController.alloc.init.showWindow(self)
+  end
+  
+  def externalRequestForDocumentation(aNotification)
+    query = aNotification.userInfo['query']
+    @webViewController.search(query) unless query.nil? || query.empty?
   end
   
   # Window delegate matehods

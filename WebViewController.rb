@@ -5,6 +5,8 @@ class WebViewController < OSX::NSObject
   attr_accessor :delegate
   attr_reader :doc_title
   
+  BASE_URL = 'http://127.0.0.1:9999/'
+  
   def awakeFromNib
     @doc_title = "Index"
     
@@ -42,6 +44,20 @@ class WebViewController < OSX::NSObject
   
   def can_go_forward?
     @webview.canGoForward == 1
+  end
+  
+  # helpers
+  
+  def home
+    self.load_url BASE_URL
+  end
+  
+  def search(query)
+    self.load_url "#{BASE_URL}search?q=#{query}"
+  end
+  
+  def show(query)
+    self.load_url "#{BASE_URL}show/#{query}"
   end
   
 end
