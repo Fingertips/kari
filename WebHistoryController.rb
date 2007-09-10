@@ -7,6 +7,7 @@
 #
 
 require 'osx/cocoa'
+require "uri"
 
 class OSX::WebHistory
   def allItems
@@ -60,7 +61,7 @@ class WebHistoryController < OSX::NSObject
   def historyDidAddItems(aNotification)
     aNotification.userInfo.objectForKey(OSX::WebHistoryItemsKey).each do |history_item|
       if history_item.URLString.to_s =~ /^http:\/\/127.0.0.1:9999\/show\/(.+)$/
-        history_item.alternateTitle = $1.gsub(/%3A/, ':').gsub(/%23/, '#').gsub(/%3F/, '?').gsub(/%21/, '!')
+        history_item.alternateTitle = $1.gsub(/%3A/, ':').gsub(/%23/, '#').gsub(/%3F/, '?').gsub(/%21/, '!').gsub(/%3D/, '=')
         self.saveHistory
         self.addMenuItemForHistoryItem(history_item)
       else
