@@ -9,6 +9,8 @@ class AppController < OSX::NSObject
   
   def init
     if super_init
+      PreferencesController.registerDefaults
+      
       @backend = Backend.alloc.init
       @backend.delegate = self
       @backend.launch
@@ -19,12 +21,7 @@ class AppController < OSX::NSObject
   
   def awakeFromNib
     @statusSpinner.startAnimation(self)
-    
-    OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
-                                                      :selector,    'windowWillClose:',
-                                                      :name,        OSX::NSWindowWillCloseNotification,
-                                                      :object,      nil
-    
+    @window.delegate = self
     @webViewController.delegate = self
     @bookmarkController.delegate = self
   end
@@ -43,6 +40,10 @@ class AppController < OSX::NSObject
   
   def home(button)
     @webViewController.load_url "http://127.0.0.1:9999"
+  end
+  
+  def openPreferencesWindow(sender)
+    PreferencesController.alloc.init.showWindow(self)
   end
   
   # Window delegate matehods
@@ -72,6 +73,7 @@ class AppController < OSX::NSObject
   end
   
   def applicationWillTerminate(aNotification)
+    PreferencesController.synchronize
     @backend.terminate
   end
   

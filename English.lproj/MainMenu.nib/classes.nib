@@ -1,7 +1,7 @@
 {
     IBClasses = (
         {
-            ACTIONS = {home = id; search = id; }; 
+            ACTIONS = {home = id; openPreferencesWindow = id; search = id; }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
             OUTLETS = {

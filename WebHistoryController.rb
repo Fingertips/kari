@@ -1,11 +1,3 @@
-#
-#  WebHistoryController.rb
-#  Kari
-#
-#  Created by Eloy Duran on 9/6/07.
-#  Copyright (c) 2007 __MyCompanyName__. All rights reserved.
-#
-
 require 'osx/cocoa'
 require "uri"
 
