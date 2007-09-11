@@ -7,13 +7,14 @@ class ToolbarController < OSX::NSObject
     if super_init
       @toolbar = OSX::NSToolbar.alloc.initWithIdentifier('MainWindowToolbar')
       @toolbar.delegate = self
+      @toolbar.displayMode = OSX::NSToolbarDisplayModeIconOnly
       return self
     end
   end
   
   def awakeFromNib
+    @window.showsToolbarButton = false
     @window.toolbar = @toolbar
-    #@window._borderView.toolbarButton.removeFromSuperview # remove the toggle toolbar button
   end
   
   TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'FontSmallerAndBiggerItem', 'HomeItem', 'AddBookmarkItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
