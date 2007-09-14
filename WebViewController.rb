@@ -23,7 +23,7 @@ class WebViewController < OSX::NSObject
   end
   
   def webView_didReceiveTitle_forFrame(sender, title, frame)
-    @doc_title = title
+    @doc_title = title.to_s
   end
   
   def url

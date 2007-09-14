@@ -39,7 +39,7 @@ class WebHistoryController < OSX::NSObject
                                                       :name,        OSX::WebHistoryLoadedNotification,
                                                       :object,      nil
     
-    @history.loadFromURL_error(OSX::NSURL.fileURLWithPath(@history_file_path))
+    @history.loadFromURL_error(OSX::NSURL.fileURLWithPath(@history_file_path)) unless `sw_vers -productVersion`.strip == '10.5' # tmp fix, so we can at least boot on 10.5
   end
   
   def doneLoadingHistory(aNotification)

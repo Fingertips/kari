@@ -10,12 +10,12 @@ class Backend < OSX::NSObject
       puts "Backend libdir: #{libdir}" if $KARI_DEBUG
     
       @backend = OSX::NSTask.alloc.init
-      @backend.launchPath = '/usr/bin/env'
-      @backend.arguments = ['ruby', File.join(libdir, 'server.rb')]
+      @backend.launchPath = '/usr/bin/ruby'
+      @backend.arguments = [File.join(libdir, 'server.rb')]
       port = nil
       @backend.arguments << "--port #{port}" unless port.nil?
       @backend.currentDirectoryPath = libdir
-      @backend.environment = { 'PATH' => '/opt/local/bin', 'HOME' => ENV['HOME'] }
+      @backend.environment = { 'HOME' => ENV['HOME'] }
       
       return self
     end
