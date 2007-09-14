@@ -6,7 +6,7 @@ class PreferencesController < OSX::NSWindowController
   def self.registerDefaults
     bookmarks = []
     DEFAULT_BOOKMARKS.each_with_index do |title, idx|
-      bookmarks.push({:id => idx, :title => title, :url => "http://127.0.0.1:9999/show/#{title}", :order_index => idx})
+      bookmarks.push({:id => idx, :title => title, :url => "http://127.0.0.1:10002/show/#{title}", :order_index => idx})
     end
     OSX::NSUserDefaults.standardUserDefaults.registerDefaults({ 'RubyInstallation' => '/usr', 'Bookmarks' => bookmarks })
   end

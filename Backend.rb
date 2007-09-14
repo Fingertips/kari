@@ -1,19 +1,22 @@
 require 'osx/cocoa'
 require "socket"
+require "free_tcp_port"
 
 class Backend < OSX::NSObject
   attr_accessor :delegate
+  attr_reader :port
   
   def init
     if super_init
+      @port = FreeTCPPort.find(:start_from => 10002)
+      puts "Free TCP port found: #{@port}" if $KARI_DEBUG
+      
       libdir = $KARI_DEBUG ? File.expand_path('../../../../../lib', File.dirname(__FILE__)) : File.expand_path('lib', File.dirname(__FILE__))
       puts "Backend libdir: #{libdir}" if $KARI_DEBUG
-    
+      
       @backend = OSX::NSTask.alloc.init
       @backend.launchPath = '/usr/bin/ruby'
-      @backend.arguments = [File.join(libdir, 'server.rb')]
-      port = nil
-      @backend.arguments << "--port #{port}" unless port.nil?
+      @backend.arguments = [File.join(libdir, 'server.rb'), '--port', @port.to_s]
       @backend.currentDirectoryPath = libdir
       @backend.environment = { 'HOME' => ENV['HOME'] }
       
@@ -23,7 +26,7 @@ class Backend < OSX::NSObject
   
   def checkIfBackendStarted(timer)
     begin
-      TCPSocket.new('localhost', 9999)
+      TCPSocket.new('localhost', @port).close
       timer.invalidate
       @delegate.backendDidStart(self)
     rescue

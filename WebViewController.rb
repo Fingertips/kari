@@ -2,14 +2,14 @@ require "osx/cocoa"
 
 class WebViewController < OSX::NSObject
   ib_outlet :webview
-  attr_accessor :delegate
+  attr_accessor :delegate, :port
   attr_reader :doc_title
   
-  BASE_URL = 'http://127.0.0.1:9999/'
+  BASE_URL = 'http://127.0.0.1:10002/'
   
   def awakeFromNib
     @doc_title = "Index"
-    
+    @port = 10002
     @webview.frameLoadDelegate = self
     
     OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
@@ -35,7 +35,8 @@ class WebViewController < OSX::NSObject
   end
   
   def url_request(url)
-    OSX::NSURLRequest.requestWithURL OSX::NSURL.URLWithString(url)
+    # substitute a port number in the url with the current port.
+    OSX::NSURLRequest.requestWithURL OSX::NSURL.URLWithString(url.sub(/:\d+/, ":#{@port}"))
   end
   
   def can_go_back?

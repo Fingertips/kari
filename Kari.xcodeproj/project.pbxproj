@@ -45,6 +45,7 @@
 		51B008520C38EB90009130E3 /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B008510C38EB90009130E3 /* RubyCocoa.framework */; };
 		51C6A5F90C3E3A4D00E458BA /* CTGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 51C6A5F70C3E3A4D00E458BA /* CTGradient.h */; };
 		51C6A5FA0C3E3A4D00E458BA /* CTGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C6A5F80C3E3A4D00E458BA /* CTGradient.m */; };
+		51DD58650C9AC9FC00B41965 /* free_tcp_port.rb in Resources */ = {isa = PBXBuildFile; fileRef = 51DD58640C9AC9FC00B41965 /* free_tcp_port.rb */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -101,6 +102,7 @@
 		51B008510C38EB90009130E3 /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
 		51C6A5F70C3E3A4D00E458BA /* CTGradient.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CTGradient.h; path = CTGradient/CTGradient.h; sourceTree = "<group>"; };
 		51C6A5F80C3E3A4D00E458BA /* CTGradient.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = CTGradient.m; path = CTGradient/CTGradient.m; sourceTree = "<group>"; };
+		51DD58640C9AC9FC00B41965 /* free_tcp_port.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = free_tcp_port.rb; sourceTree = "<group>"; };
 		E8F5E25803AEB7C803A81C6F /* rb_main.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = rb_main.rb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				5141FA010C954CB300FF22F6 /* PreferencesController.rb */,
+				51DD58640C9AC9FC00B41965 /* free_tcp_port.rb */,
 				5156289B0C90370D00EFAB2E /* WebHistoryController.rb */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				E8F5E25803AEB7C803A81C6F /* rb_main.rb */,
@@ -309,6 +312,7 @@
 				5156289C0C90370D00EFAB2E /* WebHistoryController.rb in Resources */,
 				5141FA020C954CB300FF22F6 /* PreferencesController.rb in Resources */,
 				5141FA080C954D5000FF22F6 /* Preferences.nib in Resources */,
+				51DD58650C9AC9FC00B41965 /* free_tcp_port.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

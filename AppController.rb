@@ -30,8 +30,9 @@ class AppController < OSX::NSObject
     )
     
     @window.delegate = self
-    @webViewController.delegate = self
     @bookmarkController.delegate = self
+    @webViewController.delegate = self
+    @webViewController.port = @backend.port
   end
   
   def backendDidStart(sender)
