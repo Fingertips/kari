@@ -119,7 +119,7 @@ class OSX::SABookmarkBar < OSX::NSView
   
   def backgroundGradient
     if self.window.isKeyWindow
-      OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.unifiedDarkGradient ) )
+      OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.unifiedNormalGradient ) )
     else
       OSX::NSKeyedUnarchiver.unarchiveObjectWithData( OSX::NSKeyedArchiver.archivedDataWithRootObject( OSX::CTGradient.unifiedSelectedGradient ) )
     end

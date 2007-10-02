@@ -1,6 +1,9 @@
+# This is requires the backend so that everything needed is also bundled when running standalonify.
+require 'lib/server' if ENV['STANDALONEIFY_DUMP_FILE']
+
 require 'osx/cocoa'
 #$DEBUG = true
-$KARI_DEBUG = true
+$KARI_DEBUG = false
 
 if $KARI_DEBUG
   require File.expand_path('../../../../../SABookmarkBar/SABookmarkBar', File.dirname(__FILE__))

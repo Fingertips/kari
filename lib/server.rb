@@ -1,5 +1,18 @@
 #!/usr/bin/env ruby
 
+unless ENV['STANDALONEIFY_DUMP_FILE']
+  # Path from standalonify
+  COCOA_APP_RESOURCES_DIR = File.expand_path(File.join(File.dirname(__FILE__), '../'))
+  $LOAD_PATH.reject! { |d| d.index(File.dirname(COCOA_APP_RESOURCES_DIR))!=0 }
+  $: << File.join(COCOA_APP_RESOURCES_DIR,"ThirdParty")
+  $: << File.join(File.dirname(COCOA_APP_RESOURCES_DIR),"lib")
+  ENV['GEM_HOME'] = ENV['GEM_PATH'] = File.join(COCOA_APP_RESOURCES_DIR,"RubyGems")
+end
+
+# Because we have a standalone app, all the default paths are removed.
+# Thus RI will not be able to return any useful paths, so we should use this env var.
+ENV["KARI_RI_PATH"] = '/usr/share/ri/1.8'
+
 DIR_LIB = File.expand_path(File.dirname(__FILE__))
 $:.unshift(DIR_LIB)
 
@@ -42,4 +55,4 @@ end
 require 'camping/server/' + conf.server.to_s
 
 server = eval("Camping::Server::#{conf.server.to_s.capitalize}.new(conf, [File.join(DIR_LIB, 'kari.rb')])")
-server.start
+server.start unless ENV['STANDALONEIFY_DUMP_FILE']
