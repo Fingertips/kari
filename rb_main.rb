@@ -1,5 +1,5 @@
 # This is requires the backend so that everything needed is also bundled when running standalonify.
-require 'lib/server' if ENV['STANDALONEIFY_DUMP_FILE']
+require 'lib/server' if ENV['RUBYCOCOA_STANDALONEIFYING?']
 
 require 'osx/cocoa'
 #$DEBUG = true

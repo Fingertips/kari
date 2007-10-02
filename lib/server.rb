@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-unless ENV['STANDALONEIFY_DUMP_FILE']
+unless ENV['RUBYCOCOA_STANDALONEIFYING?']
   # Path from standalonify
   COCOA_APP_RESOURCES_DIR = File.expand_path(File.join(File.dirname(__FILE__), '../'))
   $LOAD_PATH.reject! { |d| d.index(File.dirname(COCOA_APP_RESOURCES_DIR))!=0 }
@@ -43,7 +43,8 @@ opts.parse! ARGV
 # Check that mongrel exists
 unless conf.server 
   begin
-    require 'rubygems' rescue LoadError
+    # Eloy: Because we only use webrick atm, I commented this line. This cuts down the app by 1MB.
+    # require 'rubygems' rescue LoadError
     require 'mongrel'
     require 'mongrel/camping'
     conf.server = :mongrel
@@ -55,4 +56,4 @@ end
 require 'camping/server/' + conf.server.to_s
 
 server = eval("Camping::Server::#{conf.server.to_s.capitalize}.new(conf, [File.join(DIR_LIB, 'kari.rb')])")
-server.start unless ENV['STANDALONEIFY_DUMP_FILE']
+server.start unless ENV['RUBYCOCOA_STANDALONEIFYING?']
