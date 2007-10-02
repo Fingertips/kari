@@ -25,7 +25,8 @@ namespace :build do
     standalone_dir = 'build/Standalone'
     `mkdir -p #{standalone_dir}`
     puts '', 'CREATING STANDALONE APP BUNDLE', ''
-    puts `ruby /Library/Frameworks/RubyCocoa.framework/Versions/Current/Tools/standaloneify.rb -d "#{standalone_dir}/Kari.app" "build/Release/Kari.app"`
+    svn_rev = `svn info`.scan(/Revision:\s(\d+)/)[0][0]
+    puts `ruby /Library/Frameworks/RubyCocoa.framework/Versions/Current/Tools/standaloneify.rb -d "#{standalone_dir}/Kari r#{svn_rev}.app" "build/Release/Kari.app"`
     `open #{standalone_dir}`
   end
 end
