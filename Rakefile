@@ -11,7 +11,7 @@ end
 namespace :build do
   task :all do
     puts '', 'COMPILING APP', ''
-    `xcodebuild`
+    `xcodebuild -configuration Release`
   end
   
   task :pre_bundle do
@@ -34,6 +34,8 @@ end
 task :run => :"build:all" do
   `build/Release/Kari.app/Contents/MacOS/Kari`
 end
+
+task :default => :run
 
 Rake::TestTask.new do |t|
   t.libs << "test"

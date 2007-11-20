@@ -18,7 +18,7 @@ class Backend < OSX::NSObject
       @backend.launchPath = '/usr/bin/env'
       @backend.arguments = ['ruby', File.join(libdir, 'server.rb'), '--port', @port.to_s]
       @backend.currentDirectoryPath = libdir
-      @backend.environment = { 'HOME' => ENV['HOME'] }
+      @backend.environment = { 'HOME' => ENV['HOME'], 'KARI_DEBUG' => $KARI_DEBUG.to_s }
 
       return self
     end

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-unless ENV['RUBYCOCOA_STANDALONEIFYING?']
+unless ENV['KARI_DEBUG'] == 'true' or ENV['RUBYCOCOA_STANDALONEIFYING?']
   # Path from standalonify
   COCOA_APP_RESOURCES_DIR = File.expand_path(File.join(File.dirname(__FILE__), '../'))
   $LOAD_PATH.reject! { |d| d.index(File.dirname(COCOA_APP_RESOURCES_DIR))!=0 }
