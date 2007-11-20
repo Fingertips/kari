@@ -54,13 +54,13 @@ class BookmarkController < OSX::NSObject
   
   def bookmarksReordered(dragged_bookmark)
     @bookmarks = @bookmarkBar.bookmarks
-    self.bookmarksChanged
+    self.bookmarksChanged(false)
   end
   
-  def bookmarksChanged
+  def bookmarksChanged(reset_bookmark_bar = true)
     self.saveBookmarks
     self.resetBookmarkMenu
-    @bookmarkBar.bookmarks = @bookmarks
+    @bookmarkBar.bookmarks = @bookmarks if reset_bookmark_bar
   end
   
   # bookmark menu

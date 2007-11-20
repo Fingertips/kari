@@ -9,11 +9,13 @@
 require 'osx/cocoa'
 
 class OSX::SABookmarkButton < OSX::NSButton
+  
   attr_reader :bookmark
   
   def initWithBookmark_target_OSVersion(bookmark, target, osVersion)
     if self.init
-      if osVersion >= 10.4
+      @osVersion = osVersion
+      if @osVersion >= 10.4
         self.cell = OSX::SABookmarkButtonCell.alloc.init
         self.buttonType = OSX::NSPushOnPushOffButton
         self.bezelStyle = OSX::NSRecessedBezelStyle
@@ -43,7 +45,13 @@ class OSX::SABookmarkButton < OSX::NSButton
     if @dragging
       self.superview.doneDragging(self)
       # If the mouse pointer is still within the bounds of the button then set it to NSOnState
-      self.state = OSX::NSOnState if OSX::NSMouseInRect(self.convertPoint_fromView(theEvent.locationInWindow, nil), self.bounds, false)
+      # FIXME: this fails if the mouse is within the button's rect but the button will still animate away.
+      self.state =
+        if OSX::NSMouseInRect(self.convertPoint_fromView(theEvent.locationInWindow, nil), self.bounds, false)
+          OSX::NSOnState
+        else
+          OSX::NSOffState
+        end
     else
       # FIXME: Is there a better way to call a original set action?
       self.superview.bookmarkButtonClicked(self)
@@ -71,5 +79,33 @@ class OSX::SABookmarkButton < OSX::NSButton
     
     # report position back to the bookmark bar
     self.superview.draggingButton_xCoordinate(self)
+  end
+  
+  # moving/animation
+  
+  class << self
+    attr_accessor :button_animation
+    
+    def stop_animating
+      unless @button_animation.nil?
+        @button_animation.stopAnimation if @button_animation.animating?
+        @button_animation = nil
+      end
+    end
+  end
+  
+  def move_to(new_x)
+    if @osVersion >= 10.4
+      end_position = self.frame
+      end_position.origin.x = new_x
+      animation = OSX::NSViewAnimation.alloc.initWithViewAnimations([{ OSX::NSViewAnimationTargetKey => self, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(end_position) }])
+      animation.duration = 0.1
+      #animation.duration = 3.0
+      animation.startAnimation
+      self.class.button_animation = animation
+    else
+      # pre tiger, no animation
+      self.frameOrigin = OSX::NSMakePoint(new_x, self.frame.origin.y)
+    end
   end
 end

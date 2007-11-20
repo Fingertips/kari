@@ -306,6 +306,8 @@ class OSX::SABookmarkBar < OSX::NSView
     
     # if there is a next button and if the current position of the dragging button is over a button that we haven't moved yet
     if @next_x_for_move_trigger != nil && button.frame.origin.x > @next_x_for_move_trigger
+      OSX::SABookmarkButton.stop_animating
+      
       # the button that will be moved
       over_button = @buttonPositions[@dragging_button_index +1][:button]
       # store a reference for where the dragging button should come if it was released now
@@ -317,6 +319,8 @@ class OSX::SABookmarkBar < OSX::NSView
       
     # if there is a previous button and if the current position of the dragging button is over a button that we haven't moved yet
     elsif @prev_x_for_move_trigger != nil && button.frame.origin.x < @prev_x_for_move_trigger
+      OSX::SABookmarkButton.stop_animating
+      
       # the button that will be moved
       over_button = @buttonPositions[@dragging_button_index -1][:button]
       # store a reference for where the dragging button should come if it was released now
@@ -328,51 +332,9 @@ class OSX::SABookmarkBar < OSX::NSView
     end
   end
   
-  # FIXME: A NSViewAnimation doesn't work correctly when dragging like a mad man (a.k.a. Manfred). Look into this!
-  #
-  # def animationDidEnd(animation)
-  #   puts 'ended'
-  #   p @last_button.frame.to_a
-  #   @animation = nil
-  # end
-  # 
-  # def animationDidStop(animation)
-  #   puts 'stopped'
-  #   p @last_button.frame.to_a
-  # end
-  
   def processMove(over_button, new_x_for_over_button, drag_direction)
-    # FIXME: A NSViewAnimation doesn't work correctly when dragging like a mad man (a.k.a. Manfred). Look into this!
-    #
-    # if getOSVersion >= 10.5
-    #   if !@animation.nil? && @animation.isAnimating
-    #     puts 'still animating'
-    #     @animation.stopAnimation
-    #     @animation = nil
-    #     #@last_button.frameOrigin = OSX::NSMakePoint(@last_pos, @last_button.frame.origin.y)
-    #     #self.needsDisplay = true
-    #     p @last_button.frame.to_a
-    #     puts ''
-    #   end
-    #   
-    #   @last_pos = new_x_for_over_button
-    #   @last_button = over_button
-    #   puts 'last pos & button'
-    #   p @last_pos
-    #   p @last_button.frame.to_a
-    #   
-    #   end_position = over_button.frame
-    #   end_position.origin.x = new_x_for_over_button
-    #   @animation = OSX::NSViewAnimation.alloc.initWithViewAnimations([{ OSX::NSViewAnimationTargetKey => over_button, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(end_position) }])
-    #   @animation.delegate = self
-    #   @animation.duration = 0.1
-    #   @animation.startAnimation
-    # else
-    #   over_button.frameOrigin = OSX::NSMakePoint(new_x_for_over_button, over_button.frame.origin.y)
-    # end
-    
-    # actually move the over_button - no animation
-    over_button.frameOrigin = OSX::NSMakePoint(new_x_for_over_button, over_button.frame.origin.y)
+    #move_button_to(over_button, new_x_for_over_button)
+    over_button.move_to(new_x_for_over_button)
     
     # update the original_x values and switch the buttons in the @buttonPositions array
     @buttonPositions[@dragging_button_index][:original_x] = @new_x_for_dragging_button
@@ -399,8 +361,8 @@ class OSX::SABookmarkBar < OSX::NSView
     return if @new_x_for_dragging_button.nil? # for some reason this gets called again after the dragging has already ended...
     
     # snap the button to the last good location
-    button.frameOrigin = OSX::NSMakePoint(@new_x_for_dragging_button, button.frame.origin.y)
-    self.needsDisplay = true
+    OSX::SABookmarkButton.stop_animating
+    button.move_to(@new_x_for_dragging_button)
     
     unless @dragging_button_index == @dragging_button_original_index
       @bookmarks = @bookmarks.move(@dragging_button_original_index, @dragging_button_index)
