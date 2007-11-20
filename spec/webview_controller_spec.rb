@@ -3,11 +3,13 @@ require File.dirname(File.expand_path(__FILE__)) + "/../WebViewController.rb"
 describe WebViewController do
   before do
     @webview_mock = mock("WebView")    
-    @webview_controller = WebViewController.new(@webview_mock)
+    @webview_controller = WebViewController.alloc.init
+    @webview_controller.instance_variable_set :@webview, @webview_mock
   end
   
   it "should create a NSURLRequest for a ruby string" do
     url = "http://127.0.0.1:9999"
+    @webview_controller.instance_variable_set :@port, 9999
     result = @webview_controller.url_request(url)
     result.should be_instance_of(OSX::NSURLRequest)
     result.URL.absoluteString.should == url

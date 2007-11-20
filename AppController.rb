@@ -1,6 +1,7 @@
 require 'osx/cocoa'
-require "Backend"
+#require "Backend"
 require "WebViewController"
+require 'PreferencesController'
 OSX.require_framework 'WebKit'
 
 class AppController < OSX::NSObject
@@ -20,7 +21,7 @@ class AppController < OSX::NSObject
   end
   
   def awakeFromNib
-    @statusSpinner.startAnimation(self)\
+    @statusSpinner.startAnimation(self)
     
     OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
       :addObserver, self,

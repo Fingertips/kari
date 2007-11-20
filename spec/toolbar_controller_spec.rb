@@ -14,7 +14,7 @@ describe ToolbarController do
   it "should assign it's toolbar to the window" do
     window_mock = mock("Main Window")
     window_mock.should_receive(:toolbar=).with @toolbar_controller.instance_variable_get(:@toolbar)
-    
+    window_mock.should_receive(:showsToolbarButton=).with false
     #toolbar_button_mock = mock("Toolbar Button")
     #toolbar_button_mock.should_receive(:removeFromSuperview)
     #border_view_mock = mock("_BorderView")

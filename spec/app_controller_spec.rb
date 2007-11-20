@@ -10,6 +10,15 @@ class OSX::NSApplication
   end
 end
 
+class Backend < OSX::NSObject
+  def self.setTheReturnMock(mock)
+    @theReturnMock = mock
+  end
+  def init
+    self.class.instance_variable_get :@theReturnMock
+  end
+end
+
 describe AppController do
   before do
     shared_app_mock = mock("sharedApplication")
@@ -19,7 +28,8 @@ describe AppController do
 
     backend_mock = mock("Backend")
     backend_mock.stub!(:launch)
-    Backend.should_receive(:new).with(:no_args).and_return(backend_mock)
+    backend_mock.stub!(:delegate=)
+    Backend.setTheReturnMock(backend_mock)
     
     @app_controller = AppController.alloc.init
   end
@@ -42,19 +52,36 @@ describe AppController do
     bookmark_controller_mock.should_receive(:delegate=).once.with(@app_controller)
     @app_controller.instance_variable_set(:@bookmarkController, bookmark_controller_mock)
     
+    @app_controller.instance_variable_get(:@backend).should_receive(:port).and_return(9999)
+    
     webview_controller_mock = mock("WebViewController")
+    webview_controller_mock.should_receive(:delegate=).with(@app_controller)
+    webview_controller_mock.should_receive(:port=).with(9999)
     @app_controller.instance_variable_set(:@webViewController, webview_controller_mock)
-    webview_controller_mock.should_receive(:load_url).with("http://127.0.0.1:9999")
+    
+    spinner_mock = mock("Spinner")
+    spinner_mock.should_receive(:startAnimation).with(@app_controller)
+    @app_controller.instance_variable_set(:@statusSpinner, spinner_mock)
+    
+    window_mock = mock("Window")
+    window_mock.should_receive(:delegate=).with(@app_controller)
+    @app_controller.instance_variable_set(:@window, window_mock)
+    
     @app_controller.awakeFromNib
   end
 
   it "should pass a query url on to the webview controller" do
+    query = "Time".to_ns
     search_field_mock = mock("SearchField")
-    search_field_mock.should_receive(:stringValue).and_return("Time".to_nsstring)
-    @app_controller.instance_variable_get(:@webview_controller).should_receive(:load_url).with("http://127.0.0.1:9999/?q=Time")
+    search_field_mock.should_receive(:stringValue).and_return(query)
+    
     progress_indicator_mock = mock("Progress Indicator")
     progress_indicator_mock.should_receive(:startAnimation)
     @app_controller.instance_variable_set(:@searchProgressIndicator, progress_indicator_mock)
+    
+    webview_controller_mock = mock("WebViewController")
+    webview_controller_mock.should_receive(:search).with(query)
+    @app_controller.instance_variable_set(:@webViewController, webview_controller_mock)
     
     @app_controller.search(search_field_mock)
   end

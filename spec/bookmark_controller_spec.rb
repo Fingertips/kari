@@ -1,8 +1,8 @@
-require File.dirname(File.expand_path(__FILE__)) + "/../BookmarkController.rb"
-require File.dirname(File.expand_path(__FILE__)) + "/../SABookmarkBar/SABookmarkBar.rb"
+$:.unshift File.expand_path('../..', __FILE__)
 
-# class SABookmarkBar
-# end
+require 'BookmarkController'
+require 'SABookmarkBar/SABookmarkBar'
+require 'PreferencesController'
 
 describe BookmarkController do
   before do
@@ -11,6 +11,17 @@ describe BookmarkController do
   end
   
   it "should have a reference to a SABookmarkBar instance, assign the bookmarks and set itself as it's delegate on awakeFromNib" do
+    @bookmark_controller.instance_variable_set :@bookmarks, make_bookmarks(PreferencesController::DEFAULT_BOOKMARKS)
+    
+    # bookmark_menu_mock = mock('BookmarkMenu')
+    # bookmark_menu_mock.should_receive(:numberOfItems).and_return(4)
+    # bookmark_menu_mock.should_receive(:addItem).exactly(PreferencesController::DEFAULT_BOOKMARKS.length).times
+    # @bookmark_controller.instance_variable_set :@bookmarkMenu, bookmark_menu_mock
+    
+    #@bookmark_controller.should_receive(:createMenuItemForBookmark).exactly(PreferencesController::DEFAULT_BOOKMARKS.length).times
+    
+    @bookmark_controller.should_receive(:populateBookmarkMenu)
+    
     @bookmark_controller.awakeFromNib
     @bookmark_controller.bookmarkBar.should be_kind_of(OSX::SABookmarkBar)
     @bookmark_controller.bookmarkBar.delegate.should eql(@bookmark_controller)
@@ -42,9 +53,9 @@ describe BookmarkController do
   end
   
   it "should return a predefined list of bookmarks for if there's no preference file yet and store it in the preferences" do
-    OSX::NSUserDefaults.standardUserDefaults.should_receive(:objectForKey).with('Bookmarks').and_return(nil)
-    OSX::NSUserDefaults.standardUserDefaults.should_receive(:setObject_forKey)
-    @bookmark_controller.bookmarks.map{|b| b.title.to_s }.should eql(BookmarkController::DEFAULT_BOOKMARKS)
+    hashes = make_hashes(PreferencesController::DEFAULT_BOOKMARKS)
+    OSX::NSUserDefaults.standardUserDefaults.should_receive(:objectForKey).with('Bookmarks').and_return(hashes)
+    @bookmark_controller.bookmarks.map{|b| b.title.to_s }.should eql(PreferencesController::DEFAULT_BOOKMARKS)
   end
   
   it "should return the bookmarks from the preference file if it exists" do
