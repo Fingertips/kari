@@ -1,51 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>IBDocumentLocation</key>
-	<string>84 17 695 296 0 0 1280 778 </string>
-	<key>IBEditorPositions</key>
-	<dict>
-		<key>201</key>
-		<string>320 586 75 73 0 0 1280 778 </string>
-		<key>208</key>
-		<string>270 564 75 73 0 0 1280 778 </string>
-		<key>212</key>
-		<string>256 463 253 72 0 0 1280 778 </string>
-		<key>234</key>
-		<string>469 487 50 73 0 0 1280 778 </string>
-		<key>237</key>
-		<string>432 569 50 73 0 0 1280 778 </string>
-		<key>29</key>
-		<string>57 541 493 44 0 0 1280 778 </string>
-	</dict>
 	<key>IBFramework Version</key>
-	<string>446.1</string>
+	<string>629</string>
+	<key>IBLastKnownRelativeProjectPath</key>
+	<string>../../Kari.xcodeproj</string>
+	<key>IBOldestOS</key>
+	<integer>5</integer>
 	<key>IBOpenObjects</key>
 	<array>
-		<integer>212</integer>
-		<integer>208</integer>
-		<integer>29</integer>
-		<integer>257</integer>
-		<integer>21</integer>
-		<integer>303</integer>
-		<integer>234</integer>
-		<integer>201</integer>
-		<integer>237</integer>
+		<integer>2</integer>
 	</array>
 	<key>IBSystem Version</key>
-	<string>8R2218</string>
-	<key>IBUserGuides</key>
-	<dict>
-		<key>257</key>
-		<dict>
-			<key>guideLocations</key>
-			<array>
-				<string>Vertical:220.000000</string>
-			</array>
-			<key>guidesLocked</key>
-			<false/>
-		</dict>
-	</dict>
+	<string>9A581</string>
+	<key>targetFramework</key>
+	<string>IBCocoaFramework</string>
 </dict>
 </plist>

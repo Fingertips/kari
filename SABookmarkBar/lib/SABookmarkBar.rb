@@ -371,7 +371,7 @@ class OSX::SABookmarkBar < OSX::NSView
     #   over_button.frameOrigin = OSX::NSMakePoint(new_x_for_over_button, over_button.frame.origin.y)
     # end
     
-    # actually move the over_button
+    # actually move the over_button - no animation
     over_button.frameOrigin = OSX::NSMakePoint(new_x_for_over_button, over_button.frame.origin.y)
     
     # update the original_x values and switch the buttons in the @buttonPositions array

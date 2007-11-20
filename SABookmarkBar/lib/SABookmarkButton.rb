@@ -53,6 +53,9 @@ class OSX::SABookmarkButton < OSX::NSButton
   def mouseDragged(theEvent)
     @dragging = true
     
+    # What's the middle state?!
+    self.state = OSX::NSOnState
+    
     new_x = self.frame.origin.x + theEvent.deltaX
     if new_x < self.superview.left_margin
       # can't move to the left beyond the superviews frame + margin

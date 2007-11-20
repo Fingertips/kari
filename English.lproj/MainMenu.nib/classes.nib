@@ -1,83 +1,184 @@
-{
-    IBClasses = (
-        {
-            ACTIONS = {home = id; openPreferencesWindow = id; search = id; }; 
-            CLASS = AppController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {
-                addBookmarkButton = id; 
-                backButton = id; 
-                bookmarkController = id; 
-                bookmarkNameTextField = id; 
-                forwardButton = id; 
-                homeButton = id; 
-                searchProgressIndicator = id; 
-                statusMessage = id; 
-                statusSpinner = id; 
-                webView = id; 
-                webViewController = id; 
-                window = id; 
-            }; 
-            SUPERCLASS = NSObject; 
-        }, 
-        {
-            ACTIONS = {
-                addBookmark = id; 
-                clearBookmarks = id; 
-                closeAddBookmarkSheet = id; 
-                closeRemoveBookmarkSheet = id; 
-                openAddBookmarkSheet = id; 
-                openRemoveBookmarkSheet = id; 
-                removeBookmark = id; 
-            }; 
-            CLASS = BookmarkController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {
-                addBookmarkSheet = id; 
-                addBookmarkTitleTextField = id; 
-                bookmarkBar = id; 
-                bookmarkMenu = id; 
-                removeBookmarkPopup = id; 
-                removeBookmarkSheet = id; 
-                webViewController = id; 
-                window = id; 
-            }; 
-            SUPERCLASS = NSObject; 
-        }, 
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = SABookmarkBar; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
-        {
-            ACTIONS = {checkForUpdates = id; }; 
-            CLASS = SUUpdater; 
-            LANGUAGE = ObjC; 
-            SUPERCLASS = NSObject; 
-        }, 
-        {
-            CLASS = ToolbarController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {
-                addBookmarkView = id; 
-                fontSmallerAndBiggerView = id; 
-                historyBackAndForwardView = id; 
-                homeView = id; 
-                searchView = id; 
-                window = id; 
-            }; 
-            SUPERCLASS = NSObject; 
-        }, 
-        {
-            ACTIONS = {clearHistory = id; }; 
-            CLASS = WebHistoryController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {historyMenu = id; webViewController = id; }; 
-            SUPERCLASS = NSObject; 
-        }, 
-        {
-            CLASS = WebViewController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {webview = id; }; 
-            SUPERCLASS = NSObject; 
-        }
-    ); 
-    IBVersion = 1; 
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IBClasses</key>
+	<array>
+		<dict>
+			<key>CLASS</key>
+			<string>ToolbarController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>addBookmarkView</key>
+				<string>id</string>
+				<key>fontSmallerAndBiggerView</key>
+				<string>id</string>
+				<key>historyBackAndForwardView</key>
+				<string>id</string>
+				<key>homeView</key>
+				<string>id</string>
+				<key>searchView</key>
+				<string>id</string>
+				<key>window</key>
+				<string>id</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>FirstResponder</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>WebViewController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>webview</key>
+				<string>id</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>checkForUpdates</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>SUUpdater</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>addBookmark</key>
+				<string>id</string>
+				<key>clearBookmarks</key>
+				<string>id</string>
+				<key>closeAddBookmarkSheet</key>
+				<string>id</string>
+				<key>closeRemoveBookmarkSheet</key>
+				<string>id</string>
+				<key>openAddBookmarkSheet</key>
+				<string>id</string>
+				<key>openRemoveBookmarkSheet</key>
+				<string>id</string>
+				<key>removeBookmark</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>BookmarkController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>addBookmarkSheet</key>
+				<string>id</string>
+				<key>addBookmarkTitleTextField</key>
+				<string>id</string>
+				<key>bookmarkBar</key>
+				<string>id</string>
+				<key>bookmarkMenu</key>
+				<string>id</string>
+				<key>removeBookmarkPopup</key>
+				<string>id</string>
+				<key>removeBookmarkSheet</key>
+				<string>id</string>
+				<key>webViewController</key>
+				<string>id</string>
+				<key>window</key>
+				<string>id</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>clearHistory</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>WebHistoryController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>historyMenu</key>
+				<string>id</string>
+				<key>webViewController</key>
+				<string>id</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>home</key>
+				<string>id</string>
+				<key>openPreferencesWindow</key>
+				<string>id</string>
+				<key>search</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>AppController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>addBookmarkButton</key>
+				<string>id</string>
+				<key>backButton</key>
+				<string>id</string>
+				<key>bookmarkController</key>
+				<string>id</string>
+				<key>bookmarkNameTextField</key>
+				<string>id</string>
+				<key>forwardButton</key>
+				<string>id</string>
+				<key>homeButton</key>
+				<string>id</string>
+				<key>searchProgressIndicator</key>
+				<string>id</string>
+				<key>statusMessage</key>
+				<string>id</string>
+				<key>statusSpinner</key>
+				<string>id</string>
+				<key>webView</key>
+				<string>id</string>
+				<key>webViewController</key>
+				<string>id</string>
+				<key>window</key>
+				<string>id</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>SABookmarkBar</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSView</string>
+		</dict>
+	</array>
+	<key>IBVersion</key>
+	<string>1</string>
+</dict>
+</plist>

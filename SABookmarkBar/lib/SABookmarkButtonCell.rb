@@ -12,15 +12,21 @@ class OSX::SABookmarkButtonCell < OSX::NSButtonCell
     if self.state == OSX::NSOnState
       super_drawInteriorWithFrame_inView(cellFrame, controlView)
     else
-      aGradient = self.controlView.superview.backgroundGradient
-      aGradient.fillRect_angle(cellFrame, 270)
+      #aGradient = self.controlView.superview.backgroundGradient
+      #aGradient.fillRect_angle(cellFrame, 270)
+      
+      #OSX::NSColor.colorWithDeviceWhite_alpha(0, 0).set
+      #OSX::NSBezierPath.fillRect(cellFrame)
       
       attributes = { OSX::NSForegroundColorAttributeName => (self.controlView.superview.window.isKeyWindow ? OSX::NSColor.textColor : OSX::NSColor.disabledControlTextColor),
                      OSX::NSFontAttributeName => OSX::NSFont.systemFontOfSize(12) }
       
       title = OSX::NSAttributedString.alloc.initWithString_attributes(self.title, attributes)
-      rect = OSX::NSMakeRect(cellFrame.origin.x + 8, cellFrame.origin.y - 1, cellFrame.size.width, cellFrame.size.height)
+      rect = OSX::NSMakeRect(cellFrame.origin.x + 7, cellFrame.origin.y - 2, cellFrame.size.width, cellFrame.size.height)
       self.drawTitle_withFrame_inView(title, rect, controlView)
+      
+      #self.controlView.superview.needsDisplayInRect = cellFrame
+      self.controlView.superview.needsDisplay = true
     end
   end
 end
