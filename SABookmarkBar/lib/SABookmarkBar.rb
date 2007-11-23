@@ -87,8 +87,8 @@ class OSX::SABookmarkBar < OSX::NSView
     OSX::NSBezierPath.strokeLineFromPoint_toPoint OSX::NSMakePoint(0, 0), OSX::NSMakePoint(rect.size.width, 0)
   end
   
-  def bookmarkButtonClicked(button)
-    @delegate.bookmarkClicked(button.bookmark)
+  def bookmarkButtonClicked(sender)
+    @delegate.bookmarkClicked(sender.bookmark)
   end
   
   def createOverflowMenu
@@ -133,14 +133,14 @@ class OSX::SABookmarkBar < OSX::NSView
       self.addTrackingRectForButton(newButton)
       self.addPostitionForButton(newButton)
       
-      return newButton
+      newButton
     else
       self.createOverflowMenu if @overflowMenu.nil?
-      newMenuItem = OSX::NSMenuItem.alloc.initWithTitle_action_keyEquivalent(bookmark.title, "performActionForButton:", "")
-      newMenuItem.target = self
-      @overflowMenu.addItem newMenuItem
-      @buttons.push newMenuItem
-      return newMenuItem
+      menu_item = OSX::SABookmarkMenuItem.alloc.initWithBookmark_action_keyEquivalent(bookmark, :bookmarkButtonClicked, "")
+      menu_item.target = self
+      @overflowMenu.addItem menu_item
+      @buttons.push menu_item
+      menu_item
     end
   end
   

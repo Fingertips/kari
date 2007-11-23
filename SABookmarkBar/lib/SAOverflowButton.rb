@@ -15,7 +15,7 @@ class OSX::SAOverflowButton < OSX::NSButton
       self.image = OSX::NSImage.alloc.initWithContentsOfFile(File.join(IMAGE_DIR, "OverflowButton.tif"))
       self.bordered = false
       self.sizeToFit
-      return self
+      self
     end
   end
   
