@@ -24,12 +24,12 @@ class OSX::SABookmarkButton < OSX::NSButton
         self.buttonType = OSX::NSPushOnPushOffButton
         self.bordered = false
       end
+      self.font = OSX::NSFont.boldSystemFontOfSize(12)
+      self.title = bookmark.title
+      self.sizeToFit
       
       @dragging = @ignore_dragging = false
-      
       @bookmark, @target = bookmark, target
-      self.title = @bookmark.title
-      self.sizeToFit
       
       menu = OSX::NSMenu.alloc.initWithTitle('Contextual Menu')
       menu.insertItemWithTitle_action_keyEquivalent_atIndex('Open', :menu_open, '', 0)
@@ -84,20 +84,12 @@ class OSX::SABookmarkButton < OSX::NSButton
   def mouseUp(theEvent)
     if @dragging
       self.superview.doneDragging(self)
-      # If the mouse pointer is still within the bounds of the button then set it to NSOnState
-      # FIXME: this fails if the mouse is within the button's rect but the button will still animate away.
-      self.state =
-        if OSX::NSMouseInRect(self.convertPoint_fromView(theEvent.locationInWindow, nil), self.bounds, false)
-          OSX::NSOnState
-        else
-          OSX::NSOffState
-        end
     else
-      self.state = OSX::NSOffState
       # FIXME: Is there a better way to call a original set action?
       self.superview.bookmarkButtonClicked(self)
     end
     # reset
+    self.state = OSX::NSOffState
     @dragging = @ignore_further_dragging = false
   end
   
