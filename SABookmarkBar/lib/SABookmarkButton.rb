@@ -25,11 +25,16 @@ class OSX::SABookmarkButton < OSX::NSButton
         self.bordered = false
       end
       
+      @dragging = @ignore_dragging = false
+      
       @bookmark, @target = bookmark, target
       self.title = @bookmark.title
       self.sizeToFit
       
-      @dragging = @ignore_dragging = false
+      menu = OSX::NSMenu.alloc.initWithTitle('Contextual Menu')
+      menu.insertItemWithTitle_action_keyEquivalent_atIndex('Open', :menu_open, '', 0)
+      menu.insertItemWithTitle_action_keyEquivalent_atIndex('Delete', :menu_delete, '', 1)
+      self.menu = menu
       
       return self
     end
@@ -149,4 +154,15 @@ class OSX::SABookmarkButton < OSX::NSButton
       self.frameOrigin = OSX::NSMakePoint(new_x, self.frame.origin.y)
     end
   end
+  
+  # contextual menu methods
+  
+  def menu_open(sender)
+    self.superview.bookmarkButtonClicked(self)
+  end
+  
+  def menu_delete(sender)
+    self.superview.delegate.removeBookmark(self)
+  end
+  
 end

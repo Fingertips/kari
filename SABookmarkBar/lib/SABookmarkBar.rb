@@ -51,7 +51,7 @@ class OSX::SABookmark < OSX::NSObject
   
   def to_hash
     { :id => @id, :title => @title, :url => @url, :order_index => @order_index }
-  end  
+  end
 end
 
 class OSX::SABookmarkBar < OSX::NSView

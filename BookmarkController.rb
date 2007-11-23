@@ -31,10 +31,14 @@ class BookmarkController < OSX::NSObject
   end
   
   def removeBookmark(sender)
-    selected_title = @removeBookmarkPopup.titleOfSelectedItem.to_s
-    @bookmarks.delete @bookmarks.select{ |bm| bm.title == selected_title }.first
+    if sender.is_a? OSX::SABookmarkButton
+      @bookmarks.delete sender.bookmark
+    else
+      selected_title = @removeBookmarkPopup.titleOfSelectedItem.to_s
+      @bookmarks.delete @bookmarks.select{ |bm| bm.title == selected_title }.first
+      self.closeRemoveBookmarkSheet(self)
+    end
     self.bookmarksChanged
-    self.closeRemoveBookmarkSheet(self)
   end
   
   def clearBookmarks(sender)
