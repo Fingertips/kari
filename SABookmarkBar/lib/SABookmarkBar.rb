@@ -1,58 +1,11 @@
 #
-#  SAFilterBar.rb
+#  SABookmarkBar.rb
 #
 #  Created by Eloy Duran <e.duran@superalloy.nl>
 #
 #  Original Objective-C FilterBar code from Logan Rockmore: http://burgundylogan.com/blog/?cat=15
 
 require 'osx/cocoa'
-
-class Array
-  def switch(idx1, idx2)
-    self_dup = self.dup
-    self_dup[idx1], self_dup[idx2] = self_dup.values_at(idx2, idx1)
-    return self_dup
-  end
-  def move(from, to)
-    self_dup = self.dup
-    self_dup = self_dup.insert(to, self_dup.delete_at(from))
-    self_dup.each_with_index {|bookmark, index| bookmark.order_index = index }
-    return self_dup
-  end
-end
-
-# TODO: should move out.
-class OSX::SABookmark < OSX::NSObject
-  attr_accessor :id, :title, :url, :order_index
-  
-  class << self
-    def createWithHash(options)
-      @@bookmarks ||= {}
-      id = @@bookmarks.empty? ? 0 : @@bookmarks.keys.sort.last.next
-      order_index = @@bookmarks.length
-      return self.alloc.initWithHash(options.merge({:id => id, :order_index => order_index}))
-    end
-    
-    def bookmarkForID(id)
-      @@bookmarks[id]
-    end
-  end
-  
-  def initWithHash(options)
-    if self.init
-      @id, @title, @url, @order_index = options[:id].to_i, options[:title].to_s, options[:url].to_s, options[:order_index].to_i
-      
-      @@bookmarks ||= {}
-      @@bookmarks[@id] = self
-      
-      return self
-    end
-  end
-  
-  def to_hash
-    { :id => @id, :title => @title, :url => @url, :order_index => @order_index }
-  end
-end
 
 class OSX::SABookmarkBar < OSX::NSView
   attr_accessor :delegate, :bookmarks
@@ -156,24 +109,6 @@ class OSX::SABookmarkBar < OSX::NSView
     self.addSubview @overflowButton
   end
   
-  # def addBookmarks_withSelector_withSender(bookmarks, selector, sender)
-  #   self._addBookmarks_withSelector_withSender(bookmarks, selector, sender)
-  # end
-  # 
-  # def _addBookmarks_withSelector_withSender(bookmarks, selector, sender)
-  #   sorted = bookmarks.sort_by { |b| b.order_index }
-  #   
-  #   sorted.each do |bookmark|
-  #     self.addBookmarkButton(bookmark)
-  #   end
-  #   
-  #   if @originalArray.nil?
-  #     @originalArray = bookmarks
-  #     @originalSelector = selector
-  #     @originalSender = sender
-  #   end
-  # end
-  
   def addBookmarkButton(bookmark)
     newButton = OSX::SABookmarkButton.alloc.initWithBookmark_target(bookmark, self)
     
@@ -244,13 +179,6 @@ class OSX::SABookmarkBar < OSX::NSView
     end
   end
   
-  # TODO: Take out because this is probably not necessary anymore because we use highlight now instead of state.
-  # def mouseExited(theEvent)
-  #   # make sure the button get NSOffState
-  #   button = @trackingRects[theEvent.trackingNumber]
-  #   button.state = OSX::NSOffState
-  # end
-  
   def addPostitionForButton(button)
     (@buttonPositions ||= []) << { :button => button, :original_x => button.frame.origin.x }
   end
@@ -259,12 +187,6 @@ class OSX::SABookmarkBar < OSX::NSView
     @trackingRects ||= {}
     @trackingRects[self.addTrackingRect_owner_userData_assumeInside(button.frame, self, nil, false)] = button
   end
-  
-  # def trackingRectTagForButton(for_button)
-  #   @trackingRects.each do |tag, button|
-  #     return tag if button == for_button
-  #   end
-  # end
   
   def removeAllTrackingRects
     @trackingRects.each {|tag, button| self.removeTrackingRect(tag) }

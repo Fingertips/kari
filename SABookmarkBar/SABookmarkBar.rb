@@ -5,8 +5,8 @@
 
 require "osx/cocoa"
 
+require "#{File.dirname(File.expand_path(__FILE__))}/lib/CoreExt"
+require "#{File.dirname(File.expand_path(__FILE__))}/lib/SABookmark"
 require "#{File.dirname(File.expand_path(__FILE__))}/lib/SABookmarkBar"
 require "#{File.dirname(File.expand_path(__FILE__))}/lib/SABookmarkButton"
-require "#{File.dirname(File.expand_path(__FILE__))}/lib/SABookmarkButtonCell"
-require "#{File.dirname(File.expand_path(__FILE__))}/lib/SABookmarkButtonPreTigerCell"
 require "#{File.dirname(File.expand_path(__FILE__))}/lib/SAOverflowButton"
