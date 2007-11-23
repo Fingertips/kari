@@ -12,18 +12,15 @@ class OSX::SABookmarkButton < OSX::NSButton
   
   attr_reader :bookmark
   
-  def initWithBookmark_target_OSVersion(bookmark, target, osVersion)
+  def initWithBookmark_target(bookmark, target)
     if self.init
-      @osVersion = osVersion
-      if @osVersion >= 10.4
-        self.cell = OSX::SABookmarkButtonCell.alloc.init
-        self.buttonType = OSX::NSPushOnPushOffButton
-        self.bezelStyle = OSX::NSRecessedBezelStyle
-      else
-        self.cell = OSX::SABookmarkButtonPreTigerCell.alloc.init
-        self.buttonType = OSX::NSPushOnPushOffButton
-        self.bordered = false
-      end
+      cell = OSX::NSButtonCell.alloc.init
+      cell.controlSize = OSX::NSSmallControlSize
+      self.cell = cell
+      
+      self.buttonType = OSX::NSPushOnPushOffButton
+      self.bezelStyle = OSX::NSRecessedBezelStyle
+
       self.font = OSX::NSFont.boldSystemFontOfSize(11)
       self.title = bookmark.title
       self.sizeToFit
@@ -132,18 +129,13 @@ class OSX::SABookmarkButton < OSX::NSButton
   end
   
   def move_to(new_x)
-    if @osVersion >= 10.4
-      end_position = self.frame
-      end_position.origin.x = new_x
-      animation = OSX::NSViewAnimation.alloc.initWithViewAnimations([{ OSX::NSViewAnimationTargetKey => self, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(end_position) }])
-      animation.duration = 0.1
-      #animation.duration = 3.0
-      animation.startAnimation
-      self.class.button_animation = animation
-    else
-      # pre tiger, no animation
-      self.frameOrigin = OSX::NSMakePoint(new_x, self.frame.origin.y)
-    end
+    end_position = self.frame
+    end_position.origin.x = new_x
+    animation = OSX::NSViewAnimation.alloc.initWithViewAnimations([{ OSX::NSViewAnimationTargetKey => self, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(end_position) }])
+    animation.duration = 0.1
+    #animation.duration = 3.0
+    animation.startAnimation
+    self.class.button_animation = animation
   end
   
   # contextual menu methods

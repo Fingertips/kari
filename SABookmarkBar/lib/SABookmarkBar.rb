@@ -111,11 +111,6 @@ class OSX::SABookmarkBar < OSX::NSView
   def windowChangedKey(aNotification)
     self.needsDisplay = true
   end
-
-  def getOSVersion
-    # FIXME: There must be some Foundation API to get at this instead of this ugly parsing....
-    @osVersion ||= OSX::NSDictionary.dictionaryWithContentsOfFile("/System/Library/CoreServices/SystemVersion.plist").objectForKey("ProductVersion").doubleValue
-  end
   
   def backroundColor
     if self.window.keyWindow?
@@ -180,7 +175,7 @@ class OSX::SABookmarkBar < OSX::NSView
   # end
   
   def addBookmarkButton(bookmark)
-    newButton = OSX::SABookmarkButton.alloc.initWithBookmark_target_OSVersion(bookmark, self, self.getOSVersion)
+    newButton = OSX::SABookmarkButton.alloc.initWithBookmark_target(bookmark, self)
     
     # x, y coordinates
     buttonHeight = newButton.frame.size.height
