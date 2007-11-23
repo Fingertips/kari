@@ -243,7 +243,6 @@ class OSX::SABookmarkBar < OSX::NSView
     # bring the button to the foreground
     unless self.dragging?
       button = @trackingRects[theEvent.trackingNumber]
-      button.state = OSX::NSOnState
       button.removeFromSuperview
       self.addSubview button
     end

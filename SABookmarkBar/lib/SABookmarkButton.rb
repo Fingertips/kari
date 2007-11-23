@@ -75,6 +75,7 @@ class OSX::SABookmarkButton < OSX::NSButton
   end
   
   def mouseDown(theEvent)
+    self.state = OSX::NSOnState
     # If the button is dragged @dragging will be set to true
     # But if the button isn't dragged the mouseUp event handler will call the original action.
     @dragging = false
@@ -92,6 +93,7 @@ class OSX::SABookmarkButton < OSX::NSButton
           OSX::NSOffState
         end
     else
+      self.state = OSX::NSOffState
       # FIXME: Is there a better way to call a original set action?
       self.superview.bookmarkButtonClicked(self)
     end
@@ -106,7 +108,6 @@ class OSX::SABookmarkButton < OSX::NSButton
       # check if we really want to perform a drag
       check_drag_threshold event.deltaX
     else
-      # What's the middle state?!
       self.state = OSX::NSOnState
     
       new_x = self.frame.origin.x + event.deltaX
