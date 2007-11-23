@@ -9,32 +9,39 @@
 require 'osx/cocoa'
 
 class OSX::SABookmarkButton < OSX::NSButton
+  MENU_ITEMS = [['Open', :menu_open], ['Delete', :menu_delete]]
   
   attr_reader :bookmark
   
   def initWithBookmark_target(bookmark, target)
     if self.init
-      cell = OSX::NSButtonCell.alloc.init
-      cell.controlSize = OSX::NSSmallControlSize
-      self.cell = cell
-      
-      self.buttonType = OSX::NSPushOnPushOffButton
-      self.bezelStyle = OSX::NSRecessedBezelStyle
-
-      self.font = OSX::NSFont.boldSystemFontOfSize(11)
-      self.title = bookmark.title
-      self.sizeToFit
-      
-      @dragging = @ignore_dragging = false
       @bookmark, @target = bookmark, target
+      @dragging = @ignore_dragging = false
       
-      menu = OSX::NSMenu.alloc.initWithTitle('Contextual Menu')
-      menu.insertItemWithTitle_action_keyEquivalent_atIndex('Open', :menu_open, '', 0)
-      menu.insertItemWithTitle_action_keyEquivalent_atIndex('Delete', :menu_delete, '', 1)
-      self.menu = menu
+      setup_cell
+      setup_button
+      setup_menu
       
-      return self
+      self
     end
+  end
+  
+  def setup_button
+    self.buttonType = OSX::NSPushOnPushOffButton
+    self.bezelStyle = OSX::NSRecessedBezelStyle
+    self.font = OSX::NSFont.boldSystemFontOfSize(11)
+    self.title = @bookmark.title
+    self.sizeToFit
+  end
+  
+  def setup_cell
+    self.cell = OSX::NSButtonCell.alloc.init
+    self.cell.controlSize = OSX::NSSmallControlSize
+  end
+  
+  def setup_menu
+    self.menu = OSX::NSMenu.alloc.initWithTitle('Contextual Menu')
+    MENU_ITEMS.each_with_index {|options, idx| self.menu.insertItemWithTitle_action_keyEquivalent_atIndex(options.first, options.last, '', idx) }
   end
   
   # drag and drop support methods
@@ -107,8 +114,8 @@ class OSX::SABookmarkButton < OSX::NSButton
       end
     
       self.frameOrigin = OSX::NSMakePoint(new_x, self.frame.origin.y)
-      self.needsDisplay = true
-      self.superview.needsDisplay = true
+      #self.needsDisplay = true
+      #self.superview.needsDisplay = true
     
       # report position back to the bookmark bar
       self.superview.draggingButton_xCoordinate(self)
