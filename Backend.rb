@@ -30,9 +30,11 @@ class Backend < OSX::NSObject
   def kill_running_backend_process
     # this should be done through a http `quit` request instead of using kill.
     if last_process = OSX::NSUserDefaults.standardUserDefaults['LastBackendProcess']
-      running_pid = `lsof -i tcp:#{last_process['port']} | awk '{ if ( NR > 1 ) print $2 }'`.to_i
-      if last_process['pid'] == running_pid
-        `kill #{running_pid}`
+      Thread.new(last_process) do |last_process|
+        running_pid = `lsof -i tcp:#{last_process['port']} | awk '{ if ( NR > 1 ) print $2 }'`.to_i
+        if last_process['pid'] == running_pid
+          `kill #{running_pid}`
+        end
       end
     end
   end
