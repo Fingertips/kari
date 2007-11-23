@@ -24,7 +24,7 @@ class OSX::SABookmarkButton < OSX::NSButton
         self.buttonType = OSX::NSPushOnPushOffButton
         self.bordered = false
       end
-      self.font = OSX::NSFont.boldSystemFontOfSize(12)
+      self.font = OSX::NSFont.boldSystemFontOfSize(11)
       self.title = bookmark.title
       self.sizeToFit
       
@@ -75,7 +75,7 @@ class OSX::SABookmarkButton < OSX::NSButton
   end
   
   def mouseDown(theEvent)
-    self.state = OSX::NSOnState
+    self.highlight(true)
     # If the button is dragged @dragging will be set to true
     # But if the button isn't dragged the mouseUp event handler will call the original action.
     @dragging = false
@@ -89,7 +89,7 @@ class OSX::SABookmarkButton < OSX::NSButton
       self.superview.bookmarkButtonClicked(self)
     end
     # reset
-    self.state = OSX::NSOffState
+    self.highlight(false)
     @dragging = @ignore_further_dragging = false
   end
   
@@ -100,8 +100,6 @@ class OSX::SABookmarkButton < OSX::NSButton
       # check if we really want to perform a drag
       check_drag_threshold event.deltaX
     else
-      self.state = OSX::NSOnState
-    
       new_x = self.frame.origin.x + event.deltaX
       if new_x < self.superview.left_margin
         # can't move to the left beyond the superviews frame + margin
