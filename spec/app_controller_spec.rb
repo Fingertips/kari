@@ -47,7 +47,7 @@ describe AppController do
     @app_controller.instance_variable_get(:@backend).should_not be_running
   end
   
-  it "should assign itself as the delegate for the bookmark controller open the index page on awakeFromNib" do
+  it "should assign itself as the delegate for multiple controllers on awakeFromNib" do
     bookmark_controller_mock = mock("BookmarkController")
     bookmark_controller_mock.should_receive(:delegate=).once.with(@app_controller)
     @app_controller.instance_variable_set(:@bookmarkController, bookmark_controller_mock)
@@ -68,6 +68,13 @@ describe AppController do
     @app_controller.instance_variable_set(:@window, window_mock)
     
     @app_controller.awakeFromNib
+  end
+
+  it "should change the startup status message if it's the first run and it's building the index" do
+    status_label_mock = mock('Status')
+    status_label_mock.should_receive(:stringValue=).with('Indexing documentation')
+    @app_controller.instance_variable_set(:@statusMessage, status_label_mock)
+    @app_controller.backendDidStartFirstIndexing(nil)
   end
 
   it "should pass a query url on to the webview controller" do

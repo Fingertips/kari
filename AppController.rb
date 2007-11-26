@@ -1,7 +1,7 @@
 require 'osx/cocoa'
 #require "Backend"
-require "WebViewController"
-require 'PreferencesController'
+require File.expand_path("../WebViewController", __FILE__)
+require File.expand_path('../PreferencesController', __FILE__)
 OSX.require_framework 'WebKit'
 
 class AppController < OSX::NSObject
@@ -36,13 +36,6 @@ class AppController < OSX::NSObject
     @webViewController.port = @backend.port
   end
   
-  def backendDidStart(sender)
-    @statusSpinner.stopAnimation(self)
-    @statusSpinner.hidden = true
-    @statusMessage.hidden = true
-    @webViewController.home
-  end
-  
   def search(search_field)
     @searchProgressIndicator.startAnimation(nil)
     @webViewController.search search_field.stringValue.to_s
@@ -59,6 +52,19 @@ class AppController < OSX::NSObject
   def externalRequestForDocumentation(aNotification)
     query = aNotification.userInfo['query']
     @webViewController.search(query) unless query.nil? || query.empty?
+  end
+  
+  # Backend delegate methods
+  
+  def backendDidStartFirstIndexing(sender)
+    @statusMessage.stringValue = 'Indexing documentation'
+  end
+  
+  def backendDidStart(sender)
+    @statusSpinner.stopAnimation(self)
+    @statusSpinner.hidden = true
+    @statusMessage.hidden = true
+    @webViewController.home
   end
   
   # Window delegate matehods

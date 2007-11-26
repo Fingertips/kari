@@ -49,6 +49,8 @@ task :bench do
   end  
 end
 
-task :clean do
+desc "Removes the preference and app support files."
+task :clean_user_files do
   `rm ~/Library/Preferences/com.fngtps.Kari.plist`
+  FileUtils.rm_rf(File.expand_path("~/Library/Application Support/Kari"))
 end
