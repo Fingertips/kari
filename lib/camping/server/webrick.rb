@@ -36,8 +36,8 @@ class Webrick < Camping::Server::Base
         end
 
         # Server up
-        trap(:INT) do
-          @s.shutdown
+        [:TERM, :INT].each do |signal|
+          trap(signal) { @s.shutdown }
         end
         @s.start
     end
