@@ -49,16 +49,20 @@ class WebViewController < OSX::NSObject
   
   # helpers
   
+  def blank
+    load_url 'about:blank'
+  end
+  
   def home
-    self.load_url BASE_URL
+    load_url BASE_URL
   end
   
   def search(query)
-    self.load_url "#{BASE_URL}search?q=#{query}"
+    load_url "#{BASE_URL}search?q=#{query}"
   end
   
   def show(query)
-    self.load_url "#{BASE_URL}show/#{query}"
+    load_url "#{BASE_URL}show/#{query}"
   end
   
 end

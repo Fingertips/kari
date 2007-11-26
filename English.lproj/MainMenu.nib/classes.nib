@@ -132,6 +132,8 @@
 				<string>id</string>
 				<key>openPreferencesWindow</key>
 				<string>id</string>
+				<key>rebuildIndex</key>
+				<string>id</string>
 				<key>search</key>
 				<string>id</string>
 			</dict>

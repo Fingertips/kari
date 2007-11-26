@@ -1,5 +1,6 @@
 require 'osx/cocoa'
 #require "Backend"
+
 require File.expand_path("../WebViewController", __FILE__)
 require File.expand_path('../PreferencesController', __FILE__)
 OSX.require_framework 'WebKit'
@@ -11,13 +12,24 @@ class AppController < OSX::NSObject
   def init
     if super_init
       PreferencesController.registerDefaults
-      
-      @backend = Backend.alloc.init
-      @backend.delegate = self
-      @backend.launch
+      setupBackend
       OSX::NSApplication.sharedApplication.setDelegate(self)
       return self
     end
+  end
+  
+  def setupBackend
+    @backend = Backend.alloc.init
+    @backend.delegate = self
+    @backend.launch
+  end
+  
+  def showStatus
+    @webViewController.blank
+    @statusSpinner.startAnimation(self)
+    @statusMessage.stringValue = 'Starting'
+    @statusSpinner.hidden = false
+    @statusMessage.hidden = false
   end
   
   def awakeFromNib
@@ -33,7 +45,6 @@ class AppController < OSX::NSObject
     @window.delegate = self
     @bookmarkController.delegate = self
     @webViewController.delegate = self
-    @webViewController.port = @backend.port
   end
   
   def search(search_field)
@@ -49,6 +60,13 @@ class AppController < OSX::NSObject
     PreferencesController.alloc.init.showWindow(self)
   end
   
+  def rebuildIndex(sender)
+    @backend.terminate
+    showStatus
+    Backend.removeIndex
+    setupBackend
+  end
+  
   def externalRequestForDocumentation(aNotification)
     query = aNotification.userInfo['query']
     @webViewController.search(query) unless query.nil? || query.empty?
@@ -61,6 +79,7 @@ class AppController < OSX::NSObject
   end
   
   def backendDidStart(sender)
+    @webViewController.port = @backend.port
     @statusSpinner.stopAnimation(self)
     @statusSpinner.hidden = true
     @statusMessage.hidden = true

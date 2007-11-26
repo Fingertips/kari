@@ -7,10 +7,16 @@ class Backend < OSX::NSObject
   attr_accessor :delegate
   attr_reader :port
   
+  INDEX_FILE = File.expand_path("~/Library/Application Support/Kari/index.marshal")
+  
+  def self.removeIndex
+    File.delete(INDEX_FILE)
+  end
+  
   def init
     if super_init
       # quit any already running process
-      kill_running_backend_process
+      #kill_running_backend_process
       
       # First time? Check before we launch the backend,
       # otherwise it creates the file and we can't check
@@ -33,20 +39,20 @@ class Backend < OSX::NSObject
     end
   end
   
-  def kill_running_backend_process
-    # this should be done through a http `quit` request instead of using kill.
-    if last_process = OSX::NSUserDefaults.standardUserDefaults['LastBackendProcess']
-      Thread.new(last_process) do |last_process|
-        running_pid = `lsof -i tcp:#{last_process['port']} | awk '{ if ( NR > 1 ) print $2 }'`.to_i
-        if last_process['pid'] == running_pid
-          `kill #{running_pid}`
-        end
-      end
-    end
-  end
+  # def kill_running_backend_process
+  #   # this should be done through a http `quit` request instead of using kill.
+  #   if last_process = OSX::NSUserDefaults.standardUserDefaults['LastBackendProcess']
+  #     Thread.new(last_process) do |last_process|
+  #       running_pid = `lsof -i tcp:#{last_process['port']} | awk '{ if ( NR > 1 ) print $2 }'`.to_i
+  #       if last_process['pid'] == running_pid
+  #         `kill #{running_pid}`
+  #       end
+  #     end
+  #   end
+  # end
   
   def check_if_index_file_exists
-    @index_file_exists = File.exist?(File.expand_path("~/Library/Application Support/Kari/index.marshal"))
+    @index_file_exists = File.exist?(INDEX_FILE)
   end
   
   def first_run?
