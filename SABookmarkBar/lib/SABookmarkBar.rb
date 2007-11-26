@@ -110,7 +110,7 @@ class OSX::SABookmarkBar < OSX::NSView
   end
   
   def addBookmarkButton(bookmark)
-    newButton = OSX::SABookmarkButton.alloc.initWithBookmark_target(bookmark, self)
+    newButton = OSX::SABookmarkButton.alloc.initWithBookmark_target_action(bookmark, self, :bookmarkButtonClicked)
     
     # x, y coordinates
     buttonHeight = newButton.frame.size.height

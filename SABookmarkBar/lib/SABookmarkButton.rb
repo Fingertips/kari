@@ -13,12 +13,12 @@ class OSX::SABookmarkButton < OSX::NSButton
   
   attr_reader :bookmark
   
-  def initWithBookmark_target(bookmark, target)
+  def initWithBookmark_target_action(bookmark, target, action)
     if self.init
-      @bookmark, @target = bookmark, target
+      @bookmark = bookmark
       @dragging = @ignore_dragging = false
       
-      setup_cell
+      setup_cell(target, action)
       setup_button
       setup_menu
       
@@ -34,14 +34,29 @@ class OSX::SABookmarkButton < OSX::NSButton
     self.sizeToFit
   end
   
-  def setup_cell
+  def setup_cell(target, action)
     self.cell = OSX::NSButtonCell.alloc.init
+    self.cell.target = target
+    self.cell.action = action
     self.cell.controlSize = OSX::NSSmallControlSize
   end
   
   def setup_menu
     self.menu = OSX::NSMenu.alloc.initWithTitle('Contextual Menu')
     MENU_ITEMS.each_with_index {|options, idx| self.menu.insertItemWithTitle_action_keyEquivalent_atIndex(options.first, options.last, '', idx) }
+  end
+  
+  def redraw_bar
+    self.superview.needsDisplay = true
+  end
+  
+  # key methods
+  
+  def resignFirstResponder
+    self.highlight(false)
+    self.state = OSX::NSOffState
+    redraw_bar
+    true
   end
   
   # drag and drop support methods
