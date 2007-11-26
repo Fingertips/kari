@@ -6,8 +6,16 @@ require File.expand_path('../PreferencesController', __FILE__)
 OSX.require_framework 'WebKit'
 
 class AppController < OSX::NSObject
-  ib_outlets :window, :webView, :webViewController, :searchProgressIndicator, :backButton, :forwardButton, :bookmarkController
-  ib_outlets :statusMessage, :statusSpinner
+  ib_outlet :window
+  ib_outlet :webView
+  ib_outlet :webViewController
+  ib_outlet :searchProgressIndicator
+  ib_outlet :searchTextField
+  ib_outlet :backButton
+  ib_outlet :forwardButton
+  ib_outlet :bookmarkController
+  ib_outlet :statusMessage
+  ib_outlet :statusSpinner
   
   def init
     if super_init
@@ -33,6 +41,8 @@ class AppController < OSX::NSObject
   end
   
   def awakeFromNib
+    @window.makeFirstResponder(@searchTextField)
+    
     @statusSpinner.startAnimation(self)
     
     OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(

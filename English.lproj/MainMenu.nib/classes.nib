@@ -157,6 +157,8 @@
 				<string>id</string>
 				<key>searchProgressIndicator</key>
 				<string>id</string>
+				<key>searchTextField</key>
+				<string>id</string>
 				<key>statusMessage</key>
 				<string>id</string>
 				<key>statusSpinner</key>

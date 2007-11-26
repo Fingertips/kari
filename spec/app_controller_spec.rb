@@ -48,22 +48,25 @@ describe AppController do
   end
   
   it "should assign itself as the delegate for multiple controllers on awakeFromNib" do
+    window_mock = mock("Window")
+    @app_controller.instance_variable_set(:@searchTextField, 'search text field')
+    window_mock.should_receive(:makeFirstResponder).with('search text field')
+    
     bookmark_controller_mock = mock("BookmarkController")
     bookmark_controller_mock.should_receive(:delegate=).once.with(@app_controller)
     @app_controller.instance_variable_set(:@bookmarkController, bookmark_controller_mock)
     
-    @app_controller.instance_variable_get(:@backend).should_receive(:port).and_return(9999)
-    
+    # @app_controller.instance_variable_get(:@backend).should_receive(:port).and_return(9999)
+    # 
     webview_controller_mock = mock("WebViewController")
     webview_controller_mock.should_receive(:delegate=).with(@app_controller)
-    webview_controller_mock.should_receive(:port=).with(9999)
+    # webview_controller_mock.should_receive(:port=).with(9999)
     @app_controller.instance_variable_set(:@webViewController, webview_controller_mock)
     
     spinner_mock = mock("Spinner")
     spinner_mock.should_receive(:startAnimation).with(@app_controller)
     @app_controller.instance_variable_set(:@statusSpinner, spinner_mock)
     
-    window_mock = mock("Window")
     window_mock.should_receive(:delegate=).with(@app_controller)
     @app_controller.instance_variable_set(:@window, window_mock)
     
