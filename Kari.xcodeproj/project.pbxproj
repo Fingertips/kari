@@ -43,6 +43,8 @@
 		519D9B0F0C393DE400CAC573 /* FontSmallerDisabled.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9B090C393DE400CAC573 /* FontSmallerDisabled.tif */; };
 		519D9B100C393DE400CAC573 /* FontSmallerPressed.tif in Resources */ = {isa = PBXBuildFile; fileRef = 519D9B0A0C393DE400CAC573 /* FontSmallerPressed.tif */; };
 		51B008520C38EB90009130E3 /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B008510C38EB90009130E3 /* RubyCocoa.framework */; };
+		51BE85CF0CFC8B6200EA26DB /* FontBiggerTemplate.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 51BE85CD0CFC8B6200EA26DB /* FontBiggerTemplate.tiff */; };
+		51BE85D00CFC8B6200EA26DB /* FontSmallerTemplate.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 51BE85CE0CFC8B6200EA26DB /* FontSmallerTemplate.tiff */; };
 		51DD58650C9AC9FC00B41965 /* free_tcp_port.rb in Resources */ = {isa = PBXBuildFile; fileRef = 51DD58640C9AC9FC00B41965 /* free_tcp_port.rb */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +100,8 @@
 		519D9B090C393DE400CAC573 /* FontSmallerDisabled.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = FontSmallerDisabled.tif; sourceTree = "<group>"; };
 		519D9B0A0C393DE400CAC573 /* FontSmallerPressed.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = FontSmallerPressed.tif; sourceTree = "<group>"; };
 		51B008510C38EB90009130E3 /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
+		51BE85CD0CFC8B6200EA26DB /* FontBiggerTemplate.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = FontBiggerTemplate.tiff; sourceTree = "<group>"; };
+		51BE85CE0CFC8B6200EA26DB /* FontSmallerTemplate.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = FontSmallerTemplate.tiff; sourceTree = "<group>"; };
 		51DD58640C9AC9FC00B41965 /* free_tcp_port.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = free_tcp_port.rb; sourceTree = "<group>"; };
 		E8F5E25803AEB7C803A81C6F /* rb_main.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = rb_main.rb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -178,6 +182,8 @@
 			isa = PBXGroup;
 			children = (
 				5141FA010C954CB300FF22F6 /* PreferencesController.rb */,
+				51BE85CD0CFC8B6200EA26DB /* FontBiggerTemplate.tiff */,
+				51BE85CE0CFC8B6200EA26DB /* FontSmallerTemplate.tiff */,
 				51DD58640C9AC9FC00B41965 /* free_tcp_port.rb */,
 				5156289B0C90370D00EFAB2E /* WebHistoryController.rb */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
@@ -306,6 +312,8 @@
 				5141FA020C954CB300FF22F6 /* PreferencesController.rb in Resources */,
 				5141FA080C954D5000FF22F6 /* Preferences.nib in Resources */,
 				51DD58650C9AC9FC00B41965 /* free_tcp_port.rb in Resources */,
+				51BE85CF0CFC8B6200EA26DB /* FontBiggerTemplate.tiff in Resources */,
+				51BE85D00CFC8B6200EA26DB /* FontSmallerTemplate.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,8 +11,6 @@ class AppController < OSX::NSObject
   ib_outlet :webViewController
   ib_outlet :searchProgressIndicator
   ib_outlet :searchTextField
-  ib_outlet :backButton
-  ib_outlet :forwardButton
   ib_outlet :bookmarkController
   ib_outlet :statusMessage
   ib_outlet :statusSpinner
@@ -114,8 +112,6 @@ class AppController < OSX::NSObject
     # R159: No more window title for the specific doc.
     #@window.title = @webViewController.doc_title unless @webViewController.doc_title.nil?
     @searchProgressIndicator.stopAnimation(nil)
-    @backButton.enabled = @webViewController.can_go_back?
-    @forwardButton.enabled = @webViewController.can_go_forward?
   end
   
   # Application delegate methods

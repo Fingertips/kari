@@ -2,6 +2,9 @@ require "osx/cocoa"
 
 class WebViewController < OSX::NSObject
   ib_outlet :webview
+  ib_outlet :backForwardButton
+  ib_outlet :smallerLargerButton
+  
   attr_accessor :delegate, :port
   attr_reader :doc_title
   
@@ -19,6 +22,8 @@ class WebViewController < OSX::NSObject
   end
   
   def webViewFinishedLoading(aNotification)
+    @backForwardButton.setEnabled_forSegment(can_go_back?, BACK_BUTTON)
+    @backForwardButton.setEnabled_forSegment(can_go_forward?, FORWARD_BUTTON)
     @delegate.webViewFinishedLoading(aNotification)
   end
   
@@ -47,6 +52,14 @@ class WebViewController < OSX::NSObject
     @webview.canGoForward == 1
   end
   
+  def can_make_text_smaller?
+    @webview.canMakeTextSmaller == 1
+  end
+  
+  def can_make_text_larger?
+    @webview.canMakeTextLarger == 1
+  end
+  
   # helpers
   
   def blank
@@ -65,4 +78,29 @@ class WebViewController < OSX::NSObject
     load_url "#{BASE_URL}show/#{query}"
   end
   
+  # Buttons
+  
+  BACK_BUTTON = 0
+  FORWARD_BUTTON = 1
+  def goBackOrForward(sender)
+    if sender.selectedSegment == BACK_BUTTON
+      @webview.goBack(self)
+    else
+      @webview.goForward(self)
+    end
+  end
+  ib_action :goBackOrForward
+  
+  SMALLER_BUTTON = 0
+  LARGER_BUTTON = 1
+  def fontSmallerOrLarger(sender)
+    if sender.selectedSegment == SMALLER_BUTTON
+      @webview.makeTextSmaller(self)
+    else
+      @webview.makeTextLarger(self)
+    end
+    sender.setEnabled_forSegment(can_make_text_smaller?, SMALLER_BUTTON)
+    sender.setEnabled_forSegment(can_make_text_larger?, LARGER_BUTTON)
+  end
+  ib_action :fontSmallerOrLarger
 end
