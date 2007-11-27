@@ -110,32 +110,42 @@ class OSX::SABookmarkBar < OSX::NSView
   end
   
   def addBookmarkButton(bookmark)
-    newButton = OSX::SABookmarkButton.alloc.initWithBookmark_target_action(bookmark, self, :bookmarkButtonClicked)
+    button = OSX::SABookmarkButton.alloc.initWithBookmark_target_action(bookmark, self, :bookmarkButtonClicked)
     
     # x, y coordinates
-    buttonHeight = newButton.frame.size.height
+    buttonHeight = button.frame.size.height
     viewHeight = self.frame.size.height
     buttonYCoordinate = (viewHeight - buttonHeight) / 2
     buttonXCoordinate = @buttonX
     
-    newButton.frameOrigin = OSX::NSMakePoint(buttonXCoordinate, buttonYCoordinate)
+    button.frameOrigin = OSX::NSMakePoint(buttonXCoordinate, buttonYCoordinate)
 
     # for next button
-    @buttonX += newButton.frame.size.width + SPACING
+    @buttonX += button.frame.size.width + SPACING
     
     # add to view
     if @buttonX < (self.frame.size.width - @overflowButton.frame.size.width)
-      self.addSubview newButton
-      @buttons.push newButton
-      newButton.showsBorderOnlyWhileMouseInside = true
+      self.addSubview(button)
+      
+      # make sure the previous button has this button as next responder
+      @buttons.last.nextKeyView = button unless @buttons.last.nil?
+      # and let's set the next one for if this is the last button
+      #button.nextKeyView = resetKeyViewAfterLastButton unless keyViewAfterLastButton.nil?
+
+      @buttons.push(button)
+      button.showsBorderOnlyWhileMouseInside = true
       
       # drag & drop support
-      self.addTrackingRectForButton(newButton)
-      self.addPostitionForButton(newButton)
+      self.addTrackingRectForButton(button)
+      self.addPostitionForButton(button)
       
-      newButton
+      button
     else
-      self.createOverflowMenu if @overflowMenu.nil?
+      if @overflowMenu.nil?
+        # make sure the nextKeyView chain is set back as it was
+        resetKeyViewsAfterLastButton unless keyViewsAfterLastButton.nil?
+        self.createOverflowMenu
+      end
       menu_item = OSX::SABookmarkMenuItem.alloc.initWithBookmark_action_keyEquivalent(bookmark, :bookmarkButtonClicked, "")
       menu_item.target = self
       @overflowMenu.addItem menu_item
@@ -144,12 +154,36 @@ class OSX::SABookmarkBar < OSX::NSView
     end
   end
   
+  # These key view methods are not the way it should be...
+  
+  def storeKeyViewsAfterLastButton
+    return if @next_key_views_after_last_button
+    @buttons.reverse.each do |obj|
+      next if obj.is_a? OSX::NSMenuItem
+      @next_key_views_after_last_button = [obj.nextKeyView, obj.nextKeyView.nextKeyView]
+      break
+    end
+  end
+  
+  def keyViewsAfterLastButton
+    @next_key_views_after_last_button
+  end
+  
+  def resetKeyViewsAfterLastButton
+    @buttons.last.nextKeyView = @next_key_views_after_last_button.first
+    @next_key_views_after_last_button.first.nextKeyView = @next_key_views_after_last_button.last
+  end
+  
   def removeBookmarks
+    storeKeyViewsAfterLastButton
+    
     # remove old stuff
     @buttonPositions = []
     
     @buttons.each do |obj|
-      obj.removeFromSuperview unless obj.is_a? OSX::NSMenuItem # remove old buttons
+      unless obj.is_a? OSX::NSMenuItem # remove old buttons
+        obj.removeFromSuperview
+      end
     end
     @buttons = []
     

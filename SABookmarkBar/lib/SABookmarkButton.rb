@@ -15,10 +15,10 @@ class OSX::SABookmarkButton < OSX::NSButton
   
   def initWithBookmark_target_action(bookmark, target, action)
     if self.init
-      @bookmark = bookmark
+      @bookmark, @target, @action = bookmark, target, action
       @dragging = @ignore_dragging = false
       
-      setup_cell(target, action)
+      setup_cell
       setup_button
       setup_menu
       
@@ -34,10 +34,10 @@ class OSX::SABookmarkButton < OSX::NSButton
     self.sizeToFit
   end
   
-  def setup_cell(target, action)
+  def setup_cell
     self.cell = OSX::NSButtonCell.alloc.init
-    self.cell.target = target
-    self.cell.action = action
+    self.cell.target = self
+    self.cell.action = :bookmarkButtonClicked
     self.cell.controlSize = OSX::NSSmallControlSize
   end
   
@@ -50,11 +50,29 @@ class OSX::SABookmarkButton < OSX::NSButton
     self.superview.needsDisplay = true
   end
   
+  def bookmarkButtonClicked(sender)
+    @target.send(@action, self)
+    self.state = OSX::NSOffState
+  end
+  
   # key methods
+  
+  def accepsFirstResponder
+    true
+  end
+  
+  def becomeFirstResponder
+    # FIXME: expensive?
+    #p @target.instance_variable_get(:@buttons)
+    #p self.nextKeyView
+    redraw_bar
+    true
+  end
   
   def resignFirstResponder
     self.highlight(false)
     self.state = OSX::NSOffState
+    # FIXME: expensive?
     redraw_bar
     true
   end

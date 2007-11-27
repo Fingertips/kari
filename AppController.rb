@@ -98,7 +98,7 @@ class AppController < OSX::NSObject
   
   # Window delegate matehods
   
-  def windowWillClose(aNotification)
+  def windowWillClose(notification)
     OSX::NSApplication.sharedApplication.terminate(self)
   end
   
