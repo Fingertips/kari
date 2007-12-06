@@ -1,7 +1,7 @@
 require 'osx/cocoa'
 
 class ToolbarController < OSX::NSObject
-  ib_outlet :window, :historyBackAndForwardView, :fontSmallerAndBiggerView, :searchView, :homeView, :addBookmarkView
+  ib_outlet :window, :historyBackAndForwardView, :searchView, :homeView, :addBookmarkView
   
   def init
     if super_init
@@ -17,7 +17,7 @@ class ToolbarController < OSX::NSObject
     @window.toolbar = @toolbar
   end
   
-  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'FontSmallerAndBiggerItem', 'HomeItem', 'AddBookmarkItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
+  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'HomeItem', 'AddBookmarkItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
   def toolbarAllowedItemIdentifiers(toolbar)
     TOOLBAR_ITEMS
   end

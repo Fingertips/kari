@@ -5,7 +5,7 @@ require 'osx/cocoa'
 #$DEBUG = true
 #$KARI_DEBUG = false
 $KARI_DEBUG = true
-ENV['KARI_DEBUG'] = 'true'
+ENV['KARI_DEBUG'] = $KARI_DEBUG.to_s
 
 if $KARI_DEBUG
   require File.expand_path('../../../../../SABookmarkBar/SABookmarkBar', File.dirname(__FILE__))

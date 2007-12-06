@@ -3,7 +3,6 @@ require "osx/cocoa"
 class WebViewController < OSX::NSObject
   ib_outlet :webview
   ib_outlet :backForwardButton
-  ib_outlet :smallerLargerButton
   
   attr_accessor :delegate, :port
   attr_reader :doc_title
@@ -91,16 +90,22 @@ class WebViewController < OSX::NSObject
   end
   ib_action :goBackOrForward
   
-  SMALLER_BUTTON = 0
-  LARGER_BUTTON = 1
-  def fontSmallerOrLarger(sender)
-    if sender.selectedSegment == SMALLER_BUTTON
-      @webview.makeTextSmaller(self)
-    else
-      @webview.makeTextLarger(self)
-    end
-    sender.setEnabled_forSegment(can_make_text_smaller?, SMALLER_BUTTON)
-    sender.setEnabled_forSegment(can_make_text_larger?, LARGER_BUTTON)
+  def fontLarger(sender)
+    @webview.makeTextLarger(self)
   end
-  ib_action :fontSmallerOrLarger
+  ib_action :fontLarger
+  
+  def fontSmaller(sender)
+    @webview.makeTextSmaller(self)
+  end
+  ib_action :fontSmaller
+  
+  def validateMenuItem(item)
+    case item.action
+    when 'fontLarger:' then can_make_text_larger?
+    when 'fontSmaller:' then can_make_text_smaller?
+    else
+      false
+    end
+  end
 end
