@@ -65,27 +65,57 @@ class OSX::SABookmarkBar < OSX::NSView
     self.needsDisplay = true
   end
   
-  def backroundColor
+  def barColors
+    # [[bacground color],        [top line color],         [bottom line color]     ]
     if self.window.keyWindow?
-      OSX::NSColor.colorWithCalibratedRed_green_blue_alpha(0.588, 0.588, 0.588, 1)
+      [[0.588, 0.588, 0.588, 1], [0.753, 0.753, 0.753, 1], [0.251, 0.251, 0.251, 1]]
     else
-      OSX::NSColor.colorWithCalibratedRed_green_blue_alpha(0.812, 0.812, 0.812, 1)
+      [[0.812, 0.812, 0.812, 1], [0.886, 0.886, 0.886, 1], [0.529, 0.529, 0.529, 1]]
     end
   end
   
   def drawRect(rect)
-    # draw background color which is the same as the toolbar color
-    self.backroundColor.set
-    OSX::NSBezierPath.fillRect(rect)
+    bounds = self.bounds
+    context = OSX::NSGraphicsContext.currentContext.graphicsPort
     
-    # draw white-ish line at the top
-    OSX::NSColor.colorWithCalibratedRed_green_blue_alpha(0.91, 0.91, 0.91, 1).set
-    OSX::NSBezierPath.strokeLineFromPoint_toPoint OSX::NSMakePoint(0, self.frame.height), OSX::NSMakePoint(rect.size.width, self.frame.height)
+    backgroundColor, topLineColor, bottomLineColor = barColors
     
-    # draw back line at the bottom
-    OSX::NSColor.blackColor.set
-    OSX::NSBezierPath.strokeLineFromPoint_toPoint OSX::NSMakePoint(0, 0), OSX::NSMakePoint(rect.size.width, 0)
+    OSX::CGContextSetRGBFillColor(context, *backgroundColor)
+    OSX::CGContextFillRect(context, OSX::CGRect.new(bounds.origin, bounds.size))
+    
+    color = topLineColor
+    from = [0, bounds.size.height]
+    to = [bounds.size.width, bounds.size.height]
+    drawLine(context, from, to, color)
+    
+    color = bottomLineColor
+    from = [0, 0]
+    to = [bounds.size.width, 0]
+    drawLine(context, from, to, color)
   end
+  
+  def drawLine(context, from, to, color)
+    OSX::CGContextSetLineWidth(context, 2.0)
+    OSX::CGContextBeginPath(context)
+    OSX::CGContextMoveToPoint(context, *from)
+    OSX::CGContextAddLineToPoint(context, *to)
+    OSX::CGContextSetRGBStrokeColor(context, *color)
+    OSX::CGContextStrokePath(context)
+  end
+  
+  # def drawRect(rect)
+  #   # draw background color which is the same as the toolbar color
+  #   self.backroundColor.set
+  #   OSX::NSBezierPath.fillRect(rect)
+  #   
+  #   # draw white-ish line at the top
+  #   OSX::NSColor.colorWithCalibratedRed_green_blue_alpha(0.91, 0.91, 0.91, 1).set
+  #   OSX::NSBezierPath.strokeLineFromPoint_toPoint OSX::NSMakePoint(0, self.frame.height), OSX::NSMakePoint(rect.size.width, self.frame.height)
+  #   
+  #   # draw back line at the bottom
+  #   OSX::NSColor.blackColor.set
+  #   OSX::NSBezierPath.strokeLineFromPoint_toPoint OSX::NSMakePoint(0, 0), OSX::NSMakePoint(rect.size.width, 0)
+  # end
   
   def bookmarkButtonClicked(sender)
     @delegate.bookmarkClicked(sender.bookmark)
