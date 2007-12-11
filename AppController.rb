@@ -60,9 +60,10 @@ class AppController < OSX::NSObject
     @webViewController.search search_field.stringValue.to_s
   end
   
-  def home(button)
-    @webViewController.home
-  end
+  # TODO: Remove
+  # def home(button)
+  #   @webViewController.home
+  # end
   
   def openPreferencesWindow(sender)
     PreferencesController.alloc.init.showWindow(self)

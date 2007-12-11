@@ -65,9 +65,10 @@ class WebViewController < OSX::NSObject
     load_url 'about:blank'
   end
   
-  def home
+  def home(sender = nil)
     load_url BASE_URL
   end
+  ib_action :home
   
   def search(query)
     load_url "#{BASE_URL}search?q=#{query}"
@@ -105,7 +106,7 @@ class WebViewController < OSX::NSObject
     when 'fontLarger:' then can_make_text_larger?
     when 'fontSmaller:' then can_make_text_smaller?
     else
-      false
+      true
     end
   end
 end

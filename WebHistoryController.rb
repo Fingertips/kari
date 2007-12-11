@@ -63,6 +63,10 @@ class WebHistoryController < OSX::NSObject
     end
   end
   
+  def lastHistoryItem
+    @historyMenu.numberOfItems.to_i - 3
+  end
+  
   def addMenuItemForHistoryItem(history_item)
     menu_item = OSX::NSMenuItem.alloc.objc_send :initWithTitle, history_item.alternateTitle,
                                                 :action, "goToHistoryItem:",
@@ -70,7 +74,7 @@ class WebHistoryController < OSX::NSObject
 
     menu_item.target = self
     menu_item.representedObject = history_item
-    @historyMenu.addItem menu_item
+    @historyMenu.insertItem_atIndex(menu_item, lastHistoryItem + 1)
   end
   
   def goToHistoryItem(sender)
@@ -79,7 +83,7 @@ class WebHistoryController < OSX::NSObject
   
   def clearHistory(sender)
     @history.removeAllItems
-    (@historyMenu.numberOfItems.to_i - 1).downto(4) { |idx| @historyMenu.removeItemAtIndex(idx) }
+    lastHistoryItem.downto(4) { |idx| @historyMenu.removeItemAtIndex(idx) }
     File.delete(@history_file_path)
   end
 end
