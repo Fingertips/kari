@@ -47,7 +47,7 @@ class OSX::SABookmarkButton < OSX::NSButton
   end
   
   def redraw_bar
-    self.superview.needsDisplay = true
+    self.superview.needsDisplayInRect = self.frame
   end
   
   def bookmarkButtonClicked(sender)
@@ -62,7 +62,6 @@ class OSX::SABookmarkButton < OSX::NSButton
   end
   
   def becomeFirstResponder
-    # FIXME: expensive?
     #p @target.instance_variable_get(:@buttons)
     #p self.nextKeyView
     redraw_bar
@@ -72,7 +71,6 @@ class OSX::SABookmarkButton < OSX::NSButton
   def resignFirstResponder
     self.highlight(false)
     self.state = OSX::NSOffState
-    # FIXME: expensive?
     redraw_bar
     true
   end

@@ -11,3 +11,15 @@ class Array
     return self_dup
   end
 end
+
+module OSX
+  class NSArray
+    def switch(idx1, idx2)
+      to_a.switch(idx1, idx2)
+    end
+    
+    def move(from, to)
+      to_a.move(from, to)
+    end
+  end
+end

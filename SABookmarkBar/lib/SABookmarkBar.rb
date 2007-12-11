@@ -75,23 +75,23 @@ class OSX::SABookmarkBar < OSX::NSView
   end
   
   def drawRect(rect)
-    bounds = self.bounds
+    @bar_height ||= self.bounds.size.height
     context = OSX::NSGraphicsContext.currentContext.graphicsPort
-    
     backgroundColor, topLineColor, bottomLineColor = barColors
     
+    # draw background
     OSX::CGContextSetRGBFillColor(context, *backgroundColor)
-    OSX::CGContextFillRect(context, OSX::CGRect.new(bounds.origin, bounds.size))
+    OSX::CGContextFillRect(context, OSX::CGRect.new(rect.origin, rect.size))
     
-    color = topLineColor
-    from = [0, bounds.size.height]
-    to = [bounds.size.width, bounds.size.height]
-    drawLine(context, from, to, color)
+    # white-ish top line
+    from = [rect.origin.x, @bar_height]
+    to = [rect.origin.x + rect.size.width, @bar_height]
+    drawLine(context, from, to, topLineColor)
     
-    color = bottomLineColor
-    from = [0, 0]
-    to = [bounds.size.width, 0]
-    drawLine(context, from, to, color)
+    # black-ish bottom line
+    from = [rect.origin.x, 0]
+    to = [rect.origin.x + rect.size.width, 0]
+    drawLine(context, from, to, bottomLineColor)
   end
   
   def drawLine(context, from, to, color)
@@ -102,20 +102,6 @@ class OSX::SABookmarkBar < OSX::NSView
     OSX::CGContextSetRGBStrokeColor(context, *color)
     OSX::CGContextStrokePath(context)
   end
-  
-  # def drawRect(rect)
-  #   # draw background color which is the same as the toolbar color
-  #   self.backroundColor.set
-  #   OSX::NSBezierPath.fillRect(rect)
-  #   
-  #   # draw white-ish line at the top
-  #   OSX::NSColor.colorWithCalibratedRed_green_blue_alpha(0.91, 0.91, 0.91, 1).set
-  #   OSX::NSBezierPath.strokeLineFromPoint_toPoint OSX::NSMakePoint(0, self.frame.height), OSX::NSMakePoint(rect.size.width, self.frame.height)
-  #   
-  #   # draw back line at the bottom
-  #   OSX::NSColor.blackColor.set
-  #   OSX::NSBezierPath.strokeLineFromPoint_toPoint OSX::NSMakePoint(0, 0), OSX::NSMakePoint(rect.size.width, 0)
-  # end
   
   def bookmarkButtonClicked(sender)
     @delegate.bookmarkClicked(sender.bookmark)
