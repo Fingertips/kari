@@ -99,6 +99,5 @@ class ApplicationController < Rucola::RCController
   
   def applicationWillTerminate(aNotification)
     PreferencesController.synchronize
-    @backend.terminate
   end
 end

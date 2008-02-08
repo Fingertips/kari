@@ -32,7 +32,7 @@ class OSX::SABookmarkBar < OSX::NSView
       @buttonX = MARGIN
       @bookmarks = []
       @buttons = []
-      @trackingRects = []
+      @trackingRects = {}
       
       @overflowButton = OSX::SAOverflowButton.alloc.init
       @overflowButton.target = self
@@ -235,11 +235,11 @@ class OSX::SABookmarkBar < OSX::NSView
   
   def addTrackingRectForButton(button)
     @trackingRects ||= {}
-    @trackingRects[self.addTrackingRect_owner_userData_assumeInside(button.frame, self, nil, false)] = button
+    @trackingRects[addTrackingRect_owner_userData_assumeInside(button.frame, self, nil, false)] = button
   end
   
   def removeAllTrackingRects
-    @trackingRects.each {|tag, button| self.removeTrackingRect(tag) }
+    @trackingRects.each {|tag, button| removeTrackingRect(tag) }
     @trackingRects = {}
   end
   
