@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Benchmark#bm</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <body class="method">
+    <h1><span class="path">Benchmark</span><span>#</span><span class="name">bm</span></h1>
+    <hr />
+    <p>
+      <span class="visibility">public</span>
+      
+        <span>bm(label_width = 0, *labels) {|report| ...}</span>
+      
+    </p>
+    
+    <div class="comment">
+      <p>A simple interface to the #benchmark method, #bm is generates sequential reports with labels. The parameters have the same meaning as for #benchmark.</p><pre>    require 'benchmark'
+
+    n = 50000
+    Benchmark.bm(7) do |x|
+      x.report(&quot;for:&quot;)   { for i in 1..n; a = &quot;1&quot;; end }
+      x.report(&quot;times:&quot;) { n.times do   ; a = &quot;1&quot;; end }
+      x.report(&quot;upto:&quot;)  { 1.upto(n) do ; a = &quot;1&quot;; end }
+    end
+</pre><p><em>Generates:</em></p><pre>                    user     system      total        real
+       for:     1.050000   0.000000   1.050000 (  0.503462)
+       times:   1.533333   0.016667   1.550000 (  0.735473)
+       upto:    1.500000   0.016667   1.516667 (  0.711239)
+</pre>
+    </div>
+    
+    
+  </body>
+</html>
+

@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>Benchmark#benchmark</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <body class="method">
+    <h1><span class="path">Benchmark</span><span>#</span><span class="name">benchmark</span></h1>
+    <hr />
+    <p>
+      <span class="visibility">public</span>
+      
+        <span>benchmark(caption = &quot;&quot;, label_width = nil, fmtstr = nil, *labels) {|report| ...}</span>
+      
+    </p>
+    
+    <div class="comment">
+      <p>Invokes the block with a <tt>Benchmark::Report</tt> object, which may be used to collect and report on the results of individual benchmark tests. Reserves <em>label_width</em> leading spaces for labels on each line. Prints <em>caption</em> at the top of the report, and uses <em>fmt</em> to format each line. If the block returns an array of <tt>Benchmark::Tms</tt> objects, these will be used to format additional lines of output. If <em>label</em> parameters are given, these are used to label these extra lines.</p><p><em>Note</em>: Other methods provide a simpler interface to this one, and are suitable for nearly all benchmarking requirements. See the examples in Benchmark, and the #bm and #bmbm methods.</p><p>Example:</p><pre>    require 'benchmark'
+    include Benchmark          # we need the CAPTION and FMTSTR constants
+
+    n = 50000
+    Benchmark.benchmark(&quot; &quot;*7 + CAPTION, 7, FMTSTR, &quot;&gt;total:&quot;, &quot;&gt;avg:&quot;) do |x|
+      tf = x.report(&quot;for:&quot;)   { for i in 1..n; a = &quot;1&quot;; end }
+      tt = x.report(&quot;times:&quot;) { n.times do   ; a = &quot;1&quot;; end }
+      tu = x.report(&quot;upto:&quot;)  { 1.upto(n) do ; a = &quot;1&quot;; end }
+      [tf+tt+tu, (tf+tt+tu)/3]
+    end
+</pre><p><em>Generates:</em></p><pre>                    user     system      total        real
+       for:     1.016667   0.016667   1.033333 (  0.485749)
+       times:   1.450000   0.016667   1.466667 (  0.681367)
+       upto:    1.533333   0.000000   1.533333 (  0.722166)
+       &gt;total:  4.000000   0.033333   4.033333 (  1.889282)
+       &gt;avg:    1.333333   0.011111   1.344444 (  0.629761)
+</pre>
+    </div>
+    
+    
+  </body>
+</html>
+
