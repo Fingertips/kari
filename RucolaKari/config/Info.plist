@@ -21,8 +21,10 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.apple.rubycocoa.KariApp</string>
+	<string>com.fngtps.Kari</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>SUFeedURL</key>
+	<string>http://www.fngtps.com/appcast/kari.xml</string>
 </dict>
 </plist>
