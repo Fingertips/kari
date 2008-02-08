@@ -1,0 +1,1 @@
+require File.expand_path('../SABookmarkBar/SABookmarkBar.rb', __FILE__)
