@@ -8,7 +8,11 @@ describe 'SABookmarkBar' do
     @bookmarks = [bookmark1, bookmark2, bookmark3].map { |hash| OSX::SABookmark.alloc.initWithHash(hash) }
     @bookmarks.each {|b| b.stubs(:frame).returns(OSX::NSRect.new(0, 0, 20, 20)) }
     
+    OSX::SAOverflowButton.any_instance.stubs(:super_init).returns(true)
+    OSX::SABookmarkBar.any_instance.stubs(:super_initWithFrame).returns(true)
+    
     @bookmarkBar = OSX::SABookmarkBar.alloc.init
+    @bookmarkBar.initWithFrame(OSX::NSRect.new(0, 0, 300, 20))
     @bookmarkBar.stubs(:frame).returns(OSX::NSRect.new(0, 0, 300, 20))
     
     overflowButton = mock('Overflow Button')
