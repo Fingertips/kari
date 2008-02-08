@@ -60,4 +60,7 @@ describe 'BookmarkController' do
     OSX::NSUserDefaults.standardUserDefaults.expects(:objectForKey).with('Bookmarks').returns(make_hashes(titles))
     @bookmark_controller.bookmarks.map{|b| b.title }.should == titles
   end
+  
+  it "should check if a prefs file exists." do
+  end
 end

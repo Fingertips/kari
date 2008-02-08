@@ -15,7 +15,11 @@ class BookmarkController < Rucola::RCController
   # crud
   
   def bookmarks
-    @bookmarks ||= OSX::NSUserDefaults.standardUserDefaults.objectForKey('Bookmarks').map {|h| OSX::SABookmark.alloc.initWithHash(h) }
+    if bookmarks = OSX::NSUserDefaults.standardUserDefaults.objectForKey('Bookmarks')
+      @bookmarks ||= bookmarks.map {|h| OSX::SABookmark.alloc.initWithHash(h) }
+    else
+      @bookmarks = []
+    end
   end
   
   def saveBookmarks
