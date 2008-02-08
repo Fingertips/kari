@@ -27,13 +27,18 @@ class OSX::SABookmarkBar < OSX::NSView
     SPACING
   end
   
-  def initWithFrame(frame)
-    if super_initWithFrame(frame)
+  def init
+    if super
       @buttonX = MARGIN
-      
+      @bookmarks = []
       @buttons = []
       @trackingRects = []
-      
+      self
+    end
+  end
+  
+  def initWithFrame(frame)
+    if super_initWithFrame(frame)
       @overflowButton = OSX::SAOverflowButton.alloc.init
       @overflowButton.target = self
       
@@ -45,7 +50,7 @@ class OSX::SABookmarkBar < OSX::NSView
   end
   
   def bookmarks=(bookmarks)
-    self.removeBookmarks
+    self.removeBookmarks unless @bookmarks.empty?
     @buttonX = MARGIN
     
     @bookmarks = bookmarks

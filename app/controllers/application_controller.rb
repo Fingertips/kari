@@ -10,14 +10,7 @@ class ApplicationController < Rucola::RCController
   
   def after_init
     #PreferencesController.registerDefaults
-    setupBackend
     OSX::NSApplication.sharedApplication.setDelegate(self)
-  end
-  
-  def setupBackend
-    # @backend = Backend.alloc.init
-    # @backend.delegate = self
-    # @backend.launch
   end
   
   def showStatus

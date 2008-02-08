@@ -14,6 +14,6 @@ describe 'BackendController' do
     #
     # @controller.ib_outlet(:some_text_view).expects(:string=).with('foo')
     
-    @controller.awakeFromNib
+    # @controller.awakeFromNib
   end
 end
