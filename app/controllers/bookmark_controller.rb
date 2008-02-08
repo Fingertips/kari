@@ -19,8 +19,6 @@ class BookmarkController < Rucola::RCController
   end
   
   def saveBookmarks
-    # FIXME: This breaks....
-    #OSX::NSUserDefaults.standardUserDefaults.setObject_forKey(@bookmarks.map { |b| b.to_hash }, 'Bookmarks')
     PreferencesController.preferences['Bookmarks'] = @bookmarks.map { |b| b.to_hash }
   end
   
