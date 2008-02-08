@@ -1,6 +1,8 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 describe 'PreferencesController' do
+  include GlobalSpecHelper
+  
   before do
     @controller = PreferencesController.alloc.init
     
@@ -10,16 +12,12 @@ describe 'PreferencesController' do
     # @document = mock('Document')
     # @controller.stubs(:document).returns(@document)
   end
-
-  it "should initialize" do
-    @controller.should.be.an.instance_of PreferencesController
-  end
   
-  it "should do stuff at awakeFromNib" do
-    # Some example code of testing your #awakeFromNib.
-    #
-    # @document.expects(:some_method).returns('foo')
-    # @controller.ib_outlet(:some_text_view).expects(:string=).with('foo')
-    # @controller.awakeFromNib
+  it "should return a predefined list of bookmarks if there's no preference file yet and store it in the preferences" do
+    prefs = ['Foo', 'Bar']
+    silence_warnings { PreferencesController::DEFAULT_BOOKMARKS = prefs }
+    
+    PreferencesController.registerDefaults
+    PreferencesController.preferences['Bookmarks'].should == make_hashes(prefs).to_ns
   end
 end

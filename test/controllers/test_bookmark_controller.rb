@@ -1,6 +1,8 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 describe 'BookmarkController' do
+  include GlobalSpecHelper
+  
   before do
     @bookmark_controller = BookmarkController.alloc.init
     @bookmark_controller.bookmarkBar = OSX::SABookmarkBar.alloc.init
@@ -30,37 +32,5 @@ describe 'BookmarkController' do
     the_delegate.expects(:bookmarkClicked).once.with(the_bookmark)
     @bookmark_controller.delegate = the_delegate
     @bookmark_controller.bookmarkClicked(the_bookmark)
-  end
-  
-  def make_hashes(titles)
-    hashes = []
-    titles.each_with_index do |title, idx|
-      hashes.push({:id => idx, :title => title, :url => "http://127.0.0.1:9999/search?q=#{title}", :order_index => idx})
-    end
-    return hashes
-  end
-  
-  def make_bookmarks(titles)
-    bookmarks = []
-    make_hashes(titles).each do |hash|
-      bookmarks.push OSX::SABookmark.alloc.initWithHash(hash)
-    end
-    return bookmarks
-  end
-  
-  it "should return a predefined list of bookmarks for if there's no preference file yet and store it in the preferences" do
-    hashes = make_hashes(PreferencesController::DEFAULT_BOOKMARKS)
-    OSX::NSUserDefaults.standardUserDefaults.expects(:objectForKey).with('Bookmarks').returns(hashes)
-    @bookmark_controller.bookmarks.map{|b| b.title.to_s }.should == PreferencesController::DEFAULT_BOOKMARKS
-  end
-  
-  it "should return the bookmarks from the preference file if it exists" do
-    titles = ['ActiveRecord', 'OSX']
-    prefs_bookmarks = make_bookmarks(titles)
-    OSX::NSUserDefaults.standardUserDefaults.expects(:objectForKey).with('Bookmarks').returns(make_hashes(titles))
-    @bookmark_controller.bookmarks.map{|b| b.title }.should == titles
-  end
-  
-  it "should check if a prefs file exists." do
   end
 end

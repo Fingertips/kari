@@ -9,7 +9,7 @@ class ApplicationController < Rucola::RCController
   ib_outlet :statusSpinner
   
   def after_init
-    #PreferencesController.registerDefaults
+    PreferencesController.registerDefaults
     OSX::NSApplication.sharedApplication.setDelegate(self)
   end
   
