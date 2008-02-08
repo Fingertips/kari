@@ -9,11 +9,11 @@ describe 'WebHistoryController' do
     @controller.should.be.an.instance_of WebHistoryController
   end
   
-  it "should do stuff at awakeFromNib" do
-    # Some example code of testing your #awakeFromNib.
-    #
-    # @controller.ib_outlet(:some_text_view).expects(:string=).with('foo')
-    
-    @controller.awakeFromNib
-  end
+  # it "should do stuff at awakeFromNib" do
+  #   # Some example code of testing your #awakeFromNib.
+  #   #
+  #   # @controller.ib_outlet(:some_text_view).expects(:string=).with('foo')
+  #   
+  #   @controller.awakeFromNib
+  # end
 end

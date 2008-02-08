@@ -24,11 +24,8 @@ describe 'ApplicationController' do
 
     webview_controller_mock = mock("WebViewController")
     webview_controller_mock.expects(:delegate=).with(@app_controller)
+    webview_controller_mock.expects(:home)
     @app_controller.instance_variable_set(:@webViewController, webview_controller_mock)
-    
-    spinner_mock = mock("Spinner")
-    spinner_mock.expects(:startAnimation).with(@app_controller)
-    @app_controller.instance_variable_set(:@statusSpinner, spinner_mock)
     
     window_mock.expects(:delegate=).with(@app_controller)
     @app_controller.instance_variable_set(:@window, window_mock)
@@ -36,10 +33,10 @@ describe 'ApplicationController' do
     @app_controller.awakeFromNib
   end
   
-  it "should change the startup status message if it's the first run and it's building the index" do
-    @app_controller.ib_outlet(:statusMessage).expects(:stringValue=).with('Indexing documentation')
-    @app_controller.backendDidStartFirstIndexing(nil)
-  end
+  # it "should change the startup status message if it's the first run and it's building the index" do
+  #   @app_controller.ib_outlet(:statusMessage).expects(:stringValue=).with('Indexing documentation')
+  #   @app_controller.backendDidStartFirstIndexing(nil)
+  # end
 
   # FIXME: Backend related
   # it "should pass a query url on to the webview controller" do

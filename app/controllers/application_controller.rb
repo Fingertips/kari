@@ -46,31 +46,31 @@ class ApplicationController < Rucola::RCController
     PreferencesController.alloc.init.showWindow(self)
   end
   
-  def rebuildIndex(sender)
-    @backend.terminate
-    showStatus
-    Backend.removeIndex
-    setupBackend
-  end
+  # def rebuildIndex(sender)
+  #   @backend.terminate
+  #   showStatus
+  #   Backend.removeIndex
+  #   setupBackend
+  # end
   
   def externalRequestForDocumentation(aNotification)
     query = aNotification.userInfo['query']
     @webViewController.search(query) unless query.nil? || query.empty?
   end
   
-  # Backend delegate methods
-  
-  def backendDidStartFirstIndexing(sender)
-    @statusMessage.stringValue = 'Indexing documentation'
-  end
-  
-  def backendDidStart(sender)
-    @webViewController.port = @backend.port
-    @statusSpinner.stopAnimation(self)
-    @statusSpinner.hidden = true
-    @statusMessage.hidden = true
-    @webViewController.home
-  end
+  # # Backend delegate methods
+  # 
+  # def backendDidStartFirstIndexing(sender)
+  #   @statusMessage.stringValue = 'Indexing documentation'
+  # end
+  # 
+  # def backendDidStart(sender)
+  #   @webViewController.port = @backend.port
+  #   @statusSpinner.stopAnimation(self)
+  #   @statusSpinner.hidden = true
+  #   @statusMessage.hidden = true
+  #   @webViewController.home
+  # end
   
   # Window delegate matehods
   
