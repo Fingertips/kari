@@ -1,0 +1,3 @@
+CFBundleName = "Kari";
+CFBundleGetInfoString = "Kari version 0.1, Copyright 2008 Fingertips.";
+NSHumanReadableCopyright = "Copyright 2008 Fingertips.";
