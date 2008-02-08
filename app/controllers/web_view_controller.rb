@@ -64,7 +64,7 @@ class WebViewController < Rucola::RCController
   end
   
   def home(sender = nil)
-    load_url BASE_URL
+    load_url "file:///#{Rucola::RCApp.assets_path}/index.html"
   end
   ib_action :home
   

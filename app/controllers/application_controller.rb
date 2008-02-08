@@ -23,9 +23,7 @@ class ApplicationController < Rucola::RCController
   
   def awakeFromNib
     @window.makeFirstResponder(@searchTextField)
-    
-    @statusSpinner.startAnimation(self)
-    
+
     OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
       :addObserver, self,
          :selector, 'externalRequestForDocumentation:',
@@ -36,17 +34,13 @@ class ApplicationController < Rucola::RCController
     @window.delegate = self
     @bookmarkController.delegate = self
     @webViewController.delegate = self
+    @webViewController.home
   end
   
   def search(search_field)
     @searchProgressIndicator.startAnimation(nil)
     @webViewController.search search_field.stringValue.to_s
   end
-  
-  # TODO: Remove
-  # def home(button)
-  #   @webViewController.home
-  # end
   
   def openPreferencesWindow(sender)
     PreferencesController.alloc.init.showWindow(self)
