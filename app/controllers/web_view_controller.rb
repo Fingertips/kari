@@ -29,11 +29,12 @@ class WebViewController < Rucola::RCController
   end
   
   def url
-    @webview.mainFrame.dataSource.request.URL.absoluteString
+    @webview.mainFrame.dataSource.request.URL.absoluteString #unless @webview.mainFrame.dataSource.nil?
   end
   
   def load_url(url)
-    @webview.mainFrame.loadRequest url_request(url)
+    url = OSX::NSURL.fileURLWithPath(url) if url.is_a?(String)
+    @webview.mainFrame.loadRequest OSX::NSURLRequest.requestWithURL(url)
   end
   
   def url_request(url)
@@ -64,7 +65,8 @@ class WebViewController < Rucola::RCController
   end
   
   def home(sender = nil)
-    load_url "file:///#{Rucola::RCApp.assets_path}/index.html"
+    #load_url "file:///#{Rucola::RCApp.assets_path}/index.html"
+    load_url "/#{Rucola::RCApp.assets_path}/index.html"
   end
   ib_action :home
   

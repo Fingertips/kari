@@ -2,6 +2,7 @@ class ApplicationController < Rucola::RCController
   ib_outlet :window
   ib_outlet :webView
   ib_outlet :webViewController
+  ib_outlet :searchController
   ib_outlet :searchProgressIndicator
   ib_outlet :searchTextField
   ib_outlet :bookmarkController
@@ -33,14 +34,17 @@ class ApplicationController < Rucola::RCController
     
     @window.delegate = self
     @bookmarkController.delegate = self
+    @searchController.delegate = self
     @webViewController.delegate = self
     @webViewController.home
   end
   
-  def search(search_field)
-    @searchProgressIndicator.startAnimation(nil)
-    @webViewController.search search_field.stringValue.to_s
-  end
+  # def search(search_field)
+  #   #@search_controller.search(search_field.stringValue)
+  #   
+  #   @searchProgressIndicator.startAnimation(nil)
+  #   #@webViewController.search search_field.stringValue.to_s
+  # end
   
   def openPreferencesWindow(sender)
     PreferencesController.alloc.init.showWindow(self)
@@ -78,7 +82,13 @@ class ApplicationController < Rucola::RCController
     OSX::NSApplication.sharedApplication.terminate(self)
   end
   
-  # BookmarController delegate methods
+  # SearchController delegate methods
+  
+  def searchControllerSelectedURL(url)
+    @webViewController.load_url url
+  end
+  
+  # BookmarkController delegate methods
   
   def bookmarkClicked(bookmark)
     @webViewController.load_url bookmark.url
