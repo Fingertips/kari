@@ -84,6 +84,14 @@ class ApplicationController < Rucola::RCController
   
   # SearchController delegate methods
   
+  def searchControllerWillStartSearching
+    @searchProgressIndicator.startAnimation(self)
+  end
+  
+  def searchControllerFinishedSearching
+    @searchProgressIndicator.stopAnimation(self)
+  end
+  
   def searchControllerSelectedURL(url)
     @webViewController.load_url url
   end
@@ -99,7 +107,7 @@ class ApplicationController < Rucola::RCController
   def webViewFinishedLoading(aNotification)
     # R159: No more window title for the specific doc.
     #@window.title = @webViewController.doc_title unless @webViewController.doc_title.nil?
-    @searchProgressIndicator.stopAnimation(nil)
+    #@searchProgressIndicator.stopAnimation(nil)
   end
   
   # Application delegate methods

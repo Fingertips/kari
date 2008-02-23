@@ -8,46 +8,58 @@ class SearchController < Rucola::RCController
   notify :query_did_finish, :when => OSX::NSMetadataQueryDidFinishGatheringNotification
   
   def after_init
-    @metadata = OSX::NSMetadataQuery.alloc.init
-    @metadata.sortDescriptors = [OSX::NSSortDescriptor.alloc.initWithKey_ascending(NAME, true)]
+    @spotlight = OSX::NSMetadataQuery.alloc.init
+    @spotlight.sortDescriptors = [OSX::NSSortDescriptor.alloc.initWithKey_ascending(NAME, true)]
+    @metadata = [].to_ns
   end
   
   def awakeFromNib
-    @results_table_view.target = self
-    @results_table_view.doubleAction = 'rowDoubleClicked:'
+    @results_table_view.delegate = self
+    # @results_table_view.target = self
+    # @results_table_view.doubleAction = 'rowDoubleClicked:'
   end
   
-  def rowDoubleClicked(tableview)
-    temp_disable_updates do
-      @delegate.searchControllerSelectedURL(
-        OSX::NSURL.fileURLWithPath(
-          @metadata_array_controller.arrangedObjects[tableview.clickedRow].valueForAttribute('kMDItemPath')
-        )
+  # def rowDoubleClicked(tableview)
+  #   @delegate.searchControllerSelectedURL(
+  #     OSX::NSURL.fileURLWithPath(
+  #       @metadata_array_controller.arrangedObjects[tableview.clickedRow].valueForAttribute('kMDItemPath')
+  #     )
+  #   )
+  # end
+  
+  def tableViewSelectionDidChange(notification)
+    @delegate.searchControllerSelectedURL(
+      OSX::NSURL.fileURLWithPath(
+        @metadata_array_controller.arrangedObjects[@results_table_view.selectedRow].valueForAttribute('kMDItemPath')
       )
-    end
+    )
   end
   
   def search(sender)
     @search_string = sender.stringValue if sender.is_a?(OSX::NSSearchField)
-    start_query! unless @search_string.nil?
+    start_query! unless @search_string.nil? or @search_string.empty?
   end
   
   def query_did_finish(notification)
-    # p notification
-    #p @metadata.resultCount
+    @spotlight.disableUpdates
+    willChangeValueForKey('metadata')
+    
+    @metadata.removeAllObjects
+    @metadata.addObjectsFromArray(@spotlight.results) unless @spotlight.resultCount.zero?
+    
+    didChangeValueForKey('metadata')
+    @spotlight.enableUpdates
+    
+    @results_table_view.deselectAll(self)
+    @delegate.searchControllerFinishedSearching
   end
   
   private
   
-  def temp_disable_updates
-    @metadata.disableUpdates
-    yield
-    @metadata.enableUpdates
-  end
-  
   def start_query!
-    @metadata.predicate = OSX::NSPredicate.predicateWithFormat(query)
-    @metadata.startQuery
+    @delegate.searchControllerWillStartSearching
+    @spotlight.predicate = OSX::NSPredicate.predicateWithFormat(query)
+    @spotlight.startQuery
   rescue OSX::OCException => e
     puts "Error while start query: #{e.message}"
   end
