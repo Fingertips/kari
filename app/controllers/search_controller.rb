@@ -10,22 +10,13 @@ class SearchController < Rucola::RCController
   def after_init
     @spotlight = OSX::NSMetadataQuery.alloc.init
     @spotlight.sortDescriptors = [OSX::NSSortDescriptor.alloc.initWithKey_ascending(NAME, true)]
-    @metadata = [].to_ns
+    @metadata = OSX::NSMutableArray.alloc.init
+    @updating = false
   end
   
   def awakeFromNib
     @results_table_view.delegate = self
-    # @results_table_view.target = self
-    # @results_table_view.doubleAction = 'rowDoubleClicked:'
   end
-  
-  # def rowDoubleClicked(tableview)
-  #   @delegate.searchControllerSelectedURL(
-  #     OSX::NSURL.fileURLWithPath(
-  #       @metadata_array_controller.arrangedObjects[tableview.clickedRow].valueForAttribute('kMDItemPath')
-  #     )
-  #   )
-  # end
   
   def tableViewSelectionDidChange(notification)
     @delegate.searchControllerSelectedURL(
@@ -40,10 +31,14 @@ class SearchController < Rucola::RCController
     start_query! unless @search_string.nil? or @search_string.empty?
   end
   
+  def updating?
+    @updating
+  end
+  
   def query_did_finish(notification)
     @spotlight.disableUpdates
     willChangeValueForKey('metadata')
-    
+    @updating = true
     @metadata.removeAllObjects
     @metadata.addObjectsFromArray(@spotlight.results) unless @spotlight.resultCount.zero?
     
@@ -51,6 +46,7 @@ class SearchController < Rucola::RCController
     @spotlight.enableUpdates
     
     @results_table_view.deselectAll(self)
+    @updating = false
     @delegate.searchControllerFinishedSearching
   end
   
@@ -66,7 +62,7 @@ class SearchController < Rucola::RCController
   
   def query
     if (attrs = attrs_to_find_by)
-      result = "(#{attrs.map { |attr| "(#{ attr } LIKE[wcd] '*#{ @search_string }*')" }.join(" || ")})"
+      result = "(#{attrs.map { |attr| "(#{ attr } LIKE[wcd] '#{ @search_string }*')" }.join(" || ")})"
       unless @find_by_type.selectedItem.title == "all"
         types = (@find_by_type.selectedItem.title == 'methods' ? ['ClassMethod', 'Method'] : ['Class', 'Module'])
         result = "(#{result} && #{types.map { |type| "(#{TYPE} == '#{type}')" }.join(' || ')})"
