@@ -93,7 +93,7 @@ class ApplicationController < Rucola::RCController
   end
   
   def searchControllerSelectedURL(url)
-    @webViewController.load_url(url) unless @searchController.updating?
+    @webViewController.load_url url
   end
   
   # BookmarkController delegate methods

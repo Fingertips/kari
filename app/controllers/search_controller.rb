@@ -19,6 +19,7 @@ class SearchController < Rucola::RCController
   end
   
   def tableViewSelectionDidChange(notification)
+    return if updating?
     @delegate.searchControllerSelectedURL(
       OSX::NSURL.fileURLWithPath(
         @metadata_array_controller.arrangedObjects[@results_table_view.selectedRow].valueForAttribute('kMDItemPath')
