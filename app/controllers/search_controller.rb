@@ -37,11 +37,20 @@ class SearchController < Rucola::RCController
   end
   
   def query_did_finish(notification)
+    will_change_metadata do
+      @metadata.removeAllObjects
+      @metadata.addObjectsFromArray(@spotlight.results) unless @spotlight.resultCount.zero?
+    end
+  end
+  
+  private
+  
+  def will_change_metadata
     @spotlight.disableUpdates
     willChangeValueForKey('metadata')
     @updating = true
-    @metadata.removeAllObjects
-    @metadata.addObjectsFromArray(@spotlight.results) unless @spotlight.resultCount.zero?
+    
+    yield
     
     didChangeValueForKey('metadata')
     @spotlight.enableUpdates
@@ -50,8 +59,6 @@ class SearchController < Rucola::RCController
     @updating = false
     @delegate.searchControllerFinishedSearching
   end
-  
-  private
   
   def start_query!
     @delegate.searchControllerWillStartSearching
