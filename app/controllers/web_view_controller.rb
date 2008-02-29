@@ -61,7 +61,9 @@ class WebViewController < Rucola::RCController
   # helpers
   
   def blank
-    load_url 'about:blank'
+    # FIXME: blank should never appear in the BackForwardList.
+    #load_url 'about:blank'
+    @webview.mainFrame.loadRequest OSX::NSURLRequest.requestWithURL(OSX::NSURL.URLWithString('about:blank'))
   end
   
   def home(sender = nil)

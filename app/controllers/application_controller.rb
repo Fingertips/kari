@@ -8,6 +8,7 @@ class ApplicationController < Rucola::RCController
   ib_outlet :bookmarkController
   ib_outlet :statusMessage
   ib_outlet :statusSpinner
+  ib_outlet :resultsScrollView
   
   def after_init
     PreferencesController.registerDefaults
@@ -86,6 +87,9 @@ class ApplicationController < Rucola::RCController
   
   def searchControllerWillStartSearching
     @searchProgressIndicator.startAnimation(self)
+    @webView.hidden = true
+    @webViewController.blank
+    @resultsScrollView.hidden = false
   end
   
   def searchControllerFinishedSearching
@@ -94,6 +98,8 @@ class ApplicationController < Rucola::RCController
   
   def searchControllerSelectedURL(url)
     @webViewController.load_url url
+    @webView.hidden = false
+    @resultsScrollView.hidden = true
   end
   
   # BookmarkController delegate methods

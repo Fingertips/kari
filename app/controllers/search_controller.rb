@@ -16,16 +16,26 @@ class SearchController < Rucola::RCController
   
   def awakeFromNib
     @results_table_view.delegate = self
+    @results_table_view.target = self
+    @results_table_view.doubleAction = 'rowDoubleClicked:'
   end
   
-  def tableViewSelectionDidChange(notification)
-    return if updating?
+  def rowDoubleClicked(tableview)
     @delegate.searchControllerSelectedURL(
       OSX::NSURL.fileURLWithPath(
-        @metadata_array_controller.arrangedObjects[@results_table_view.selectedRow].valueForAttribute('kMDItemPath')
+        @metadata_array_controller.arrangedObjects[tableview.clickedRow].valueForAttribute('kMDItemPath')
       )
     )
   end
+  
+  # def tableViewSelectionDidChange(notification)
+  #   return if updating?
+  #   @delegate.searchControllerSelectedURL(
+  #     OSX::NSURL.fileURLWithPath(
+  #       @metadata_array_controller.arrangedObjects[@results_table_view.selectedRow].valueForAttribute('kMDItemPath')
+  #     )
+  #   )
+  # end
   
   def search(sender)
     @search_string = sender.stringValue if sender.is_a?(OSX::NSSearchField)
@@ -71,17 +81,18 @@ class SearchController < Rucola::RCController
   def query
     if (attrs = attrs_to_find_by)
       result = "(#{attrs.map { |attr| "(#{ attr } LIKE[wcd] '#{ @search_string }*')" }.join(" || ")})"
-      unless @find_by_type.selectedItem.title == "all"
-        types = (@find_by_type.selectedItem.title == 'methods' ? ['ClassMethod', 'Method'] : ['Class', 'Module'])
-        result = "(#{result} && #{types.map { |type| "(#{TYPE} == '#{type}')" }.join(' || ')})"
-      end
+      # unless @find_by_type.selectedItem.title == "all"
+      #   types = (@find_by_type.selectedItem.title == 'methods' ? ['ClassMethod', 'Method'] : ['Class', 'Module'])
+      #   result = "(#{result} && #{types.map { |type| "(#{TYPE} == '#{type}')" }.join(' || ')})"
+      # end
       puts "Compiled query: #{result}\n\n"
       result
     end
   end
   
   def attrs_to_find_by
-    ATTRS.reject {|k,v| instance_variable_get("@find_by_#{k}").state == OSX::NSOffState }.values
+    #ATTRS.reject {|k,v| instance_variable_get("@find_by_#{k}").state == OSX::NSOffState }.values
+    ATTRS.values
   end
   
   TYPE = 'com_fngtps_kari_karidoc_type'

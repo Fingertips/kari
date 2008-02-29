@@ -7,6 +7,12 @@ describe 'ApplicationController' do
     OSX::NSApplication.stubs(:sharedApplication).returns(shared_app_mock)
     
     @app_controller = ApplicationController.alloc.init
+    
+    # Maybe with Rucola we should stub every ib_outlet ?
+    # (s = stub).stub_everything
+    # @app_controller.instance_variable_set(:@searchProgressIndicator, s)
+    (s = stub).stub_everything
+    @app_controller.instance_variable_set(:@webViewController, s)
   end
   
   it "should set itself as the application delegate and instantiate an instance of Backend on init" do
@@ -54,4 +60,24 @@ describe 'ApplicationController' do
   #   
   #   @app_controller.search(search_field_mock)
   # end
+  
+  it "should bring the results table view forward and hide the webview if a user started searching" do
+    ib_outlet(:searchProgressIndicator).expects(:startAnimation)
+    ib_outlet(:webView).expects(:hidden=).with(true)
+    ib_outlet(:webViewController).expects(:blank)
+    ib_outlet(:resultsScrollView).expects(:hidden=).with(false)
+    @app_controller.searchControllerWillStartSearching
+  end
+  
+  it "should bring the webview back if a search result was double clicked" do
+    ib_outlet(:webView).expects(:hidden=).with(false)
+    ib_outlet(:resultsScrollView).expects(:hidden=).with(true)
+    @app_controller.searchControllerSelectedURL(nil)
+  end
+  
+  private
+  
+  def ib_outlet(name)
+    @app_controller.ib_outlet(name)
+  end
 end
