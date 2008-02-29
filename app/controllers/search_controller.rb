@@ -75,7 +75,7 @@ class SearchController < Rucola::RCController
         types = (@find_by_type.selectedItem.title == 'methods' ? ['ClassMethod', 'Method'] : ['Class', 'Module'])
         result = "(#{result} && #{types.map { |type| "(#{TYPE} == '#{type}')" }.join(' || ')})"
       end
-      puts "Compiled query: #{result}"
+      puts "Compiled query: #{result}\n\n"
       result
     end
   end
