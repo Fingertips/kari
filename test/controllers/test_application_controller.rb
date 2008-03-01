@@ -72,7 +72,7 @@ describe 'ApplicationController' do
   it "should bring the webview back if a search result was double clicked" do
     ib_outlet(:webView).expects(:hidden=).with(false)
     ib_outlet(:resultsScrollView).expects(:hidden=).with(true)
-    @app_controller.searchControllerSelectedURL(nil)
+    @app_controller.searchController_selectedURL(nil, nil)
   end
   
   private

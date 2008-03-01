@@ -4,6 +4,7 @@ class SearchController < Rucola::RCController
   
   ib_outlets :find_by_name, :find_by_full_name, :find_by_path, :find_by_type
   ib_outlets :metadata_array_controller, :results_table_view
+  ib_outlet :search_field
   
   notify :query_did_finish, :when => OSX::NSMetadataQueryDidFinishGatheringNotification
   
@@ -15,15 +16,18 @@ class SearchController < Rucola::RCController
   end
   
   def awakeFromNib
+    @search_field.keyDelegate = @results_table_view
+    
     @results_table_view.delegate = self
     @results_table_view.target = self
     @results_table_view.doubleAction = 'rowDoubleClicked:'
   end
   
   def rowDoubleClicked(tableview)
-    @delegate.searchControllerSelectedURL(
+    @delegate.searchController_selectedURL(
+      self,
       OSX::NSURL.fileURLWithPath(
-        @metadata_array_controller.arrangedObjects[tableview.clickedRow].valueForAttribute('kMDItemPath')
+        @metadata_array_controller.arrangedObjects[tableview.selectedRow].valueForAttribute('kMDItemPath')
       )
     )
   end
@@ -65,7 +69,7 @@ class SearchController < Rucola::RCController
     didChangeValueForKey('metadata')
     @spotlight.enableUpdates
     
-    @results_table_view.deselectAll(self)
+    #@results_table_view.deselectAll(self)
     @updating = false
     @delegate.searchControllerFinishedSearching
   end

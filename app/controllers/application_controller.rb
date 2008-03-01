@@ -24,8 +24,6 @@ class ApplicationController < Rucola::RCController
   end
   
   def awakeFromNib
-    @window.makeFirstResponder(@searchTextField)
-
     OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
       :addObserver, self,
          :selector, 'externalRequestForDocumentation:',
@@ -38,6 +36,8 @@ class ApplicationController < Rucola::RCController
     @searchController.delegate = self
     @webViewController.delegate = self
     @webViewController.home
+    
+    @window.makeFirstResponder(@searchTextField)
   end
   
   # def search(search_field)
@@ -96,7 +96,7 @@ class ApplicationController < Rucola::RCController
     @searchProgressIndicator.stopAnimation(self)
   end
   
-  def searchControllerSelectedURL(url)
+  def searchController_selectedURL(sender, url)
     @webViewController.load_url url
     @webView.hidden = false
     @resultsScrollView.hidden = true
