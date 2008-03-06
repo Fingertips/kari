@@ -30,7 +30,7 @@
 	<array>
 		<dict>
 			<key>UTTypeIdentifier</key>
-			<string>com.fngtps.karidoc</string>
+			<string>com.fngtps.kari.karidoc</string>
 			<key>UTTypeReferenceURL</key>
 			<string>http://www.fngtps.com/kari</string>
 			<key>UTTypeDescription</key>
