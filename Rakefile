@@ -6,21 +6,6 @@ load 'rucola/tasks/main.rake'
 
 # Application configuration
 
-# You only need to specify this if for some reason the applications name
-# might be different than the one specified in the Info.plist file under key: CFBundleExecutable
-#
-# APPNAME = "Kari"
-# TARGET  = "#{APPNAME}.app"
-
-# You only need to specify this if for some reason the applications version
-# might be different than the one specified in the Info.plist file under key: CFBundleVersion
-#
-# APPVERSION = INFO_PLIST['CFBundleShortVersionString']
-# APPVERSION = "rev#{`svn info`[/Revision: (\d+)/, 1]}"
-# APPVERSION = Time.now.strftime("%Y-%m-%d")
-
-# require 'uri'
-
 PUBLISH_URI = URI.parse('scp://eloy@updates.kari.fngtps.com/var/www/updates.kari/htdocs')
 APPCAST_URI = PUBLISH_URI
 
