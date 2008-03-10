@@ -12,17 +12,33 @@
 		4DDCA70A0ACC9A6100E082CE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		4DDCA70D0ACC9A6100E082CE /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */; };
+		51137C0D0D854905000EADF3 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51137C070D854905000EADF3 /* Info.plist */; };
+		51137C0F0D854905000EADF3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 51137C0B0D854905000EADF3 /* InfoPlist.strings */; };
+		51137C200D854A14000EADF3 /* KariDocImporter.mdimporter in Copy Spotlight Importer */ = {isa = PBXBuildFile; fileRef = 51137C130D854A14000EADF3 /* KariDocImporter.mdimporter */; };
+		51137C220D854B70000EADF3 /* Kari.icns in Resources */ = {isa = PBXBuildFile; fileRef = 51137C210D854B70000EADF3 /* Kari.icns */; };
 		514292CE0CC66CDC00F9CEEF /* app in Resources */ = {isa = PBXBuildFile; fileRef = 514292B90CC66CDC00F9CEEF /* app */; };
 		514292CF0CC66CDC00F9CEEF /* config in Resources */ = {isa = PBXBuildFile; fileRef = 514292C10CC66CDC00F9CEEF /* config */; };
 		514292D00CC66CDC00F9CEEF /* misc in Resources */ = {isa = PBXBuildFile; fileRef = 514292C40CC66CDC00F9CEEF /* misc */; };
 		514292D10CC66CDC00F9CEEF /* test in Resources */ = {isa = PBXBuildFile; fileRef = 514292CA0CC66CDC00F9CEEF /* test */; };
 		514292D20CC66CDC00F9CEEF /* vendor in Resources */ = {isa = PBXBuildFile; fileRef = 514292CC0CC66CDC00F9CEEF /* vendor */; };
 		514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 514292ED0CC6823A00F9CEEF /* MainMenu.nib */; };
+		51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
 		51E0DC1C0D80411600C898A2 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 51E0DBCA0D80411600C898A2 /* lib */; };
 		B140F0D6F7878A81F09EBBAB /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		51137C040D8548A3000EADF3 /* Copy Spotlight Importer */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/Spotlight;
+			dstSubfolderSpec = 1;
+			files = (
+				51137C200D854A14000EADF3 /* KariDocImporter.mdimporter in Copy Spotlight Importer */,
+			);
+			name = "Copy Spotlight Importer";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		92DB482C3578FE99246A03F2 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -45,6 +61,11 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		4DDCA7110ACC9A6100E082CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = config/Info.plist; sourceTree = "<group>"; };
 		4DDCA7120ACC9A6100E082CE /* Kari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kari.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		51137C070D854905000EADF3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51137C090D854905000EADF3 /* KariDocImporter */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = KariDocImporter; sourceTree = "<group>"; };
+		51137C0C0D854905000EADF3 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		51137C130D854A14000EADF3 /* KariDocImporter.mdimporter */ = {isa = PBXFileReference; lastKnownFileType = folder; path = KariDocImporter.mdimporter; sourceTree = "<group>"; };
+		51137C210D854B70000EADF3 /* Kari.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Kari.icns; sourceTree = "<group>"; };
 		514292B90CC66CDC00F9CEEF /* app */ = {isa = PBXFileReference; lastKnownFileType = folder; path = app; sourceTree = "<group>"; };
 		514292C10CC66CDC00F9CEEF /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
 		514292C40CC66CDC00F9CEEF /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
@@ -61,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */,
 				4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */,
 				4DDCA70D0ACC9A6100E082CE /* RubyCocoa.framework in Frameworks */,
 			);
@@ -106,6 +128,9 @@
 		29B97314FDCFA39411CA2CEA /* Kari */ = {
 			isa = PBXGroup;
 			children = (
+				51137C210D854B70000EADF3 /* Kari.icns */,
+				51137C130D854A14000EADF3 /* KariDocImporter.mdimporter */,
+				51137C050D854905000EADF3 /* KariDocImporter.mdimporter */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -149,6 +174,40 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		51137C050D854905000EADF3 /* KariDocImporter.mdimporter */ = {
+			isa = PBXGroup;
+			children = (
+				51137C060D854905000EADF3 /* Contents */,
+			);
+			path = KariDocImporter.mdimporter;
+			sourceTree = "<group>";
+		};
+		51137C060D854905000EADF3 /* Contents */ = {
+			isa = PBXGroup;
+			children = (
+				51137C070D854905000EADF3 /* Info.plist */,
+				51137C080D854905000EADF3 /* MacOS */,
+				51137C0A0D854905000EADF3 /* Resources */,
+			);
+			path = Contents;
+			sourceTree = "<group>";
+		};
+		51137C080D854905000EADF3 /* MacOS */ = {
+			isa = PBXGroup;
+			children = (
+				51137C090D854905000EADF3 /* KariDocImporter */,
+			);
+			path = MacOS;
+			sourceTree = "<group>";
+		};
+		51137C0A0D854905000EADF3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				51137C0B0D854905000EADF3 /* InfoPlist.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -171,6 +230,7 @@
 				4DDCA7090ACC9A6100E082CE /* Sources */,
 				4DDCA70B0ACC9A6100E082CE /* Frameworks */,
 				92DB482C3578FE99246A03F2 /* Copy Frameworks */,
+				51137C040D8548A3000EADF3 /* Copy Spotlight Importer */,
 			);
 			buildRules = (
 			);
@@ -213,6 +273,9 @@
 				514292D20CC66CDC00F9CEEF /* vendor in Resources */,
 				514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */,
 				51E0DC1C0D80411600C898A2 /* lib in Resources */,
+				51137C0D0D854905000EADF3 /* Info.plist in Resources */,
+				51137C0F0D854905000EADF3 /* InfoPlist.strings in Resources */,
+				51137C220D854B70000EADF3 /* Kari.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +297,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		51137C0B0D854905000EADF3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				51137C0C0D854905000EADF3 /* English */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -271,6 +342,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/vendor/frameworks\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -286,6 +362,11 @@
 		4DDCA7100ACC9A6100E082CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/vendor/frameworks\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
