@@ -36,8 +36,6 @@ class ApplicationController < Rucola::RCController
     @searchController.delegate = self
     @webViewController.delegate = self
     @webViewController.home!
-    
-    @window.makeFirstResponder(@searchTextField)
   end
   
   # def search(search_field)
@@ -63,19 +61,19 @@ class ApplicationController < Rucola::RCController
     @webViewController.search(query) unless query.nil? || query.empty?
   end
   
-  # # Backend delegate methods
-  # 
-  # def backendDidStartFirstIndexing(sender)
-  #   @statusMessage.stringValue = 'Indexing documentation'
-  # end
-  # 
-  # def backendDidStart(sender)
-  #   @webViewController.port = @backend.port
-  #   @statusSpinner.stopAnimation(self)
-  #   @statusSpinner.hidden = true
-  #   @statusMessage.hidden = true
-  #   @webViewController.home
-  # end
+  def activateSearchField(sender = nil)
+    @window.makeFirstResponder(@searchTextField)
+  end
+  
+  # Application delegate methods
+  
+  def applicationDidFinishLaunching(aNotification)
+    activateSearchField
+  end
+  
+  def applicationWillTerminate(aNotification)
+    PreferencesController.synchronize
+  end
   
   # Window delegate matehods
   
@@ -115,14 +113,5 @@ class ApplicationController < Rucola::RCController
     # R159: No more window title for the specific doc.
     #@window.title = @webViewController.doc_title unless @webViewController.doc_title.nil?
     #@searchProgressIndicator.stopAnimation(nil)
-  end
-  
-  # Application delegate methods
-  
-  def applicationDidFinishLaunching(aNotification)
-  end
-  
-  def applicationWillTerminate(aNotification)
-    PreferencesController.synchronize
   end
 end
