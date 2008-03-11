@@ -32,6 +32,10 @@
 	<string>http://updates.kari.fngtps.com/</string>
 	<key>SUPublicReleaseURL</key>
 	<string>http://updates.kari.fngtps.com/</string>
+	<key>SACrashReporterDeveloperName</key>
+	<string>Fingertips</string>
+	<key>SACrashReporterPostURL</key>
+	<string>http://superalloy.nl/crash_reporter.php</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

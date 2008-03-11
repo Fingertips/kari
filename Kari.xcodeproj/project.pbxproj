@@ -24,6 +24,7 @@
 		514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 514292ED0CC6823A00F9CEEF /* MainMenu.nib */; };
 		51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
 		51E0DC1C0D80411600C898A2 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 51E0DBCA0D80411600C898A2 /* lib */; };
+		AE975ACCD6AC76DA87E3FF08 /* RubyCocoa.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */; };
 		B140F0D6F7878A81F09EBBAB /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				B140F0D6F7878A81F09EBBAB /* Sparkle.framework in Copy Frameworks */,
+				AE975ACCD6AC76DA87E3FF08 /* RubyCocoa.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
