@@ -64,7 +64,6 @@
 		4DDCA7110ACC9A6100E082CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = config/Info.plist; sourceTree = "<group>"; };
 		4DDCA7120ACC9A6100E082CE /* Kari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kari.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51137C070D854905000EADF3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		51137C090D854905000EADF3 /* KariDocImporter */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = KariDocImporter; sourceTree = "<group>"; };
 		51137C0C0D854905000EADF3 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		51137C130D854A14000EADF3 /* KariDocImporter.mdimporter */ = {isa = PBXFileReference; lastKnownFileType = folder; path = KariDocImporter.mdimporter; sourceTree = "<group>"; };
 		51137C210D854B70000EADF3 /* Kari.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Kari.icns; sourceTree = "<group>"; };
@@ -197,7 +196,6 @@
 		51137C080D854905000EADF3 /* MacOS */ = {
 			isa = PBXGroup;
 			children = (
-				51137C090D854905000EADF3 /* KariDocImporter */,
 			);
 			path = MacOS;
 			sourceTree = "<group>";

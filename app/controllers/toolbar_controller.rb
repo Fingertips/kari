@@ -1,5 +1,5 @@
 class ToolbarController < Rucola::RCController
-  ib_outlet :window, :historyBackAndForwardView, :searchView, :homeView, :addBookmarkView
+  ib_outlet :window, :historyBackAndForwardView, :searchView, :addBookmarkView
   
   def after_init
     @toolbar = OSX::NSToolbar.alloc.initWithIdentifier('MainWindowToolbar')
@@ -12,7 +12,7 @@ class ToolbarController < Rucola::RCController
     @window.toolbar = @toolbar
   end
   
-  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'HomeItem', 'AddBookmarkItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
+  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'AddBookmarkItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
   def toolbarAllowedItemIdentifiers(toolbar)
     TOOLBAR_ITEMS
   end
