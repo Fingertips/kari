@@ -10,7 +10,7 @@ class SearchController < Rucola::RCController
   
   def after_init
     @spotlight = OSX::NSMetadataQuery.alloc.init
-    @spotlight.sortDescriptors = [OSX::NSSortDescriptor.alloc.initWithKey_ascending(NAME, true)]
+    @spotlight.sortDescriptors = [OSX::NSSortDescriptor.alloc.initWithKey_ascending(FULL_NAME, true)]
     @metadata = OSX::NSMutableArray.alloc.init
     @updating = false
   end
