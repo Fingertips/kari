@@ -100,6 +100,7 @@ class ApplicationController < Rucola::RCController
     @webViewController.load_file(file)
     @webView.hidden = false
     @resultsScrollView.hidden = true
+    @window.makeFirstResponder(@webView)
   end
   
   # BookmarkController delegate methods
