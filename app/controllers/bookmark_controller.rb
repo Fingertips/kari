@@ -75,7 +75,7 @@ class BookmarkController < Rucola::RCController
     item.enabled = true
     item.target = self
     item.action = 'bookmarkMenuSelected:'
-    key_equivalent = @bookmarkMenu.numberOfItems.to_i - 3
+    key_equivalent = @bookmarkMenu.numberOfItems.to_i - 2
     if key_equivalent < 11
       item.keyEquivalent = key_equivalent == 10 ? '0' : key_equivalent.to_s
       item.keyEquivalentModifierMask = OSX::NSCommandKeyMask
@@ -84,7 +84,7 @@ class BookmarkController < Rucola::RCController
   end
   
   def resetBookmarkMenu
-    (@bookmarkMenu.numberOfItems.to_i - 1).downto(4) { |idx| @bookmarkMenu.removeItemAtIndex(idx) }
+    (@bookmarkMenu.numberOfItems.to_i - 1).downto(3) { |idx| @bookmarkMenu.removeItemAtIndex(idx) }
     self.populateBookmarkMenu
   end
   
@@ -115,6 +115,16 @@ class BookmarkController < Rucola::RCController
   end
   def removeBookmarkSheetDidEnd(sender, return_code, context_info)
     @removeBookmarkSheet.orderOut(self)
+  end
+
+  # UI validations
+
+  def validateMenuItem(item)
+    case item.action
+    when 'openRemoveBookmarkSheet:' then !@bookmarks.empty?
+    else
+      true
+    end
   end
 
 end
