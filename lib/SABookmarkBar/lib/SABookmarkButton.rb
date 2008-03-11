@@ -3,7 +3,7 @@
 #  FilterBarTest
 #
 #  Created by Eloy Duran on 7/4/07.
-#  Copyright (c) 2007 __MyCompanyName__. All rights reserved.
+#  Copyright (c) 2007 Fingertips. All rights reserved.
 #
 
 require 'osx/cocoa'
