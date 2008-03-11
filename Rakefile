@@ -29,3 +29,8 @@ task :clean_user_files do
   `rm ~/Library/Preferences/com.fngtps.Kari.plist`
   FileUtils.rm_rf(File.expand_path("~/Library/Application Support/Kari"))
 end
+
+desc 'Show the applications preferences.'
+task :show_defaults do
+  puts `/usr/bin/defaults read #{INFO_PLIST['CFBundleIdentifier']}`
+end
