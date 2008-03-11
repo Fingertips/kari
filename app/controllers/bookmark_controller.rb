@@ -39,11 +39,6 @@ class BookmarkController < Rucola::RCController
     self.bookmarksChanged
   end
   
-  def clearBookmarks(sender)
-    @bookmarks = []
-    self.bookmarksChanged
-  end
-  
   # events
   
   def bookmarkClicked(bookmark)
