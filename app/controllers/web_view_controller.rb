@@ -2,7 +2,11 @@ class WebViewController < Rucola::RCController
   ib_outlet :webview
   ib_outlet :backForwardButton
   
-  attr_accessor :delegate
+  attr_accessor :delegate, :doc_title
+  
+  def after_init
+    @doc_title = ''
+  end
   
   def awakeFromNib
     @webview.frameLoadDelegate = self
@@ -17,6 +21,10 @@ class WebViewController < Rucola::RCController
     @backForwardButton.setEnabled_forSegment(can_go_back?, BACK_BUTTON)
     @backForwardButton.setEnabled_forSegment(can_go_forward?, FORWARD_BUTTON)
     @delegate.webViewFinishedLoading(aNotification)
+  end
+  
+  def webView_didReceiveTitle_forFrame(webView, title, frame)
+    @doc_title = title.to_s
   end
   
   def url

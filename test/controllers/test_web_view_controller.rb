@@ -17,7 +17,7 @@ module WebViewControllerSpecHelper
   end
 end
 
-describe 'WebViewController' do
+describe 'WebViewController, in general' do
   include WebViewControllerSpecHelper
   
   before do
@@ -44,6 +44,13 @@ describe 'WebViewController' do
   it "should take a string file path, create a NSURL and send it to load_url" do
     expects_load_url_with_url_that_matches(@file_url)
     @webview_controller.load_file(@file)
+  end
+  
+  it "should set the doc_title to the title of the page" do
+    @webview_controller.doc_title.should == ''
+    
+    @webview_controller.webView_didReceiveTitle_forFrame(nil, 'some title', nil)
+    @webview_controller.doc_title.should == 'some title'
   end
 end
 
