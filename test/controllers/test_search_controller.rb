@@ -35,7 +35,18 @@ describe 'SearchController' do
     @controller.rowDoubleClicked(tableView_mock)
   end
   
+  FULL_NAME = 'com_fngtps_kari_karidoc_fullName'
+  
+  it "should search for text like the full name" do
+    assigns(:search_string, 'foo')
+    query.should == "((#{FULL_NAME} LIKE[wcd] 'foo*') || (#{FULL_NAME} LIKE[c] '*f*o*o*'))"
+  end
+  
   private
+  
+  def query
+    @controller.send(:query)
+  end
   
   def assigns(name, value = nil)
     @controller.assigns(name, value)
