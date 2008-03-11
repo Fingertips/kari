@@ -65,26 +65,6 @@ class ApplicationController < Rucola::RCController
     @window.makeFirstResponder(@searchTextField)
   end
   
-  # - (IBAction)printWebViewContents:(id)sender
-  # {
-  # NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
-  # NSPrintOperation *printOperation;
-  # 
-  # NSView *webView = [[[myWebView mainFrame] frameView] documentView];
-  # 
-  # [printInfo setTopMargin:15.0];
-  # [printInfo setLeftMargin:10.0];
-  # 
-  # [printInfo setHorizontallyCentered:NO];
-  # [printInfo setVerticallyCentered:NO];
-  # 
-  # printOperation = [NSPrintOperation printOperationWithView:webView 
-  # printInfo:printInfo];
-  # 
-  # [printOperation setShowPanels:YES];
-  # [printOperation runOperation];
-  # }
-  
   def printWebViewContents(sender)
     print_info = OSX::NSPrintInfo.sharedPrintInfo
     print_info.topMargin = 30
@@ -95,7 +75,6 @@ class ApplicationController < Rucola::RCController
     view = @webView.mainFrame.frameView.documentView
     
     print_operation = OSX::NSPrintOperation.printOperationWithView_printInfo(view, print_info)
-    #print_operation.showsPanels = true
     print_operation.runOperation
   end
   
