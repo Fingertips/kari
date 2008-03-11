@@ -27,6 +27,10 @@ class WebViewController < Rucola::RCController
     @doc_title = title.to_s
   end
   
+  def bookmarkable?
+    not @webview.hidden? and not (url.to_s =~ /\/app\/assets\/index.html$/)
+  end
+  
   def url
     @webview.mainFrameURL
   end

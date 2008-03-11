@@ -122,6 +122,7 @@ class BookmarkController < Rucola::RCController
   def validateMenuItem(item)
     case item.action
     when 'openRemoveBookmarkSheet:' then !@bookmarks.empty?
+    when 'openAddBookmarkSheet:' then @webViewController.bookmarkable?
     else
       true
     end
