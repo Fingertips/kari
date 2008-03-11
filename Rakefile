@@ -30,7 +30,15 @@ task :clean_user_files do
   FileUtils.rm_rf(File.expand_path("~/Library/Application Support/Kari"))
 end
 
-desc 'Show the applications preferences.'
-task :show_defaults do
-  puts `/usr/bin/defaults read #{INFO_PLIST['CFBundleIdentifier']}`
+namespace :defaults do
+  desc 'Show the applications preferences.'
+  task :show do
+    puts `/usr/bin/defaults read #{INFO_PLIST['CFBundleIdentifier']}`
+  end
+  
+  desc 'Open the applications preferences.'
+  task :open do
+    file = File.expand_path("~/Library/Preferences/#{INFO_PLIST['CFBundleIdentifier']}.plist")
+    `open '#{file}'`
+  end
 end

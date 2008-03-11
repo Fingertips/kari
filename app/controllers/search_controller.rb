@@ -24,22 +24,8 @@ class SearchController < Rucola::RCController
   end
   
   def rowDoubleClicked(tableview)
-    @delegate.searchController_selectedURL(
-      self,
-      OSX::NSURL.fileURLWithPath(
-        @metadata_array_controller.arrangedObjects[tableview.selectedRow].valueForAttribute('kMDItemPath')
-      )
-    )
+    @delegate.searchController_selectedFile(self, @metadata_array_controller.arrangedObjects[tableview.selectedRow].valueForAttribute('kMDItemPath'))
   end
-  
-  # def tableViewSelectionDidChange(notification)
-  #   return if updating?
-  #   @delegate.searchControllerSelectedURL(
-  #     OSX::NSURL.fileURLWithPath(
-  #       @metadata_array_controller.arrangedObjects[@results_table_view.selectedRow].valueForAttribute('kMDItemPath')
-  #     )
-  #   )
-  # end
   
   def search(sender)
     @search_string = sender.stringValue if sender.is_a?(OSX::NSSearchField)

@@ -2,14 +2,9 @@ class WebViewController < Rucola::RCController
   ib_outlet :webview
   ib_outlet :backForwardButton
   
-  attr_accessor :delegate, :port
-  attr_reader :doc_title
-  
-  BASE_URL = 'http://127.0.0.1:10002/'
+  attr_accessor :delegate
   
   def awakeFromNib
-    @doc_title = "Index"
-    @port = 10002
     @webview.frameLoadDelegate = self
     
     OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
@@ -24,22 +19,19 @@ class WebViewController < Rucola::RCController
     @delegate.webViewFinishedLoading(aNotification)
   end
   
-  def webView_didReceiveTitle_forFrame(sender, title, frame)
-    @doc_title = title.to_s
-  end
-  
   def url
-    @webview.mainFrame.dataSource.request.URL.absoluteString #unless @webview.mainFrame.dataSource.nil?
+    @webview.mainFrameURL
   end
   
+  # Loads a regular file path like: "/some/path/to/file.karidoc"
+  def load_file(file)
+    load_url OSX::NSURL.fileURLWithPath(file)
+  end
+  
+  # Loads a NSURL in the main frame or creates a NSURL for a string.
   def load_url(url)
-    url = OSX::NSURL.fileURLWithPath(url) if url.is_a?(String)
+    url = OSX::NSURL.URLWithString(url) if url.is_a?(String)
     @webview.mainFrame.loadRequest OSX::NSURLRequest.requestWithURL(url)
-  end
-  
-  def url_request(url)
-    # substitute a port number in the url with the current port.
-    OSX::NSURLRequest.requestWithURL OSX::NSURL.URLWithString(url.sub(/:\d+/, ":#{@port}"))
   end
   
   def can_go_back?
@@ -60,24 +52,13 @@ class WebViewController < Rucola::RCController
   
   # helpers
   
-  def blank
+  def blank!
     # FIXME: blank should never appear in the BackForwardList.
-    #load_url 'about:blank'
-    @webview.mainFrame.loadRequest OSX::NSURLRequest.requestWithURL(OSX::NSURL.URLWithString('about:blank'))
+    load_url OSX::NSURL.URLWithString('about:blank')
   end
   
-  def home(sender = nil)
-    #load_url "file:///#{Rucola::RCApp.assets_path}/index.html"
-    load_url "/#{Rucola::RCApp.assets_path}/index.html"
-  end
-  ib_action :home
-  
-  def search(query)
-    load_url "#{BASE_URL}search?q=#{query}"
-  end
-  
-  def show(query)
-    load_url "#{BASE_URL}show/#{query}"
+  def home!
+    load_file File.join(Rucola::RCApp.assets_path, 'index.html')
   end
   
   # Buttons

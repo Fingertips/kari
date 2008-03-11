@@ -1,42 +1,66 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-describe 'WebViewController' do
-  # before do
-  #   @webview_mock = mock("WebView")    
-  #   @webview_controller = WebViewController.alloc.init
-  #   @webview_controller.instance_variable_set :@webview, @webview_mock
-  # end
-  # 
-  # it "should create a NSURLRequest for a ruby string" do
-  #   url = "http://127.0.0.1:9999"
-  #   @webview_controller.instance_variable_set :@port, 9999
-  #   result = @webview_controller.url_request(url)
-  #   result.should be_instance_of(OSX::NSURLRequest)
-  #   result.URL.absoluteString.should == url
-  # end
-  # 
-  # it "should load a given url in it's webview" do
-  #   mainFrame_mock = mock("WebView mainFrame")
-  #   urlrequest_mock = mock("NSURLRequest")
-  #   @webview_controller.should_receive(:url_request).and_return(urlrequest_mock)
-  #   mainFrame_mock.should_receive(:loadRequest).with(urlrequest_mock)
-  #   @webview_mock.should_receive(:mainFrame).and_return(mainFrame_mock)
-  #   
-  #   @webview_controller.load_url "http://127.0.0.1:9999"
-  # end
+module WebViewControllerSpecHelper
+  def setup_webview
+    @webview_mock = mock("WebView")
+    @webview_controller = WebViewController.alloc.init
+    @webview_controller.instance_variable_set :@webview, @webview_mock
+    
+    @mainframe_mock = mock("WebView mainFrame")
+    @webview_mock.stubs(:mainFrame).returns(@mainframe_mock)
+  end
   
-  # it "should load a url in the webview" do
-  #   #urlrequest_mock = mock("NSURLRequest")
-  #   #urlrequest_mock.should_receive(:requestWithURL)
-  #   OSX::NSURLRequest.requestWithURL
-  #   (OSX::NSURL.URLWithString(url))
-  #   
-  #   webview_mainframe_mock = mock("WebView mainFrame")
-  #   webview_mainframe_mock.should_receive(:loadRequest).once.with(urlrequest_mock)
-  #   @app_controller.instance_variable_get(:@webview_controller).should_receive(:load_url)
-  #   
-  #   @app_controller.load_url "http://127.0.0.1:9999"
-  #   
-  # end
+  def expects_load_url_with_url_that_matches(should_be_url)
+    @webview_controller.expects(:load_url).with do |url|
+      url.absoluteString.to_s =~ should_be_url
+    end
+  end
+end
 
+describe 'WebViewController' do
+  include WebViewControllerSpecHelper
+  
+  before do
+    setup_webview
+    
+    @file = '/some/path/to/a/file.karidoc'
+    @file_url = /file:\/\/.*#{@file}/
+  end
+
+  it "should take a NSURL instance and load it in the webview" do
+    @mainframe_mock.expects(:loadRequest).with do |request|
+      request.URL.absoluteString.to_s =~ @file_url
+    end
+    @webview_controller.load_url OSX::NSURL.fileURLWithPath(@file)
+  end
+
+  it "should take a string URL, create a NSURL and load it in the webview" do
+    @mainframe_mock.expects(:loadRequest).with do |request|
+      request.URL.absoluteString.to_s =~ @file_url
+    end
+    @webview_controller.load_url "file://#{@file}"
+  end
+
+  it "should take a string file path, create a NSURL and send it to load_url" do
+    expects_load_url_with_url_that_matches(@file_url)
+    @webview_controller.load_file(@file)
+  end
+end
+
+describe 'WebViewController, helper methods' do
+  include WebViewControllerSpecHelper
+  
+  before do
+    setup_webview
+  end
+  
+  it "should load the index.html page" do
+    expects_load_url_with_url_that_matches(/file:\/\/localhost\/.+\/app\/assets\/index.html$/)
+    @webview_controller.home!
+  end
+  
+  it "should load a blank page" do
+    expects_load_url_with_url_that_matches(/^about:blank$/)
+    @webview_controller.blank!
+  end
 end

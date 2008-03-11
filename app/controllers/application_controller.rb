@@ -16,7 +16,7 @@ class ApplicationController < Rucola::RCController
   end
   
   def showStatus
-    @webViewController.blank
+    @webViewController.blank!
     @statusSpinner.startAnimation(self)
     @statusMessage.stringValue = 'Starting'
     @statusSpinner.hidden = false
@@ -35,7 +35,7 @@ class ApplicationController < Rucola::RCController
     @bookmarkController.delegate = self
     @searchController.delegate = self
     @webViewController.delegate = self
-    @webViewController.home
+    @webViewController.home!
     
     @window.makeFirstResponder(@searchTextField)
   end
@@ -88,7 +88,7 @@ class ApplicationController < Rucola::RCController
   def searchControllerWillStartSearching
     @searchProgressIndicator.startAnimation(self)
     @webView.hidden = true
-    @webViewController.blank
+    @webViewController.blank!
     @resultsScrollView.hidden = false
   end
   
@@ -96,8 +96,8 @@ class ApplicationController < Rucola::RCController
     @searchProgressIndicator.stopAnimation(self)
   end
   
-  def searchController_selectedURL(sender, url)
-    @webViewController.load_url url
+  def searchController_selectedFile(sender, file)
+    @webViewController.load_file(file)
     @webView.hidden = false
     @resultsScrollView.hidden = true
   end
