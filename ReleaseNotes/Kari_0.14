@@ -1,0 +1,15 @@
+h1. Kari 0.14 2008-03-12
+
+* Only a bug fix. Work around the fact that we don't use rubygems in release.
+
+h1. Kari 0.13 2008-03-12
+
+* The Add Bookmark menu item and toolbar button are only enabled when pages are bookmarkable.
+* Choose bookmark bar colors based on mainWindow? rather then keyWindow?.
+* Sort by 'fullName' now instead of 'name'.
+* Improved the search query a bit for some abbreviation possibilities. But it seems the * wildcard doesn't get passed characters like :?_ etc.
+* Added basic print support.
+* The Make Text Normal Size menu item should be between the others.
+* Made the search results tableview scrollbars hide automatically.
+* Made history work again.
+* Don't allow any non-bookmarkable pages in the history.

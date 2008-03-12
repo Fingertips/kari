@@ -15,7 +15,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.13</string>
+	<string>0.14</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
@@ -23,7 +23,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.fngtps.Kari</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.13</string>
+	<string>0.14</string>
 	<key>SUFeedURL</key>
 	<string>http://updates.kari.fngtps.com/appcast.xml</string>
 	<key>SUAppDescription</key>
