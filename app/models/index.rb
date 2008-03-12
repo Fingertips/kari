@@ -26,11 +26,11 @@ class Index
   def length
     @definitions.length
   end
-
+  
   def merge_into_tree(docname, path, at)
     at ||= {}
-    unless path.length == 1
-      at[path.first] = docname
+    if path.length == 1
+      at[path.first] = { :docname => docname}
     else
       at[path.first] = merge_into_tree(docname, path[1..-1], at[path.first])
     end
@@ -38,16 +38,16 @@ class Index
   end
   
   def add_definition_to_tree(full_name)
-    @tree = merge_into_tree(full_name, path_for_name(full_name), @tree)
+    @tree = merge_into_tree(karidoc_name_for(full_name), path_for_name(full_name), @tree)
   end
   
   def add_definition_to_index(full_name, file)
     @definitions[full_name] ||= []
     @definitions[full_name] << file unless @definitions[full_name].include?(file)
     @definitions[full_name].sort! do |a, b|
-      if a.starts_with?(SYSTEM_RI_PATH)
+      if starts_with?(a, SYSTEM_RI_PATH)
         -1
-      elsif b.starts_with?(SYSTEM_RI_PATH)
+      elsif starts_with?(b, SYSTEM_RI_PATH)
         1
       else
         b <=> a
@@ -110,11 +110,19 @@ class Index
   
   private
   
+  def karidoc_name_for(name)
+    path_for_name(name).join(File::SEPARATOR)+'.karidoc'
+  end
+  
   def path_for_name(name)
     name.split(/::|#|\./)
   end
   
   def name_for_path(path)
     path.join("::")
+  end
+  
+  def starts_with?(a, b)
+    a == b[0..a.length-1]
   end
 end
