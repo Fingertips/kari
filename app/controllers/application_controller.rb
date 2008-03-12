@@ -66,10 +66,10 @@ class ApplicationController < Rucola::RCController
     print_info.horizontallyCentered = false
     print_info.verticallyCentered = false
     
-    view = @webView.mainFrame.frameView.documentView
-    
-    print_operation = OSX::NSPrintOperation.printOperationWithView_printInfo(view, print_info)
-    print_operation.runOperation
+    OSX::NSPrintOperation.objc_send(
+      :printOperationWithView, @webView.mainFrame.frameView.documentView,
+                   :printInfo, print_info
+    ).runOperation
   end
   
   # Application delegate methods
