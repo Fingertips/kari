@@ -6,8 +6,6 @@ class SearchController < Rucola::RCController
   ib_outlets :metadata_array_controller, :results_table_view
   ib_outlet :search_field
   
-  notify :query_did_finish, :when => OSX::NSMetadataQueryDidFinishGatheringNotification
-  
   def after_init
     @spotlight = OSX::NSMetadataQuery.alloc.init
     @spotlight.sortDescriptors = [OSX::NSSortDescriptor.alloc.initWithKey_ascending(FULL_NAME, true)]
@@ -36,7 +34,7 @@ class SearchController < Rucola::RCController
     @updating
   end
   
-  def query_did_finish(notification)
+  notify_on OSX::NSMetadataQueryDidFinishGatheringNotification do |notification|
     will_change_metadata do
       @metadata.removeAllObjects
       @metadata.addObjectsFromArray(@spotlight.results) unless @spotlight.resultCount.zero?
@@ -55,7 +53,6 @@ class SearchController < Rucola::RCController
     didChangeValueForKey('metadata')
     @spotlight.enableUpdates
     
-    #@results_table_view.deselectAll(self)
     @updating = false
     @delegate.searchControllerFinishedSearching
   end
@@ -65,7 +62,7 @@ class SearchController < Rucola::RCController
     @spotlight.predicate = OSX::NSPredicate.predicateWithFormat(query)
     @spotlight.startQuery
   rescue OSX::OCException => e
-    puts "Error while start query: #{e.message}"
+    log.error "Error while starting query: #{e.message}"
   end
   
   def query
