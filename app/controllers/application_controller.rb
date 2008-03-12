@@ -6,22 +6,12 @@ class ApplicationController < Rucola::RCController
   ib_outlet :searchProgressIndicator
   ib_outlet :searchTextField
   ib_outlet :bookmarkController
-  ib_outlet :statusMessage
-  ib_outlet :statusSpinner
   ib_outlet :resultsScrollView
   ib_outlet :addBookmarkToolbarButton
   
   def after_init
     PreferencesController.registerDefaults
     OSX::NSApplication.sharedApplication.setDelegate(self)
-  end
-  
-  def showStatus
-    @webViewController.blank!
-    @statusSpinner.startAnimation(self)
-    @statusMessage.stringValue = 'Starting'
-    @statusSpinner.hidden = false
-    @statusMessage.hidden = false
   end
   
   def awakeFromNib
@@ -39,20 +29,18 @@ class ApplicationController < Rucola::RCController
     @webViewController.home!
   end
   
+  def externalRequestForDocumentation(notification)
+    query = notification.userInfo['query']
+    #@webViewController.search(query) unless query.nil? || query.empty?
+    @searchController.search(query) unless query.nil? || query.empty?
+  end
+  
   def openPreferencesWindow(sender)
     PreferencesController.alloc.init.showWindow(self)
   end
   
-  # def rebuildIndex(sender)
-  #   @backend.terminate
-  #   showStatus
-  #   Backend.removeIndex
-  #   setupBackend
-  # end
-  
-  def externalRequestForDocumentation(aNotification)
-    query = aNotification.userInfo['query']
-    @webViewController.search(query) unless query.nil? || query.empty?
+  def rebuildIndex(sender)
+    log.debug 'Need to implement rebuildIndex method.'
   end
   
   def activateSearchField(sender = nil)
