@@ -1,3 +1,13 @@
+# Hack to get around the fact that we don't use rubygems in release.
+# Need to think of a solution for this....
+module Gem
+  class << self
+    def path
+      ["/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8", "/Library/Ruby/Gems/1.8"]
+    end
+  end
+end
+
 require 'rdoc/ri/ri_paths'
 require 'rdoc/ri/ri_descriptions'
 require 'rdoc/markup/simple_markup/to_flow'
