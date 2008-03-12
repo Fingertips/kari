@@ -9,6 +9,7 @@ class ApplicationController < Rucola::RCController
   ib_outlet :statusMessage
   ib_outlet :statusSpinner
   ib_outlet :resultsScrollView
+  ib_outlet :addBookmarkToolbarButton
   
   def after_init
     PreferencesController.registerDefaults
@@ -37,13 +38,6 @@ class ApplicationController < Rucola::RCController
     @webViewController.delegate = self
     @webViewController.home!
   end
-  
-  # def search(search_field)
-  #   #@search_controller.search(search_field.stringValue)
-  #   
-  #   @searchProgressIndicator.startAnimation(nil)
-  #   #@webViewController.search search_field.stringValue.to_s
-  # end
   
   def openPreferencesWindow(sender)
     PreferencesController.alloc.init.showWindow(self)
@@ -97,7 +91,9 @@ class ApplicationController < Rucola::RCController
   # SearchController delegate methods
   
   def searchControllerWillStartSearching
+    @addBookmarkToolbarButton.enabled = false
     @searchProgressIndicator.startAnimation(self)
+    
     @webView.hidden = true
     @webViewController.blank!
     @resultsScrollView.hidden = false
@@ -123,8 +119,6 @@ class ApplicationController < Rucola::RCController
   # WebViewController delegate methods
   
   def webViewFinishedLoading(aNotification)
-    # R159: No more window title for the specific doc.
-    #@window.title = @webViewController.doc_title unless @webViewController.doc_title.nil?
-    #@searchProgressIndicator.stopAnimation(nil)
+    @addBookmarkToolbarButton.enabled = @webViewController.bookmarkable?
   end
 end
