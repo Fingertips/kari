@@ -11,6 +11,8 @@ require 'tmpdir'
 
 require File.expand_path('../../config/boot', __FILE__)
 
+TEST_ROOT = File.expand_path(File.dirname(__FILE__))
+
 def silence_warnings
   old_verbose, $VERBOSE = $VERBOSE, nil
   yield

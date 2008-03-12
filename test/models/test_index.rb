@@ -9,7 +9,7 @@ end
 
 describe "An Index" do
   before do
-    OSX.stubs(:NSHomeDirectory).returns(File.expand_path('../fixtures', __FILE__))
+    OSX.stubs(:NSHomeDirectory).returns(File.join(TEST_ROOT, 'fixtures'))
     @index = Index.new
     @index.read_from_disk
   end
@@ -23,5 +23,15 @@ describe "An Index" do
     @index.write_to_disk
     @index.should.exist
     File.unlink(@index.filename)
+  end
+  
+  xit "should merge ri descriptions from a directory" do
+    @index.examine(File.join(TEST_ROOT, 'fixtures', 'ri'))
+  end
+  
+  xit "should merge definitions to the tree" do
+    p @index.add_definition_to_tree('ActiveRecord::Base#id')
+    p @index.add_definition_to_tree('ActiveRecord::Base#concat')
+    p @index
   end
 end
