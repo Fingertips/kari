@@ -7,6 +7,7 @@ require 'test/spec'
 require 'mocha'
 require 'rucola'
 require 'rucola/test_helper'
+require 'tmpdir'
 
 require File.expand_path('../../config/boot', __FILE__)
 

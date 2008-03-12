@@ -1,7 +1,9 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 describe "Index" do
-  xit "should initialize from marshaled disk image" do
+  it "should initialize from marshaled disk image" do
+    index = Index.initialize_from_disk
+    index.length.should == 0
   end
 end
 
@@ -16,6 +18,10 @@ describe "An Index" do
     @index.length.should == 0
   end
   
-  xit "should write the current index to disk" do
+  it "should write the current index to disk" do
+    @index.stubs(:filepath).returns(Dir::tmpdir)
+    @index.write_to_disk
+    @index.should.exist
+    File.unlink(@index.filename)
   end
 end

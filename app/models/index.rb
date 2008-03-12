@@ -38,4 +38,10 @@ class Index
       log.debug "Read index from disk"
     end if exist?
   end
+  
+  def self.initialize_from_disk
+    index = new
+    index.read_from_disk
+    index
+  end
 end
