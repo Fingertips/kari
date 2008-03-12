@@ -45,11 +45,18 @@ describe 'WebViewController, in general' do
     @controller.load_url OSX::NSURL.fileURLWithPath(@file)
   end
 
-  it "should take a string URL, create a NSURL and load it in the webview" do
+  it "should take a ruby string URL, create a NSURL and load it in the webview" do
     @mainframe_mock.expects(:loadRequest).with do |request|
       request.URL.absoluteString.to_s =~ @file_url
     end
     @controller.load_url "file://#{@file}"
+  end
+
+  it "should take a NSString URL, create a NSURL and load it in the webview" do
+    @mainframe_mock.expects(:loadRequest).with do |request|
+      request.URL.absoluteString.to_s =~ @file_url
+    end
+    @controller.load_url "file://#{@file}".to_ns
   end
 
   it "should take a string file path, create a NSURL and send it to load_url" do
@@ -83,6 +90,14 @@ describe 'WebViewController, helper methods' do
   end
   
   it "should know if the current page is bookmarkable" do
+    @controller.stubs(:url).returns(nil)
+    
+    assigns(:webview).stubs(:hidden?).returns(false)
+    @controller.should.not.be.bookmarkable
+    
+    assigns(:webview).stubs(:hidden?).returns(true)
+    @controller.should.not.be.bookmarkable
+    
     @controller.stubs(:url).returns('file:///some/path/file.karidoc')
     
     assigns(:webview).stubs(:hidden?).returns(false)

@@ -28,7 +28,7 @@ class WebViewController < Rucola::RCController
   end
   
   def bookmarkable?
-    not @webview.hidden? and not (url.to_s =~ /\/app\/assets\/index.html$/)
+    not url.nil? and not @webview.hidden? and not (url.to_s =~ /\/app\/assets\/index.html$/)
   end
   
   def url
@@ -42,7 +42,7 @@ class WebViewController < Rucola::RCController
   
   # Loads a NSURL in the main frame or creates a NSURL for a string.
   def load_url(url)
-    url = OSX::NSURL.URLWithString(url) if url.is_a?(String)
+    url = OSX::NSURL.URLWithString(url) if url.is_a?(String) or url.is_a?(OSX::NSCFString)
     @webview.mainFrame.loadRequest OSX::NSURLRequest.requestWithURL(url)
   end
   
