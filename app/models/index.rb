@@ -30,7 +30,7 @@ class Index
   def merge_into_tree(docname, path, at)
     at ||= {}
     if path.length == 1
-      at[path.first] = { :docname => docname}
+      at[path.first] = { :docname => docname }
     else
       at[path.first] = merge_into_tree(docname, path[1..-1], at[path.first])
     end
