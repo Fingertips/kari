@@ -46,6 +46,10 @@ class WebViewController < Rucola::RCController
     @webview.mainFrame.loadRequest OSX::NSURLRequest.requestWithURL(url)
   end
   
+  def add_search_back_forward_item(query)
+    @webview.backForwardList.addItem OSX::WebHistoryItem.alloc.initWithURLString_title_lastVisitedTimeInterval("kari://search/#{query}", "Kari Search Query Item", 0)
+  end
+  
   def can_go_back?
     @webview.canGoBack == 1
   end

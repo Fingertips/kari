@@ -7,6 +7,7 @@ require 'test/spec'
 require 'mocha'
 require 'rucola'
 require 'rucola/test_helper'
+require 'rucola/test_case'
 require 'tmpdir'
 
 require File.expand_path('../../config/boot', __FILE__)
@@ -37,3 +38,9 @@ module GlobalSpecHelper
     bookmarks
   end
 end
+
+# def assert_difference(eval_str, difference)
+#   before = instance_eval(eval_str)
+#   yield
+#   assert_equal(before + difference, instance_eval(eval_str))
+# end
