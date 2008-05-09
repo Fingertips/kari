@@ -102,10 +102,23 @@ describe "WebViewController, when dealing with special back/forward items" do
   
   def after_setup
     ib_outlets :webview => OSX::WebView.alloc.init
-    controller.add_search_back_forward_item('string')
+    
+    @query = 'Binding'
+    controller.add_search_back_forward_item(@query)
+    @url = OSX::NSURL.URLWithString("kari://search/#{@query}")
   end
   
   it "should create a new WebHistoryItem representing a search query" do
-    webview.backForwardList.currentItem.URLString.should == 'kari://search/string'
+    webview.backForwardList.currentItem.URLString.should == @url.absoluteString
+  end
+  
+  it "should send a delegate message if a special search back/forward item was requested" do
+    delegate = mock('Delegate')
+    delegate.expects(:webView_didSelectSearchQuery).with(webview, @query)
+    controller.delegate = delegate
+    
+    listener = mock('Decision Listener')
+    listener.expects(:ignore)
+    controller.webView_decidePolicyForNavigationAction_request_frame_decisionListener(nil, nil, OSX::NSURLRequest.requestWithURL(@url), nil, listener)
   end
 end

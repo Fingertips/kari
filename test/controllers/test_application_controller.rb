@@ -4,30 +4,66 @@ describe 'ApplicationController' do
   tests ApplicationController
   
   def after_setup
-    ib_outlets :resultsScrollView => OSX::NSScrollView.alloc.init,
-               :webView => OSX::WebView.alloc.init
+    ib_outlets :webViewController => WebViewController.alloc.init,
+               :webView => OSX::WebView.alloc.init,
+               :resultsScrollView => OSX::NSScrollView.alloc.init,
+               :searchTextField => OSX::NSSearchField.alloc.init
+    
+    webViewController.instance_variable_set(:@webview, webView)
+    webViewController.stubs(:load_file)
+    
+    searchTextField.stringValue = 'ActiveRecord'
   end
   
-  it "should bring the results table view forward and hide the webview if a user started searching" do
-    controller.searchControllerWillStartSearching
+  it "should bring the results table view forward and hide the webView if a user started searching" do
+    start_searching!
     webView.hidden?.should.be true
     resultsScrollView.hidden?.should.be false
   end
   
-  it "should load a blank web page, otherwise the last loaded page will be visible for a split second when hidding the search results table view" do
+  it "should load a blank web page, otherwise the last loaded page will be visible for a split second when hiding the search results table view" do
     webViewController.expects(:blank!)
-    controller.searchControllerWillStartSearching
+    start_searching!
+  end
+  
+  it "should create a special search back forward item when a switching back to the webView" do
+    select_file!
+    webView.backForwardList.currentItem.URLString.should == 'kari://search/ActiveRecord'
   end
   
   it "should tell the webViewController to load a file if the searchController calls its selectedFile delegate method" do
     webViewController.expects(:load_file).with('/some/file.karidoc')
-    controller.searchController_selectedFile(nil, '/some/file.karidoc')
+    select_file! '/some/file.karidoc'
   end
   
-  it "should bring the webview forward and hide the results table view if a user selected a search result"  do
-    controller.searchController_selectedFile(nil, nil)
+  it "should bring the webView forward and hide the results table view if a user selected a search result"  do
+    should_bring_webView_to_front do
+      select_file!
+    end
+  end
+  
+  it "should start a new search if a search back forward item was requested" do
+    searchController.expects(:search).with(searchTextField)
+    controller.webView_didSelectSearchQuery(nil, 'Binding')
+    searchTextField.stringValue.should == 'Binding'
+  end
+  
+  private
+  
+  def should_bring_webView_to_front
+    webView.hidden = true
+    resultsScrollView.hidden = false
+    yield
     webView.hidden?.should.be false
     resultsScrollView.hidden?.should.be true
+  end
+  
+  def start_searching!
+    controller.searchControllerWillStartSearching
+  end
+  
+  def select_file!(file = nil)
+    controller.searchController_selectedFile(nil, file)
   end
 end
 

@@ -10,6 +10,7 @@ class WebViewController < Rucola::RCController
   
   def awakeFromNib
     @webview.frameLoadDelegate = self
+    @webview.policyDelegate = self
     
     OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
                                                       :selector,    'webViewFinishedLoading:',
@@ -21,6 +22,15 @@ class WebViewController < Rucola::RCController
     @backForwardButton.setEnabled_forSegment(can_go_back?, BACK_BUTTON)
     @backForwardButton.setEnabled_forSegment(can_go_forward?, FORWARD_BUTTON)
     @delegate.webViewFinishedLoading(aNotification)
+  end
+  
+  def webView_decidePolicyForNavigationAction_request_frame_decisionListener(webView, information, request, frame, listener)
+    if request.URL.absoluteString.to_s =~ /^kari:\/\/search\/(.+)/
+      listener.ignore
+      @delegate.webView_didSelectSearchQuery(@webview, $1)
+    else
+      listener.use
+    end
   end
   
   def webView_didReceiveTitle_forFrame(webView, title, frame)

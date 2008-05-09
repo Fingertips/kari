@@ -93,6 +93,7 @@ class ApplicationController < Rucola::RCController
   
   def searchController_selectedFile(sender, file)
     @webViewController.load_file(file)
+    @webViewController.add_search_back_forward_item(@searchTextField.stringValue)
     @webView.hidden = false
     @resultsScrollView.hidden = true
     @window.makeFirstResponder(@webView)
@@ -108,5 +109,10 @@ class ApplicationController < Rucola::RCController
   
   def webViewFinishedLoading(aNotification)
     @addBookmarkToolbarButton.enabled = @webViewController.bookmarkable?
+  end
+  
+  def webView_didSelectSearchQuery(webView, query)
+    @searchTextField.stringValue = query
+    @searchController.search(@searchTextField)
   end
 end
