@@ -1,5 +1,8 @@
 require File.expand_path('../../test_helper', __FILE__)
 
+PRIMARY_RI_PATH = File.join(TEST_ROOT, 'fixtures', 'ri')
+ALTERNATE_RI_PATH = File.join(TEST_ROOT, 'fixtures', 'alternate-ri')
+
 describe "Index" do
   before do
     OSX.stubs(:NSHomeDirectory).returns(File.join(TEST_ROOT, 'fixtures'))
@@ -11,11 +14,10 @@ describe "Index" do
   end
 end
 
-describe "An Index" do
+describe "An empty Index" do
   before do
     OSX.stubs(:NSHomeDirectory).returns(File.join(TEST_ROOT, 'fixtures'))
     @index = Index.new
-    @index.read_from_disk
   end
   
   it "should return the number of indexed entries" do
@@ -28,13 +30,7 @@ describe "An Index" do
     @index.should.exist
     File.unlink(@index.filename)
   end
-  
-  it "should merge ri descriptions from a directory" do
-    @index.examine(File.join(TEST_ROOT, 'fixtures', 'ri'))
-    @index.definitions.has_key?('Binding').should == true
-    @index.tree.has_key?('Binding').should == true
-  end
-  
+
   it "should add definitions to the tree" do
     @index.add_definition_to_tree('Module::Class#method')
     @index.add_definition_to_tree('Module::Class::classmethod')
@@ -50,5 +46,58 @@ describe "An Index" do
     @index.definitions.length.should == 2
     @index.definitions['Module::Class#method'].length.should == 1 
     @index.definitions['Module::Class::classmethod'].length.should == 2
+  end
+  
+  it "should add definitions found in definition files" do
+    @index.examine(PRIMARY_RI_PATH)
+    
+    @index.definitions.has_key?('Binding').should == true
+    @index.tree.has_key?('Binding').should == true
+    
+    @index.definitions.length.should == 3
+    @index.definitions["Binding#dup"].length.should == 1
+    @index.definitions["Binding#clone"].length.should == 1
+  end
+  
+  it "should merge multiple definitions" do
+    @index.examine(PRIMARY_RI_PATH)
+    @index.examine(ALTERNATE_RI_PATH)
+    
+    @index.definitions.length.should == 3
+    @index.definitions["Binding#dup"].length.should == 2
+    @index.definitions["Binding#clone"].length.should == 1
+  end
+end
+
+describe "A filled Index" do
+  before do
+    OSX.stubs(:NSHomeDirectory).returns(File.join(TEST_ROOT, 'fixtures'))
+    @index = Index.new
+    @index.examine(PRIMARY_RI_PATH)
+  end
+  
+  it "should remove definitions when removed from the filesystem" do
+    File.stubs(:exist?).returns(false)
+    @index.purge_vanished(PRIMARY_RI_PATH)
+    
+    @index.definitions['Binding'].should.be.nil
+    @index.definitions['Binding#clone'].should.be.nil
+    @index.definitions['Binding#dub'].should.be.nil
+    
+    @index.tree['Binding'].should.be.nil
+  end
+  
+  it "should not remove definitions when an alternate definitions still exists" do
+    @index.merge_new(ALTERNATE_RI_PATH)
+    File.stubs(:exist?).returns(false)
+    @index.purge_vanished(PRIMARY_RI_PATH)
+    
+    @index.definitions['Binding'].should.not.be.nil
+    @index.definitions['Binding#dup'].should.not.be.nil
+    @index.definitions['Binding#clone'].should.be.nil
+    
+    @index.tree['Binding'].should.not.be.nil
+    @index.tree['Binding']['dup'].should.not.be.nil
+    @index.tree['Binding']['clone'].should.not.be.nil
   end
 end

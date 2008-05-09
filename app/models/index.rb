@@ -60,7 +60,22 @@ class Index
     add_definition_to_tree(full_name)
   end
   
-  def examine(path)
+  def delete(full_name, file)
+    @definitions[full_name].delete(file)
+    @definitions.delete(full_name) if @definitions[full_name].empty?
+  end
+  
+  def purge_vanished(path)
+    @definitions.each do |full_name, files|
+      files.each do |file|
+        if !File.exist?(file) and starts_with?(path, file)
+          delete(full_name, file)
+        end
+      end
+    end
+  end
+  
+  def merge_new(path)
     Dir.foreach(path) do |filename|
       next if filename =~ /(^\.)|(\.rid$)/
       current_path = File.join(path, filename)
@@ -73,6 +88,11 @@ class Index
         end
       end
     end
+  end
+  
+  def examine(path)
+    purge_vanished(path)
+    merge_new(path)
   end
   
   def filepath
@@ -122,7 +142,7 @@ class Index
     path.join("::")
   end
   
-  def starts_with?(a, b)
-    a == b[0..a.length-1]
+  def starts_with?(needle, haystack)
+    needle == haystack[0..needle.length-1]
   end
 end
