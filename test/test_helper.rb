@@ -14,6 +14,9 @@ require File.expand_path('../../config/boot', __FILE__)
 
 TEST_ROOT = File.expand_path(File.dirname(__FILE__))
 
+# Needed by some OSX classes, like WebView, to function properly.
+Thread.new { OSX::CFRunLoopRun }
+
 def silence_warnings
   old_verbose, $VERBOSE = $VERBOSE, nil
   yield

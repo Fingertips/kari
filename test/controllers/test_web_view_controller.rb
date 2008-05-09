@@ -97,17 +97,15 @@ describe 'WebViewController, helper methods' do
   end
 end
 
-Thread.new { OSX::CFRunLoopRun }
-
 describe "WebViewController, when dealing with special back/forward items" do
   tests WebViewController
   
   def after_setup
     ib_outlets :webview => OSX::WebView.alloc.init
+    controller.add_search_back_forward_item('string')
   end
   
   it "should create a new WebHistoryItem representing a search query" do
-    controller.add_search_back_forward_item('string')
     webview.backForwardList.currentItem.URLString.should == 'kari://search/string'
   end
 end
