@@ -32,27 +32,26 @@ describe "An empty Index" do
   end
 
   it "should add definitions to the tree" do
-    @index.add_definition_to_tree('Module::Class#method')
-    @index.add_definition_to_tree('Module::Class::classmethod')
-    @index.add_definition_to_tree('Module2::Class#othermethod')
-    @index.tree.length.should == 2
-    @index.tree['Module']['Class']['method'].should.not.be.nil
+    @index.add_karidoc_to_tree('Module::Class#method')
+    @index.add_karidoc_to_tree('Module::Class::classmethod')
+    @index.add_karidoc_to_tree('Module2::Class#othermethod')
+    @index.tree.empty?.should == false
+    @index.tree.get(%w(Module Class method)).should.not.be.nil
   end
   
   it "should add definition to the index" do
     @index.add_definition_to_index('Module::Class#method', 'path/to/file_1.yaml')
     @index.add_definition_to_index('Module::Class::classmethod', 'path/to/file_2.yaml')
     @index.add_definition_to_index('Module::Class::classmethod', 'path/to/file_3.yaml')
-    @index.definitions.length.should == 2
-    @index.definitions['Module::Class#method'].length.should == 1 
-    @index.definitions['Module::Class::classmethod'].length.should == 2
+    @index.definitions["Module::Class#method"].length.should == 1
+    @index.definitions["Module::Class::classmethod"].length.should == 2
   end
   
   it "should add definitions found in definition files" do
     @index.examine(PRIMARY_RI_PATH)
     
     @index.definitions.has_key?('Binding').should == true
-    @index.tree.has_key?('Binding').should == true
+    @index.tree.get(%w(Binding dup)).should.not.be.nil
     
     @index.definitions.length.should == 3
     @index.definitions["Binding#dup"].length.should == 1
@@ -84,7 +83,9 @@ describe "A filled Index" do
     @index.definitions['Binding#clone'].should.be.nil
     @index.definitions['Binding#dub'].should.be.nil
     
-    @index.tree['Binding'].should.be.nil
+    @index.tree.get(%w(Binding)).should.be.nil
+    @index.tree.get(%w(Binding clone)).should.be.nil
+    @index.tree.get(%w(Binding dup)).should.be.nil
   end
   
   it "should not remove definitions when an alternate definitions still exists" do
@@ -96,8 +97,8 @@ describe "A filled Index" do
     @index.definitions['Binding#dup'].should.not.be.nil
     @index.definitions['Binding#clone'].should.be.nil
     
-    @index.tree['Binding'].should.not.be.nil
-    @index.tree['Binding']['dup'].should.not.be.nil
-    @index.tree['Binding']['clone'].should.not.be.nil
+    @index.tree.get(%w(Binding)).should.not.be.nil
+    @index.tree.get(%w(Binding clone)).should.be.nil
+    @index.tree.get(%w(Binding dup)).should.not.be.nil
   end
 end

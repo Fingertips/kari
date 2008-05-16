@@ -3,18 +3,18 @@ require File.expand_path('../../test_helper', __FILE__)
 describe "A HashTree in general" do
   before do
     @tree = HashTree.new
-    @tree.set('Binding#clone', %w(Binding clone))
-    @tree.set('Binding#dup', %w(Binding dup))
-    @tree.set('Kernel::Fun#dup', %w(Kernel Fun dup))
+    @tree.set(%w(Binding clone), 'Binding#clone')
+    @tree.set(%w(Binding dup), 'Binding#dup')
+    @tree.set(%w(Kernel Fun dup), 'Kernel::Fun#dup')
   end
   
   it "should get the same value that was set on a certain path" do
     path = %w(Binding)
-    @tree.set(path.last, path)
+    @tree.set(path, path.last)
     @tree.get(path).should == path.last
     
     path = %w(Binding Immediate dup)
-    @tree.set(path.last, path)
+    @tree.set(path, path.last)
     @tree.get(path).should == path.last
   end
   
@@ -39,7 +39,7 @@ describe "An empty HashTree" do
   end
   
   it "should not be empty after adding something" do
-    @tree.set('Binding', %w(Binding))
+    @tree.set(%w(Binding), 'Binding')
     @tree.empty?.should == false
   end
 end

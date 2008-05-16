@@ -1,22 +1,26 @@
 class HashTree
   def initialize
-    @tree = { :value => :root, :children => {} }
+    @tree = { :children => {} }
   end
   
   def empty?
     @tree[:children].empty?
   end
   
-  def set(value, path, at=nil)
+  def set(path, value, at=nil)
     at ||= @tree
     head = path.first
     rest = path[1..-1]
     
     at[:children][head] ||= { :value => nil, :children => {} }
     unless rest.empty?
-      set(value, rest, at[:children][head])
+      set(rest, value, at[:children][head])
     else
       at[:children][head][:value] = value
+      # We don't have a value anymore so if there aren't any children this node should be deleted
+      if value.nil? and at[:children][head][:children].empty?
+        at[:children].delete(head)
+      end
     end
   end
   

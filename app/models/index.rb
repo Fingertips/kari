@@ -20,25 +20,15 @@ class Index
   def initialize
     log.debug "Initializing new index"
     @definitions = {}
-    @tree = {}
+    @tree = HashTree.new
   end
   
   def length
     @definitions.length
   end
   
-  def merge_into_tree(docname, path, at)
-    at ||= {}
-    if path.length == 1
-      at[path.first] = { :docname => docname }
-    else
-      at[path.first] = merge_into_tree(docname, path[1..-1], at[path.first])
-    end
-    at
-  end
-  
-  def add_definition_to_tree(full_name)
-    @tree = merge_into_tree(karidoc_name_for(full_name), path_for_name(full_name), @tree)
+  def add_karidoc_to_tree(full_name)
+    @tree.set(path_for_name(full_name), karidoc_name_for(full_name))
   end
   
   def add_definition_to_index(full_name, file)
@@ -57,14 +47,16 @@ class Index
   
   def add(full_name, file)
     add_definition_to_index(full_name, file)
-    add_definition_to_tree(full_name)
+    add_karidoc_to_tree(full_name)
   end
   
   def delete(full_name, file)
     @definitions[full_name].delete(file)
-    @definitions.delete(full_name) if @definitions[full_name].empty?
+    if @definitions[full_name].empty?
+      @definitions.delete(full_name)
+      @tree.set(path_for_name(full_name), nil)
+    end
   end
-  
   def purge_vanished(path)
     @definitions.each do |full_name, files|
       files.each do |file|
