@@ -19,6 +19,10 @@ class WebViewController < Rucola::RCController
   end
   
   def webViewFinishedLoading(aNotification)
+    # p "Loaded: #{@webview.backForwardList.currentItem.URLString}"
+    # clear_blank_back_forward_items!
+    # p "After cleaning: #{@webview.backForwardList.currentItem.URLString}"
+    
     @backForwardButton.setEnabled_forSegment(can_go_back?, BACK_BUTTON)
     @backForwardButton.setEnabled_forSegment(can_go_forward?, FORWARD_BUTTON)
     @delegate.webViewFinishedLoading(aNotification)
@@ -27,6 +31,16 @@ class WebViewController < Rucola::RCController
   def webView_decidePolicyForNavigationAction_request_frame_decisionListener(webView, information, request, frame, listener)
     if request.URL.absoluteString.to_s =~ /^kari:\/\/search\/(.+)/
       listener.ignore
+      
+      if @going_back_or_forward
+        if @going_back_or_forward == BACK_BUTTON
+          @webview.backForwardList.goBack
+        else
+          @webview.backForwardList.goForward
+        end
+        @going_back_or_forward = nil
+      end
+      
       @delegate.webView_didSelectSearchQuery(@webview, $1)
     else
       listener.use
@@ -79,7 +93,6 @@ class WebViewController < Rucola::RCController
   # helpers
   
   def blank!
-    # FIXME: blank should never appear in the BackForwardList.
     load_url OSX::NSURL.URLWithString('about:blank')
   end
   
@@ -92,6 +105,7 @@ class WebViewController < Rucola::RCController
   BACK_BUTTON = 0
   FORWARD_BUTTON = 1
   def goBackOrForward(sender)
+    @going_back_or_forward = sender.selectedSegment
     if sender.selectedSegment == BACK_BUTTON
       @webview.goBack(self)
     else
@@ -117,5 +131,13 @@ class WebViewController < Rucola::RCController
     else
       true
     end
+  end
+  
+  private
+  
+  def clear_blank_back_forward_items!
+    list = @webview.backForwardList
+    items = [list.backItem, list.currentItem].compact
+    items.each { |item| list.removeItem(item) if item.URLString == 'about:blank' }
   end
 end

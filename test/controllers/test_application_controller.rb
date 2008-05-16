@@ -21,7 +21,7 @@ describe 'ApplicationController' do
     resultsScrollView.hidden?.should.be false
   end
   
-  it "should load a blank web page, otherwise the last loaded page will be visible for a split second when hiding the search results table view" do
+  xit "should load a blank web page, otherwise the last loaded page will be visible for a split second when hiding the search results table view" do
     webViewController.expects(:blank!)
     start_searching!
   end
@@ -46,6 +46,17 @@ describe 'ApplicationController' do
     searchController.expects(:search).with(searchTextField)
     controller.webView_didSelectSearchQuery(nil, 'Binding')
     searchTextField.stringValue.should == 'Binding'
+  end
+  
+  it "should always bring the webview to the front if the loaded page is bookmarkable" do
+    webViewController.stubs(:bookmarkable?).returns(true)
+    should_bring_webView_to_front do
+      controller.webViewFinishedLoading(nil)
+    end
+    
+    webView.hidden = true
+    webViewController.stubs(:bookmarkable?).returns(false)
+    webView.hidden?.should.be true
   end
   
   private

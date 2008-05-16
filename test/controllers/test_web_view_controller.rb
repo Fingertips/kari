@@ -97,11 +97,12 @@ describe 'WebViewController, helper methods' do
   end
 end
 
-describe "WebViewController, when dealing with special back/forward items" do
+describe "WebViewController, when with back/forward items" do
   tests WebViewController
   
   def after_setup
-    ib_outlets :webview => OSX::WebView.alloc.init
+    ib_outlets :webview => OSX::WebView.alloc.init,
+               :delegate => stub_everything('Delegate')
     
     @query = 'Binding'
     controller.add_search_back_forward_item(@query)
@@ -113,12 +114,36 @@ describe "WebViewController, when dealing with special back/forward items" do
   end
   
   it "should send a delegate message if a special search back/forward item was requested" do
-    delegate = mock('Delegate')
     delegate.expects(:webView_didSelectSearchQuery).with(webview, @query)
-    controller.delegate = delegate
-    
     listener = mock('Decision Listener')
     listener.expects(:ignore)
     controller.webView_decidePolicyForNavigationAction_request_frame_decisionListener(nil, nil, OSX::NSURLRequest.requestWithURL(@url), nil, listener)
+  end
+  
+  it "should set the correct BackForward current item if a special search back/forward item was requested" do
+    listener = stub_everything('Decision Listener')
+    
+    assigns(:going_back_or_forward, 0)
+    webview.backForwardList.expects(:goBack)
+    controller.webView_decidePolicyForNavigationAction_request_frame_decisionListener(nil, nil, OSX::NSURLRequest.requestWithURL(@url), nil, listener)
+    
+    assigns(:going_back_or_forward, 1)
+    webview.backForwardList.expects(:goForward)
+    controller.webView_decidePolicyForNavigationAction_request_frame_decisionListener(nil, nil, OSX::NSURLRequest.requestWithURL(@url), nil, listener)
+    
+    assigns(:going_back_or_forward).should.be nil
+  end
+  
+  xit "should remove blank BackForward items once loaded" do
+    assert_no_difference('webview.backForwardList.backListCount') do
+      controller.send(:clear_blank_back_forward_items!)
+    end
+    
+    assert_no_difference('webview.backForwardList.backListCount') do
+      2.times do
+        webview.backForwardList.addItem OSX::WebHistoryItem.alloc.initWithURLString_title_lastVisitedTimeInterval("about:blank", "", 0)
+      end
+      controller.send(:clear_blank_back_forward_items!)
+    end
   end
 end

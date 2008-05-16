@@ -31,7 +31,6 @@ class ApplicationController < Rucola::RCController
   
   def externalRequestForDocumentation(notification)
     query = notification.userInfo['query']
-    #@webViewController.search(query) unless query.nil? || query.empty?
     @searchController.search(query) unless query.nil? || query.empty?
   end
   
@@ -83,7 +82,7 @@ class ApplicationController < Rucola::RCController
     @searchProgressIndicator.startAnimation(self)
     
     @webView.hidden = true
-    @webViewController.blank!
+    #@webViewController.blank! # Experimenting with the BackForwardList
     @resultsScrollView.hidden = false
   end
   
@@ -109,10 +108,18 @@ class ApplicationController < Rucola::RCController
   
   def webViewFinishedLoading(aNotification)
     @addBookmarkToolbarButton.enabled = @webViewController.bookmarkable?
+    bring_webView_to_front!
   end
   
   def webView_didSelectSearchQuery(webView, query)
     @searchTextField.stringValue = query
     @searchController.search(@searchTextField)
+  end
+  
+  private
+  
+  def bring_webView_to_front!
+    @webView.hidden = false
+    @resultsScrollView.hidden = true
   end
 end

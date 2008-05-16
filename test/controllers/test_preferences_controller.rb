@@ -1,6 +1,6 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-describe 'PreferencesController' do
+xdescribe 'PreferencesController' do
   include GlobalSpecHelper
   
   before do
