@@ -8,6 +8,19 @@ module WebViewControllerSpecHelper
   end
 end
 
+describe "WebViewController, when initializing" do
+  tests WebViewController
+  
+  def after_setup
+    ib_outlets :webview => OSX::WebView.alloc.init
+    controller.awakeFromNib
+  end
+
+  it "should enable the tabsToLinks preference" do
+    webview.preferences.tabsToLinks.should.be 1
+  end
+end
+
 describe 'WebViewController, in general' do
   tests WebViewController
   

@@ -9,6 +9,8 @@ class WebViewController < Rucola::RCController
   end
   
   def awakeFromNib
+    @webview.preferences.tabsToLinks = true
+    
     @webview.frameLoadDelegate = self
     @webview.policyDelegate = self
     
@@ -19,10 +21,6 @@ class WebViewController < Rucola::RCController
   end
   
   def webViewFinishedLoading(aNotification)
-    # p "Loaded: #{@webview.backForwardList.currentItem.URLString}"
-    # clear_blank_back_forward_items!
-    # p "After cleaning: #{@webview.backForwardList.currentItem.URLString}"
-    
     @backForwardButton.setEnabled_forSegment(can_go_back?, BACK_BUTTON)
     @backForwardButton.setEnabled_forSegment(can_go_forward?, FORWARD_BUTTON)
     @delegate.webViewFinishedLoading(aNotification)
