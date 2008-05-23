@@ -1,6 +1,56 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-describe 'ApplicationController' do
+describe "ApplicationController, when a bookmarkBarToggledVisibility notification is received" do
+  tests ApplicationController
+  
+  def after_setup
+    ib_outlets :webView => OSX::NSView.alloc.initWithFrame([0, 20, 100, 100]),
+               :resultsScrollView => OSX::NSScrollView.alloc.initWithFrame([0, 20, 100, 100])
+    
+    window.stubs(:frame).returns(OSX::NSRect.new(0, 0, 100, 100))
+    @bookmarkBar = OSX::NSView.alloc.initWithFrame([0, 0, 100, 20])
+  end
+  
+  it "should resize the window to shrink if the bookmark bar is hidden" do
+    @bookmarkBar.hidden = true
+    should_resize_window_height :from => 100, :to => 80
+    controller.bookmarkBarToggledVisibility(@bookmarkBar)
+  end
+  
+  it "should resize the window to grow if the bookmark bar is not hidden" do
+    @bookmarkBar.hidden = false
+    should_resize_window_height :from => 80, :to => 100
+    controller.bookmarkBarToggledVisibility(@bookmarkBar)
+  end
+  
+  %w{ webView resultsScrollView }.each do |view|
+    it "should increase the height of the #{view} if the bookmark bar is hidden" do
+      @bookmarkBar.hidden = true
+      assert_difference("#{view}.frame.height", +20) do
+        controller.bookmarkBarToggledVisibility(@bookmarkBar)
+      end
+    end
+  
+    it "should decrease the height of the #{view} if the bookmark bar is not hidden" do
+      @bookmarkBar.hidden = false
+      assert_difference("#{view}.frame.height", -20) do
+        controller.bookmarkBarToggledVisibility(@bookmarkBar)
+      end
+    end
+  end
+  
+  private
+  
+  def should_resize_window_height(options)
+    window.stubs(:frame).returns(OSX::NSRect.new(0, 0, 100, options[:from]))
+    window.expects(:setFrame_display_animate).with do |new_frame, display, animate|
+      display && animate && new_frame.width == 100 and new_frame.height == options[:to]
+    end
+  end
+end
+
+
+describe 'ApplicationController, in general' do
   tests ApplicationController
   
   def after_setup

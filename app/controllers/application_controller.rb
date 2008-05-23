@@ -82,7 +82,6 @@ class ApplicationController < Rucola::RCController
     @searchProgressIndicator.startAnimation(self)
     
     @webView.hidden = true
-    #@webViewController.blank! # Experimenting with the BackForwardList
     @resultsScrollView.hidden = false
   end
   
@@ -102,6 +101,23 @@ class ApplicationController < Rucola::RCController
   
   def bookmarkClicked(bookmark)
     @webViewController.load_url bookmark.url
+  end
+  
+  def bookmarkBarToggledVisibility(bookmarkBar)
+    bookmarkBar_height = bookmarkBar.frame.height
+    offset = (bookmarkBar.hidden? ? -bookmarkBar_height : bookmarkBar_height)
+    
+    # move the y position of the webView and the resultsScrollView up/down, the view is flipped so subtract the offset
+    webView_frame = @webView.frame
+    @webView.frameSize = OSX::NSSize.new(webView_frame.width, webView_frame.height - offset)
+    
+    scrollView_frame = @resultsScrollView.frame
+    @resultsScrollView.frameSize = OSX::NSSize.new(scrollView_frame.width, scrollView_frame.height - offset)
+    
+    # resize the window
+    window_frame = @window.frame
+    new_size = OSX::NSSize.new(window_frame.width, window_frame.height + offset)
+    @window.setFrame_display_animate(OSX::NSRect.new(window_frame.origin, new_size), true, true)
   end
   
   # WebViewController delegate methods

@@ -39,6 +39,13 @@ class BookmarkController < Rucola::RCController
     self.bookmarksChanged
   end
   
+  # actions
+  
+  def toggleVisibilityBookmarksBar(sender)
+    @bookmarkBar.hidden = !@bookmarkBar.hidden?
+    @delegate.bookmarkBarToggledVisibility(@bookmarkBar)
+  end
+  
   # events
   
   def bookmarkClicked(bookmark)
