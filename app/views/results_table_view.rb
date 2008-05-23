@@ -12,6 +12,10 @@ class ResultsTableView < OSX::NSTableView
     false
   end
   
+  def wantsForwardedKeyEvents?
+    !superview.superview.hidden?
+  end
+  
   # handlers for keys that are being pressed in the search field
   
   def insertNewline(sender)
