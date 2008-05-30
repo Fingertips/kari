@@ -65,4 +65,17 @@ describe "BookmarkController" do
     @delegate.expects(:bookmarkBarToggledVisibility).with(bookmarkBar)
     controller.toggleVisibilityBookmarksBar(nil)
   end
+  
+  
+  it "should toggle the text on the 'Hide/Show Bookmarks Bar' according to the visibility" do
+    item = OSX::NSMenuItem.alloc.initWithTitle_action_keyEquivalent("Hide Bookmarks Bar", 'toggleVisibilityBookmarksBar:', '')
+    
+    bookmarkBar.stubs(:hidden?).returns(true)
+    controller.validateMenuItem(item)
+    item.title.should == 'Show Bookmarks Bar'
+    
+    bookmarkBar.stubs(:hidden?).returns(false)
+    controller.validateMenuItem(item)
+    item.title.should == 'Hide Bookmarks Bar'
+  end
 end

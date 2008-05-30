@@ -128,11 +128,12 @@ class BookmarkController < Rucola::RCController
 
   def validateMenuItem(item)
     case item.action
-    when 'openRemoveBookmarkSheet:' then !@bookmarks.empty?
-    when 'openAddBookmarkSheet:' then @webViewController.bookmarkable?
-    else
-      true
+    when 'openRemoveBookmarkSheet:' then return !@bookmarks.empty?
+    when 'openAddBookmarkSheet:' then return @webViewController.bookmarkable?
+    when 'toggleVisibilityBookmarksBar:'
+      item.title = @bookmarkBar.hidden? ? 'Show Bookmarks Bar' : 'Hide Bookmarks Bar'
     end
+    true
   end
 
 end

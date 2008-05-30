@@ -24,19 +24,21 @@ describe "ApplicationController, when a bookmarkBarToggledVisibility notificatio
   end
   
   %w{ webView resultsScrollView }.each do |view|
+    
     it "should increase the height of the #{view} if the bookmark bar is hidden" do
       @bookmarkBar.hidden = true
       assert_difference("#{view}.frame.height", +20) do
         controller.bookmarkBarToggledVisibility(@bookmarkBar)
       end
     end
-  
+    
     it "should decrease the height of the #{view} if the bookmark bar is not hidden" do
       @bookmarkBar.hidden = false
       assert_difference("#{view}.frame.height", -20) do
         controller.bookmarkBarToggledVisibility(@bookmarkBar)
       end
     end
+    
   end
   
   private
@@ -48,7 +50,6 @@ describe "ApplicationController, when a bookmarkBarToggledVisibility notificatio
     end
   end
 end
-
 
 describe 'ApplicationController, in general' do
   tests ApplicationController
