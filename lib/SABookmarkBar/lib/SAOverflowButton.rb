@@ -8,17 +8,25 @@
 require 'osx/cocoa'
 
 class OSX::SAOverflowButton < OSX::NSButton
-  IMAGE_DIR = File.join(File.dirname(File.expand_path(__FILE__)), '..', 'images')
+  OVERFLOW_IMAGE = OSX::NSImage.alloc.initWithContentsOfFile(File.join(File.dirname(File.expand_path(__FILE__)), '..', 'images', 'OverflowButton.tif'))
+  OVERFLOW_IMAGE.template = true
   
   def init
     if super_init
-      @pressed_image = OSX::NSImage.alloc.initWithContentsOfFile(File.join(IMAGE_DIR, "OverflowButtonPressed.tif"))
-      self.image = @not_pressed_image = OSX::NSImage.alloc.initWithContentsOfFile(File.join(IMAGE_DIR, "OverflowButton.tif"))
-      
+      self.image = OVERFLOW_IMAGE
       self.bordered = false
       self.sizeToFit
       self
     end
+  end
+  
+  def setBackgroundColor
+    cell.backgroundColor = OSX::NSColor.colorWithDeviceRed_green_blue_alpha(*superview.barColors.first)
+  end
+  
+  def drawRect(rect)
+    setBackgroundColor
+    super_drawRect(rect)
   end
   
   def displayMenu(timer)
@@ -31,13 +39,12 @@ class OSX::SAOverflowButton < OSX::NSButton
   end
   
   def mouseDown(theEvent)
-    self.image = @pressed_image
+    super_mouseDown(theEvent)
     timer = OSX::NSTimer.timerWithTimeInterval_target_selector_userInfo_repeats(0.0, self, 'displayMenu:', theEvent, false)
     OSX::NSRunLoop.currentRunLoop.addTimer_forMode(timer, "NSDefaultRunLoopMode")
   end
   
   def menuWillClose(sender)
     OSX::NSNotificationCenter.defaultCenter.removeObserver(self)
-    self.image = @not_pressed_image
   end
 end

@@ -62,6 +62,7 @@ class OSX::SABookmarkBar < OSX::NSView
   end
   
   def windowChangedKey(aNotification)
+    @overflowButton.needsDisplay = true if @overflowMenu
     self.needsDisplay = true
   end
   
