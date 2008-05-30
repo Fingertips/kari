@@ -103,13 +103,13 @@ class Index
     log.debug "Writing index to disk"
     FileUtils.mkdir_p(filepath) unless File.exist?(filepath)
     File.open(filename, 'w') do |file|
-      file.write(Marshal.dump(@definitions))
+      file.write(Marshal.dump([@definitions, @tree]))
     end
   end
   
   def read_from_disk
     File.open(filename, 'r') do |file|
-      @definitions = Marshal.load(file.read)
+      @definitions, @tree = *Marshal.load(file.read)
       log.debug "Read index from disk"
     end if exist?
   end

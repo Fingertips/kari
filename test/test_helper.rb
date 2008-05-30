@@ -9,6 +9,7 @@ require 'rucola'
 require 'rucola/test_helper'
 require 'rucola/test_case'
 require 'tmpdir'
+require 'fileutils'
 
 require File.expand_path('../../config/boot', __FILE__)
 

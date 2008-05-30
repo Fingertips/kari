@@ -30,7 +30,7 @@ describe "An empty Index" do
     @index.should.exist
     File.unlink(@index.filename)
   end
-
+  
   it "should add definitions to the tree" do
     @index.add_karidoc_to_tree('Module::Class#method')
     @index.add_karidoc_to_tree('Module::Class::classmethod')
@@ -70,9 +70,13 @@ end
 
 describe "A filled Index" do
   before do
-    OSX.stubs(:NSHomeDirectory).returns(File.join(TEST_ROOT, 'fixtures'))
+    Index.any_instance.stubs(:filepath).returns(Dir::tmpdir)
     @index = Index.new
     @index.examine(PRIMARY_RI_PATH)
+  end
+  
+  after do
+    FileUtils.rm_rf(@index.filepath)
   end
   
   it "should remove definitions when removed from the filesystem" do
@@ -100,5 +104,12 @@ describe "A filled Index" do
     @index.tree.get(%w(Binding)).should.not.be.nil
     @index.tree.get(%w(Binding clone)).should.be.nil
     @index.tree.get(%w(Binding dup)).should.not.be.nil
+  end
+  
+  it "should be able to write index to disk and read it back" do
+    @index.write_to_disk
+    index_from_disk = Index.initialize_from_disk
+    index_from_disk.definitions.should == @index.definitions
+    index_from_disk.tree.should == @index.tree
   end
 end

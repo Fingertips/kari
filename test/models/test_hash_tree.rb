@@ -27,6 +27,10 @@ describe "A HashTree in general" do
   it "should know it's not empty" do
     @tree.empty?.should == false
   end
+  
+  it "should be equal to itself" do
+    @tree.should == @tree
+  end
 end
 
 describe "An empty HashTree" do
@@ -41,5 +45,9 @@ describe "An empty HashTree" do
   it "should not be empty after adding something" do
     @tree.set(%w(Binding), 'Binding')
     @tree.empty?.should == false
+  end
+  
+  it "should be equal to any other empty HashTree" do
+    @tree.should == HashTree.new
   end
 end

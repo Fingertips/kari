@@ -1,4 +1,6 @@
 class HashTree
+  attr_reader :tree
+  
   def initialize
     @tree = { :children => {} }
   end
@@ -46,5 +48,9 @@ class HashTree
     else
       at[:children].delete(head)
     end
+  end
+  
+  def ==(other)
+    @tree == other.tree
   end
 end
