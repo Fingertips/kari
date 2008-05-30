@@ -1,6 +1,7 @@
 class ResultsTableView < OSX::NSTableView
   def awakeFromNib
-    self.rowHeight = 20
+    self.rowHeight = 24
+    setIntercellSpacing(OSX::NSSize.new(0.0, 3.0))
     tableColumns.first.dataCell = ResultCell.alloc.init
   end
   
@@ -44,10 +45,10 @@ class ResultCell < OSX::NSCell
   LEFT_MARGIN = 10
   
   def drawInteriorWithFrame_inView(frame, view)
-    attributes = { OSX::NSFontAttributeName => OSX::NSFont.fontWithName_size('AmericanTypewriter', 14) }
+    attributes = { OSX::NSFontAttributeName => OSX::NSFont.fontWithName_size('Baskerville', 16) }
     
     objectValue.drawAtPoint_withAttributes(
-      OSX::NSMakePoint(frame.origin.x + LEFT_MARGIN, frame.origin.y + 2),
+      OSX::NSMakePoint(frame.origin.x + LEFT_MARGIN, frame.origin.y - 2),
       attributes
     )
   end
