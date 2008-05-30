@@ -10,6 +10,7 @@ require 'osx/cocoa'
 class OSX::SABookmarkBar < OSX::NSView
   attr_accessor :delegate, :bookmarks
   
+  HEIGHT = 21
   MARGIN = 5
   SPACING = 2
   
