@@ -57,6 +57,7 @@ class Index
       @tree.set(path_for_name(full_name), nil)
     end
   end
+  
   def purge_vanished(path)
     @definitions.each do |full_name, files|
       files.each do |file|

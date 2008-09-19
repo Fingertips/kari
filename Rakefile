@@ -4,6 +4,9 @@ require 'rubygems'
 require 'rucola/rucola_support'
 load 'rucola/tasks/main.rake'
 
+# Load default tasks
+require 'rake/rdoctask'
+
 # Application configuration
 
 PUBLISH_URI = URI.parse('scp://eloy@updates.kari.fngtps.com/var/www/updates.kari/htdocs')
@@ -40,5 +43,14 @@ namespace :defaults do
   task :open do
     file = File.expand_path("~/Library/Preferences/#{INFO_PLIST['CFBundleIdentifier']}.plist")
     `open '#{file}'`
+  end
+end
+
+namespace :documentation do
+  Rake::RDocTask.new(:generate) do |rdoc|
+    rdoc.title = 'Kari'
+    rdoc.rdoc_dir = 'documentation'
+    rdoc.rdoc_files.include("app/**/*.rb", "lib/**/*.rb")
+    rdoc.options << "--all" << "--charset" << "utf-8"
   end
 end
