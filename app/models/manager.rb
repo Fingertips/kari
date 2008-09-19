@@ -29,16 +29,16 @@ class Manager
   end
   
   def add_karidoc_to_namespace(full_name)
-    @namespace.set(Namespace.split(full_name), Generator.filename(full_name))
+    @namespace.set(RubyName.split(full_name), Generator.filename(full_name))
   end
   
   def add_definition(full_name, file)
     @definitions[full_name] ||= []
     @definitions[full_name] << file unless @definitions[full_name].include?(file)
     @definitions[full_name].sort! do |a, b|
-      if starts_with?(a, SYSTEM_RI_PATH)
+      if a.start_with?(SYSTEM_RI_PATH)
         -1
-      elsif starts_with?(b, SYSTEM_RI_PATH)
+      elsif b.start_with?(SYSTEM_RI_PATH)
         1
       else
         b <=> a
@@ -55,14 +55,14 @@ class Manager
     @definitions[full_name].delete(file)
     if @definitions[full_name].empty?
       @definitions.delete(full_name)
-      @namespace.set(Namespace.split(full_name), nil)
+      @namespace.set(RubyName.split(full_name), nil)
     end
   end
   
   def purge_vanished(path)
     @definitions.each do |full_name, files|
       files.each do |file|
-        if !File.exist?(file) and starts_with?(path, file)
+        if !File.exist?(file) and file.start_with?(path)
           delete(full_name, file)
         end
       end
@@ -90,7 +90,7 @@ class Manager
   end
   
   def filepath
-    File.join(OSX.NSHomeDirectory, 'Library', 'Application Support', 'Kari')
+    Rucola::RCApp.application_support_path
   end
   
   def filename
@@ -129,11 +129,5 @@ class Manager
     index = new
     index.read_from_disk
     index
-  end
-  
-  private
-  
-  def starts_with?(needle, haystack)
-    needle == haystack[0..needle.length-1]
   end
 end
