@@ -12,13 +12,13 @@ require 'rdoc/ri/ri_paths'
 require 'rdoc/ri/ri_descriptions'
 require 'rdoc/markup/simple_markup/to_flow'
 
-class Index
+class Manager
   SYSTEM_RI_PATH = RI::Paths.path(true, false, false, false).first
   
   attr_accessor :definitions, :tree, :search_index
   
   def initialize
-    log.debug "Initializing new index"
+    log.debug "Initializing new indices"
     @definitions = {}
     @tree = HashTree.new
     @search_index = SearchKit::Index.create(search_index_filename)
