@@ -1,16 +1,16 @@
 module HTMLHelpers
   include ERB::Util
 
-  def tag_attributes(options)
-    attrs = options.inject([]) do |attrs, (k, v)|
-      attrs << "#{k}=\"#{v}\""
-    end
-    attrs.empty? ? '' : " #{attrs.join(' ')}"
+  def tag_attributes(attributes={})
+    return '' if attributes.empty?
+    ' ' << attributes.inject([]) do |attrs, (k, v)|
+      attrs << "#{k}=\"#{html_escape(v)}\""
+    end.join(' ')
   end
-
-  def content_tag(name, contents="", options={}, &block)
+  
+  def content_tag(name, contents="", attributes={}, &block)
     contents = yield if block
-    "<#{name}#{tag_attributes(options)}>#{contents}</#{name}>"
+    "<#{name}#{tag_attributes(attributes)}>#{contents}</#{name}>"
   end
   
   def header_with_markup(path, separator, name)
