@@ -38,12 +38,12 @@ describe "An empty Manager" do
     File.unlink(@manager.filename)
   end
   
-  it "should add definitions to the tree" do
-    @manager.add_karidoc_to_tree('Module::Class#method')
-    @manager.add_karidoc_to_tree('Module::Class::classmethod')
-    @manager.add_karidoc_to_tree('Module2::Class#othermethod')
-    @manager.tree.empty?.should == false
-    @manager.tree.get(%w(Module Class method)).should.not.be.nil
+  it "should add definitions to the.namespace" do
+    @manager.add_karidoc_to_namespace('Module::Class#method')
+    @manager.add_karidoc_to_namespace('Module::Class::classmethod')
+    @manager.add_karidoc_to_namespace('Module2::Class#othermethod')
+    @manager.namespace.empty?.should == false
+    @manager.namespace.get(%w(Module Class method)).should.not.be.nil
   end
   
   it "should add definition to the index" do
@@ -58,7 +58,7 @@ describe "An empty Manager" do
     @manager.examine(PRIMARY_RI_PATH)
     
     @manager.definitions.has_key?('Binding').should == true
-    @manager.tree.get(%w(Binding dup)).should.not.be.nil
+    @manager.namespace.get(%w(Binding dup)).should.not.be.nil
     
     @manager.definitions.length.should == 3
     @manager.definitions["Binding#dup"].length.should == 1
@@ -97,9 +97,9 @@ describe "A filled Manager" do
     @manager.definitions['Binding#clone'].should.be.nil
     @manager.definitions['Binding#dub'].should.be.nil
     
-    @manager.tree.get(%w(Binding)).should.be.nil
-    @manager.tree.get(%w(Binding clone)).should.be.nil
-    @manager.tree.get(%w(Binding dup)).should.be.nil
+    @manager.namespace.get(%w(Binding)).should.be.nil
+    @manager.namespace.get(%w(Binding clone)).should.be.nil
+    @manager.namespace.get(%w(Binding dup)).should.be.nil
   end
   
   it "should not remove definitions when an alternate definitions still exists" do
@@ -111,9 +111,9 @@ describe "A filled Manager" do
     @manager.definitions['Binding#dup'].should.not.be.nil
     @manager.definitions['Binding#clone'].should.be.nil
     
-    @manager.tree.get(%w(Binding)).should.not.be.nil
-    @manager.tree.get(%w(Binding clone)).should.be.nil
-    @manager.tree.get(%w(Binding dup)).should.not.be.nil
+    @manager.namespace.get(%w(Binding)).should.not.be.nil
+    @manager.namespace.get(%w(Binding clone)).should.be.nil
+    @manager.namespace.get(%w(Binding dup)).should.not.be.nil
   end
   
   it "should be able to write index to disk and read it back" do
@@ -122,6 +122,6 @@ describe "A filled Manager" do
     
     index_from_disk = Manager.initialize_from_disk
     index_from_disk.definitions.should == @manager.definitions
-    index_from_disk.tree.should == @manager.tree
+    index_from_disk.namespace.should == @manager.namespace
   end
 end

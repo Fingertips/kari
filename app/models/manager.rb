@@ -15,12 +15,12 @@ require 'rdoc/markup/simple_markup/to_flow'
 class Manager
   SYSTEM_RI_PATH = RI::Paths.path(true, false, false, false).first
   
-  attr_accessor :definitions, :tree, :search_index
+  attr_accessor :definitions, :namespace, :search_index
   
   def initialize
     log.debug "Initializing new indices"
     @definitions = {}
-    @tree = HashTree.new
+    @namespace = HashTree.new
     @search_index = SearchKit::Index.create(search_index_filename)
   end
   
@@ -28,8 +28,8 @@ class Manager
     @definitions.length
   end
   
-  def add_karidoc_to_tree(full_name)
-    @tree.set(path_for_name(full_name), karidoc_name_for(full_name))
+  def add_karidoc_to_namespace(full_name)
+    @namespace.set(Namespace.split(full_name), Generator.filename(full_name))
   end
   
   def add_definition(full_name, file)
@@ -48,14 +48,14 @@ class Manager
   
   def add(full_name, file)
     add_definition(full_name, file)
-    add_karidoc_to_tree(full_name)
+    add_karidoc_to_namespace(full_name)
   end
   
   def delete(full_name, file)
     @definitions[full_name].delete(file)
     if @definitions[full_name].empty?
       @definitions.delete(full_name)
-      @tree.set(path_for_name(full_name), nil)
+      @namespace.set(Namespace.split(full_name), nil)
     end
   end
   
@@ -109,13 +109,13 @@ class Manager
     log.debug "Writing index to disk"
     FileUtils.mkdir_p(filepath) unless File.exist?(filepath)
     File.open(filename, 'w') do |file|
-      file.write(Marshal.dump([@definitions, @tree]))
+      file.write(Marshal.dump([@definitions, @namespace]))
     end
   end
   
   def read_from_disk
     File.open(filename, 'r') do |file|
-      @definitions, @tree = *Marshal.load(file.read)
+      @definitions, @namespace = *Marshal.load(file.read)
       log.debug "Read index from disk"
     end if exist?
     @search_index = SearchKit::Index.open(search_index_filename, nil, true)
@@ -132,18 +132,6 @@ class Manager
   end
   
   private
-  
-  def karidoc_name_for(name)
-    path_for_name(name).join(File::SEPARATOR)+'.karidoc'
-  end
-  
-  def path_for_name(name)
-    name.split(/::|#|\./)
-  end
-  
-  def name_for_path(path)
-    path.join("::")
-  end
   
   def starts_with?(needle, haystack)
     needle == haystack[0..needle.length-1]
