@@ -99,7 +99,8 @@ module SearchKit #:nodoc:
       OSX::SKIndexRemoveDocument(@index, document)
     end
     
-    # Returns the number of documents in the index
+    # Returns the number of documents in the index. Note that the count is only up to date after
+    # a +flush+.
     def count
       if (count = OSX::SKIndexGetDocumentCount(@index)) != 0
         count - 9

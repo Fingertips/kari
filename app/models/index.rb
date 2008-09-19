@@ -15,12 +15,13 @@ require 'rdoc/markup/simple_markup/to_flow'
 class Index
   SYSTEM_RI_PATH = RI::Paths.path(true, false, false, false).first
   
-  attr_accessor :definitions, :tree
+  attr_accessor :definitions, :tree, :search_index
   
   def initialize
     log.debug "Initializing new index"
     @definitions = {}
     @tree = HashTree.new
+    @search_index = SearchKit::Index.create(search_index_filename)
   end
   
   def length
@@ -31,7 +32,7 @@ class Index
     @tree.set(path_for_name(full_name), karidoc_name_for(full_name))
   end
   
-  def add_definition_to_index(full_name, file)
+  def add_definition(full_name, file)
     @definitions[full_name] ||= []
     @definitions[full_name] << file unless @definitions[full_name].include?(file)
     @definitions[full_name].sort! do |a, b|
@@ -46,7 +47,7 @@ class Index
   end
   
   def add(full_name, file)
-    add_definition_to_index(full_name, file)
+    add_definition(full_name, file)
     add_karidoc_to_tree(full_name)
   end
   
@@ -96,6 +97,10 @@ class Index
     File.join(filepath, 'RiIndex')
   end
   
+  def search_index_filename
+    File.join(filepath, 'SKIndex')
+  end
+  
   def exist?
     File.exist?(filename)
   end
@@ -113,6 +118,11 @@ class Index
       @definitions, @tree = *Marshal.load(file.read)
       log.debug "Read index from disk"
     end if exist?
+    @search_index = SearchKit::Index.open(search_index_filename, nil, true)
+  end
+  
+  def close
+    @search_index.close
   end
   
   def self.initialize_from_disk

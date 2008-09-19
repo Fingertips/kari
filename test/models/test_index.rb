@@ -5,19 +5,26 @@ ALTERNATE_RI_PATH = File.join(TEST_ROOT, 'fixtures', 'alternate-ri')
 
 describe "Index" do
   before do
+    Index.any_instance.stubs(:filepath).returns(Dir::tmpdir)
     OSX.stubs(:NSHomeDirectory).returns(File.join(TEST_ROOT, 'fixtures'))
   end
   
   it "should initialize from marshaled disk image" do
     index = Index.initialize_from_disk
-    index.length.should == 0
+    index.length.should == 3
+    index.close
   end
 end
 
 describe "An empty Index" do
   before do
+    Index.any_instance.stubs(:filepath).returns(Dir::tmpdir)
     OSX.stubs(:NSHomeDirectory).returns(File.join(TEST_ROOT, 'fixtures'))
     @index = Index.new
+  end
+  
+  after do
+    @index.close
   end
   
   it "should return the number of indexed entries" do
@@ -40,9 +47,9 @@ describe "An empty Index" do
   end
   
   it "should add definition to the index" do
-    @index.add_definition_to_index('Module::Class#method', 'path/to/file_1.yaml')
-    @index.add_definition_to_index('Module::Class::classmethod', 'path/to/file_2.yaml')
-    @index.add_definition_to_index('Module::Class::classmethod', 'path/to/file_3.yaml')
+    @index.add_definition('Module::Class#method', 'path/to/file_1.yaml')
+    @index.add_definition('Module::Class::classmethod', 'path/to/file_2.yaml')
+    @index.add_definition('Module::Class::classmethod', 'path/to/file_3.yaml')
     @index.definitions["Module::Class#method"].length.should == 1
     @index.definitions["Module::Class::classmethod"].length.should == 2
   end
@@ -71,11 +78,14 @@ end
 describe "A filled Index" do
   before do
     Index.any_instance.stubs(:filepath).returns(Dir::tmpdir)
+    OSX.stubs(:NSHomeDirectory).returns(File.join(TEST_ROOT, 'fixtures'))
+    
     @index = Index.new
     @index.examine(PRIMARY_RI_PATH)
   end
   
   after do
+    @index.close
     FileUtils.rm_rf(@index.filepath)
   end
   
@@ -108,6 +118,8 @@ describe "A filled Index" do
   
   it "should be able to write index to disk and read it back" do
     @index.write_to_disk
+    @index.close
+    
     index_from_disk = Index.initialize_from_disk
     index_from_disk.definitions.should == @index.definitions
     index_from_disk.tree.should == @index.tree
