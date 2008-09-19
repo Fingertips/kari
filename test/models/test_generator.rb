@@ -1,14 +1,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 describe "Generator" do
-  before do
-    @application_support_path = File.join(Dir.tmpdir, 'kari-application-support-path')
-    Rucola::RCApp.stubs(:application_support_path).returns(@application_support_path)
-  end
-  
-  after do
-    FileUtils.rm_rf(@application_support_path)
-  end
+  include TemporaryApplicationSupportPath
   
   it "should return the filepath" do
     Generator.filepath.should.start_with(@application_support_path)

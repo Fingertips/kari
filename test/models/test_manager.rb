@@ -4,22 +4,19 @@ PRIMARY_RI_PATH = File.join(TEST_ROOT, 'fixtures', 'ri')
 ALTERNATE_RI_PATH = File.join(TEST_ROOT, 'fixtures', 'alternate-ri')
 
 describe "Manager" do
-  before do
-    Manager.any_instance.stubs(:filepath).returns(Dir::tmpdir)
-    OSX.stubs(:NSHomeDirectory).returns(File.join(TEST_ROOT, 'fixtures'))
-  end
+  include TemporaryApplicationSupportPath
   
   it "should initialize from marshaled disk image" do
     index = Manager.initialize_from_disk
-    index.length.should == 3
+    index.length.should == 0
     index.close
   end
 end
 
 describe "An empty Manager" do
+  include TemporaryApplicationSupportPath
+  
   before do
-    Manager.any_instance.stubs(:filepath).returns(Dir::tmpdir)
-    OSX.stubs(:NSHomeDirectory).returns(File.join(TEST_ROOT, 'fixtures'))
     @manager = Manager.new
   end
   
@@ -76,17 +73,15 @@ describe "An empty Manager" do
 end
 
 describe "A filled Manager" do
+  include TemporaryApplicationSupportPath
+  
   before do
-    Manager.any_instance.stubs(:filepath).returns(Dir::tmpdir)
-    OSX.stubs(:NSHomeDirectory).returns(File.join(TEST_ROOT, 'fixtures'))
-    
     @manager = Manager.new
     @manager.examine(PRIMARY_RI_PATH)
   end
   
   after do
     @manager.close
-    FileUtils.rm_rf(@manager.filepath)
   end
   
   it "should remove definitions when removed from the filesystem" do

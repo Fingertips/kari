@@ -25,34 +25,8 @@ ensure
   $VERBOSE = old_verbose
 end
 
-module GlobalSpecHelper
-  def make_hashes(titles)
-    hashes = []
-    titles.each_with_index do |title, idx|
-      hashes.push({:id => idx, :title => title, :url => "http://127.0.0.1:10002/show/#{title}", :order_index => idx})
-    end
-    hashes
-  end
-  
-  def make_bookmarks(titles)
-    bookmarks = []
-    make_hashes(titles).each do |hash|
-      bookmarks.push OSX::SABookmark.alloc.initWithHash(hash)
-    end
-    bookmarks
-  end
-end
+$:.push(File.expand_path('../test_helper', __FILE__))
 
-class Test::Unit::TestCase
-  def assert_difference(eval_str, difference)
-    before = eval(eval_str)
-    yield
-    assert_equal(before + difference, eval(eval_str))
-  end
-  
-  def assert_no_difference(eval_str)
-    assert_difference(eval_str, 0) do
-      yield
-    end
-  end
-end
+require 'global_spec_helper'
+require 'assert_difference'
+require 'temporary_application_support_path'
