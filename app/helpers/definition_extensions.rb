@@ -1,8 +1,9 @@
 module DefinitionExtensions
   def separator
-    if full_name =~ /#/
+    case full_name
+    when /\#/
       '#'
-    elsif full_name =~ /\./
+    when /\./
       '.'
     else
       '::'
@@ -10,15 +11,11 @@ module DefinitionExtensions
   end
   
   def path
-    full_name.split(/::|#|\./)[0..-2].join('::')
+    RubyName.split(full_name)[0..-2].join('::')
   end
   
   def ri_type
-    if self.class.to_s =~ /^RI::(.*)Description$/
-      $1
-    else
-      'Module'
-    end 
+    self.class.to_s =~ /^RI::(.*)Description$/ ? $1 : 'Module'
   end
   
   def template_name
