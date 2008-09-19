@@ -1,6 +1,6 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-describe "A class extended with DefinitionExtensions" do
+describe "An instance extended with DefinitionExtensions" do
   include DefinitionExtensions
   attr_accessor :full_name
   
