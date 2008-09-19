@@ -1,0 +1,23 @@
+<h1><%= header_with_markup(definition.path, definition.separator, definition.name) %></h1>
+<hr />
+<p>
+  <span class="visibility"><%=h definition.visibility %></span>
+  <% if definition.params.starts_with?('(') %>
+    <span><%=h definition.name + definition.params %></span>
+  <% else %>
+    <span><%=h definition.params %></span>
+  <% end %>
+</p>
+<% unless definition.comment.blank? %>
+<div class="comment">
+  <%= flow definition.comment %>
+</div>
+<% end %>
+<% unless definition.aliases.empty? %>
+<h2>Aliases</h2>
+<ul>
+  <% definition.aliases.each do |method| %>
+  <li><%=h method.name %></li>
+  <% end %>
+</ul>
+<% end %>

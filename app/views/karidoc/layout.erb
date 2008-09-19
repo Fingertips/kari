@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title><%= full_name %></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="full-name" content="<%=html_escape full_name %>" />
+    <% if definition = definitions.first %>
+    <meta name="type" content="<%=html_escape definition.type %>" />
+    <meta name="path" content="<%=html_escape definition.path %>" />
+    <meta name="name" content="<%=html_escape definition.name %>" />
+    <% end %>
+  </head>
+  <body>
+  <% definitions.each do |definition| %>
+    <%= render_definition definition  %>
+  <% end %>
+  </body>
+</html>

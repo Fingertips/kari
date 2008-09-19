@@ -10,4 +10,8 @@ class String
       self[-suffix.length, suffix.length] == suffix
     end
   end
+  
+  def blank?
+    self == ''
+  end
 end
