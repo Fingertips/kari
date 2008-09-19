@@ -1,3 +1,5 @@
+ELOY
+
 - In the XCode documentation for JS (DashCode) there is a JS function described which allows to copy stuff to the paste board.
 - Consistenly use snake/camel case for all the ib_outlets.
 
@@ -5,3 +7,11 @@
   - Indexing new documentation progress indicator.
   - Show where links in the docs go.
   - Search results count, like the Finder Search window.
+
+MANFRED
+
+- Add tests for Generator#render and Generator.template.
+- Add more ri yaml files and complete funtional tests for all four template types.
+- Generate Karidoc from the Manager when new files are discovered
+- Update (destroy/generate) Karidoc from the Manager when files are updated
+- Destroy Karidoc files when definitions are deleted

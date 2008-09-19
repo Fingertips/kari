@@ -2,7 +2,7 @@
 <hr />
 <p>
   <span class="visibility"><%=h definition.visibility %></span>
-  <% if definition.params.starts_with?('(') %>
+  <% if definition.params.start_with?('(') %>
     <span><%=h definition.name + definition.params %></span>
   <% else %>
     <span><%=h definition.params %></span>
