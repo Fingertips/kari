@@ -14,4 +14,10 @@ describe "String" do
     'My movie'.should.not.end_with('M')
     'My movie'.should.not.end_with('My')
   end
+  
+  it "should know if it's blank" do
+    ''.should.be.blank
+    ' '.should.not.be.blank
+    'Not'.should.not.be.blank
+  end
 end
