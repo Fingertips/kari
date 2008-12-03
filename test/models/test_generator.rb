@@ -10,6 +10,10 @@ describe "Generator" do
   include TemporaryApplicationSupportPath
   include FixtureHelpers
   
+  after do
+    Generator.class_eval { @template = nil }
+  end
+  
   it "should return the filepath" do
     Generator.filepath.should.start_with(@application_support_path)
     Generator.filepath.should.end_with('Karidoc')
@@ -34,6 +38,13 @@ describe "Generator" do
     Generator.generate(description_file)
     File.should.exist(Generator.filename('Binding#clone'))
   end
+  
+  it "should memoize ERB templates" do
+    template_file = File.join(File.expand_path('../../../app/views/karidoc', __FILE__), 'layout.erb')
+    ERB.expects(:new).returns('').times(1)
+    Generator.template(template_file)
+    Generator.template(template_file)
+  end
 end
 
 describe "A Generator" do
@@ -49,6 +60,11 @@ describe "A Generator" do
   
   it "should generate" do
     @generator.generate
-    File.read(Generator.filename('Binding')).should =~ /Binding/
+    File.read(Generator.filename('Binding')).should =~ /<title>Binding<\/title>/
+  end
+  
+  it "should render ri definitions" do
+    result = @generator.render([YAML::load_file(@generator.definition_files.first)])
+    result.should =~ /<title>Binding<\/title>/
   end
 end

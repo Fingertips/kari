@@ -10,7 +10,6 @@ ELOY
 
 MANFRED
 
-- Add tests for Generator#render and Generator.template.
 - Add more ri yaml files and complete funtional tests for all four template types.
 - Generate Karidoc from the Manager when new files are discovered
 - Update (destroy/generate) Karidoc from the Manager when files are updated
