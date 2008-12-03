@@ -57,7 +57,7 @@ describe "An empty Manager" do
     @manager.definitions.has_key?('Binding').should == true
     @manager.namespace.get(%w(Binding dup)).should.not.be.nil
     
-    @manager.definitions.length.should == 3
+    @manager.definitions.length.should == 11
     @manager.definitions["Binding#dup"].length.should == 1
     @manager.definitions["Binding#clone"].length.should == 1
   end
@@ -66,7 +66,7 @@ describe "An empty Manager" do
     @manager.examine(PRIMARY_RI_PATH)
     @manager.examine(ALTERNATE_RI_PATH)
     
-    @manager.definitions.length.should == 3
+    @manager.definitions.length.should == 11
     @manager.definitions["Binding#dup"].length.should == 2
     @manager.definitions["Binding#clone"].length.should == 1
   end

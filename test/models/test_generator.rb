@@ -68,3 +68,23 @@ describe "A Generator" do
     result.should =~ /<title>Binding<\/title>/
   end
 end
+
+describe "A Generator, rendering karidoc" do
+  include TemporaryApplicationSupportPath
+  include FixtureHelpers
+  
+  it "should render a class" do
+    Generator.generate([file_fixture('ri', 'Binding', 'cdesc-Binding.yaml')])
+    File.read(Generator.filename('Binding')).should =~ /<title>Binding<\/title>/
+  end
+  
+  it "should render a class method" do
+    Generator.generate([file_fixture('ri', 'Mutex', 'new-c.yaml')])
+    File.read(Generator.filename('Mutex.new')).should =~ /<title>Mutex::new<\/title>/
+  end
+  
+  it "should render an instance method" do
+    Generator.generate([file_fixture('ri', 'Mutex', 'lock-i.yaml')])
+    File.read(Generator.filename('Mutex#lock')).should =~ /<title>Mutex#lock<\/title>/
+  end
+end
