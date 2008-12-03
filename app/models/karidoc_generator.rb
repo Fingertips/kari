@@ -2,7 +2,7 @@ require 'yaml'
 require 'fileutils'
 
 # Class that generates Karidoc files from the RI definition
-class Generator
+class KaridocGenerator
   EXTENSION = '.karidoc'
   
   attr_accessor :definition_files
@@ -51,14 +51,13 @@ class Generator
   end
   
   def self.generate(description_files)
-    generator = Generator.new description_files
-    generator.generate
+    new(description_files).generate
   end
   
   # Returns the filename where the karidoc file for the Ruby name _name_ will be stored.
   #
   # Example:
-  #   Generator.filename('Module::SubModule.method') => '/path/to/Module/SubModule/method.karidoc'
+  #   KaridocGenerator.filename('Module::SubModule.method') => '/path/to/Module/SubModule/method.karidoc'
   def self.filename(name)
     File.join(filepath, RubyName.split(name).join(File::SEPARATOR) + EXTENSION)
   end

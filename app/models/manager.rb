@@ -12,6 +12,8 @@ require 'rdoc/ri/ri_paths'
 require 'rdoc/ri/ri_descriptions'
 require 'rdoc/markup/simple_markup/to_flow'
 
+require 'generator'
+
 class Manager
   SYSTEM_RI_PATH = RI::Paths.path(true, false, false, false).first
   
@@ -29,7 +31,7 @@ class Manager
   end
   
   def add_karidoc_to_namespace(full_name)
-    @namespace.set(RubyName.split(full_name), Generator.filename(full_name))
+    @namespace.set(RubyName.split(full_name), KaridocGenerator.filename(full_name))
   end
   
   def add_definition(full_name, file)
@@ -49,6 +51,8 @@ class Manager
   def add(full_name, file)
     add_definition(full_name, file)
     add_karidoc_to_namespace(full_name)
+    KaridocGenerator.generate(@definitions[full_name])
+    # TODO: Add the karidoc to the SKIndex
   end
   
   def delete(full_name, file)
@@ -56,6 +60,11 @@ class Manager
     if @definitions[full_name].empty?
       @definitions.delete(full_name)
       @namespace.set(RubyName.split(full_name), nil)
+      # TODO: Remove the karidoc
+      # TODO: Remove the karidoc from the SKIndex
+    else
+      # TODO: Update karidoc
+      # TODO: Update the karidoc in the SKIndex
     end
   end
   

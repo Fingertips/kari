@@ -10,6 +10,8 @@ ELOY
 
 MANFRED
 
-- Generate Karidoc from the Manager when new files are discovered
 - Update (destroy/generate) Karidoc from the Manager when files are updated
 - Destroy Karidoc files when definitions are deleted
+- Add generated files to the SKIndex
+- Update/remove removed files in/from the SKIndex
+- Improve test coverage of the Manager

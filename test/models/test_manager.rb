@@ -15,6 +15,7 @@ end
 
 describe "An empty Manager" do
   include TemporaryApplicationSupportPath
+  include FixtureHelpers
   
   before do
     @manager = Manager.new
@@ -69,6 +70,13 @@ describe "An empty Manager" do
     @manager.definitions.length.should == 11
     @manager.definitions["Binding#dup"].length.should == 2
     @manager.definitions["Binding#clone"].length.should == 1
+  end
+  
+  it "should add new definitions for classes" do
+    @manager.add('Binding', file_fixture('ri', 'Binding', 'cdesc-Binding.yaml'))
+    @manager.definitions['Binding'].should.not.be.nil
+    @manager.namespace.get(['Binding']).should.not.be.nil
+    File.should.exist(KaridocGenerator.filename('Binding'))
   end
 end
 

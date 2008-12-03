@@ -30,3 +30,4 @@ $:.push(File.expand_path('../test_helper', __FILE__))
 require 'global_spec_helper'
 require 'assert_difference'
 require 'temporary_application_support_path'
+require 'fixture_helpers'
