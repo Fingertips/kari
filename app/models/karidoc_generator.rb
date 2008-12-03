@@ -21,6 +21,7 @@ class KaridocGenerator
     File.open(karidoc_filename, 'w') do |file|
       file.write(render(definitions))
     end
+    karidoc_filename
   end
   
   def render(definitions)

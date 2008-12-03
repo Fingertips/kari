@@ -57,17 +57,18 @@ describe "A SearchKit Index" do
   end
   
   it "should know the number of documents in the index" do
-    @filenames.each_with_index do |filename, index|
+    @filenames[0,3].each_with_index do |filename, index|
       @index.addDocument(filename)
-      @index.flush
-      @index.count.should == (index + 1)
     end
-    @index.count.should == @filenames.length
-    @filenames.each_with_index do |filename, index|
+    @index.flush
+    sleep 0.1
+    @index.count.should == 3
+    
+    @filenames[0,3].each_with_index do |filename, index|
       @index.removeDocument(filename)
-      @index.flush
-      @index.count.should == (@filenames.length - index - 1)
     end
+    @index.flush
+    sleep 0.1
     @index.count.should == 0
   end
   

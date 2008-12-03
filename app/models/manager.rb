@@ -12,8 +12,6 @@ require 'rdoc/ri/ri_paths'
 require 'rdoc/ri/ri_descriptions'
 require 'rdoc/markup/simple_markup/to_flow'
 
-require 'generator'
-
 class Manager
   SYSTEM_RI_PATH = RI::Paths.path(true, false, false, false).first
   
@@ -23,7 +21,13 @@ class Manager
     log.debug "Initializing new indices"
     @definitions = {}
     @namespace = HashTree.new
-    @search_index = SearchKit::Index.create(search_index_filename)
+    
+    if File.exist?(search_index_filename)
+      @search_index = SearchKit::Index.open(search_index_filename, nil, true)
+    else
+      ensure_filepath!
+      @search_index = SearchKit::Index.create(search_index_filename)
+    end
   end
   
   def length
@@ -51,8 +55,12 @@ class Manager
   def add(full_name, file)
     add_definition(full_name, file)
     add_karidoc_to_namespace(full_name)
-    KaridocGenerator.generate(@definitions[full_name])
-    # TODO: Add the karidoc to the SKIndex
+    
+    if filename = @definitions[full_name]
+      karidoc_filename = KaridocGenerator.generate(filename)
+      @search_index.removeDocument(karidoc_filename)
+      @search_index.addDocument(karidoc_filename)
+    end
   end
   
   def delete(full_name, file)
@@ -102,6 +110,10 @@ class Manager
     Rucola::RCApp.application_support_path
   end
   
+  def ensure_filepath!
+    FileUtils.mkdir_p(filepath) unless File.exist?(filepath)
+  end
+  
   def filename
     File.join(filepath, 'RiIndex')
   end
@@ -116,7 +128,7 @@ class Manager
   
   def write_to_disk
     log.debug "Writing index to disk"
-    FileUtils.mkdir_p(filepath) unless File.exist?(filepath)
+    ensure_filepath!
     File.open(filename, 'w') do |file|
       file.write(Marshal.dump([@definitions, @namespace]))
     end
@@ -124,10 +136,9 @@ class Manager
   
   def read_from_disk
     File.open(filename, 'r') do |file|
-      @definitions, @namespace = *Marshal.load(file.read)
+      @definitions, @namespace = Marshal.load(file.read)
       log.debug "Read index from disk"
     end if exist?
-    @search_index = SearchKit::Index.open(search_index_filename, nil, true)
   end
   
   def close

@@ -53,8 +53,9 @@ describe "A KaridocGenerator" do
   end
   
   it "should generate" do
-    @generator.generate
-    File.read(KaridocGenerator.filename('Binding')).should =~ /<title>Binding<\/title>/
+    filename = @generator.generate
+    filename.should == KaridocGenerator.filename('Binding')
+    File.read(filename).should =~ /<title>Binding<\/title>/
   end
   
   it "should render ri definitions" do
