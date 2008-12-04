@@ -8,6 +8,9 @@ ELOY
   - Show where links in the docs go.
   - Search results count, like the Finder Search window.
 
+- FSEvents, jeweetzelf.
+- Browser for Manager#namespace.
+
 MANFRED
 
 - Update (destroy/generate) Karidoc from the Manager when files are updated
@@ -15,3 +18,5 @@ MANFRED
 - Add generated files to the SKIndex
 - Update/remove removed files in/from the SKIndex
 - Improve test coverage of the Manager
+- Save snapshots for definitions and namespace
+- Search method
