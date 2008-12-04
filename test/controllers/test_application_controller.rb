@@ -51,9 +51,7 @@ xdescribe "ApplicationController, when a bookmarkBarToggledVisibility notificati
   end
 end
 
-describe 'ApplicationController, in general' do
-  tests ApplicationController
-  
+module ApplicationControllerSpecHelper
   def after_setup
     ib_outlets :webViewController => WebViewController.alloc.init,
                :webView => OSX::WebView.alloc.init,
@@ -69,6 +67,12 @@ describe 'ApplicationController, in general' do
     Manager.stubs(:initialize_from_disk).returns(@manager_mock)
     assigns(:manager, @manager_mock)
   end
+end
+
+describe 'ApplicationController, during awakeFromNib' do
+  tests ApplicationController
+  
+  include ApplicationControllerSpecHelper
   
   it "should initialize a Manager instance and call #buildIndex" do
     Manager.expects(:initialize_from_disk)
@@ -76,8 +80,31 @@ describe 'ApplicationController, in general' do
     controller.awakeFromNib
   end
   
-  it "should start the merge new docs process in a new thread and update the `processing' state to reflect this" do
+  it "should register itself as an observer for the `KariDidFinishIndexingNotification' notification" do
+    should_observe_notification('KariDidFinishIndexingNotification', 'finishedIndexing:')
     controller.awakeFromNib
+  end
+  
+  private
+  
+  def should_observe_notification(name, selector, object = nil, observer = controller)
+    OSX::NSNotificationCenter.defaultCenter.expects(:addObserver_selector_name_object).with(observer, selector, name, object)
+  end
+end
+
+describe 'ApplicationController, in general' do
+  tests ApplicationController
+  
+  include ApplicationControllerSpecHelper
+  
+  it "should update the `processing' state when a `KariDidFinishIndexingNotification' is received" do
+    assigns(:processing, true)
+    controller.finishedIndexing(nil)
+    controller.valueForKey('processing').to_ruby.should.be false
+  end
+  
+  it "should start the merge new docs process in a new thread and update the `processing' state to reflect this" do
+    controller.buildIndex
     
     Thread.expects(:new).yields
     @manager_mock.expects(:merge_new)

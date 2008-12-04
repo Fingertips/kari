@@ -26,6 +26,8 @@ class ApplicationController < Rucola::RCController
            :object, nil
     )
     
+    OSX::NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, 'finishedIndexing:', 'KariDidFinishIndexingNotification', nil)
+    
     @manager = Manager.initialize_from_disk
     buildIndex
     
@@ -52,6 +54,10 @@ class ApplicationController < Rucola::RCController
   
   def rebuildIndex(sender)
     log.debug 'Need to implement rebuildIndex method.'
+  end
+  
+  def finishedIndexing(notification)
+    self.processing = false
   end
   
   def activateSearchField(sender = nil)
