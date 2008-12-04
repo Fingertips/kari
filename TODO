@@ -4,7 +4,6 @@ ELOY
 - Consistenly use snake/camel case for all the ib_outlets.
 
 - Status bar. For:
-  - Indexing new documentation progress indicator.
   - Show where links in the docs go.
   - Search results count, like the Finder Search window.
 
