@@ -121,6 +121,11 @@ describe "A filled Manager" do
     @manager.namespace.get(%w(Binding dup)).should.not.be.nil
   end
   
+  it "should send a notification message when done merging" do
+    OSX::NSNotificationCenter.defaultCenter.expects(:postNotificationName_object).with('KariDidFinishIndexingNotification', nil).times(2)
+    @manager.merge_new(ALTERNATE_RI_PATH)
+  end
+  
   it "should be able to write index to disk and read it back" do
     @manager.write_to_disk
     @manager.close
