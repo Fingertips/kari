@@ -9,7 +9,11 @@ class ApplicationController < Rucola::RCController
   ib_outlet :resultsScrollView
   ib_outlet :addBookmarkToolbarButton
   
+  kvc_accessor :processing
+  
   def after_init
+    @processing = false
+    
     PreferencesController.registerDefaults
     OSX::NSApplication.sharedApplication.setDelegate(self)
   end
@@ -21,6 +25,9 @@ class ApplicationController < Rucola::RCController
              :name, 'KariOpenDocumentation',
            :object, nil
     )
+    
+    @manager = Manager.initialize_from_disk
+    buildIndex
     
     @window.delegate = self
     @bookmarkController.delegate = self
@@ -36,6 +43,11 @@ class ApplicationController < Rucola::RCController
   
   def openPreferencesWindow(sender)
     PreferencesController.alloc.init.showWindow(self)
+  end
+  
+  def buildIndex
+    self.processing = true
+    Thread.new { @manager.merge_new('/Library/Ruby/Gems/1.8/doc/activerecord-2.1.0/') }
   end
   
   def rebuildIndex(sender)

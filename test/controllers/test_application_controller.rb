@@ -1,6 +1,6 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-describe "ApplicationController, when a bookmarkBarToggledVisibility notification is received" do
+xdescribe "ApplicationController, when a bookmarkBarToggledVisibility notification is received" do
   tests ApplicationController
   
   def after_setup
@@ -64,6 +64,27 @@ describe 'ApplicationController, in general' do
     webViewController.stubs(:load_file)
     
     searchTextField.stringValue = 'ActiveRecord'
+    
+    @manager_mock = mock('Manager')
+    Manager.stubs(:initialize_from_disk).returns(@manager_mock)
+    assigns(:manager, @manager_mock)
+  end
+  
+  it "should initialize a Manager instance and call #buildIndex" do
+    Manager.expects(:initialize_from_disk)
+    controller.expects(:buildIndex)
+    controller.awakeFromNib
+  end
+  
+  it "should start the merge new docs process in a new thread and update the `processing' state to reflect this" do
+    controller.awakeFromNib
+    
+    Thread.expects(:new).yields
+    @manager_mock.expects(:merge_new)
+    
+    controller.buildIndex
+    
+    controller.valueForKey('processing').to_ruby.should.be true
   end
   
   it "should bring the results table view forward and hide the webView if a user started searching" do
