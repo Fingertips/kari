@@ -12,8 +12,6 @@ require 'rdoc/ri/ri_paths'
 require 'rdoc/ri/ri_descriptions'
 require 'rdoc/markup/simple_markup/to_flow'
 
-require 'osx/cocoa'
-
 class Manager
   SYSTEM_RI_PATH = RI::Paths.path(true, false, false, false).first
   
@@ -101,7 +99,6 @@ class Manager
         end
       end
     end
-    OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidFinishIndexingNotification', nil)
   end
   
   def examine(path)

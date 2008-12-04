@@ -114,6 +114,14 @@ describe 'ApplicationController, in general' do
     controller.valueForKey('processing').to_ruby.should.be true
   end
   
+  it "should send a notification message when done merging" do
+    Thread.stubs(:new).yields
+    @manager_mock.stubs(:merge_new)
+    OSX::NSNotificationCenter.defaultCenter.expects(:postNotificationName_object).with('KariDidFinishIndexingNotification', nil)
+    
+    controller.buildIndex
+  end
+  
   it "should bring the results table view forward and hide the webView if a user started searching" do
     start_searching!
     webView.hidden?.should.be true
