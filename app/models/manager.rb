@@ -87,6 +87,7 @@ class Manager
   end
   
   def merge_new(path)
+    log.debug "Merging RI files for #{path}"
     Dir.foreach(path) do |filename|
       next if filename =~ /(^\.)|(\.rid$)/
       current_path = File.join(path, filename)

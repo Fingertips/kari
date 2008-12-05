@@ -50,7 +50,7 @@ class ApplicationController < Rucola::RCController
   def buildIndex
     self.processing = true
     Thread.new do
-      @manager.merge_new('/Library/Ruby/Gems/1.8/doc/activerecord-2.1.0/')
+      @manager.merge_new(Dir['/Library/Ruby/Gems/1.8/doc/activerecord*'].first)
       OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidFinishIndexingNotification', nil)
     end
   end
