@@ -40,74 +40,106 @@ class Manager
   
   def add_description(full_name, file)
     @descriptions[full_name] ||= []
-    @descriptions[full_name] << file unless @descriptions[full_name].include?(file)
-    @descriptions[full_name].sort! do |a, b|
-      if a.start_with?(SYSTEM_RI_PATH)
-        -1
-      elsif b.start_with?(SYSTEM_RI_PATH)
-        1
-      else
-        b <=> a
+    unless @descriptions[full_name].include?(file)
+      @descriptions[full_name] << file 
+      @descriptions[full_name].sort! do |a, b|
+        if a.start_with?(SYSTEM_RI_PATH)
+          -1
+        elsif b.start_with?(SYSTEM_RI_PATH)
+          1
+        else
+          b <=> a
+        end
       end
+      true
+    else
+      false
     end
   end
   
   def add(full_name, file)
-    add_description(full_name, file)
-    add_karidoc_to_namespace(full_name)
-    
-    if description_files = @descriptions[full_name]
-      karidoc_filename = KaridocGenerator.generate(description_files)
-      @search_index.removeDocument(karidoc_filename)
-      @search_index.addDocument(karidoc_filename)
+    if add_description(full_name, file)
+      add_karidoc_to_namespace(full_name)
+      if description_files = @descriptions[full_name]
+        karidoc_filename = KaridocGenerator.generate(description_files)
+        @search_index.removeDocument(karidoc_filename)
+        @search_index.addDocument(karidoc_filename)
+      end
+      true
+    else
+      false
     end
   end
   
   def delete(full_name, file)
-    @descriptions[full_name].delete(file)
-    if @descriptions[full_name].empty?
-      log.debug "Deleting description for `#{full_name}'"
-      @descriptions.delete(full_name)
-      @namespace.set(RubyName.split(full_name), nil)
-      KaridocGenerator.clear(full_name)
-      @search_index.removeDocument(KaridocGenerator.filename(full_name))
+    if @descriptions[full_name].delete(file)
+      if @descriptions[full_name].empty?
+        @descriptions.delete(full_name)
+        @namespace.set(RubyName.split(full_name), nil)
+      end
+      true
     else
-      KaridocGenerator.generate(@descriptions[full_name])
-      karidoc_filename = KaridocGenerator.filename(filename)
-      @search_index.removeDocument(karidoc_filename)
-      @search_index.addDocument(karidoc_filename)
+      false
     end
   end
   
   def purge_vanished(path)
+    purge = []
     @descriptions.each do |full_name, files|
       files.each do |file|
-        if !File.exist?(file) and file.start_with?(path)
-          delete(full_name, file)
+        if file.start_with?(path) and !File.exist?(file)
+          purge << [full_name, file]
         end
       end
     end
+    purge.map { |full_name, file| delete(full_name, file); full_name }
   end
   
   def merge_new(path)
+    changed = []
     log.debug "Merging RI files for #{path}"
     Dir.foreach(path) do |filename|
       next if filename =~ /(^\.)|(\.rid$)/
       current_path = File.join(path, filename)
       if filename =~ /^cdesc-.*\.yaml$|(c|i)\.yaml$/
         description = YAML::load_file(current_path)
-        add(description.full_name, current_path)
+        if add(description.full_name, current_path)
+          changed << description.full_name
+        end
       else
         if File.directory?(current_path)
-          examine(current_path)
+          changed.concat merge_new(current_path)
         end
+      end
+    end
+    changed
+  end
+  
+  def update(path)
+    changed = []
+    changed.concat purge_vanished(path)
+    changed.concat merge_new(path)
+    changed
+  end
+  
+  def update_karidoc(changed)
+    changed.each do |full_name|
+      if @descriptions[full_name]
+        KaridocGenerator.generate(@descriptions[full_name])
+        karidoc_filename = KaridocGenerator.filename(filename)
+        @search_index.removeDocument(karidoc_filename)
+        @search_index.addDocument(karidoc_filename)
+      else
+        KaridocGenerator.clear(full_name)
+        @search_index.removeDocument(KaridocGenerator.filename(full_name))
       end
     end
   end
   
   def examine(path)
-    purge_vanished(path)
-    merge_new(path)
+    changed = update(path).uniq
+    update_karidoc(changed)
+    changed
   end
   
   def filepath

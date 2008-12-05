@@ -64,7 +64,7 @@ class KaridocGenerator
   end
   
   def self.clear_if_empty(dir_name)
-    if (Dir.entries(dir_name) - %w(. ..)).empty?
+    if File.exist?(dir_name) and (Dir.entries(dir_name) - %w(. ..)).empty?
       FileUtils.rm_rf(dir_name)
       clear_if_empty(File.dirname(dir_name))
     end

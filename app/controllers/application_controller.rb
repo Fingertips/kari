@@ -58,7 +58,7 @@ class ApplicationController < Rucola::RCController
     gem_path = Dir['/Library/Ruby/Gems/1.8/doc/activerecord*'].first
     
     Thread.new do
-      @manager.merge_new(gem_path)
+      @manager.examine(gem_path)
       OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidFinishIndexingNotification', nil)
     end
     
