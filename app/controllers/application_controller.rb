@@ -10,9 +10,11 @@ class ApplicationController < Rucola::RCController
   ib_outlet :addBookmarkToolbarButton
   
   kvc_accessor :processing
+  kvc_accessor :namespace
   
   def after_init
     @processing = false
+    @namespace = []
     
     PreferencesController.registerDefaults
     OSX::NSApplication.sharedApplication.setDelegate(self)
@@ -72,6 +74,8 @@ class ApplicationController < Rucola::RCController
   
   def finishedIndexing(notification)
     self.processing = false
+    #log.debug @manager.namespace.inspect
+    #self.namespace = @manager.namespace
   end
   
   def activateSearchField(sender = nil)
