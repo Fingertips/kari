@@ -6,6 +6,7 @@ describe "A HashTree in general" do
     @tree.set(%w(Binding clone), 'Binding#clone')
     @tree.set(%w(Binding dup), 'Binding#dup')
     @tree.set(%w(Kernel Fun dup), 'Kernel::Fun#dup')
+    p @tree.get(%w(Binding dup))
   end
   
   it "should get the same value that was set on a certain path" do

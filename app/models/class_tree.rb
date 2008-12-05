@@ -1,7 +1,15 @@
 class ClassTreeNode < OSX::NSObject
+  def self.classTreeNodesWithHashTree(hash_tree)
+    nodes = hash_tree.tree[:children].map do |klass, values|
+      alloc.initWithHash_path(values, [klass])
+    end
+    nodes
+  end
+  
   kvc_accessor :children, :title
+  attr_reader :tree, :at
 
-  def initWithHashTree_path(tree, at = [])
+  def initWithHash_path(tree, at)
     if init
       @tree, @at = tree, at
       self
@@ -14,9 +22,9 @@ class ClassTreeNode < OSX::NSObject
 
   def children
     if @children.nil?
-      @children = @at.empty? ? {}.to_ns : @tree.get(@at).to_ns
-      p @children
-      #@children = entries.map { |name| ClassList.alloc.initWithSomeArgs(@at + [name]) }
+      @children = @tree[:children].map do |klass, values|
+        ClassTreeNode.alloc.initWithHash_path(values, @at + [klass])
+      end
     end
     @children
   end

@@ -13,9 +13,6 @@ class ApplicationController < Rucola::RCController
   kvc_accessor :namespace
   
   def after_init
-    @processing = false
-    @namespace = [ClassTreeNode.alloc.initWithHashTree_path(HashTree.new)]
-    
     PreferencesController.registerDefaults
     OSX::NSApplication.sharedApplication.setDelegate(self)
   end
@@ -29,6 +26,9 @@ class ApplicationController < Rucola::RCController
     )
     
     OSX::NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, 'finishedIndexing:', 'KariDidFinishIndexingNotification', nil)
+    
+    @processing = false
+    @namespace = []
     
     @manager = Manager.initialize_from_disk
     buildIndex
@@ -74,9 +74,7 @@ class ApplicationController < Rucola::RCController
   
   def finishedIndexing(notification)
     self.processing = false
-    #log.debug @manager.namespace.inspect
-    node = ClassTreeNode.alloc.initWithHashTree_path(@manager.namespace)
-    self.namespace = node
+    self.namespace = ClassTreeNode.classTreeNodesWithHashTree(@manager.namespace)
   end
   
   def activateSearchField(sender = nil)
