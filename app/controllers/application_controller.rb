@@ -14,7 +14,7 @@ class ApplicationController < Rucola::RCController
   
   def after_init
     @processing = false
-    @namespace = []
+    @namespace = [ClassTreeNode.alloc.initWithHashTree_path(HashTree.new)]
     
     PreferencesController.registerDefaults
     OSX::NSApplication.sharedApplication.setDelegate(self)
@@ -75,7 +75,8 @@ class ApplicationController < Rucola::RCController
   def finishedIndexing(notification)
     self.processing = false
     #log.debug @manager.namespace.inspect
-    #self.namespace = @manager.namespace
+    node = ClassTreeNode.alloc.initWithHashTree_path(@manager.namespace)
+    self.namespace = node
   end
   
   def activateSearchField(sender = nil)
