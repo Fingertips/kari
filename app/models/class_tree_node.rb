@@ -7,7 +7,7 @@ class ClassTreeNode < OSX::NSObject
     end
     
     def classTreeNodesWithHashTree(hash_tree)
-      classTreeNodesWithHash_path hash_tree.tree, []
+      classTreeNodesWithHash_path(hash_tree.tree, [])
     end
   end
   

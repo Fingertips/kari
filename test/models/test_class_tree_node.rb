@@ -18,6 +18,10 @@ describe "A ClassTreeNode, in general" do
     child.title.should == 'Fun'
   end
   
+  it "should always return the same array instance when returning children" do
+    @node.children.should.be @node.children
+  end
+  
   it "should return the path to its karidoc" do
     @node.path.should == 'Karidoc/Kernel.karidoc'
     @node.children.first.children.first.path.should == 'Karidoc/Kernel/Fun/dup.karidoc'
