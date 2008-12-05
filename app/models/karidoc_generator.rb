@@ -40,7 +40,7 @@ class KaridocGenerator
     )
     namespace.extend HTMLHelpers
     namespace.extend FlowHelpers
-    descriptions.map { |description| description.extend DefinitionExtensions }
+    descriptions.map { |description| description.extend DescriptionExtensions }
     
     self.class.template(template_file).result(namespace.binding)
   end

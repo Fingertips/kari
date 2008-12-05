@@ -1,4 +1,4 @@
-module DefinitionExtensions
+module DescriptionExtensions
   def separator
     case full_name
     when /\#/

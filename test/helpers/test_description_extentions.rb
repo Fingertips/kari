@@ -1,7 +1,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-describe "An instance extended with DefinitionExtensions" do
-  include DefinitionExtensions
+describe "An instance extended with DescriptionExtensions" do
+  include DescriptionExtensions
   attr_accessor :full_name
   
   it "should return the proper separator" do
