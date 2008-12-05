@@ -1,6 +1,8 @@
 class ClassTreeNode < OSX::NSObject
   class << self
     def classTreeNodesWithHash_path(hash, at)
+      return [] if hash.empty?
+      
       hash[:children].map do |klass, values|
         alloc.initWithHash_path(values, at + [klass])
       end.sort_by { |node| node.title }

@@ -9,8 +9,7 @@ class ApplicationController < Rucola::RCController
   ib_outlet :resultsScrollView
   ib_outlet :addBookmarkToolbarButton
   
-  kvc_accessor :processing
-  kvc_accessor :namespace
+  kvc_accessor :processing, :class_tree
   
   def after_init
     PreferencesController.registerDefaults
@@ -18,6 +17,7 @@ class ApplicationController < Rucola::RCController
   end
   
   def awakeFromNib
+    # Register notifications
     OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
       :addObserver, self,
          :selector, 'externalRequestForDocumentation:',
@@ -27,12 +27,15 @@ class ApplicationController < Rucola::RCController
     
     OSX::NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, 'finishedIndexing:', 'KariDidFinishIndexingNotification', nil)
     
+    # Default KVC values
     @processing = false
-    @namespace = []
+    @class_tree = []
     
+    # Build class tree
     @manager = Manager.initialize_from_disk
     buildIndex
     
+    # Lets wrap it up!
     @window.delegate = self
     @bookmarkController.delegate = self
     @searchController.delegate = self
@@ -74,7 +77,7 @@ class ApplicationController < Rucola::RCController
   
   def finishedIndexing(notification)
     self.processing = false
-    self.namespace = ClassTreeNode.classTreeNodesWithHashTree(@manager.namespace)
+    self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(@manager.namespace)
   end
   
   def activateSearchField(sender = nil)

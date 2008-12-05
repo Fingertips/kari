@@ -66,6 +66,12 @@ module ApplicationControllerSpecHelper
     @manager_mock = mock('Manager')
     Manager.stubs(:initialize_from_disk).returns(@manager_mock)
     assigns(:manager, @manager_mock)
+    
+    @namespace_mock = stub('Manager#namespace')
+    @namespace_mock.stubs(:tree).returns({})
+    @manager_mock.stubs(:namespace).returns(@namespace_mock)
+    
+    OSX::NSNotificationCenter.defaultCenter.stubs(:postNotificationName_object)
   end
 end
 
@@ -73,6 +79,14 @@ describe 'ApplicationController, during awakeFromNib' do
   tests ApplicationController
   
   include ApplicationControllerSpecHelper
+  
+  it "should set the correct default kvc values" do
+    controller.stubs(:buildIndex)
+    controller.awakeFromNib
+    
+    controller.processing.should == false
+    controller.class_tree.should == []
+  end
   
   it "should initialize a Manager instance and call #buildIndex" do
     Manager.expects(:initialize_from_disk)
@@ -101,6 +115,14 @@ describe 'ApplicationController, in general' do
     assigns(:processing, true)
     controller.finishedIndexing(nil)
     controller.valueForKey('processing').to_ruby.should.be false
+  end
+  
+  it "should update the `class_tree' when a `KariDidFinishIndexingNotification' is received" do
+    nodes = [mock('ClassTreeNode')]
+    ClassTreeNode.expects(:classTreeNodesWithHashTree).with(@namespace_mock).returns(nodes)
+    
+    controller.finishedIndexing(nil)
+    controller.class_tree.should.be nodes
   end
   
   it "should start the merge new docs process in a new thread and update the `processing' state to reflect this" do

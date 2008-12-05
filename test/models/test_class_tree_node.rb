@@ -38,6 +38,10 @@ describe "A ClassTreeNode's class methods" do
     @nodes = ClassTreeNode.classTreeNodesWithHash_path(@tree.tree, [])
   end
   
+  it "should return an empty array for an empty tree hash" do
+    ClassTreeNode.classTreeNodesWithHash_path({}, []).should == []
+  end
+  
   it "should return an array of ClassTreeNode's for all children in a tree Hash" do
     @nodes.each { |node| node.should.be.instance_of ClassTreeNode }
     @nodes.length.should.be 2
