@@ -55,6 +55,21 @@ class KaridocGenerator
     new(description_files).generate
   end
   
+  def self.clear(full_name)
+    file_name = filename(full_name)
+    dir_name  = File.dirname(file_name)
+    
+    FileUtils.rm_f(file_name)
+    clear_if_empty(dir_name)
+  end
+  
+  def self.clear_if_empty(dir_name)
+    if (Dir.entries(dir_name) - %w(. ..)).empty?
+      FileUtils.rm_rf(dir_name)
+      clear_if_empty(File.dirname(dir_name))
+    end
+  end
+  
   # Returns the filename where the karidoc file for the Ruby name _name_ will be stored.
   #
   # Example:

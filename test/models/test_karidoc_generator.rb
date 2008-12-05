@@ -39,6 +39,53 @@ describe "KaridocGenerator" do
     KaridocGenerator.template(template_file)
     KaridocGenerator.template(template_file)
   end
+  
+  
+  it "should recursively delete empty directories" do
+    base_path = File.join(Dir.tmpdir, 'base-path')
+    very_long_empty_path = File.join(base_path, 'very', 'long', 'directory', 'with', 'a', 'lot', 'of', 'names')
+    FileUtils.mkdir_p(very_long_empty_path)
+    File.open(File.join(base_path, 'a-file'), 'w') { |fp| fp.write('Contents') }
+    
+    KaridocGenerator.clear_if_empty(very_long_empty_path)
+    File.should.exist(base_path)
+    File.should.not.exist(very_long_empty_path)
+  end
+end
+
+describe "KaridocGenerator, on a generated karidoc tree" do
+  include TemporaryApplicationSupportPath
+  include FixtureHelpers
+  
+  before do
+    @manager = Manager.new
+    @manager.examine(File.join(TEST_ROOT, 'fixtures', 'ri'))
+  end
+  
+  after do
+    @manager.close
+  end
+  
+  it "should clear documentation files for a description" do
+    full_name = 'Binding'
+    File.should.exist?(KaridocGenerator.filename(full_name))
+    KaridocGenerator.clear(full_name)
+    File.should.not.exist?(KaridocGenerator.filename(full_name))
+  end
+  
+  it "should clear documentation directories when they're empty" do
+    names = ['Binding#clone', 'Binding#dup']
+    File.should.exist?(File.dirname(KaridocGenerator.filename(names.first)))
+    names.each { |full_name| KaridocGenerator.clear(full_name) }
+    File.should.not.exist?(File.dirname(KaridocGenerator.filename(names.first)))
+  end
+  
+  it "should silently ignore clearing missing documentation directories" do
+    names = ['Binding#clone']*3
+    lambda {
+      names.each { |full_name| KaridocGenerator.clear(full_name) }
+    }.should.not.raise
+  end
 end
 
 describe "A KaridocGenerator" do

@@ -66,9 +66,10 @@ class Manager
   def delete(full_name, file)
     @definitions[full_name].delete(file)
     if @definitions[full_name].empty?
+      log.debug "Deleting definition for `#{full_name}'"
       @definitions.delete(full_name)
       @namespace.set(RubyName.split(full_name), nil)
-      # TODO: Remove the karidoc
+      Generator.clear(full_name)
       # TODO: Remove the karidoc from the SKIndex
     else
       # TODO: Update karidoc
