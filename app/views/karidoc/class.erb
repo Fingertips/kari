@@ -1,38 +1,38 @@
-<h1><%= header_with_markup(definition.path, definition.separator, definition.name) %></h1>
+<h1><%= header_with_markup(description.path, description.separator, description.name) %></h1>
 <hr />
-<% unless definition.comment.blank? %>
+<% unless description.comment.blank? %>
 <div class="comment">
-  <%= flow definition.comment %>
+  <%= flow description.comment %>
 </div>
 <% end %>
-<% unless definition.instance_methods.empty? %>
+<% unless description.instance_methods.empty? %>
 <h2>Instance methods</h2>
 <ul>
-  <% definition.instance_methods.each do |method| %>
-  <li><a href="<%= definition.name %>/<%= method.name %>.karidoc"><%= method.name %></a></li>
+  <% description.instance_methods.each do |method| %>
+  <li><a href="<%= description.name %>/<%= method.name %>.karidoc"><%= method.name %></a></li>
   <% end %>
 </ul>
 <% end %>
-<% unless definition.class_methods.empty? %>
+<% unless description.class_methods.empty? %>
 <h2>Class methods</h2>
 <ul>
-  <% definition.class_methods.each do |method| %>
+  <% description.class_methods.each do |method| %>
   <li><%= method.name %></li>
   <% end %>
 </ul>
 <% end %>
-<% unless definition.includes.empty? %>
+<% unless description.includes.empty? %>
 <h2>Includes</h2>
 <ul>
-  <% definition.includes.each do |inc| %>
+  <% description.includes.each do |inc| %>
   <li><%= inc.name %></li>
   <% end %>
 </ul>
 <% end %>
-<% unless definition.attributes.empty? %>
+<% unless description.attributes.empty? %>
 <h2>Attributes</h2>
 <ul>
-  <% definition.attributes.each do |attribute| %>
+  <% description.attributes.each do |attribute| %>
   <li>
     <span><%=h attribute.rw.downcase %></span>
     <span>–</span>
@@ -44,10 +44,10 @@
   <% end %>
 </ul>
 <% end %>
-<% unless definition.constants.empty? %>
+<% unless description.constants.empty? %>
 <h2>Constants</h2>
 <table>
-  <% definition.constants.each do |constant| %>
+  <% description.constants.each do |constant| %>
     <tr>
       <td><%=h constant.name %></td>
       <td><code><%=h constant.value %></code></td>

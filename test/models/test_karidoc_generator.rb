@@ -105,8 +105,8 @@ describe "A KaridocGenerator" do
     File.read(filename).should =~ /<title>Binding<\/title>/
   end
   
-  it "should render ri definitions" do
-    result = @generator.render([YAML::load_file(@generator.definition_files.first)])
+  it "should render ri descriptions" do
+    result = @generator.render([YAML::load_file(@generator.description_files.first)])
     result.should =~ /<title>Binding<\/title>/
   end
 end

@@ -36,7 +36,7 @@ describe "An empty Manager" do
     File.unlink(@manager.filename)
   end
   
-  it "should add definitions to the.namespace" do
+  it "should add descriptions to the.namespace" do
     @manager.add_karidoc_to_namespace('Module::Class#method')
     @manager.add_karidoc_to_namespace('Module::Class::classmethod')
     @manager.add_karidoc_to_namespace('Module2::Class#othermethod')
@@ -44,39 +44,39 @@ describe "An empty Manager" do
     @manager.namespace.get(%w(Module Class method)).should.not.be.nil
   end
   
-  it "should add definition to the index" do
-    @manager.add_definition('Module::Class#method', 'path/to/file_1.yaml')
-    @manager.add_definition('Module::Class::classmethod', 'path/to/file_2.yaml')
-    @manager.add_definition('Module::Class::classmethod', 'path/to/file_3.yaml')
-    @manager.definitions["Module::Class#method"].length.should == 1
-    @manager.definitions["Module::Class::classmethod"].length.should == 2
+  it "should add description to the index" do
+    @manager.add_description('Module::Class#method', 'path/to/file_1.yaml')
+    @manager.add_description('Module::Class::classmethod', 'path/to/file_2.yaml')
+    @manager.add_description('Module::Class::classmethod', 'path/to/file_3.yaml')
+    @manager.descriptions["Module::Class#method"].length.should == 1
+    @manager.descriptions["Module::Class::classmethod"].length.should == 2
   end
   
-  it "should add definitions found in definition files" do
+  it "should add descriptions found in description files" do
     @manager.examine(PRIMARY_RI_PATH)
     
-    @manager.definitions.has_key?('Binding').should == true
+    @manager.descriptions.has_key?('Binding').should == true
     @manager.namespace.get(%w(Binding dup)).should.not.be.nil
     
-    @manager.definitions.length.should == 11
-    @manager.definitions["Binding#dup"].length.should == 1
-    @manager.definitions["Binding#clone"].length.should == 1
+    @manager.descriptions.length.should == 11
+    @manager.descriptions["Binding#dup"].length.should == 1
+    @manager.descriptions["Binding#clone"].length.should == 1
   end
   
-  it "should merge multiple definitions" do
+  it "should merge multiple descriptions" do
     @manager.examine(PRIMARY_RI_PATH)
     @manager.examine(ALTERNATE_RI_PATH)
     
-    @manager.definitions.length.should == 11
-    @manager.definitions["Binding#dup"].length.should == 2
-    @manager.definitions["Binding#clone"].length.should == 1
+    @manager.descriptions.length.should == 11
+    @manager.descriptions["Binding#dup"].length.should == 2
+    @manager.descriptions["Binding#clone"].length.should == 1
   end
   
-  it "should add new definitions for classes" do
+  it "should add new descriptions for classes" do
     @manager.search_index.expects(:addDocument).with(KaridocGenerator.filename('Binding'))
     
     @manager.add('Binding', file_fixture('ri', 'Binding', 'cdesc-Binding.yaml'))
-    @manager.definitions['Binding'].should.not.be.nil
+    @manager.descriptions['Binding'].should.not.be.nil
     @manager.namespace.get(['Binding']).should.not.be.nil
     File.should.exist(KaridocGenerator.filename('Binding'))
   end
@@ -94,27 +94,27 @@ describe "A filled Manager" do
     @manager.close
   end
   
-  it "should remove definitions when removed from the filesystem" do
+  it "should remove descriptions when removed from the filesystem" do
     File.stubs(:exist?).returns(false)
     @manager.purge_vanished(PRIMARY_RI_PATH)
     
-    @manager.definitions['Binding'].should.be.nil
-    @manager.definitions['Binding#clone'].should.be.nil
-    @manager.definitions['Binding#dub'].should.be.nil
+    @manager.descriptions['Binding'].should.be.nil
+    @manager.descriptions['Binding#clone'].should.be.nil
+    @manager.descriptions['Binding#dub'].should.be.nil
     
     @manager.namespace.get(%w(Binding)).should.be.nil
     @manager.namespace.get(%w(Binding clone)).should.be.nil
     @manager.namespace.get(%w(Binding dup)).should.be.nil
   end
   
-  it "should not remove definitions when an alternate definitions still exists" do
+  it "should not remove descriptions when an alternate descriptions still exists" do
     @manager.merge_new(ALTERNATE_RI_PATH)
     File.stubs(:exist?).returns(false)
     @manager.purge_vanished(PRIMARY_RI_PATH)
     
-    @manager.definitions['Binding'].should.not.be.nil
-    @manager.definitions['Binding#dup'].should.not.be.nil
-    @manager.definitions['Binding#clone'].should.be.nil
+    @manager.descriptions['Binding'].should.not.be.nil
+    @manager.descriptions['Binding#dup'].should.not.be.nil
+    @manager.descriptions['Binding#clone'].should.be.nil
     
     @manager.namespace.get(%w(Binding)).should.not.be.nil
     @manager.namespace.get(%w(Binding clone)).should.be.nil
@@ -126,7 +126,7 @@ describe "A filled Manager" do
     @manager.close
     
     @manager = Manager.initialize_from_disk
-    @manager.definitions.should == @manager.definitions
+    @manager.descriptions.should == @manager.descriptions
     @manager.namespace.should == @manager.namespace
   end
 end

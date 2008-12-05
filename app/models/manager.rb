@@ -15,11 +15,11 @@ require 'rdoc/markup/simple_markup/to_flow'
 class Manager
   SYSTEM_RI_PATH = RI::Paths.path(true, false, false, false).first
   
-  attr_accessor :definitions, :namespace, :search_index
+  attr_accessor :descriptions, :namespace, :search_index
   
   def initialize
     log.debug "Initializing new indices"
-    @definitions = {}
+    @descriptions = {}
     @namespace = HashTree.new
     
     if File.exist?(search_index_filename)
@@ -31,17 +31,17 @@ class Manager
   end
   
   def length
-    @definitions.length
+    @descriptions.length
   end
   
   def add_karidoc_to_namespace(full_name)
     @namespace.set(RubyName.split(full_name), KaridocGenerator.filename(full_name))
   end
   
-  def add_definition(full_name, file)
-    @definitions[full_name] ||= []
-    @definitions[full_name] << file unless @definitions[full_name].include?(file)
-    @definitions[full_name].sort! do |a, b|
+  def add_description(full_name, file)
+    @descriptions[full_name] ||= []
+    @descriptions[full_name] << file unless @descriptions[full_name].include?(file)
+    @descriptions[full_name].sort! do |a, b|
       if a.start_with?(SYSTEM_RI_PATH)
         -1
       elsif b.start_with?(SYSTEM_RI_PATH)
@@ -53,32 +53,34 @@ class Manager
   end
   
   def add(full_name, file)
-    add_definition(full_name, file)
+    add_description(full_name, file)
     add_karidoc_to_namespace(full_name)
     
-    if filename = @definitions[full_name]
-      karidoc_filename = KaridocGenerator.generate(filename)
+    if description_files = @descriptions[full_name]
+      karidoc_filename = KaridocGenerator.generate(description_files)
       @search_index.removeDocument(karidoc_filename)
       @search_index.addDocument(karidoc_filename)
     end
   end
   
   def delete(full_name, file)
-    @definitions[full_name].delete(file)
-    if @definitions[full_name].empty?
-      log.debug "Deleting definition for `#{full_name}'"
-      @definitions.delete(full_name)
+    @descriptions[full_name].delete(file)
+    if @descriptions[full_name].empty?
+      log.debug "Deleting description for `#{full_name}'"
+      @descriptions.delete(full_name)
       @namespace.set(RubyName.split(full_name), nil)
-      Generator.clear(full_name)
-      # TODO: Remove the karidoc from the SKIndex
+      KaridocGenerator.clear(full_name)
+      @search_index.removeDocument(KaridocGenerator.filename(full_name))
     else
-      # TODO: Update karidoc
-      # TODO: Update the karidoc in the SKIndex
+      KaridocGenerator.generate(@descriptions[full_name])
+      karidoc_filename = KaridocGenerator.filename(filename)
+      @search_index.removeDocument(karidoc_filename)
+      @search_index.addDocument(karidoc_filename)
     end
   end
   
   def purge_vanished(path)
-    @definitions.each do |full_name, files|
+    @descriptions.each do |full_name, files|
       files.each do |file|
         if !File.exist?(file) and file.start_with?(path)
           delete(full_name, file)
@@ -93,8 +95,8 @@ class Manager
       next if filename =~ /(^\.)|(\.rid$)/
       current_path = File.join(path, filename)
       if filename =~ /^cdesc-.*\.yaml$|(c|i)\.yaml$/
-        definition = YAML::load_file(current_path)
-        add(definition.full_name, current_path)
+        description = YAML::load_file(current_path)
+        add(description.full_name, current_path)
       else
         if File.directory?(current_path)
           examine(current_path)
@@ -132,13 +134,13 @@ class Manager
     log.debug "Writing index to disk"
     ensure_filepath!
     File.open(filename, 'w') do |file|
-      file.write(Marshal.dump([@definitions, @namespace]))
+      file.write(Marshal.dump([@descriptions, @namespace]))
     end
   end
   
   def read_from_disk
     File.open(filename, 'r') do |file|
-      @definitions, @namespace = Marshal.load(file.read)
+      @descriptions, @namespace = Marshal.load(file.read)
       log.debug "Read index from disk"
     end if exist?
   end

@@ -43,7 +43,7 @@ describe "An instance extended with DefinitionExtensions" do
     ri_type.should == 'Module'
   end
   
-  it "should return the name of the template for a definition" do
+  it "should return the name of the template for a description" do
     self.stubs(:ri_type).returns('Class')
     template_name.should == 'class'
     self.stubs(:ri_type).returns('Module')
@@ -52,7 +52,7 @@ describe "An instance extended with DefinitionExtensions" do
     template_name.should == 'method'
   end
   
-  it "should type of the definition" do
+  it "should type of the description" do
     self.class.stubs(:to_s).returns('RI::MethodDescription')
     @is_singleton = true
     type.should === 'ClassMethod'

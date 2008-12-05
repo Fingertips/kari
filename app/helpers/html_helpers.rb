@@ -21,8 +21,8 @@ module HTMLHelpers
     ].join
   end
   
-  def render_definition(definition)
-    assign :definition, definition
-    partials[definition.template_name].result(binding)
+  def render_description(description)
+    assign :description, description
+    partials[description.template_name].result(binding)
   end
 end

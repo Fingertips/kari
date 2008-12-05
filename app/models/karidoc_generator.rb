@@ -1,30 +1,30 @@
 require 'yaml'
 require 'fileutils'
 
-# Class that generates Karidoc files from the RI definition
+# Class that generates Karidoc files from the RI description
 class KaridocGenerator
   EXTENSION = '.karidoc'
   
-  attr_accessor :definition_files
+  attr_accessor :description_files
   
-  def initialize(definition_files)
-    self.definition_files = definition_files
+  def initialize(description_files)
+    self.description_files = description_files
   end
   
   def generate
-    definitions = definition_files.map { |file| YAML.load_file(file) }
+    descriptions = description_files.map { |file| YAML.load_file(file) }
     
-    full_name = definitions.first.full_name
+    full_name = descriptions.first.full_name
     karidoc_filename = self.class.filename(full_name)
     
     FileUtils.mkdir_p(File.dirname(karidoc_filename))
     File.open(karidoc_filename, 'w') do |file|
-      file.write(render(definitions))
+      file.write(render(descriptions))
     end
     karidoc_filename
   end
   
-  def render(definitions)
+  def render(descriptions)
     template_path = File.expand_path('../../views/karidoc', __FILE__)
     template_file = File.join(template_path, 'layout.erb')
     
@@ -33,14 +33,14 @@ class KaridocGenerator
     end
     
     namespace = Namespace.new(
-      :definitions => definitions,
-      :full_name => definitions.first.full_name,
+      :descriptions => descriptions,
+      :full_name => descriptions.first.full_name,
       :template_path => template_path,
       :partials => partials
     )
     namespace.extend HTMLHelpers
     namespace.extend FlowHelpers
-    definitions.map { |definition| definition.extend DefinitionExtensions }
+    descriptions.map { |description| description.extend DefinitionExtensions }
     
     self.class.template(template_file).result(namespace.binding)
   end

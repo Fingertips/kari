@@ -5,15 +5,15 @@
     <title><%= full_name %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="full-name" content="<%=html_escape full_name %>" />
-    <% if definition = definitions.first %>
-    <meta name="type" content="<%=html_escape definition.type %>" />
-    <meta name="path" content="<%=html_escape definition.path %>" />
-    <meta name="name" content="<%=html_escape definition.name %>" />
+    <% if description = descriptions.first %>
+    <meta name="type" content="<%=html_escape description.type %>" />
+    <meta name="path" content="<%=html_escape description.path %>" />
+    <meta name="name" content="<%=html_escape description.name %>" />
     <% end %>
   </head>
   <body>
-  <% definitions.each do |definition| %>
-    <%= render_definition definition  %>
+  <% descriptions.each do |description| %>
+    <%= render_description description  %>
   <% end %>
   </body>
 </html>

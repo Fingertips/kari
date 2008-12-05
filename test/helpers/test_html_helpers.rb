@@ -26,13 +26,13 @@ describe "A class including HTMLHelpers" do
   
   attr_accessor :partials
   
-  it "should render a definition with the correct partial" do
+  it "should render a description with the correct partial" do
     self.partials = {'class' => stub() }
-    definition = stub(:template_name => 'class')
+    description = stub(:template_name => 'class')
     
     self.partials['class'].expects(:result)
-    expects(:assign).with(:definition, definition)
+    expects(:assign).with(:description, description)
     
-    render_definition(definition)
+    render_description(description)
   end
 end

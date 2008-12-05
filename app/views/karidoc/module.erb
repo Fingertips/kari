@@ -1,7 +1,7 @@
-<h1><%= header_with_markup(definition.path, definition.separator, definition.name) %></h1>
+<h1><%= header_with_markup(description.path, description.separator, description.name) %></h1>
 <hr />
-<% unless definition.comment.blank? %>
+<% unless description.comment.blank? %>
 <div class="comment">
-  <%= flow definition.comment %>
+  <%= flow description.comment %>
 </div>
 <% end %>
