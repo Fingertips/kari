@@ -1,15 +1,13 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 describe 'WebHistoryController' do
-  # before do
-  #   @controller = WebHistoryController.alloc.init
-  # end
+  include TemporaryApplicationSupportPath
   
   it "should create the Kari app support dir if it doesn't exist yet" do
-    dir = File.expand_path('~/Library/Application Support/Kari')
-    File.expects(:exist?).with(dir).returns(false)
-    FileUtils.expects(:mkdir_p).with(dir)
+    application_support_path = Rucola::RCApp.application_support_path
     
+    File.should.not.exist?(application_support_path)
     WebHistoryController.alloc.init
+    File.should.exist?(application_support_path)
   end
 end

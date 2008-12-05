@@ -12,10 +12,6 @@ ELOY
 
 MANFRED
 
-- Replace ApplicationSupport explicit paths with Rucola::RCApp.application_support_path
-- Destroy Karidoc files when descriptions are deleted
-- Add generated files to the SKIndex
-- Update/remove removed files in/from the SKIndex
 - Improve test coverage of the Manager, maybe with integration tests?
 - Save snapshots for descriptions and namespace
 - Search method

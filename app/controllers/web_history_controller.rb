@@ -39,10 +39,11 @@ class WebHistoryController < Rucola::RCController
   def after_init
     OSX::WebHistory.optionalSharedHistory = @history = OSX::WebHistory.alloc.init
     
-    # Ensure the app support dir exists.
-    dir = File.expand_path('~/Library/Application Support/Kari')
-    FileUtils.mkdir_p(dir) unless File.exist?(dir)
-    @history_file_path = OSX::NSURL.fileURLWithPath(File.join(dir, 'BrowseHistory'))
+    # Ensure the application support directory
+    application_support_path = Rucola::RCApp.application_support_path
+    FileUtils.mkdir_p(application_support_path) unless File.exist?(application_support_path)
+    
+    @history_file_path = OSX::NSURL.fileURLWithPath(File.join(application_support_path, 'BrowseHistory'))
   end
   
   def awakeFromNib
