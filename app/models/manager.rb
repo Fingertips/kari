@@ -97,7 +97,7 @@ class Manager
   
   def merge_new(path)
     changed = []
-    log.debug "Merging RI files for #{path}"
+    log.debug "Examining RI files in #{path}"
     Dir.foreach(path) do |filename|
       next if filename =~ /(^\.)|(\.rid$)/
       current_path = File.join(path, filename)
@@ -123,6 +123,7 @@ class Manager
   end
   
   def update_karidoc(changed)
+    log.debug "Updating Karidocs for #{changed.length} descriptions"
     changed.each do |full_name|
       if @descriptions[full_name]
         KaridocGenerator.generate(@descriptions[full_name])
@@ -165,6 +166,7 @@ class Manager
   def write_to_disk
     log.debug "Writing index to disk"
     ensure_filepath!
+    @search_index.flush
     File.open(filename, 'w') do |file|
       file.write(Marshal.dump([@descriptions, @namespace]))
     end
@@ -173,7 +175,7 @@ class Manager
   def read_from_disk
     File.open(filename, 'r') do |file|
       @descriptions, @namespace = Marshal.load(file.read)
-      log.debug "Read index from disk"
+      log.debug "Read index from disk (#{@descriptions.length} descriptions)"
     end if exist?
   end
   

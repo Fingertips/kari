@@ -60,6 +60,7 @@ class ApplicationController < Rucola::RCController
     Thread.new do
       @manager.examine(gem_path)
       OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidFinishIndexingNotification', nil)
+      @manager.write_to_disk
     end
     
     require 'rucola/fsevents'
