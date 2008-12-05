@@ -49,9 +49,20 @@ class ApplicationController < Rucola::RCController
   
   def buildIndex
     self.processing = true
+    
+    gem_path = Dir['/Library/Ruby/Gems/1.8/doc/activerecord*'].first
+    
     Thread.new do
-      @manager.merge_new(Dir['/Library/Ruby/Gems/1.8/doc/activerecord*'].first)
+      @manager.merge_new(gem_path)
       OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidFinishIndexingNotification', nil)
+    end
+    
+    require 'rucola/fsevents'
+    @fsevents = Rucola::FSEvents.start_watching(gem_path) do |events|
+      events.each do |event|
+        log.debug "Changed file in: #{event.path}"
+        log.debug "Changed file is: #{event.last_modified_file}"
+      end
     end
   end
   
