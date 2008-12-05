@@ -8,13 +8,13 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="468"/>
-			<integer value="304"/>
-			<integer value="677"/>
-			<integer value="257"/>
 			<integer value="237"/>
-			<integer value="214"/>
+			<integer value="468"/>
 			<integer value="439"/>
+			<integer value="257"/>
+			<integer value="304"/>
+			<integer value="214"/>
+			<integer value="677"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -762,7 +762,7 @@
 			<object class="NSWindowTemplate" id="331163929">
 				<int key="NSWindowStyleMask">4111</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{55, 34}, {619, 500}}</string>
+				<string key="NSWindowRect">{{34, 247}, {619, 500}}</string>
 				<int key="NSWTFlags">1886912512</int>
 				<string key="NSWindowTitle">Kari</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -1039,7 +1039,7 @@
 							</object>
 							<string key="NSPathSeparator">/</string>
 							<int key="NSMinColumnWidth">100</int>
-							<int key="NSNumberOfVisibleColumns">5</int>
+							<int key="NSNumberOfVisibleColumns">7</int>
 							<int key="NSColumnResizingType">2</int>
 							<double key="NSPreferedColumnWidth">1.000000e+02</double>
 							<bool key="NSAllowsTypeSelect">YES</bool>
@@ -2205,7 +2205,7 @@
 						<string key="label">contentValues: arrangedObjects.title</string>
 						<reference key="source" ref="512834108"/>
 						<reference key="destination" ref="457485610"/>
-						<object class="NSNibBindingConnector" key="connector">
+						<object class="NSNibBindingConnector" key="connector" id="1063149286">
 							<reference key="NSSource" ref="512834108"/>
 							<reference key="NSDestination" ref="457485610"/>
 							<string key="NSLabel">contentValues: arrangedObjects.title</string>
@@ -2240,6 +2240,31 @@
 						</object>
 					</object>
 					<int key="connectionID">693</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">classTreeController</string>
+						<reference key="source" ref="231439656"/>
+						<reference key="destination" ref="457485610"/>
+					</object>
+					<int key="connectionID">695</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">selectionIndexPaths: selectionIndexPaths</string>
+						<reference key="source" ref="512834108"/>
+						<reference key="destination" ref="457485610"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="512834108"/>
+							<reference key="NSDestination" ref="457485610"/>
+							<string key="NSLabel">selectionIndexPaths: selectionIndexPaths</string>
+							<string key="NSBinding">selectionIndexPaths</string>
+							<string key="NSKeyPath">selectionIndexPaths</string>
+							<reference key="NSPreviousConnector" ref="1063149286"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">697</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3217,7 +3242,7 @@
 						<int key="objectID">673</int>
 						<reference key="object" ref="457485610"/>
 						<reference key="parent" ref="349109726"/>
-						<string key="objectName">Namespace</string>
+						<string key="objectName">ClassTreeController</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">677</int>
@@ -3596,15 +3621,15 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{76, 569}, {55, 25}}</string>
-					<string>{{55, 34}, {619, 500}}</string>
+					<string>{{34, 247}, {619, 500}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{55, 34}, {619, 500}}</string>
+					<string>{{34, 247}, {619, 500}}</string>
 					<reference ref="9"/>
 					<reference ref="9"/>
 					<string>{{843, 639}, {619, 485}}</string>
 					<integer value="0"/>
 					<integer value="1"/>
-					<string>{619, 485}</string>
+					<string>{619, 500}</string>
 					<string>{619, 500}</string>
 					<string>{{56, 731}, {233, 25}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3805,7 +3830,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">693</int>
+			<int key="maxID">697</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3830,12 +3855,14 @@
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addBookmarkToolbarButton</string>
+							<string>classTreeController</string>
 							<string>resultsScrollView</string>
 							<string>searchController</string>
 							<string>webView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

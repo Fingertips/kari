@@ -8,6 +8,7 @@ class ApplicationController < Rucola::RCController
   ib_outlet :bookmarkController
   ib_outlet :resultsScrollView
   ib_outlet :addBookmarkToolbarButton
+  ib_outlet :classTreeController
   
   kvc_accessor :processing, :class_tree
   
@@ -27,12 +28,18 @@ class ApplicationController < Rucola::RCController
     
     OSX::NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, 'finishedIndexing:', 'KariDidFinishIndexingNotification', nil)
     
-    # Default KVC values
     @processing = false
-    @class_tree = []
     
-    # Build class tree
     @manager = Manager.initialize_from_disk
+    self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(@manager.namespace)
+    
+    @classTreeController.objc_send(
+      :addObserver, self,
+       :forKeyPath, 'selectionIndexPaths',
+          :options, OSX::NSKeyValueObservingOptionNew,
+          :context, nil
+    )
+    
     buildIndex
     
     # Lets wrap it up!
@@ -41,6 +48,14 @@ class ApplicationController < Rucola::RCController
     @searchController.delegate = self
     @webViewController.delegate = self
     @webViewController.home!
+  end
+  
+  def observeValueForKeyPath_ofObject_change_context(key_path, object, change, context)
+    # `node' is nil when the selection changes when we load a new tree.
+    # We probably want to store the current selectionIndexPath as well before loading the new tree.
+    if node = @classTreeController.selectedObjects.first
+      @webViewController.load_file node.path
+    end
   end
   
   def externalRequestForDocumentation(notification)
