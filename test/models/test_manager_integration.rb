@@ -20,7 +20,7 @@ class ManagerTestCache
     end
     
     def cache_age
-      File.atime(BASE_PATH_CACHE) - Time.now
+      File.exist?(BASE_PATH_CACHE) ? File.atime(BASE_PATH_CACHE) - Time.now : 0
     end
     
     def stale?
@@ -115,6 +115,19 @@ describe "A Manager" do
     # TODO: test the SKIndex contents
   end
   
-  # it "should update indices when a gem appears" do
-  # end
+  it "should update indices when a gem appears" do
+    @manager.descriptions['REST::Request'].length.should == 2
+    @manager.namespace.get(['REST', 'Request']).should == KaridocGenerator.filename('REST::Request')
+    
+    source_directory = File.join(ManagerTestCache.ri_path, 'nap-0.2')
+    destination_directory = File.join(ManagerTestCache.ri_path, 'nap-0.3')
+    FileUtils.cp_r(source_directory, destination_directory)
+    
+    @manager.examine(ManagerTestCache.ri_path)
+    
+    @manager.descriptions['REST::Request'].length.should == 3
+    @manager.namespace.get(['REST', 'Request']).should == KaridocGenerator.filename('REST::Request')
+    
+    # TODO: test the SKIndex contents
+  end
 end
