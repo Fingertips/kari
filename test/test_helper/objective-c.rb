@@ -46,8 +46,7 @@ module ObjectiveC
       
       ensure_output_dir!
       frameworks.unshift 'Foundation'
-      command = "gcc -o #{bundle_path(path)} -bundle -framework #{frameworks.join(' -framework ')} #{full_path}"
-      
+      command = "gcc -o #{bundle_path(path)} -bundle #{frameworks.map { |f| "-framework #{f}" }.join(' ')} #{full_path}"
       unless system(command)
         raise CompileError, "Unable to compile class `#{klass(path)}' at path: `#{full_path}'."
       end
