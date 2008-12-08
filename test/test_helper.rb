@@ -11,6 +11,16 @@ require 'rucola/test_case'
 require 'tmpdir'
 require 'fileutils'
 
+$:.push(File.expand_path('../test_helper', __FILE__))
+
+require 'global_spec_helper'
+require 'assert_difference'
+require 'temporary_application_support_path'
+require 'fixture_helpers'
+require 'objective-c'
+
+ObjectiveC.require('lib/search_kit/Index')
+
 require File.expand_path('../../config/boot', __FILE__)
 
 TEST_ROOT = File.expand_path(File.dirname(__FILE__))
@@ -24,10 +34,3 @@ def silence_warnings
 ensure
   $VERBOSE = old_verbose
 end
-
-$:.push(File.expand_path('../test_helper', __FILE__))
-
-require 'global_spec_helper'
-require 'assert_difference'
-require 'temporary_application_support_path'
-require 'fixture_helpers'

@@ -101,4 +101,12 @@ describe "A SearchKit Index" do
   it "should flush changes to the backing store" do
     @index.flush.should == true
   end
+  
+  it "should have a search method" do
+    @index.objc_methods.should.include 'search:'
+  end
+  
+  xit "should return matches for a search query" do
+    p @index.search('set_trace_func')
+  end
 end

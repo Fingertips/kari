@@ -1,4 +1,8 @@
 module SearchKit #:nodoc:
+  # Objective-C classes are always defined on the OSX module,
+  # so we use this workaround to be able to extend the class in our own SearchKit module.
+  Index = OSX::Index #:nodoc:
+  
   # SearchKit::Index is a wrapper around a OSX::SKIndex. It indexes documents which can then be
   # queried.
   class Index < OSX::NSObject
@@ -150,5 +154,13 @@ module SearchKit #:nodoc:
         raise SearchKit::Exceptions::IndexError, "Can't compact the index, the internal index is nil."
       end
     end
+    
+    # def search(query)
+    #   search = OSX::SKSearchCreate(@index, query, OSX::KSKSearchOptionDefault)
+    #   p search
+    #   ids = []
+    #   more, count = OSX::SKSearchFindMatches(search, 1, ids, nil, 1)
+    #   p more, count
+    # end
   end
 end
