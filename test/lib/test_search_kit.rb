@@ -106,7 +106,7 @@ describe "A SearchKit Index" do
     @index.objc_methods.should.include 'search:'
   end
   
-  xit "should return matches for a search query" do
-    p @index.search('set_trace_func')
+  it "should return a Search object" do
+    @index.search('set_trace_func').should.be.instance_of SearchKit::Search
   end
 end

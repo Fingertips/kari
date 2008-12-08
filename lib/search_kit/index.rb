@@ -63,7 +63,7 @@ module SearchKit #:nodoc:
     # method.
     def initWithIndex(index)
       if init
-        @index = index
+        self.index = index
         self
       end
     end
@@ -71,8 +71,8 @@ module SearchKit #:nodoc:
     # Close the index. You should always close the index after using it to free up memory and
     # locks.
     def close
-      unless @index.nil?
-        OSX::SKIndexClose(@index)
+      unless index.nil?
+        OSX::SKIndexClose(index)
       else
         raise SearchKit::Exceptions::IndexError, "Can't close the index, the internal index is nil."
       end
@@ -93,11 +93,11 @@ module SearchKit #:nodoc:
     #   index.addDocument(filename)
     #   index.close
     def addDocument(path, mime_type_hint=nil)
-      unless @index.nil?
+      unless index.nil?
         url = OSX::NSURL.fileURLWithPath(path)
         document = OSX::SKDocumentCreateWithURL(url)
         # FIXME: the third param is a MIMETypeHint that is used to select a SpotLight importer
-        OSX::SKIndexAddDocument(@index, document, nil, true)
+        OSX::SKIndexAddDocument(index, document, nil, true)
       else
         raise SearchKit::Exceptions::IndexError, "Can't add a document, the internal index is nil."
       end
@@ -113,10 +113,10 @@ module SearchKit #:nodoc:
     #   index.removeDocument(filename)
     #   index.close
     def removeDocument(path)
-      unless @index.nil?
+      unless index.nil?
         url = OSX::NSURL.fileURLWithPath(path)
         document = OSX::SKDocumentCreateWithURL(url)
-        OSX::SKIndexRemoveDocument(@index, document)
+        OSX::SKIndexRemoveDocument(index, document)
       else
         raise SearchKit::Exceptions::IndexError, "Can't remove a document, the internal index is nil."
       end
@@ -125,11 +125,11 @@ module SearchKit #:nodoc:
     # Returns the number of documents in the index. Note that the count is only up to date after
     # a +flush+.
     def count
-      unless @index.nil?
-        if (count = OSX::SKIndexGetDocumentCount(@index)) != 0
+      unless index.nil?
+        if (count = OSX::SKIndexGetDocumentCount(index)) != 0
           count - 9
         else
-          raise SearchKit::Exceptions::IndexError, "Can't perform OSX::SKIndexGetDocumentCount on the index `#{@index}'. Please make sure you're operating on a valid index."
+          raise SearchKit::Exceptions::IndexError, "Can't perform OSX::SKIndexGetDocumentCount on the index `#{index}'. Please make sure you're operating on a valid index."
         end
       else
         raise SearchKit::Exceptions::IndexError, "Can't get the document count, the internal index is nil."
@@ -138,8 +138,8 @@ module SearchKit #:nodoc:
     
     # Commit all the index changes to the backing store
     def flush
-      unless @index.nil?
-        OSX::SKIndexFlush(@index)
+      unless index.nil?
+        OSX::SKIndexFlush(index)
       else
         raise SearchKit::Exceptions::IndexError, "Can't flush to file, the internal index is nil."
       end
@@ -148,8 +148,8 @@ module SearchKit #:nodoc:
     # Compacts the index by removing orphaned terms. This a rather expensive operation, so you
     # don't want to call it after every index update.
     def compact
-      unless @index.nil?
-        OSX::SKIndexCompact(@index)
+      unless index.nil?
+        OSX::SKIndexCompact(index)
       else
         raise SearchKit::Exceptions::IndexError, "Can't compact the index, the internal index is nil."
       end
@@ -162,5 +162,8 @@ module SearchKit #:nodoc:
     #   more, count = OSX::SKSearchFindMatches(search, 1, ids, nil, 1)
     #   p more, count
     # end
+  end
+  
+  class Search < OSX::NSObject
   end
 end

@@ -2,8 +2,8 @@ module ObjectiveC
   class CompileError < ::StandardError; end
   
   class << self
-    def require(path)
-      compile path
+    def require(path, *frameworks)
+      compile path, *frameworks
       Kernel.require bundle_path(path)
       OSX.ns_import klass(path).to_sym
     end
