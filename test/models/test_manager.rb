@@ -13,6 +13,25 @@ describe "Manager" do
   end
 end
 
+describe "A Manager" do
+  include TemporaryApplicationSupportPath
+  
+  before do
+    @manager = Manager.new
+  end
+  
+  after do
+    @manager.close
+  end
+  
+  it "should not break when RI has descriptions with an empty full name (workaround for a bug)" do
+    lambda {
+      @manager.add('', '/path/to/cdesc-.yml')
+      @manager.add('#JSON', '/path/to/JSON/JSON-i.yml')
+    }.should.not.raise
+  end
+end
+
 describe "An empty Manager" do
   include TemporaryApplicationSupportPath
   include FixtureHelpers

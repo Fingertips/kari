@@ -58,6 +58,8 @@ class Manager
   end
   
   def add(full_name, file)
+    return false unless full_name =~ /^\w/
+    
     if add_description(full_name, file)
       add_karidoc_to_namespace(full_name)
       if description_files = @descriptions[full_name]

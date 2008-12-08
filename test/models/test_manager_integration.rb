@@ -1,5 +1,6 @@
 require File.expand_path('../../test_helper', __FILE__)
 require 'fileutils'
+require 'benchmark'
 
 class ManagerTestCache
   BASE_PATH_CACHE = File.join(Dir.tmpdir, 'kari-integration-tests', 'cache')
@@ -24,15 +25,11 @@ class ManagerTestCache
     end
     
     def stale?
-      puts "[!] Forced refresh" if !ENV['REFRESH'].nil?
-      puts "[!] Cache doesn't exist" if !File.exist?(BASE_PATH_CACHE)
-      puts "[!] Cache is too old: #{cache_age} > #{(15*60)}" if cache_age > (15*60)
-      
       !ENV['REFRESH'].nil? or !File.exist?(BASE_PATH_CACHE) or cache_age > (15*60)
     end
     
     def bootstrap
-      puts "[!] Bootstrapping the Manager cache"
+      t('b')
       FileUtils.rm_rf(BASE_PATH_TMP)
       FileUtils.rm_rf(BASE_PATH_CACHE)
       
@@ -50,9 +47,10 @@ class ManagerTestCache
     end
     
     def copy
+      t('c')
       FileUtils.touch(BASE_PATH_CACHE)
       FileUtils.rm_rf(BASE_PATH_TMP)
-      FileUtils.cp_r(BASE_PATH_CACHE, BASE_PATH_TMP)
+      `cp -r #{BASE_PATH_CACHE} #{BASE_PATH_TMP}`
     end
     
     def setup_manager
@@ -67,6 +65,18 @@ class ManagerTestCache
     
     def teardown_mananger
       @manager.close
+    end
+    
+    def t(*args)
+      $stdout.write(*args)
+      $stdout.flush
+    end
+    
+    def b
+      m = Benchmark.measure do
+        yield
+      end
+      t(m.real.round)
     end
   end
 end

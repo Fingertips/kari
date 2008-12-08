@@ -10,4 +10,5 @@ Rucola::Initializer.run do |config|
   
   config.objc_frameworks = %w{ WebKit }
   
+  Thread.abort_on_exception = true
 end

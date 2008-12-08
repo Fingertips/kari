@@ -66,16 +66,17 @@ module ApplicationControllerSpecHelper
     searchTextField.stringValue = 'ActiveRecord'
     
     @manager_mock = mock('Manager')
+    @manager_mock.stubs(:namespace).returns([])
+    @manager_mock.stubs(:examine)
     Manager.stubs(:initialize_from_disk).returns(@manager_mock)
-    assigns(:manager, @manager_mock)
     
-    controller.stubs(:gemPath).returns(file_fixture('ri'))
+    @watcher_mock = mock('Watcher')
+    @watcher_mock.stubs(:buildIndex)
+    Watcher.stubs(:new).returns(@watcher_mock)
     
     @namespace_mock = stub('Manager#namespace')
     @namespace_mock.stubs(:tree).returns({})
     @manager_mock.stubs(:namespace).returns(@namespace_mock)
-    
-    OSX::NSNotificationCenter.defaultCenter.stubs(:postNotificationName_object)
   end
 end
 
@@ -92,9 +93,8 @@ describe 'ApplicationController, during awakeFromNib' do
     controller.class_tree.should == []
   end
   
-  it "should initialize a Manager instance and call #buildIndex" do
-    Manager.expects(:initialize_from_disk)
-    controller.expects(:buildIndex)
+  it "should initialize a Manager instance" do
+    Manager.expects(:initialize_from_disk).returns(@manager_mock)
     controller.awakeFromNib
   end
   
@@ -117,12 +117,16 @@ describe 'ApplicationController, in general' do
   include TemporaryApplicationSupportPath
   
   it "should update the `processing' state when a `KariDidFinishIndexingNotification' is received" do
+    assigns(:manager, @manager_mock)
     assigns(:processing, true)
+    
     controller.finishedIndexing(nil)
     controller.valueForKey('processing').to_ruby.should.be false
   end
   
   it "should update the `class_tree' when a `KariDidFinishIndexingNotification' is received" do
+    assigns(:manager, @manager_mock)
+    
     nodes = [mock('ClassTreeNode')]
     ClassTreeNode.expects(:classTreeNodesWithHashTree).with(@namespace_mock).returns(nodes)
     
@@ -131,22 +135,11 @@ describe 'ApplicationController, in general' do
   end
   
   it "should start the merge new docs process in a new thread and update the `processing' state to reflect this" do
-    controller.buildIndex
-    
-    Thread.expects(:new).yields
-    @manager_mock.expects(:merge_new)
+    assigns(:watcher, @watcher_mock)
+    @watcher_mock.expects(:buildIndex)
     
     controller.buildIndex
-    
     controller.valueForKey('processing').to_ruby.should.be true
-  end
-  
-  it "should send a notification message when done merging" do
-    Thread.stubs(:new).yields
-    @manager_mock.stubs(:merge_new)
-    OSX::NSNotificationCenter.defaultCenter.expects(:postNotificationName_object).with('KariDidFinishIndexingNotification', nil)
-    
-    controller.buildIndex
   end
   
   it "should bring the results table view forward and hide the webView if a user started searching" do
@@ -194,7 +187,10 @@ describe 'ApplicationController, in general' do
   end
   
   it "should close all resources when terminating" do
-    controller.instance_eval { @fsevents }.expects(:stop)
+    assigns(:manager, @manager_mock)
+    assigns(:watcher, @watcher_mock)
+    
+    @watcher_mock.expects(:stop)
     @manager_mock.expects(:close)
     controller.applicationWillTerminate(nil)
   end

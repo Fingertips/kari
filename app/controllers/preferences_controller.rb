@@ -19,12 +19,12 @@ class PreferencesController < Rucola::RCWindowController
       
       preferences.registerDefaults({ 'RubyInstallation' => '/usr', 'Bookmarks' => [] })
     end
-  
+    
     def synchronize
       preferences.synchronize
     end
   end
-
+  
   def browseForRubyInstallation(sender)
     openDirectoryPanel = OSX::NSOpenPanel.openPanel
     openDirectoryPanel.canChooseDirectories = true

@@ -33,6 +33,8 @@ class ApplicationController < Rucola::RCController
     @manager = Manager.initialize_from_disk
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(@manager.namespace)
     
+    @watcher = Watcher.new(:manager => @manager)
+    
     @classTreeController.objc_send(
       :addObserver, self,
        :forKeyPath, 'selectionIndexPaths',
@@ -67,30 +69,13 @@ class ApplicationController < Rucola::RCController
     PreferencesController.alloc.init.showWindow(self)
   end
   
-  def gemPath
-    Dir['/Library/Ruby/Gems/1.8/doc/activerecord*'].first
-  end
-  
   def buildIndex
     self.processing = true
-    
-    Thread.new do
-      @manager.examine(gemPath)
-      OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidFinishIndexingNotification', nil)
-      @manager.write_to_disk
-    end
-    
-    require 'rucola/fsevents'
-    @fsevents = Rucola::FSEvents.start_watching(gemPath) do |events|
-      events.each do |event|
-        log.debug "Changed file in: #{event.path}"
-        log.debug "Changed file is: #{event.last_modified_file}"
-      end
-    end
+    @watcher.buildIndex
   end
   
   def rebuildIndex(sender)
-    log.debug 'Need to implement rebuildIndex method.'
+    buildIndex
   end
   
   def finishedIndexing(notification)
@@ -123,7 +108,7 @@ class ApplicationController < Rucola::RCController
   
   def applicationWillTerminate(aNotification)
     PreferencesController.synchronize
-    @fsevents.stop
+    @watcher.stop
     @manager.close
   end
   
