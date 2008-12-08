@@ -52,6 +52,8 @@ xdescribe "ApplicationController, when a bookmarkBarToggledVisibility notificati
 end
 
 module ApplicationControllerSpecHelper
+  include FixtureHelpers
+  
   def after_setup
     ib_outlets :webViewController => WebViewController.alloc.init,
                :webView => OSX::WebView.alloc.init,
@@ -66,6 +68,8 @@ module ApplicationControllerSpecHelper
     @manager_mock = mock('Manager')
     Manager.stubs(:initialize_from_disk).returns(@manager_mock)
     assigns(:manager, @manager_mock)
+    
+    controller.stubs(:gemPath).returns(file_fixture('ri'))
     
     @namespace_mock = stub('Manager#namespace')
     @namespace_mock.stubs(:tree).returns({})
@@ -110,6 +114,7 @@ describe 'ApplicationController, in general' do
   tests ApplicationController
   
   include ApplicationControllerSpecHelper
+  include TemporaryApplicationSupportPath
   
   it "should update the `processing' state when a `KariDidFinishIndexingNotification' is received" do
     assigns(:processing, true)
@@ -186,6 +191,12 @@ describe 'ApplicationController, in general' do
     webView.hidden = true
     webViewController.stubs(:bookmarkable?).returns(false)
     webView.hidden?.should.be true
+  end
+  
+  it "should close all resources when terminating" do
+    controller.instance_eval { @fsevents }.expects(:stop)
+    @manager_mock.expects(:close)
+    controller.applicationWillTerminate(nil)
   end
   
   private

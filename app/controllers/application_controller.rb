@@ -67,19 +67,21 @@ class ApplicationController < Rucola::RCController
     PreferencesController.alloc.init.showWindow(self)
   end
   
+  def gemPath
+    Dir['/Library/Ruby/Gems/1.8/doc/activerecord*'].first
+  end
+  
   def buildIndex
     self.processing = true
     
-    gem_path = Dir['/Library/Ruby/Gems/1.8/doc/activerecord*'].first
-    
     Thread.new do
-      @manager.examine(gem_path)
+      @manager.examine(gemPath)
       OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidFinishIndexingNotification', nil)
       @manager.write_to_disk
     end
     
     require 'rucola/fsevents'
-    @fsevents = Rucola::FSEvents.start_watching(gem_path) do |events|
+    @fsevents = Rucola::FSEvents.start_watching(gemPath) do |events|
       events.each do |event|
         log.debug "Changed file in: #{event.path}"
         log.debug "Changed file is: #{event.last_modified_file}"
@@ -92,8 +94,8 @@ class ApplicationController < Rucola::RCController
   end
   
   def finishedIndexing(notification)
-    self.processing = false
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(@manager.namespace)
+    self.processing = false
   end
   
   def activateSearchField(sender = nil)
@@ -121,6 +123,8 @@ class ApplicationController < Rucola::RCController
   
   def applicationWillTerminate(aNotification)
     PreferencesController.synchronize
+    @fsevents.stop
+    @manager.close
   end
   
   # Window delegate matehods
