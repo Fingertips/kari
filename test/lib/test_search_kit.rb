@@ -107,6 +107,10 @@ describe "A SearchKit Index" do
     @filenames.each { |f| @index.addDocument(f) }
     @index.flush
     
-    p @index.search('set_trace_func')
+    matches = @index.search('set_trace_func').to_ruby
+    matches.length.should.be 1
+    match = matches.first
+    match['path'].should == @filenames.find { |f| File.basename(f) == 'cdesc-Binding.yaml' }
+    match['score'].should.be.an.instance_of Float
   end
 end
