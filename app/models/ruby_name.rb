@@ -8,15 +8,15 @@ class RubyName
   end
   
   # Converts a RI filename to a RubyName
-  def self.from_ri_filename(filename)
-    parts = filename.split('/')
-    module_name = parts[parts.index('ri')+1..-2].join('::')
+  def self.from_ri_filename(filename, basepath='')
+    parts = filename[basepath.length+1..-1].split(File::SEPARATOR)
+    module_name = parts[0..-2].join('::')
     
     full_name = case parts.last
     when /^cdesc-\w*.yaml$/
       module_name
     when /^(.*)-(i|c).yaml/
-      [module_name, CGI.unescape($1)].join($2 == 'i' ? '#' : '.')
+      [module_name, CGI.unescape($1)].join($2 == 'i' ? '#' : '::')
     else
       raise ArgumentError, "Unknown RI definition file: #{parts.last}"
     end

@@ -93,7 +93,7 @@ class Manager
     log.debug "Examining RI files in #{path}"
     Find.find(path) do |filename|
       if filename =~ /\.yaml$/
-        full_name = RubyName.from_ri_filename(filename)
+        full_name = RubyName.from_ri_filename(filename, path)
         if add(full_name, filename)
           changed << full_name
         end

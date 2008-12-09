@@ -16,11 +16,11 @@ describe "RubyName" do
       '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Associations/cdesc-Associations.yaml' => \
         'ActiveRecord::Associations',
       '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Base/connected%3f-c.yaml' => \
-        'ActiveRecord::Base.connected?',
+        'ActiveRecord::Base::connected?',
       '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Base/with_scope-c.yaml' => \
-        'ActiveRecord::Base.with_scope'
+        'ActiveRecord::Base::with_scope'
     }.each do |filename, expected|
-      RubyName.from_ri_filename(filename).should == expected
+      RubyName.from_ri_filename(filename, '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri').should == expected
     end
   end
 end
