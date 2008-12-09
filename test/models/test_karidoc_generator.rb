@@ -22,13 +22,13 @@ describe "KaridocGenerator" do
   end
   
   it "should generate a documentation file for a ri class description" do
-    description_file = file_fixture('ri', 'Binding', 'cdesc-Binding.yaml')
+    description_file = file_fixture('normal', 'ri', 'Binding', 'cdesc-Binding.yaml')
     KaridocGenerator.generate(description_file)
     File.should.exist(KaridocGenerator.filename('Binding'))
   end
   
   it "should generate a documentation file for a ri method description" do
-    description_file = file_fixture('ri', 'Binding', 'clone-i.yaml')
+    description_file = file_fixture('normal', 'ri', 'Binding', 'clone-i.yaml')
     KaridocGenerator.generate(description_file)
     File.should.exist(KaridocGenerator.filename('Binding#clone'))
   end
@@ -94,8 +94,8 @@ describe "A KaridocGenerator" do
   
   before do
     @generator = KaridocGenerator.new([
-      file_fixture('ri', 'Binding', 'cdesc-Binding.yaml'),
-      file_fixture('alternate-ri', 'Binding', 'cdesc-Binding.yaml')
+      file_fixture('normal', 'ri', 'Binding', 'cdesc-Binding.yaml'),
+      file_fixture('alternate', 'ri', 'Binding', 'cdesc-Binding.yaml')
     ])
   end
   
@@ -116,17 +116,17 @@ describe "A KaridocGenerator, rendering karidoc" do
   include FixtureHelpers
   
   it "should render a class" do
-    KaridocGenerator.generate([file_fixture('ri', 'Binding', 'cdesc-Binding.yaml')])
+    KaridocGenerator.generate([file_fixture('normal', 'ri', 'Binding', 'cdesc-Binding.yaml')])
     File.read(KaridocGenerator.filename('Binding')).should =~ /<title>Binding<\/title>/
   end
   
   it "should render a class method" do
-    KaridocGenerator.generate([file_fixture('ri', 'Mutex', 'new-c.yaml')])
+    KaridocGenerator.generate([file_fixture('normal', 'ri', 'Mutex', 'new-c.yaml')])
     File.read(KaridocGenerator.filename('Mutex.new')).should =~ /<title>Mutex::new<\/title>/
   end
   
   it "should render an instance method" do
-    KaridocGenerator.generate([file_fixture('ri', 'Mutex', 'lock-i.yaml')])
+    KaridocGenerator.generate([file_fixture('normal', 'ri', 'Mutex', 'lock-i.yaml')])
     File.read(KaridocGenerator.filename('Mutex#lock')).should =~ /<title>Mutex#lock<\/title>/
   end
 end

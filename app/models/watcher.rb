@@ -1,4 +1,5 @@
 require 'rucola/fsevents'
+require 'rdoc/ri/ri_paths'
 
 class Watcher
   attr_accessor :manager, :fsevents
@@ -11,7 +12,7 @@ class Watcher
   end
   
   def riPaths
-    Dir['/Library/Ruby/Gems/1.8/doc/activerecord*'][0..1]
+    RI::Paths.path(true, true, true, true)
   end
   
   def lastEventId
