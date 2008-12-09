@@ -16,6 +16,7 @@ MANFRED
 - Add a stylesheet to the karidoc output
 - Fix the title in karidoc for top-level classes
 - Optimize indexing
+- Think about a way to solve the uppercased instance method problem in the RubyName optimization
 
 ANYONE
 

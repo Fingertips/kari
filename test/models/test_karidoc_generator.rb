@@ -59,7 +59,7 @@ describe "KaridocGenerator, on a generated karidoc tree" do
   
   before do
     @manager = Manager.new
-    @manager.examine(File.join(TEST_ROOT, 'fixtures', 'ri'))
+    @manager.examine(File.join(TEST_ROOT, 'fixtures', 'normal', 'ri'))
   end
   
   after do
