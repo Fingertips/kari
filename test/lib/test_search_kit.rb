@@ -102,11 +102,9 @@ describe "A SearchKit Index" do
     @index.flush.should == true
   end
   
-  it "should have a search method" do
-    @index.objc_methods.should.include 'search:'
-  end
-  
   it "should return a Search object" do
-    @index.search('set_trace_func').should.be.instance_of SearchKit::Search
+    search = @index.search('set_trace_func')
+    search.should.be.instance_of SearchKit::Search
+    search.query.should == 'set_trace_func'
   end
 end

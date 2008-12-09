@@ -19,7 +19,7 @@ require 'temporary_application_support_path'
 require 'fixture_helpers'
 require 'objective-c'
 
-ObjectiveC.require('lib/search_kit/Index')
+#ObjectiveC.require('lib/search_kit/Index')
 
 require File.expand_path('../../config/boot', __FILE__)
 
