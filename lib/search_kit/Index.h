@@ -1,0 +1,15 @@
+#import <Cocoa/Cocoa.h>
+#import <CoreServices/CoreServices.h>
+
+#define kSearchMax 1000
+
+@interface Index : NSObject {
+  SKIndexRef _index;
+}
+
+-(SKIndexRef)index;
+-(void)setIndex:(SKIndexRef)index;
+
+-(NSMutableArray*)search:(NSString*)query;
+
+@end

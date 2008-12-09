@@ -41,6 +41,7 @@ end
 describe "A SearchKit Index" do
   before do
     @path = File.join(Dir.tmpdir, 'search_kit_index')
+    File.open(@path, 'w') { |f| f << 'foo' }
     @index = SearchKit::Index.create(@path)
     @filenames = Dir[File.join(TEST_ROOT, 'fixtures/ri/**/*.*')]
   end
@@ -102,30 +103,10 @@ describe "A SearchKit Index" do
     @index.flush.should == true
   end
   
-  it "should return a Search object" do
-    search = @index.search('set_trace_func')
-    search.should.be.instance_of SearchKit::Search
-    search.query.should == 'set_trace_func'
-  end
-end
-
-describe "A SearchKit Search" do
-  before do
-    @path = File.join(Dir.tmpdir, 'search_kit_index')
-    @index = SearchKit::Index.create(@path)
-    @filenames = Dir[File.join(TEST_ROOT, 'fixtures/ri/**/*.*')]
+  it "should return an array of matches" do
     @filenames.each { |f| @index.addDocument(f) }
-    @search = @index.search('set_trace_func')
-  end
-  
-  after do
-    @index.close
-    File.unlink(@path)
-  end
-  
-  it "should return matches" do
-    matches = @search.matches
-    p matches
-    matches.all? { |m| m.is_a?(SearchKit::Match) }.should.be true
+    @index.flush
+    
+    p @index.search('set_trace_func')
   end
 end
