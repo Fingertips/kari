@@ -4,6 +4,7 @@ describe "Watcher" do
   include TemporaryApplicationSupportPath
   
   it "should start watching the RI paths after intialization" do
+    OSX::NSUserDefaults.stubs(:standardUserDefaults).returns({})
     Rucola::FSEvents.expects(:start_watching)
     Watcher.new
   end
@@ -22,6 +23,14 @@ describe "A Watcher" do
     @watcher.stop
   end
   
+  it "should have RI paths to index" do
+    @watcher.riPaths.should.not.be.empty
+  end
+  
+  it "should know which paths to watch for changes" do
+    @watcher.watchPaths.sort.should == %w(/Library/Ruby/Gems/1.8/doc /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/doc /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/share/ri/1.8/system)
+  end
+  
   it "should have nil as default for the FSEvent ID " do
     @watcher.lastEventId.should.be.nil
   end
@@ -31,36 +40,55 @@ describe "A Watcher" do
     @watcher.lastEventId.should == 12
   end
   
-  it "should build an index for all RI paths using the Manager" do
-    Thread.stubs(:new).yields
+  it "should handle events coming from FSEvents" do
+    @watcher.expects(:rebuild).with('/Library/Ruby/Gems/1.8/doc/nap-0.2/ri')
+    @watcher.handleEvents(events)
+  end
+  
+  it "should set the last event id as the last even id" do
+    @watcher.stubs(:rebuild)
+    @watcher.expects(:setLastEventId).with(events.last.id)
+    @watcher.handleEvents(events)
+  end
+  
+  it "should be able to force a rebuild" do
+    @watcher.expects(:rebuild).with(@watcher.riPaths)
+    @watcher.forceRebuild
+  end
+  
+  it "should rebuild indices for paths using the manager" do
+    Thread.expects(:new).yields
     
-    @watcher.riPaths.each do |path|
+    paths = ['/Library/Ruby/Gems/1.8/doc/nap-0.2/ri', '/Library/Ruby/Gems/1.8/doc/nap-0.1/ri']
+    paths.each do |path|
       @watcher.manager.expects(:examine).with(path)
     end
+    @watcher.manager.expects(:write_to_disk).at_least(1)
     
-    @watcher.buildIndex
+    @watcher.rebuild(paths)
   end
   
-  it "should write indices to file after examining RI paths using the Manager" do
-    Thread.stubs(:new).yields
-    @watcher.manager.stubs(:examine)
-    
-    @watcher.manager.expects(:write_to_disk)
-    
-    @watcher.buildIndex
-  end
-  
-  it "should send a notification after examining RI paths using the Manager" do
-    Thread.stubs(:new).yields
-    @watcher.manager.stubs(:examine)
-    
+  it "should notify about the start and end of indexing" do
+    Thread.expects(:new).yields
+    OSX::NSNotificationCenter.defaultCenter.expects(:postNotificationName_object).with('KariDidStartIndexingNotification', nil)
     OSX::NSNotificationCenter.defaultCenter.expects(:postNotificationName_object).with('KariDidFinishIndexingNotification', nil)
     
-    @watcher.buildIndex
+    @watcher.rebuild([])
   end
   
   it "should stop FSEvents for watcher when stopped" do
     @watcher.fsevents.expects(:stop).at_least(1)
     @watcher.stop
+  end
+  
+  protected
+  
+  def events
+    [
+      stub(:id => 234, :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/REST/Request/perform-i.yaml'),
+      stub(:id => 535, :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/created.rid'),
+      stub(:id => 540, :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/REST/cdesc-REST.yaml'),
+      stub(:id => 541, :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/REST/Response/new-c.yaml')
+    ]
   end
 end

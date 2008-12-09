@@ -90,7 +90,7 @@ describe "A Manager" do
     ManagerTestCache.teardown_mananger
   end
   
-  it "should update indices when a gem verion disappears" do
+  it "should update indices when a gem version disappears" do
     @manager.descriptions['REST::Request'].length.should == 2
     @manager.namespace.get(['REST', 'Request']).should == KaridocGenerator.filename('REST::Request')
     
@@ -125,7 +125,7 @@ describe "A Manager" do
     # TODO: test the SKIndex contents
   end
   
-  it "should update indices when a gem appears" do
+  it "should update indices when a gem version appears" do
     @manager.descriptions['REST::Request'].length.should == 2
     @manager.namespace.get(['REST', 'Request']).should == KaridocGenerator.filename('REST::Request')
     

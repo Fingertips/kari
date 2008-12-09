@@ -29,6 +29,11 @@ TEST_ROOT = File.expand_path(File.dirname(__FILE__))
 require 'osx/cocoa'
 Thread.new { OSX.CFRunLoopRun }
 
+# We don't want test ruining our preferences
+OSX::NSUserDefaults.stubs(:standardUserDefaults).raises(
+  StandardError.new('Please stub OSX::NSUserDefaults#standardUserDefaults in your tests')
+)
+
 def silence_warnings
   old_verbose, $VERBOSE = $VERBOSE, nil
   yield

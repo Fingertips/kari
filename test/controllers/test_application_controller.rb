@@ -3,6 +3,10 @@ require File.expand_path('../../test_helper', __FILE__)
 xdescribe "ApplicationController, when a bookmarkBarToggledVisibility notification is received" do
   tests ApplicationController
   
+  before(:all) do
+    OSX::NSUserDefaults.stubs(:standardUserDefaults).returns(stub(:registerDefaults => true))
+  end
+  
   def after_setup
     ib_outlets :webView => OSX::NSView.alloc.initWithFrame([0, 20, 100, 100]),
                :resultsScrollView => OSX::NSScrollView.alloc.initWithFrame([0, 20, 100, 100])
@@ -85,6 +89,10 @@ describe 'ApplicationController, during awakeFromNib' do
   
   include ApplicationControllerSpecHelper
   
+  before(:all) do
+    OSX::NSUserDefaults.stubs(:standardUserDefaults).returns(stub(:registerDefaults => true))
+  end
+  
   it "should set the correct default kvc values" do
     controller.stubs(:buildIndex)
     controller.awakeFromNib
@@ -99,6 +107,7 @@ describe 'ApplicationController, during awakeFromNib' do
   end
   
   it "should register itself as an observer for the `KariDidFinishIndexingNotification' notification" do
+    should_observe_notification('KariDidStartIndexingNotification', 'startedIndexing:')
     should_observe_notification('KariDidFinishIndexingNotification', 'finishedIndexing:')
     controller.awakeFromNib
   end
@@ -116,6 +125,18 @@ describe 'ApplicationController, in general' do
   include ApplicationControllerSpecHelper
   include TemporaryApplicationSupportPath
   
+  before do
+    OSX::NSUserDefaults.stubs(:standardUserDefaults).returns({})
+  end
+  
+  it "should update the `processing' state when a `KariDidStartIndexingNotification' is received" do
+    assigns(:manager, @manager_mock)
+    assigns(:processing, false)
+    
+    controller.startedIndexing(nil)
+    controller.valueForKey('processing').to_ruby.should.be true
+  end
+  
   it "should update the `processing' state when a `KariDidFinishIndexingNotification' is received" do
     assigns(:manager, @manager_mock)
     assigns(:processing, true)
@@ -132,14 +153,6 @@ describe 'ApplicationController, in general' do
     
     controller.finishedIndexing(nil)
     controller.class_tree.should.be nodes
-  end
-  
-  it "should start the merge new docs process in a new thread and update the `processing' state to reflect this" do
-    assigns(:watcher, @watcher_mock)
-    @watcher_mock.expects(:buildIndex)
-    
-    controller.buildIndex
-    controller.valueForKey('processing').to_ruby.should.be true
   end
   
   it "should bring the results table view forward and hide the webView if a user started searching" do
@@ -193,6 +206,12 @@ describe 'ApplicationController, in general' do
     @watcher_mock.expects(:stop)
     @manager_mock.expects(:close)
     controller.applicationWillTerminate(nil)
+  end
+  
+  it "should rebuild the index when forced from the menu" do
+    assigns(:watcher, @watcher_mock)
+    @watcher_mock.expects(:forceRebuild)
+    controller.rebuildIndex
   end
   
   private

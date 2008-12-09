@@ -26,7 +26,9 @@ class ApplicationController < Rucola::RCController
            :object, nil
     )
     
-    OSX::NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, 'finishedIndexing:', 'KariDidFinishIndexingNotification', nil)
+    [%w(startedIndexing: KariDidStartIndexingNotification), %w(finishedIndexing: KariDidFinishIndexingNotification)].each do |m, n|
+      OSX::NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, m, n, nil)
+    end
     
     @processing = false
     
@@ -42,8 +44,6 @@ class ApplicationController < Rucola::RCController
           :context, nil
     )
     
-    buildIndex
-    
     # Lets wrap it up!
     @window.delegate = self
     @bookmarkController.delegate = self
@@ -56,7 +56,11 @@ class ApplicationController < Rucola::RCController
     # `node' is nil when the selection changes when we load a new tree.
     # We probably want to store the current selectionIndexPath as well before loading the new tree.
     if node = @classTreeController.selectedObjects.first
-      @webViewController.load_file node.path
+      unless !node.path or node.path.empty?
+        @webViewController.load_file node.path
+      else
+        log.debug("Can't open class browser at: `#{node.path}'")
+      end
     end
   end
   
@@ -69,13 +73,12 @@ class ApplicationController < Rucola::RCController
     PreferencesController.alloc.init.showWindow(self)
   end
   
-  def buildIndex
-    self.processing = true
-    @watcher.buildIndex
+  def rebuildIndex
+    @watcher.forceRebuild
   end
   
-  def rebuildIndex(sender)
-    buildIndex
+  def startedIndexing(notification)
+    self.processing = true
   end
   
   def finishedIndexing(notification)

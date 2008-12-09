@@ -92,12 +92,9 @@ describe "An empty Manager" do
   end
   
   it "should add new descriptions for classes" do
-    @manager.search_index.expects(:addDocument).with(KaridocGenerator.filename('Binding'))
-    
     @manager.add('Binding', file_fixture('normal', 'ri', 'Binding', 'cdesc-Binding.yaml'))
     @manager.descriptions['Binding'].should.not.be.nil
     @manager.namespace.get(['Binding']).should.not.be.nil
-    File.should.exist(KaridocGenerator.filename('Binding'))
   end
 end
 

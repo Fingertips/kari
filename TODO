@@ -12,10 +12,11 @@ ELOY
 
 MANFRED
 
-- Fix the FSEvents callback to automatically examine changed directories
+- Change ApplicationController.processing to be a counter because there can be many documentation update threads.
 - Add a stylesheet to the karidoc output
 - Fix the title in karidoc for top-level classes
 - Optimize indexing
+- Optimize karidoc rendering
 - Think about a way to solve the uppercased instance method problem in the RubyName optimization
 
 ANYONE

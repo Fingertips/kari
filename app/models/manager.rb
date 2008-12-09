@@ -53,11 +53,6 @@ class Manager
     
     if add_description(full_name, file)
       add_karidoc_to_namespace(full_name)
-      if description_files = @descriptions[full_name]
-        karidoc_filename = KaridocGenerator.generate(description_files)
-        @search_index.removeDocument(karidoc_filename)
-        @search_index.addDocument(karidoc_filename)
-      end
       true
     else
       false
@@ -90,7 +85,7 @@ class Manager
   
   def merge_new(path)
     changed = []
-    log.debug "Examining RI files in #{path}"
+    log.debug "Examining RI files in `#{path}'"
     Find.find(path) do |filename|
       if filename =~ /\.yaml$/
         full_name = RubyName.from_ri_filename(filename, path)
@@ -105,7 +100,11 @@ class Manager
   def update(path)
     changed = []
     changed.concat purge_vanished(path)
-    changed.concat merge_new(path)
+    Find.find(path) do |filename|
+      if filename =~ /\.rid$/
+        changed.concat merge_new(File.dirname(filename))
+      end
+    end
     changed
   end
   
