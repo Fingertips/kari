@@ -30,7 +30,7 @@
       
       [matches addObject:
         [NSDictionary dictionaryWithObjectsAndKeys:
-          [url path], @"path", [NSNumber numberWithFloat:foundScores[pos]], @"score", nil
+          url, @"url", [NSNumber numberWithFloat:foundScores[pos]], @"score", nil
         ]
       ];
     }

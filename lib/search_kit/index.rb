@@ -154,5 +154,21 @@ module SearchKit #:nodoc:
         raise SearchKit::Exceptions::IndexError, "Can't compact the index, the internal index is nil."
       end
     end
+    
+    # Searches the document contents in the index.
+    # Returns an array of dictionaries containing the path and score of the document matches.
+    #
+    # * _query_ : The search string to query the index with.
+    #
+    # Example:
+    #
+    #   index = SearchKit::Index.open(File.expand_path('~/.address_book_index'), true)
+    #   match = index.search('Steve Jobs').first
+    #   p match['url'].path # => '/path/to/document'
+    #   p match['score].to_f # => 9.12345
+    #   index.close
+    def search(query); end
+    # Hack to get RDoc to pick up the docs for #search which is implemented in Objective-C (Index.m).
+    undef :search
   end
 end
