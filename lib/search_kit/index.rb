@@ -158,12 +158,23 @@ module SearchKit #:nodoc:
     #   more, count = OSX::SKSearchFindMatches(search, 1, ids, nil, 1)
     #   p more, count
     # end
+    
+    def search(query)
+      Search.alloc.initWithIndex_query(@index, query)
+    end
   end
   
   # Objective-C classes are always defined on the OSX module,
   # so we use this workaround to be able to extend the class in our own SearchKit module.
-  #Search = OSX::Search #:nodoc:
+  Search = OSX::Search #:nodoc:
   
   class Search < OSX::NSObject
+    def initWithIndex_query(index, query)
+      if init
+        self.index = index
+        self.query = query
+        self
+      end
+    end
   end
 end

@@ -22,8 +22,8 @@
 		514292D10CC66CDC00F9CEEF /* test in Resources */ = {isa = PBXBuildFile; fileRef = 514292CA0CC66CDC00F9CEEF /* test */; };
 		514292D20CC66CDC00F9CEEF /* vendor in Resources */ = {isa = PBXBuildFile; fileRef = 514292CC0CC66CDC00F9CEEF /* vendor */; };
 		514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 514292ED0CC6823A00F9CEEF /* MainMenu.nib */; };
-		51782B940EED6CAA00407989 /* Index.h in Headers */ = {isa = PBXBuildFile; fileRef = 51782B920EED6CAA00407989 /* Index.h */; };
-		51782B950EED6CAA00407989 /* Index.m in Sources */ = {isa = PBXBuildFile; fileRef = 51782B930EED6CAA00407989 /* Index.m */; };
+		51A053120EEE910900191B22 /* Search.h in Headers */ = {isa = PBXBuildFile; fileRef = 51A053100EEE910900191B22 /* Search.h */; };
+		51A053130EEE910900191B22 /* Search.m in Sources */ = {isa = PBXBuildFile; fileRef = 51A053110EEE910900191B22 /* Search.m */; };
 		51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
 		51E0DC1C0D80411600C898A2 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 51E0DBCA0D80411600C898A2 /* lib */; };
 		638CCA7D0DF06404008C4936 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = 638CCA7C0DF06404008C4936 /* BridgeSupport */; };
@@ -76,8 +76,8 @@
 		514292CA0CC66CDC00F9CEEF /* test */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test; sourceTree = "<group>"; };
 		514292CC0CC66CDC00F9CEEF /* vendor */ = {isa = PBXFileReference; lastKnownFileType = folder; path = vendor; sourceTree = "<group>"; };
 		514292EE0CC6823A00F9CEEF /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = misc/English.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		51782B920EED6CAA00407989 /* Index.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Index.h; path = lib/search_kit/Index.h; sourceTree = "<group>"; };
-		51782B930EED6CAA00407989 /* Index.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Index.m; path = lib/search_kit/Index.m; sourceTree = "<group>"; };
+		51A053100EEE910900191B22 /* Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Search.h; path = lib/search_kit/Search.h; sourceTree = "<group>"; };
+		51A053110EEE910900191B22 /* Search.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Search.m; path = lib/search_kit/Search.m; sourceTree = "<group>"; };
 		51E0DBCA0D80411600C898A2 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
 		638CCA7C0DF06404008C4936 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BridgeSupport; path = misc/BridgeSupport; sourceTree = "<group>"; };
 		E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /System/Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
@@ -144,6 +144,8 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				4DDCA7110ACC9A6100E082CE /* Info.plist */,
+				51A053100EEE910900191B22 /* Search.h */,
+				51A053110EEE910900191B22 /* Search.m */,
 				51E0DBCA0D80411600C898A2 /* lib */,
 			);
 			name = Kari;
@@ -155,8 +157,6 @@
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				514292ED0CC6823A00F9CEEF /* MainMenu.nib */,
 				E8F5E25803AEB7C803A81C6F /* rb_main.rb */,
-				51782B920EED6CAA00407989 /* Index.h */,
-				51782B930EED6CAA00407989 /* Index.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -224,7 +224,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51782B940EED6CAA00407989 /* Index.h in Headers */,
+				51A053120EEE910900191B22 /* Search.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,7 +298,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DDCA70A0ACC9A6100E082CE /* main.m in Sources */,
-				51782B950EED6CAA00407989 /* Index.m in Sources */,
+				51A053130EEE910900191B22 /* Search.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

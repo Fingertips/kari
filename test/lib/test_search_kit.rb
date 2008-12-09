@@ -108,3 +108,24 @@ describe "A SearchKit Index" do
     search.query.should == 'set_trace_func'
   end
 end
+
+describe "A SearchKit Search" do
+  before do
+    @path = File.join(Dir.tmpdir, 'search_kit_index')
+    @index = SearchKit::Index.create(@path)
+    @filenames = Dir[File.join(TEST_ROOT, 'fixtures/ri/**/*.*')]
+    @filenames.each { |f| @index.addDocument(f) }
+    @search = @index.search('set_trace_func')
+  end
+  
+  after do
+    @index.close
+    File.unlink(@path)
+  end
+  
+  it "should return matches" do
+    matches = @search.matches
+    p matches
+    matches.all? { |m| m.is_a?(SearchKit::Match) }.should.be true
+  end
+end
