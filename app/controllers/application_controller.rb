@@ -30,7 +30,7 @@ class ApplicationController < Rucola::RCController
       OSX::NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, m, n, nil)
     end
     
-    @processing = false
+    @processing = 0
     
     @manager = Manager.initialize_from_disk
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(@manager.namespace)
@@ -78,12 +78,14 @@ class ApplicationController < Rucola::RCController
   end
   
   def startedIndexing(notification)
-    self.processing = true
+    self.processing += 1
   end
   
   def finishedIndexing(notification)
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(@manager.namespace)
-    self.processing = false
+    if self.processing > 0
+      self.processing -= 1
+    end
   end
   
   def activateSearchField(sender = nil)

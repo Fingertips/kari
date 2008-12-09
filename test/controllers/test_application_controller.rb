@@ -97,7 +97,7 @@ describe 'ApplicationController, during awakeFromNib' do
     controller.stubs(:buildIndex)
     controller.awakeFromNib
     
-    controller.processing.should == false
+    controller.processing.should == 0
     controller.class_tree.should == []
   end
   
@@ -131,22 +131,32 @@ describe 'ApplicationController, in general' do
   
   it "should update the `processing' state when a `KariDidStartIndexingNotification' is received" do
     assigns(:manager, @manager_mock)
-    assigns(:processing, false)
+    assigns(:processing, 0)
     
     controller.startedIndexing(nil)
-    controller.valueForKey('processing').to_ruby.should.be true
+    controller.valueForKey('processing').to_ruby.should.be 1
+    
+    controller.startedIndexing(nil)
+    controller.valueForKey('processing').to_ruby.should.be 2
   end
   
   it "should update the `processing' state when a `KariDidFinishIndexingNotification' is received" do
     assigns(:manager, @manager_mock)
-    assigns(:processing, true)
+    assigns(:processing, 2)
     
     controller.finishedIndexing(nil)
-    controller.valueForKey('processing').to_ruby.should.be false
+    controller.valueForKey('processing').to_ruby.should.be 1
+    
+    controller.finishedIndexing(nil)
+    controller.valueForKey('processing').to_ruby.should.be 0
+    
+    controller.finishedIndexing(nil)
+    controller.valueForKey('processing').to_ruby.should.be 0
   end
   
   it "should update the `class_tree' when a `KariDidFinishIndexingNotification' is received" do
     assigns(:manager, @manager_mock)
+    assigns(:processing, 1)
     
     nodes = [mock('ClassTreeNode')]
     ClassTreeNode.expects(:classTreeNodesWithHashTree).with(@namespace_mock).returns(nodes)
