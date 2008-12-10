@@ -39,11 +39,12 @@ describe "The SearchKit Index" do
 end
 
 describe "A SearchKit Index" do
+  include FixtureHelpers
+  
   before do
     @path = File.join(Dir.tmpdir, 'search_kit_index')
-    File.open(@path, 'w') { |f| f << 'foo' }
     @index = SearchKit::Index.create(@path)
-    @filenames = Dir[File.join(TEST_ROOT, 'fixtures/ri/**/*.*')]
+    @filenames = Dir[file_fixture('normal/ri/**/*.*')]
   end
   
   after do
@@ -80,6 +81,7 @@ describe "A SearchKit Index" do
   end
   
   it "should not care about adding a document twice" do
+    p @filenames
     @index.addDocument(@filenames.first).should == true
     @index.addDocument(@filenames.first).should == true
   end
