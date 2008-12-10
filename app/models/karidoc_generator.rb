@@ -36,6 +36,7 @@ class KaridocGenerator
       :descriptions => descriptions,
       :full_name => descriptions.first.full_name,
       :template_path => template_path,
+      :stylesheet => File.expand_path('../../assets/karidoc.css', __FILE__),
       :partials => partials
     )
     namespace.extend HTMLHelpers

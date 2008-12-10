@@ -3,6 +3,8 @@ require 'rucola/fsevents'
 require 'rdoc/ri/ri_paths'
 
 class Watcher
+  DEVELOPMENT_FILTER = /nap|json|finger|activerecord/i
+  
   attr_accessor :manager, :fsevents
   
   def initialize(options={})
@@ -14,7 +16,7 @@ class Watcher
   
   def riPaths
     #@riPaths ||= RI::Paths.path(true, true, true, true)
-    @riPaths ||= RI::Paths.path(true, true, true, true).grep(/nap|json|finger/i)
+    @riPaths ||= RI::Paths.path(true, true, true, true).grep(DEVELOPMENT_FILTER)
   end
   
   def watchPaths
@@ -33,7 +35,7 @@ class Watcher
   def handleEvents(events)
     path = baseDir(events.map { |e| e.path })
     log.debug "Found changes in `#{path}'"
-    if path =~ /nap|json|finger/i
+    if path =~ DEVELOPMENT_FILTER
       rebuild(path)
     else
       log.debug "Skipping `#{path}' because we're just testing right now"

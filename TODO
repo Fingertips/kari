@@ -12,8 +12,6 @@ ELOY
 
 MANFRED
 
-- Change ApplicationController.processing to be a counter because there can be many documentation update threads.
-- Add a stylesheet to the karidoc output
 - Fix the title in karidoc for top-level classes
 - Optimize indexing
 - Optimize karidoc rendering
@@ -26,3 +24,4 @@ ANYONE
 IMPROVEMENTS
 
 - Find and show Ruby installations in the source list of the 'Browse Ruby Installation' dialog
+- Use a code highlighter to highlight examples
