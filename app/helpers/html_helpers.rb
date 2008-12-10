@@ -14,11 +14,15 @@ module HTMLHelpers
   end
   
   def header_with_markup(path, separator, name)
-    [
-      content_tag('span', h(path), :class => 'path'),
-      content_tag('span', h(separator)),
-      content_tag('span', h(name), :class => 'name')
-    ].join
+    header = []
+    unless path.empty?
+      header.concat [
+        content_tag('span', h(path), :class => 'path'),
+        content_tag('span', h(separator))
+      ]
+    end
+    header << content_tag('span', h(name), :class => 'name')
+    header.join
   end
   
   def render_description(description)

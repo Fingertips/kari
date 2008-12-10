@@ -21,6 +21,7 @@ describe "A class including HTMLHelpers" do
   end
   
   it "should generate a header for a RubyName with markup" do
+    header_with_markup('', '::', 'Enumerable').should == '<span class="name">Enumerable</span>'
     header_with_markup('Module::SubModule', '#', 'method').should == '<span class="path">Module::SubModule</span><span>#</span><span class="name">method</span>'
   end
   

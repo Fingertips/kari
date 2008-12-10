@@ -12,10 +12,11 @@ ELOY
 
 MANFRED
 
-- Fix the title in karidoc for top-level classes
+- Assign the new class tree after all thread are ready processing and think about concurrency
+- Fix links in Karidoc to documents with question marks etc.
+- Think about a way to solve the uppercased instance method problem in the RubyName optimization
 - Optimize indexing
 - Optimize karidoc rendering
-- Think about a way to solve the uppercased instance method problem in the RubyName optimization
 
 ANYONE
 
@@ -25,3 +26,4 @@ IMPROVEMENTS
 
 - Find and show Ruby installations in the source list of the 'Browse Ruby Installation' dialog
 - Use a code highlighter to highlight examples
+- Flag karidoc files with 'broken characters' (to prevent bugreports and gently nudge authors to fix their documentation)
