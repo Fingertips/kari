@@ -162,4 +162,9 @@ describe "A filled Manager" do
     @manager.descriptions.should == @manager.descriptions
     @manager.namespace.should == @manager.namespace
   end
+  
+  it "should forward search queries to the SearchKit::Index instance" do
+    @manager.search_index.expects(:search).with('a pot of gold')
+    @manager.search('a pot of gold')
+  end
 end

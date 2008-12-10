@@ -129,6 +129,10 @@ class Manager
     changed
   end
   
+  def search(query)
+    @search_index.search(query)
+  end
+  
   def filepath
     Rucola::RCApp.application_support_path
   end
