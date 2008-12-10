@@ -64,4 +64,16 @@ describe "An instance extended with DescriptionExtensions" do
     self.class.stubs(:to_s).returns('RI::ClassDescription')
     type.should === 'Class'
   end
+  
+  it "should extract the gem version from the path" do
+    self.filename = "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/doc/activerecord-1.15.6/ri/Fixture/cdesc-Fixture.yaml"
+    gem_version.should == 'activerecord-1.15.6'
+    
+    self.filename = "/Library/Ruby/Gems/1.8/doc/activerecord-2.2.2/ri/Fixture/cdesc-Fixture.yaml"
+    gem_version.should == 'activerecord-2.2.2'
+    
+    self.filename = "cdesc-Fixture.yaml"
+    gem_version.should == 'System'
+    
+  end
 end

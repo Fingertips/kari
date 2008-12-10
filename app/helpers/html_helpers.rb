@@ -29,4 +29,8 @@ module HTMLHelpers
     assign :description, description
     partials[description.template_name].result(binding)
   end
+  
+  def classes_for(description, descriptions)
+    [description.template_name, (description == descriptions.first) ? 'primary' : 'secondary'].compact.join(' ')
+  end
 end

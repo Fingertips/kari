@@ -1,4 +1,8 @@
 module DescriptionExtensions
+  SLASH = Regexp.escape(File::SEPARATOR)
+  
+  attr_accessor :filename
+  
   def separator
     case full_name
     when /\#/
@@ -24,5 +28,13 @@ module DescriptionExtensions
   
   def type
     @is_singleton ? 'ClassMethod' : ri_type
+  end
+  
+  def gem_version
+    if match = /#{SLASH}(\w*-[\d\.]*)#{SLASH}/.match(filename)
+      match[1]
+    else
+      'System'
+    end
   end
 end

@@ -1,10 +1,9 @@
 require 'find'
 require 'rdoc/ri/ri_paths'
-require 'rdoc/ri/ri_descriptions'
-require 'rdoc/markup/simple_markup/to_flow'
 
 class Manager
-  SYSTEM_RI_PATH = RI::Paths.path(true, false, false, false).first
+  SYSTEM_RI_PATH         = RI::Paths.path(true, false, false, false).first
+  RI_PATH_VERSION_REGEXP = /\/\w*-([\d\.]*)\//
   
   attr_accessor :descriptions, :namespace, :search_index
   
@@ -32,14 +31,16 @@ class Manager
   def add_description(full_name, file)
     @descriptions[full_name] ||= []
     unless @descriptions[full_name].include?(file)
-      @descriptions[full_name] << file 
+      @descriptions[full_name] << file
       @descriptions[full_name].sort! do |a, b|
         if a.start_with?(SYSTEM_RI_PATH)
           -1
         elsif b.start_with?(SYSTEM_RI_PATH)
           1
         else
-          b <=> a
+          left  = RI_PATH_VERSION_REGEXP.match(a)
+          right = RI_PATH_VERSION_REGEXP.match(b)
+          (left.nil? or right.nil?) ? b <=> a : right[1] <=> left[1]
         end
       end
       true

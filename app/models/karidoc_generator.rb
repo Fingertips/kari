@@ -1,5 +1,13 @@
 require 'yaml'
 require 'fileutils'
+require 'rdoc/ri/ri_descriptions'
+require 'rdoc/markup/simple_markup/to_flow'
+
+module RI
+  class Description
+    include DescriptionExtensions
+  end
+end
 
 # Class that generates Karidoc files from the RI description
 class KaridocGenerator
@@ -12,7 +20,11 @@ class KaridocGenerator
   end
   
   def generate
-    descriptions = description_files.map { |file| YAML.load_file(file) }
+    descriptions = description_files.map do |file|
+      description = YAML.load_file(file)
+      description.filename = file
+      description
+    end
     
     full_name = descriptions.first.full_name
     karidoc_filename = self.class.filename(full_name)
@@ -41,7 +53,6 @@ class KaridocGenerator
     )
     namespace.extend HTMLHelpers
     namespace.extend FlowHelpers
-    descriptions.map { |description| description.extend DescriptionExtensions }
     
     self.class.template(template_file).result(namespace.binding)
   end

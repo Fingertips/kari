@@ -15,7 +15,9 @@
   </head>
   <body>
   <% descriptions.each do |description| %>
-    <%= render_description description  %>
+    <div class="<%= classes_for(description, descriptions) %>">
+      <%= render_description description %>
+    </div>
   <% end %>
   </body>
 </html>

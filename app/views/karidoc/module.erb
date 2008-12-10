@@ -1,5 +1,6 @@
 <h1><%= header_with_markup(description.path, description.separator, description.name) %></h1>
 <hr />
+<div><%= description.gem_version %></div>
 <% unless description.comment.blank? %>
 <div class="comment">
   <%= flow description.comment %>

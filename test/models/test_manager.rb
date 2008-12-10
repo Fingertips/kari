@@ -88,6 +88,21 @@ describe "An empty Manager" do
     @manager.descriptions["Module::Class::classmethod"].length.should == 2
   end
   
+  it "should sort system descriptions before non-system descriptions and newer gems before older gems" do
+    paths = [
+      File.join(Manager::SYSTEM_RI_PATH, 'doc', 'ri', 'cdesc-String.yaml'),
+      File.join('path', 'to',          'mygem-0.3.1', 'ri', 'cdesc-String.yaml'),
+      File.join('other', 'path', 'to', 'mygem-0.2', 'ri', 'cdesc-String.yaml'),
+      File.join('path', 'to',          'mygem-0.1.2.1', 'ri', 'cdesc-String.yaml'),
+    ]
+    @manager.add_description('String', paths[3])
+    @manager.add_description('String', paths[0])
+    @manager.add_description('String', paths[1])
+    @manager.add_description('String', paths[2])
+    
+    @manager.descriptions["String"].should == paths
+  end
+  
   it "should add descriptions found in description files" do
     @manager.examine(PRIMARY_RI_PATH)
     
