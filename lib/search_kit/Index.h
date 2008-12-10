@@ -1,6 +1,8 @@
 #import <Cocoa/Cocoa.h>
 #import <CoreServices/CoreServices.h>
 
+#import <Match.h>
+
 #define kSearchMax 1000
 
 @interface Index : NSObject {

@@ -111,7 +111,28 @@ describe "A SearchKit Index" do
     matches = @index.search('set_trace_func')
     matches.length.should.be 1
     match = matches.first
-    match['url'].path.should == @filenames.find { |f| File.basename(f) == 'cdesc-Binding.yaml' }
-    match['score'].to_ruby.should.be.an.instance_of Float
+    
+    match.should.be.an.instance_of SearchKit::Match
+    match.URL.path.should == @filenames.find { |f| File.basename(f) == 'cdesc-Binding.yaml' }
+    match.score.to_ruby.should.be.an.instance_of Float
+  end
+end
+
+describe "A SearchKit Match" do
+  include FixtureHelpers
+  
+  before do
+    @url = OSX::NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/try_lock.karidoc'))
+    @score = 1.2345
+    @match = SearchKit::Match.alloc.initWithURL_score(@url, @score)
+  end
+  
+  it "should initialize with a document NSURL and relevance score" do
+    @match.valueForKey('URL').path.should == @url.path
+    @match.valueForKey('score').should == @score
+  end
+  
+  it "should return the name of the matched class/method" do
+    @match.valueForKey('name').should == 'Mutex::try_lock'
   end
 end

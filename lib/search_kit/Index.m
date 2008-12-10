@@ -6,7 +6,6 @@
 
 -(NSMutableArray*)search:(NSString*)query {
   Boolean more = true;
-  int totalCount = 0;
   CFIndex pos;
   
   NSMutableArray *matches = [[[NSMutableArray alloc] init] autorelease];
@@ -27,12 +26,7 @@
     for (pos = 0; pos < foundCount; pos++) {
       SKDocumentRef doc = (SKDocumentRef) [(id) foundDocRefs[pos] autorelease];
       NSURL *url = [(id) SKDocumentCopyURL (doc) autorelease];
-      
-      [matches addObject:
-        [NSDictionary dictionaryWithObjectsAndKeys:
-          url, @"url", [NSNumber numberWithFloat:foundScores[pos]], @"score", nil
-        ]
-      ];
+      [matches addObject: [[Match alloc] initWithURL:url score:[NSNumber numberWithFloat:foundScores[pos]]]];
     }
   }
   

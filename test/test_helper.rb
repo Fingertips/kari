@@ -20,6 +20,7 @@ require 'fixture_helpers'
 require 'objective-c'
 
 ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
+ObjectiveC.require('lib/search_kit/Match')
 
 require File.expand_path('../../config/boot', __FILE__)
 

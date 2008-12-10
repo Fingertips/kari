@@ -40,13 +40,11 @@ module ObjectiveC
     
     def compile(path, *frameworks)
       verify_implementation_file(path)
-      
       full_path = implementation_file(path)
-      puts "Compiling: `#{full_path}'"
-      
       ensure_output_dir!
       frameworks.unshift 'Foundation'
-      command = "gcc -o #{bundle_path(path)} -bundle #{frameworks.map { |f| "-framework #{f}" }.join(' ')} #{full_path}"
+      
+      command = "gcc -o #{bundle_path(path)} -flat_namespace -undefined suppress -bundle #{frameworks.map { |f| "-framework #{f}" }.join(' ')} -I#{File.dirname(full_path)} #{full_path}"
       unless system(command)
         raise CompileError, "Unable to compile class `#{klass(path)}' at path: `#{full_path}'."
       end

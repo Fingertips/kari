@@ -23,4 +23,18 @@ describe "RubyName" do
       RubyName.from_ri_filename(filename, '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri').should == expected
     end
   end
+  
+  # FIXME: At the moment we make no disctintion between a class and instance method.
+  it "should convert Karidoc filenames to Ruby names" do
+    {
+      '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord/Associations/ClassMethods/has_one.karidoc' => \
+        'ActiveRecord::Associations::ClassMethods::has_one',
+      '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord/Associations.karidoc' => \
+        'ActiveRecord::Associations',
+      '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord/Base/connected?.karidoc' => \
+        'ActiveRecord::Base::connected?'
+    }.each do |filename, expected|
+      RubyName.from_karidoc_filename(filename).should == expected
+    end
+  end
 end

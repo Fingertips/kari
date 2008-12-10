@@ -21,4 +21,10 @@ class RubyName
       raise ArgumentError, "Unknown RI definition file: #{parts.last}"
     end
   end
+  
+  # Converts a Karidoc filename to a RubyName
+  def self.from_karidoc_filename(filename)
+    parts = filename.split(File::SEPARATOR)
+    parts[parts.index('Karidoc')+1..-1].join('::').sub(/\.karidoc$/, '')
+  end
 end

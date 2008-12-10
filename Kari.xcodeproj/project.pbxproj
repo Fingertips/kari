@@ -25,6 +25,8 @@
 		516499AF0EEEBFBD0000C1E3 /* Index.h in Headers */ = {isa = PBXBuildFile; fileRef = 516499AD0EEEBFBD0000C1E3 /* Index.h */; };
 		516499B00EEEBFBD0000C1E3 /* Index.m in Sources */ = {isa = PBXBuildFile; fileRef = 516499AE0EEEBFBD0000C1E3 /* Index.m */; };
 		51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
+		51CAD5FE0EF02CC7008F5EDF /* match.h in Headers */ = {isa = PBXBuildFile; fileRef = 51CAD5FC0EF02CC7008F5EDF /* match.h */; };
+		51CAD5FF0EF02CC7008F5EDF /* match.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CAD5FD0EF02CC7008F5EDF /* match.m */; };
 		51E0DC1C0D80411600C898A2 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 51E0DBCA0D80411600C898A2 /* lib */; };
 		638CCA7D0DF06404008C4936 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = 638CCA7C0DF06404008C4936 /* BridgeSupport */; };
 		AE975ACCD6AC76DA87E3FF08 /* RubyCocoa.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */; };
@@ -78,6 +80,8 @@
 		514292EE0CC6823A00F9CEEF /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = misc/English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		516499AD0EEEBFBD0000C1E3 /* Index.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Index.h; path = lib/search_kit/Index.h; sourceTree = "<group>"; };
 		516499AE0EEEBFBD0000C1E3 /* Index.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Index.m; path = lib/search_kit/Index.m; sourceTree = "<group>"; };
+		51CAD5FC0EF02CC7008F5EDF /* match.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = match.h; path = lib/search_kit/match.h; sourceTree = "<group>"; };
+		51CAD5FD0EF02CC7008F5EDF /* match.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = match.m; path = lib/search_kit/match.m; sourceTree = "<group>"; };
 		51E0DBCA0D80411600C898A2 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
 		638CCA7C0DF06404008C4936 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BridgeSupport; path = misc/BridgeSupport; sourceTree = "<group>"; };
 		E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /System/Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
@@ -164,6 +168,8 @@
 			children = (
 				516499AD0EEEBFBD0000C1E3 /* Index.h */,
 				516499AE0EEEBFBD0000C1E3 /* Index.m */,
+				51CAD5FC0EF02CC7008F5EDF /* match.h */,
+				51CAD5FD0EF02CC7008F5EDF /* match.m */,
 				638CCA7C0DF06404008C4936 /* BridgeSupport */,
 				514292B90CC66CDC00F9CEEF /* app */,
 				514292C10CC66CDC00F9CEEF /* config */,
@@ -225,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				516499AF0EEEBFBD0000C1E3 /* Index.h in Headers */,
+				51CAD5FE0EF02CC7008F5EDF /* match.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +306,7 @@
 			files = (
 				4DDCA70A0ACC9A6100E082CE /* main.m in Sources */,
 				516499B00EEEBFBD0000C1E3 /* Index.m in Sources */,
+				51CAD5FF0EF02CC7008F5EDF /* match.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,3 +8,4 @@ end
 
 require File.expand_path('../search_kit/exceptions', __FILE__)
 require File.expand_path('../search_kit/index', __FILE__)
+require File.expand_path('../search_kit/match', __FILE__)
