@@ -174,4 +174,8 @@ class Manager
     index.read_from_disk
     index
   end
+  
+  def self.instance
+    @instance ||= initialize_from_disk
+  end
 end

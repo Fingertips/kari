@@ -11,6 +11,23 @@ describe "Manager" do
     index.length.should == 0
     index.close
   end
+  
+  it "should always return the same singleton instance" do
+    remove_manager_singleton!
+    
+    manager = mock('Manager')
+    Manager.expects(:initialize_from_disk).once.returns(manager)
+    Manager.instance.should.be manager
+    Manager.instance.should.be manager
+    
+    remove_manager_singleton!
+  end
+  
+  private
+  
+  def remove_manager_singleton!
+    Manager.instance_variable_set(:@instance, nil)
+  end
 end
 
 describe "A Manager" do

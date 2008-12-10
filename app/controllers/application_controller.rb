@@ -31,11 +31,8 @@ class ApplicationController < Rucola::RCController
     end
     
     @processing = 0
-    
-    @manager = Manager.initialize_from_disk
-    self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(@manager.namespace)
-    
-    @watcher = Watcher.new(:manager => @manager)
+    self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
+    @watcher = Watcher.new(:manager => Manager.instance)
     
     @classTreeController.objc_send(
       :addObserver, self,
@@ -82,7 +79,7 @@ class ApplicationController < Rucola::RCController
   end
   
   def finishedIndexing(notification)
-    self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(@manager.namespace)
+    self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
     if self.processing > 0
       self.processing -= 1
     end
@@ -114,7 +111,7 @@ class ApplicationController < Rucola::RCController
   def applicationWillTerminate(aNotification)
     PreferencesController.synchronize
     @watcher.stop
-    @manager.close
+    Manager.instance.close
   end
   
   # Window delegate matehods

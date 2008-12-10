@@ -72,7 +72,7 @@ module ApplicationControllerSpecHelper
     @manager_mock = mock('Manager')
     @manager_mock.stubs(:namespace).returns([])
     @manager_mock.stubs(:examine)
-    Manager.stubs(:initialize_from_disk).returns(@manager_mock)
+    Manager.stubs(:instance).returns(@manager_mock)
     
     @watcher_mock = mock('Watcher')
     @watcher_mock.stubs(:buildIndex)
@@ -102,7 +102,7 @@ describe 'ApplicationController, during awakeFromNib' do
   end
   
   it "should initialize a Manager instance" do
-    Manager.expects(:initialize_from_disk).returns(@manager_mock)
+    Manager.expects(:instance).returns(@manager_mock)
     controller.awakeFromNib
   end
   
@@ -130,7 +130,6 @@ describe 'ApplicationController, in general' do
   end
   
   it "should update the `processing' state when a `KariDidStartIndexingNotification' is received" do
-    assigns(:manager, @manager_mock)
     assigns(:processing, 0)
     
     controller.startedIndexing(nil)
@@ -141,7 +140,6 @@ describe 'ApplicationController, in general' do
   end
   
   it "should update the `processing' state when a `KariDidFinishIndexingNotification' is received" do
-    assigns(:manager, @manager_mock)
     assigns(:processing, 2)
     
     controller.finishedIndexing(nil)
@@ -155,7 +153,6 @@ describe 'ApplicationController, in general' do
   end
   
   it "should update the `class_tree' when a `KariDidFinishIndexingNotification' is received" do
-    assigns(:manager, @manager_mock)
     assigns(:processing, 1)
     
     nodes = [mock('ClassTreeNode')]
@@ -210,7 +207,6 @@ describe 'ApplicationController, in general' do
   end
   
   it "should close all resources when terminating" do
-    assigns(:manager, @manager_mock)
     assigns(:watcher, @watcher_mock)
     
     @watcher_mock.expects(:stop)
