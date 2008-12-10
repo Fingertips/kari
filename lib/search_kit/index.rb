@@ -167,8 +167,7 @@ module SearchKit #:nodoc:
     #   p match['url'].path # => '/path/to/document'
     #   p match['score].to_f # => 9.12345
     #   index.close
-    def search(query); end
-    # Hack to get RDoc to pick up the docs for #search which is implemented in Objective-C (Index.m).
-    undef :search
+    def search(query)
+    end if false # Hack to get RDoc to pick up the docs for #search which is implemented in Objective-C (Index.m).
   end
 end
