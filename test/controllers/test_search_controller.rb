@@ -1,5 +1,13 @@
 require File.expand_path('../../test_helper', __FILE__)
 
+describe "A SearchController, when initializing" do
+  tests SearchController
+  
+  it "should have an empty KVC accessible results array" do
+    controller.valueForKey('results').should == [].to_ns
+  end
+end
+
 describe "A SearchController, when awaking from nib" do
   tests SearchController
   
@@ -17,6 +25,59 @@ describe "A SearchController, when awaking from nib" do
   
   it "should assign the search results table view as the key delegate for the search text field, delegating up/down arrow events" do
     search_field.keyDelegate.should == results_table_view
+  end
+end
+
+describe "A SearchController, when performing a search" do
+  tests SearchController
+  
+  def after_setup
+    ib_outlets :search_field => SearchField.alloc.init
+    @delegate = stub_everything('SearchController delegate')
+    controller.delegate = @delegate
+  end
+  
+  it "should send the search query, from the search_field, to the Manager instance" do
+    search_field.stringValue = 'a pot of gold'
+    Manager.instance.expects(:search).with('a pot of gold')
+    controller.search(search_field)
+  end
+  
+  ['a pot of gold', 'a pot of gold'.to_ns].each do |query|
+    it "should send the search query, passed as a #{query.class.name}, to the Manager instance" do
+      Manager.instance.expects(:search).with(query)
+      controller.search(query)
+    end
+  end
+  
+  it "should not send the search query, from the search_field, to the Manager instance if it's empty" do
+    search_field.stringValue = ''
+    Manager.instance.expects(:search).never
+    controller.search(search_field)
+  end
+  
+  ['', ''.to_ns].each do |query|
+    it "should not send the search query, passed as a #{query.class.name}, to the Manager instance if it's empty" do
+      Manager.instance.expects(:search).never
+      controller.search(query)
+    end
+  end
+  
+  it "should assign the search results to the `results' KVC accessor" do
+    results = mock('Search results array')
+    Manager.instance.stubs(:search).returns(results)
+    controller.search('foo')
+    controller.valueForKey('results').should.be results
+  end
+  
+  it "should send a notification to it's delegate when a search will commence" do
+    @delegate.expects(:searchControllerWillStartSearching)
+    controller.search('foo')
+  end
+  
+  it "should send a notification to it's delegate when a search has finished" do
+    @delegate.expects(:searchControllerFinishedSearching)
+    controller.search('foo')
   end
 end
 

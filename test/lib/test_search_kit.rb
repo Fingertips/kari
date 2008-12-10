@@ -81,7 +81,6 @@ describe "A SearchKit Index" do
   end
   
   it "should not care about adding a document twice" do
-    p @filenames
     @index.addDocument(@filenames.first).should == true
     @index.addDocument(@filenames.first).should == true
   end

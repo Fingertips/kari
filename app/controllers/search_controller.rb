@@ -1,24 +1,29 @@
 class SearchController < Rucola::RCController
-  # kvc_accessor :metadata
-  # attr_accessor :delegate
-  # 
-  # ib_outlets :find_by_name, :find_by_full_name, :find_by_path, :find_by_type
+  kvc_accessor :results
+  attr_accessor :delegate
+  
   # ib_outlets :metadata_array_controller
   ib_outlet :results_table_view
   ib_outlet :search_field
-  # 
-  # def after_init
-  #   @spotlight = OSX::NSMetadataQuery.alloc.init
-  #   @spotlight.sortDescriptors = [OSX::NSSortDescriptor.alloc.initWithKey_ascending(FULL_NAME, true)]
-  #   @metadata = OSX::NSMutableArray.alloc.init
-  #   @updating = false
-  # end
+  
+  def after_init
+    @results = OSX::NSMutableArray.alloc.init
+  end
   
   def awakeFromNib
     @search_field.keyDelegate = @results_table_view
     # @results_table_view.delegate = self
     @results_table_view.target = self
     @results_table_view.doubleAction = 'rowDoubleClicked:'
+  end
+  
+  def search(sender)
+    query = (sender.is_a?(String) || sender.is_a?(OSX::NSString) ? sender : sender.stringValue)
+    unless query.blank?
+      @delegate.searchControllerWillStartSearching
+      self.results = Manager.instance.search(query)
+      @delegate.searchControllerFinishedSearching
+    end
   end
   
   # def rowDoubleClicked(tableview)
