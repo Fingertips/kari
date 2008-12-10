@@ -11,7 +11,7 @@
   <h2>Instance methods</h2>
   <ul>
     <% description.instance_methods.each do |method| %>
-    <li><a href="<%= description.name %>/<%= method.name %>.karidoc"><%= method.name %></a></li>
+    <li><a href="<%=u description.name %>/<%=u method.name %>.karidoc"><%= method.name %></a></li>
     <% end %>
   </ul>
   <% end %>
@@ -19,7 +19,7 @@
   <h2>Class methods</h2>
   <ul>
     <% description.class_methods.each do |method| %>
-    <li><%= method.name %></li>
+    <li><a href="<%=u description.name %>/<%=u method.name %>.karidoc"><%= method.name %></a></li>
     <% end %>
   </ul>
   <% end %>

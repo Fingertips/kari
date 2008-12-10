@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'osx/cocoa'
+
 require 'tmpdir'
 require 'erb'
 
