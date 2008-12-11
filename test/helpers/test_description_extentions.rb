@@ -74,6 +74,5 @@ describe "An instance extended with DescriptionExtensions" do
     
     self.filename = "cdesc-Fixture.yaml"
     gem_version.should == 'Library'
-    
   end
 end
