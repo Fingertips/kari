@@ -8,11 +8,10 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="468"/>
+			<integer value="214"/>
 			<integer value="237"/>
 			<integer value="439"/>
-			<integer value="468"/>
-			<integer value="514"/>
-			<integer value="214"/>
 			<integer value="304"/>
 			<integer value="257"/>
 		</object>
@@ -775,7 +774,7 @@
 				<string key="NSWindowContentMaxSize">{500, 134}</string>
 				<string key="NSWindowContentMinSize">{250, 134}</string>
 				<object class="NSView" key="NSWindowView" id="869287963">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -803,7 +802,6 @@
 							</object>
 							<string key="NSFrame">{{0, 21}, {619, 324}}</string>
 							<reference key="NSSuperview" ref="869287963"/>
-							<reference key="NSNextKeyView"/>
 							<string key="FrameName"/>
 							<string key="GroupName"/>
 							<object class="WebPreferences" key="Preferences">
@@ -939,7 +937,6 @@
 									</object>
 									<string key="NSFrame">{{1, 1}, {617, 323}}</string>
 									<reference key="NSSuperview" ref="652670063"/>
-									<reference key="NSNextKeyView" ref="617442522"/>
 									<reference key="NSDocView" ref="617442522"/>
 									<reference key="NSBGColor" ref="508303144"/>
 									<int key="NScvFlags">4</int>
@@ -966,7 +963,6 @@
 							</object>
 							<string key="NSFrame">{{0, 20}, {619, 325}}</string>
 							<reference key="NSSuperview" ref="869287963"/>
-							<reference key="NSNextKeyView" ref="68079917"/>
 							<int key="NSsFlags">562</int>
 							<reference key="NSVScroller" ref="1000260444"/>
 							<reference key="NSHScroller" ref="735465219"/>
@@ -1050,7 +1046,6 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{619, 500}</string>
-					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
 				<string key="NSMinSize">{619, 522}</string>
@@ -2033,14 +2028,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">metadata_array_controller</string>
-						<reference key="source" ref="990513998"/>
-						<reference key="destination" ref="597617964"/>
-					</object>
-					<int key="connectionID">608</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">searchController</string>
 						<reference key="source" ref="231439656"/>
 						<reference key="destination" ref="990513998"/>
@@ -2272,6 +2259,14 @@
 						</object>
 					</object>
 					<int key="connectionID">701</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">results_array_controller</string>
+						<reference key="source" ref="990513998"/>
+						<reference key="destination" ref="597617964"/>
+					</object>
+					<int key="connectionID">702</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3837,7 +3832,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">701</int>
+			<int key="maxID">702</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3965,7 +3960,7 @@
 							<string>find_by_name</string>
 							<string>find_by_path</string>
 							<string>find_by_type</string>
-							<string>metadata_array_controller</string>
+							<string>results_array_controller</string>
 							<string>results_table_view</string>
 							<string>search_field</string>
 						</object>

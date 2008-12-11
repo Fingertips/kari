@@ -134,8 +134,8 @@ class ApplicationController < Rucola::RCController
     @searchProgressIndicator.stopAnimation(self)
   end
   
-  def searchController_selectedFile(sender, file)
-    @webViewController.load_file(file)
+  def searchController_selectedFile(sender, url)
+    @webViewController.load_url(url)
     @webViewController.add_search_back_forward_item(@searchTextField.stringValue)
     @webView.hidden = false
     @resultsScrollView.hidden = true

@@ -2,7 +2,7 @@ class SearchController < Rucola::RCController
   kvc_accessor :results
   attr_accessor :delegate
   
-  # ib_outlets :metadata_array_controller
+  ib_outlets :results_array_controller
   ib_outlet :results_table_view
   ib_outlet :search_field
   
@@ -26,10 +26,10 @@ class SearchController < Rucola::RCController
     end
   end
   
-  # def rowDoubleClicked(tableview)
-  #   @delegate.searchController_selectedFile(self, @metadata_array_controller.arrangedObjects[tableview.selectedRow].valueForAttribute('kMDItemPath'))
-  # end
-  # 
+  def rowDoubleClicked(tableview)
+    @delegate.searchController_selectedFile(self, @results_array_controller.arrangedObjects[tableview.selectedRow].URL)
+  end
+  
   # def search(sender)
   #   @search_string = sender.stringValue if sender.is_a?(OSX::NSSearchField)
   #   start_query! unless @search_string.nil? or @search_string.empty?

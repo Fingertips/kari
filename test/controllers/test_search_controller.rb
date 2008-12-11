@@ -81,6 +81,36 @@ describe "A SearchController, when performing a search" do
   end
 end
 
+describe "A SearchController, in general" do
+  tests SearchController
+  
+  include FixtureHelpers
+  
+  def after_setup
+    ib_outlets :results_table_view => OSX::NSTableView.alloc.init,
+               :results_array_controller => OSX::NSArrayController.alloc.init
+    
+    @delegate = stub_everything('SearchController delegate')
+    controller.delegate = @delegate
+  end
+  
+  it "should tell its delegate that a specific search result was chosen" do
+    url1 = OSX::NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/dup.karidoc'))
+    url2 = OSX::NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/try_lock.karidoc'))
+    match1 = SearchKit::Match.alloc.initWithURL_score(url1, 1.2345)
+    match2 = SearchKit::Match.alloc.initWithURL_score(url2, 2.3456)
+    
+    results_array_controller.content = [match1, match2]
+    results_table_view.stubs(:selectedRow).returns(1)
+    
+    @delegate.expects(:searchController_selectedFile).with do |search_controller, matched_url|
+      search_controller == controller and matched_url.path == url2.path
+    end
+    
+    controller.rowDoubleClicked(results_table_view)
+  end
+end
+
 # describe 'SearchController' do
 #   before do
 #     @controller = SearchController.alloc.init
