@@ -2,6 +2,8 @@ require 'cgi'
 
 # Convenience methods for working with Ruby names
 class RubyName
+  KARIDOC_EXTENSION = '.karidoc'
+  
   # Splits a name like Module::SubModule#method into a list of parts
   def self.split(name)
     path = name.to_s.split(/::|\./)
@@ -31,12 +33,24 @@ class RubyName
   
   # Converts a Karidoc filename to a RubyName
   def self.from_karidoc_filename(filename)
-    parts = filename.split(File::SEPARATOR)
-    parts = parts[parts.index('Karidoc')+1..-1]
+    parts = filename[karidoc_filepath.length+1..-1].split(File::SEPARATOR)
     parts[-1] = File.basename(parts[-1], '.karidoc')
     if parts.last =~ /^#/
       parts[-2..-1] = parts[-2..-1].join
     end
     parts.join('::')
+  end
+  
+  # Returns the filename where the karidoc file for the Ruby name _name_ will be stored.
+  #
+  # Example:
+  #   RubyName.karidoc_filename('Module::SubModule#method') => '/path/to/Module/SubModule/#method.karidoc'
+  def self.karidoc_filename(name)
+    File.join(karidoc_filepath, RubyName.split(name).join(File::SEPARATOR) + KARIDOC_EXTENSION)
+  end
+  
+  # Returns the path where all the Karidoc files are written
+  def self.karidoc_filepath
+    File.join(Rucola::RCApp.application_support_path, 'Karidoc')
   end
 end

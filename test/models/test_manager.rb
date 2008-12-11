@@ -73,9 +73,9 @@ describe "An empty Manager" do
   end
   
   it "should add descriptions to the namespace" do
-    @manager.add_karidoc_to_namespace('Module::Class#method', '/path/to/ri/Module/Class/method-i.yaml')
-    @manager.add_karidoc_to_namespace('Module::Class::classmethod', '/path/to/ri/Module/Class/classmethod-c.yaml')
-    @manager.add_karidoc_to_namespace('Module2::Class#othermethod', '/path/to/ri/Module2/Class/othermethod-i.yaml')
+    @manager.add_karidoc_to_namespace('Module::Class#method')
+    @manager.add_karidoc_to_namespace('Module::Class::classmethod')
+    @manager.add_karidoc_to_namespace('Module2::Class#othermethod')
     @manager.namespace.empty?.should == false
     @manager.namespace.get(%w(Module Class #method)).should.not.be.nil
     @manager.namespace.get(%w(Module Class classmethod)).should.not.be.nil

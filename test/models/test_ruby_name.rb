@@ -46,6 +46,9 @@ describe "RubyName" do
     }
   ]
   
+  before do
+    Rucola::RCApp.stubs(:application_support_path).returns('/Users/eloy/Library/Application Support/Kari')
+  end
   
   it "should split Ruby names to a path" do
     RubyName.split('').should == []
@@ -65,5 +68,16 @@ describe "RubyName" do
     CASES.each do |c|
       RubyName.from_karidoc_filename(c[:karidoc_filename]).should == c[:ruby_name]
     end
+  end
+  
+  it "should convert Ruby names to a Karidoc path" do
+    CASES.each do |c|
+      RubyName.karidoc_filename(c[:ruby_name]).should == c[:karidoc_filename]
+    end
+  end
+  
+  it "should return the karidoc filepath" do
+    RubyName.karidoc_filepath.should.start_with(Rucola::RCApp.application_support_path)
+    RubyName.karidoc_filepath.should.end_with('Karidoc')
   end
 end

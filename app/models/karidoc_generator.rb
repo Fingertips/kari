@@ -11,8 +11,6 @@ end
 
 # Class that generates Karidoc files from the RI description
 class KaridocGenerator
-  EXTENSION = '.karidoc'
-  
   attr_accessor :description_files
   
   def initialize(*description_files)
@@ -27,7 +25,7 @@ class KaridocGenerator
     end
     
     full_name = descriptions.first.full_name
-    karidoc_filename = self.class.filename(full_name, description_files.first)
+    karidoc_filename = RubyName.karidoc_filename(full_name)
     
     FileUtils.mkdir_p(File.dirname(karidoc_filename))
     File.open(karidoc_filename, 'w') do |file|
@@ -67,8 +65,8 @@ class KaridocGenerator
     new(*description_files).generate
   end
   
-  def self.clear(full_name, description_filename)
-    file_name = filename(full_name, description_filename)
+  def self.clear(full_name)
+    file_name = RubyName.karidoc_filename(full_name)
     dir_name  = File.dirname(file_name)
     
     FileUtils.rm_f(file_name)
@@ -82,23 +80,5 @@ class KaridocGenerator
       FileUtils.rm_rf(dir_name)
       clear_if_empty(File.dirname(dir_name))
     end
-  end
-  
-  # Returns the filename where the karidoc file for the Ruby name _name_ will be stored.
-  #
-  # Example:
-  #   KaridocGenerator.filename('Module::SubModule.method', '/path/to/Module/Submodule/method-i.yaml') => '/path/to/Module/SubModule/method.karidoc'
-  def self.filename(name, description_filename)
-    if description_filename =~ /^.*-(i|c).yaml/
-      prefix = ($1 == 'c') ? 'class-method-' : 'instance-method-'
-    end
-    parts = RubyName.split(name)
-    parts[-1] = "#{prefix}#{parts[-1]}"
-    File.join(filepath, parts.compact.join(File::SEPARATOR) + EXTENSION)
-  end
-  
-  # Returns the path to where all the Karidoc files are written
-  def self.filepath
-    File.join(Rucola::RCApp.application_support_path, 'Karidoc')
-  end
+  end  
 end
