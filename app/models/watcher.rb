@@ -49,9 +49,8 @@ class Watcher
   end
   
   def rebuild(*paths)
+    OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidStartIndexingNotification', nil)
     Thread.new do
-      log.debug("OSX::RBRuntime.isRubyThreadingSupported?: #{OSX::RBRuntime.isRubyThreadingSupported?}")
-      OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidStartIndexingNotification', nil)
       paths.flatten.each do |path|
         @manager.examine(path)
         @manager.write_to_disk
