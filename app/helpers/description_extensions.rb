@@ -34,7 +34,7 @@ module DescriptionExtensions
     if match = /#{SLASH}(\w*-[\d\.]*)#{SLASH}/.match(filename)
       match[1]
     else
-      'System'
+      'Library'
     end
   end
 end

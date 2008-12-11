@@ -73,7 +73,7 @@ describe "An instance extended with DescriptionExtensions" do
     gem_version.should == 'activerecord-2.2.2'
     
     self.filename = "cdesc-Fixture.yaml"
-    gem_version.should == 'System'
+    gem_version.should == 'Library'
     
   end
 end
