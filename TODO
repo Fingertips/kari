@@ -13,7 +13,6 @@ ELOY
 MANFRED
 
 - Assign the new class tree after all thread are ready processing and think about concurrency
-- Fix links in Karidoc to documents with question marks etc.
 - Think about a way to solve the uppercased instance method problem in the RubyName optimization
 - Optimize indexing
 - Optimize karidoc rendering

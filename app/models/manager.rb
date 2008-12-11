@@ -24,8 +24,8 @@ class Manager
     @descriptions.length
   end
   
-  def add_karidoc_to_namespace(full_name)
-    @namespace.set(RubyName.split(full_name), KaridocGenerator.filename(full_name))
+  def add_karidoc_to_namespace(full_name, description_filename)
+    @namespace.set(RubyName.split(full_name), KaridocGenerator.filename(full_name, description_filename))
   end
   
   def add_description(full_name, file)
@@ -49,11 +49,11 @@ class Manager
     end
   end
   
-  def add(full_name, file)
+  def add(full_name, description_filename)
     return false unless full_name =~ /^\w/
     
-    if add_description(full_name, file)
-      add_karidoc_to_namespace(full_name)
+    if add_description(full_name, description_filename)
+      add_karidoc_to_namespace(full_name, description_filename)
       true
     else
       false
@@ -74,24 +74,27 @@ class Manager
   
   def purge_vanished(path)
     purge = []
-    @descriptions.each do |full_name, files|
-      files.each do |file|
-        if file.start_with?(path) and !File.exist?(file)
-          purge << [full_name, file]
+    @descriptions.each do |full_name, description_filenames|
+      description_filenames.each do |description_filename|
+        if description_filename.start_with?(path) and !File.exist?(description_filename)
+          purge << [full_name, description_filename]
         end
       end
     end
-    purge.map { |full_name, file| delete(full_name, file); full_name }
+    purge.map do |full_name, description_filename|
+      delete(full_name, description_filename)
+      [full_name, description_filename]
+    end
   end
   
   def merge_new(path)
     changed = []
     log.debug "Examining RI files in `#{path}'"
-    Find.find(path) do |filename|
-      if filename =~ /\.yaml$/
-        full_name = RubyName.from_ri_filename(filename, path)
-        if add(full_name, filename)
-          changed << full_name
+    Find.find(path) do |description_filename|
+      if description_filename =~ /\.yaml$/
+        full_name = RubyName.from_ri_filename(description_filename, path)
+        if add(full_name, description_filename)
+          changed << [full_name, description_filename]
         end
       end
     end
@@ -111,15 +114,14 @@ class Manager
   
   def update_karidoc(changed)
     log.debug "Updating Karidocs for #{changed.length} descriptions"
-    changed.each do |full_name|
+    changed.each do |full_name, description_filename|
       if @descriptions[full_name]
-        KaridocGenerator.generate(@descriptions[full_name])
-        karidoc_filename = KaridocGenerator.filename(filename)
+        karidoc_filename = KaridocGenerator.generate(@descriptions[full_name])
         @search_index.removeDocument(karidoc_filename)
         @search_index.addDocument(karidoc_filename)
       else
-        KaridocGenerator.clear(full_name)
-        @search_index.removeDocument(KaridocGenerator.filename(full_name))
+        karidoc_filename = KaridocGenerator.clear(full_name, description_filename)
+        @search_index.removeDocument(karidoc_filename)
       end
     end
   end

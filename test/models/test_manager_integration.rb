@@ -92,7 +92,7 @@ describe "A Manager" do
   
   it "should update indices when a gem version disappears" do
     @manager.descriptions['REST::Request'].length.should == 2
-    @manager.namespace.get(['REST', 'Request']).should == KaridocGenerator.filename('REST::Request')
+    @manager.namespace.get(['REST', 'Request']).should.end_with('Request.karidoc')
     
     nap_gem_directory = File.join(ManagerTestCache.ri_path, 'nap-0.1')
     File.should.exist?(nap_gem_directory)
@@ -100,14 +100,14 @@ describe "A Manager" do
     
     @manager.examine(ManagerTestCache.ri_path)
     @manager.descriptions['REST::Request'].length.should == 1
-    @manager.namespace.get(['REST', 'Request']).should == KaridocGenerator.filename('REST::Request')
+    @manager.namespace.get(['REST', 'Request']).should.end_with('Request.karidoc')
     
     # TODO: test the SKIndex contents
   end
   
   it "should update indices when a gem disappears" do
     @manager.descriptions['REST::Request'].length.should == 2
-    @manager.namespace.get(['REST', 'Request']).should == KaridocGenerator.filename('REST::Request')
+    @manager.namespace.get(['REST', 'Request']).should.end_with('Request.karidoc')
     
     nap_gem_directory = File.join(ManagerTestCache.ri_path, 'nap-0.1')
     File.should.exist?(nap_gem_directory)
@@ -127,7 +127,7 @@ describe "A Manager" do
   
   it "should update indices when a gem version appears" do
     @manager.descriptions['REST::Request'].length.should == 2
-    @manager.namespace.get(['REST', 'Request']).should == KaridocGenerator.filename('REST::Request')
+    @manager.namespace.get(['REST', 'Request']).should.end_with('Request.karidoc')
     
     source_directory = File.join(ManagerTestCache.ri_path, 'nap-0.2')
     destination_directory = File.join(ManagerTestCache.ri_path, 'nap-0.3')
@@ -136,7 +136,7 @@ describe "A Manager" do
     @manager.examine(ManagerTestCache.ri_path)
     
     @manager.descriptions['REST::Request'].length.should == 3
-    @manager.namespace.get(['REST', 'Request']).should == KaridocGenerator.filename('REST::Request')
+    @manager.namespace.get(['REST', 'Request']).should.end_with('Request.karidoc')
     
     # TODO: test the SKIndex contents
   end

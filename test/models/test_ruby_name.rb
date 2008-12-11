@@ -1,40 +1,69 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 describe "RubyName" do
+  CASES = [
+    {
+      :path                 => ['Mutex', '#exclusive_unlock'],
+      :ruby_name            => 'Mutex#exclusive_unlock',
+      :description_filename => '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/Mutex/exclusive_unlock-i.yaml',
+      :karidoc_filename     => '/Users/eloy/Library/Application Support/Kari/Karidoc/Mutex/#exclusive_unlock.karidoc'
+    },
+    {
+      :path                 => ['ActiveRecord'],
+      :ruby_name            => 'ActiveRecord',
+      :description_filename => '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/cdesc-ActiveRecord.yaml',
+      :karidoc_filename     => '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord.karidoc'
+    },
+    {
+      :path                 => ['ActiveRecord', 'Associations', 'ClassMethods', '#has_one'],
+      :ruby_name            => 'ActiveRecord::Associations::ClassMethods#has_one',
+      :description_filename => '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Associations/ClassMethods/has_one-i.yaml',
+      :karidoc_filename     => '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord/Associations/ClassMethods/#has_one.karidoc'
+    },
+    {
+      :path                 => ['ActiveRecord', 'Associations'],
+      :ruby_name            => 'ActiveRecord::Associations',
+      :description_filename => '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Associations/cdesc-Associations.yaml',
+      :karidoc_filename     => '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord/Associations.karidoc'
+    },
+    {
+      :path                 => ['ActiveRecord', 'Base', 'connected?'],
+      :ruby_name            => 'ActiveRecord::Base::connected?',
+      :description_filename => '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Base/connected%3f-c.yaml',
+      :karidoc_filename     => '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord/Base/connected?.karidoc'
+    },
+    {
+      :path                 => ['ActiveRecord', 'Base', 'with_scope'],
+      :ruby_name            => 'ActiveRecord::Base::with_scope',
+      :description_filename => '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Base/with_scope-c.yaml',
+      :karidoc_filename     => '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord/Base/with_scope.karidoc'
+    },
+    {
+      :path                 => ['ActiveRecord', 'Base', '#readonly!'],
+      :ruby_name            => 'ActiveRecord::Base#readonly!',
+      :description_filename => '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Base/readonly%21-i.yaml',
+      :karidoc_filename     => '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord/Base/#readonly!.karidoc'
+    }
+  ]
+  
+  
   it "should split Ruby names to a path" do
     RubyName.split('').should == []
-    RubyName.split('Module').should == ['Module']
-    RubyName.split('Module::SubModule').should == ['Module', 'SubModule']
-    RubyName.split('Module::Class.classmethod').should == ['Module', 'Class', 'classmethod']
-    RubyName.split('Module::Class#instancemethod').should == ['Module', 'Class', 'instancemethod']
-  end
-  
-  it "should convert RI filenames to Ruby names" do
-    {
-      '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Associations/ClassMethods/has_one-i.yaml' => \
-        'ActiveRecord::Associations::ClassMethods#has_one',
-      '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Associations/cdesc-Associations.yaml' => \
-        'ActiveRecord::Associations',
-      '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Base/connected%3f-c.yaml' => \
-        'ActiveRecord::Base::connected?',
-      '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri/ActiveRecord/Base/with_scope-c.yaml' => \
-        'ActiveRecord::Base::with_scope'
-    }.each do |filename, expected|
-      RubyName.from_ri_filename(filename, '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri').should == expected
+    RubyName.split('REST.perform').should == ['REST', 'perform']
+    CASES.each do |c|
+      RubyName.split(c[:ruby_name]).should == c[:path]
     end
   end
   
-  # FIXME: At the moment we make no disctintion between a class and instance method.
+  it "should convert RI filenames to Ruby names" do
+    CASES.each do |c|
+      RubyName.from_ri_filename(c[:description_filename], '/Library/Ruby/Gems/1.8/doc/activerecord-2.0.2/ri').should == c[:ruby_name]
+    end
+  end
+  
   it "should convert Karidoc filenames to Ruby names" do
-    {
-      '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord/Associations/ClassMethods/has_one.karidoc' => \
-        'ActiveRecord::Associations::ClassMethods::has_one',
-      '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord/Associations.karidoc' => \
-        'ActiveRecord::Associations',
-      '/Users/eloy/Library/Application Support/Kari/Karidoc/ActiveRecord/Base/connected?.karidoc' => \
-        'ActiveRecord::Base::connected?'
-    }.each do |filename, expected|
-      RubyName.from_karidoc_filename(filename).should == expected
+    CASES.each do |c|
+      RubyName.from_karidoc_filename(c[:karidoc_filename]).should == c[:ruby_name]
     end
   end
 end

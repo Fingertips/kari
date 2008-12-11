@@ -72,18 +72,20 @@ describe "An empty Manager" do
     File.unlink(@manager.filename)
   end
   
-  it "should add descriptions to the.namespace" do
-    @manager.add_karidoc_to_namespace('Module::Class#method')
-    @manager.add_karidoc_to_namespace('Module::Class::classmethod')
-    @manager.add_karidoc_to_namespace('Module2::Class#othermethod')
+  it "should add descriptions to the namespace" do
+    @manager.add_karidoc_to_namespace('Module::Class#method', '/path/to/ri/Module/Class/method-i.yaml')
+    @manager.add_karidoc_to_namespace('Module::Class::classmethod', '/path/to/ri/Module/Class/classmethod-c.yaml')
+    @manager.add_karidoc_to_namespace('Module2::Class#othermethod', '/path/to/ri/Module2/Class/othermethod-i.yaml')
     @manager.namespace.empty?.should == false
-    @manager.namespace.get(%w(Module Class method)).should.not.be.nil
+    @manager.namespace.get(%w(Module Class #method)).should.not.be.nil
+    @manager.namespace.get(%w(Module Class classmethod)).should.not.be.nil
+    @manager.namespace.get(%w(Module2 Class #othermethod)).should.not.be.nil
   end
   
   it "should add description to the index" do
-    @manager.add_description('Module::Class#method', 'path/to/file_1.yaml')
-    @manager.add_description('Module::Class::classmethod', 'path/to/file_2.yaml')
-    @manager.add_description('Module::Class::classmethod', 'path/to/file_3.yaml')
+    @manager.add_description('Module::Class#method', '/path/to/ri/Module/Class/method-i.yaml')
+    @manager.add_description('Module::Class::classmethod', '/path/to/ri/Module/Class/classmethod-c.yaml')
+    @manager.add_description('Module::Class::classmethod', '/path/to_other/ri/Module/Class/classmethod-c.yaml')
     @manager.descriptions["Module::Class#method"].length.should == 1
     @manager.descriptions["Module::Class::classmethod"].length.should == 2
   end
@@ -107,7 +109,7 @@ describe "An empty Manager" do
     @manager.examine(PRIMARY_RI_PATH)
     
     @manager.descriptions.has_key?('Binding').should == true
-    @manager.namespace.get(%w(Binding dup)).should.not.be.nil
+    @manager.namespace.get(%w(Binding #dup)).should.not.be.nil
     
     @manager.descriptions.length.should == 11
     @manager.descriptions["Binding#dup"].length.should == 1
@@ -151,8 +153,8 @@ describe "A filled Manager" do
     @manager.descriptions['Binding#dub'].should.be.nil
     
     @manager.namespace.get(%w(Binding)).should.be.nil
-    @manager.namespace.get(%w(Binding clone)).should.be.nil
-    @manager.namespace.get(%w(Binding dup)).should.be.nil
+    @manager.namespace.get(%w(Binding #clone)).should.be.nil
+    @manager.namespace.get(%w(Binding #dup)).should.be.nil
   end
   
   it "should not remove descriptions when an alternate descriptions still exists" do
@@ -165,8 +167,8 @@ describe "A filled Manager" do
     @manager.descriptions['Binding#clone'].should.be.nil
     
     @manager.namespace.get(%w(Binding)).should.not.be.nil
-    @manager.namespace.get(%w(Binding clone)).should.be.nil
-    @manager.namespace.get(%w(Binding dup)).should.not.be.nil
+    @manager.namespace.get(%w(Binding #clone)).should.be.nil
+    @manager.namespace.get(%w(Binding #dup)).should.not.be.nil
   end
   
   it "should be able to write index to disk and read it back" do

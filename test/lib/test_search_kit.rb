@@ -129,7 +129,7 @@ describe "A SearchKit Match" do
   
   it "should initialize with a document NSURL and relevance score" do
     @match.valueForKey('URL').path.should == @url.path
-    @match.valueForKey('score').should == @score
+    @match.valueForKey('score').to_ruby.should == @score
   end
   
   it "should return the name of the matched class/method" do

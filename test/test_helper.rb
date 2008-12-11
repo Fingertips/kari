@@ -19,6 +19,10 @@ require 'temporary_application_support_path'
 require 'fixture_helpers'
 require 'objective-c'
 
+$:.push(File.expand_path('../../lib', __FILE__))
+
+require 'core_ext'
+
 ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
 ObjectiveC.require('lib/search_kit/Match')
 
@@ -41,3 +45,4 @@ def silence_warnings
 ensure
   $VERBOSE = old_verbose
 end
+
