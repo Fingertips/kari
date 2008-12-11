@@ -3,8 +3,7 @@ require 'rucola/fsevents'
 require 'rdoc/ri/ri_paths'
 
 class Watcher
-  #DEVELOPMENT_FILTER = /nap|json|finger|activerecord/i
-  DEVELOPMENT_FILTER = /./
+  DEVELOPMENT_FILTER = /nap|json|finger|activerecord/i
   
   attr_accessor :manager, :fsevents
   

@@ -26,3 +26,4 @@ IMPROVEMENTS
 - Find and show Ruby installations in the source list of the 'Browse Ruby Installation' dialog
 - Use a code highlighter to highlight examples
 - Flag karidoc files with 'broken characters' (to prevent bugreports and gently nudge authors to fix their documentation)
+- Make clicking the gem name/version, in the header, open the gem directory in the Finder.
