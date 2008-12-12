@@ -19,7 +19,7 @@ $:.unshift File.expand_path("../../lib", __FILE__)
 require 'core_ext'
 
 module Rucola
-  class RCApp
+  module RCApp
     def self.application_support_path
       File.join(Dir.tmpdir, 'karidoc')
     end
