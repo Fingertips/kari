@@ -12,14 +12,12 @@ ELOY
 
 MANFRED
 
-- Assign the new class tree after all thread are ready processing and think about concurrency
 - Think about a way to solve the uppercased instance method problem in the RubyName optimization
-- Optimize indexing
-- Optimize karidoc rendering
 
 ANYONE
 
 - Improve class browser UI, see http://tr.im/21ca
+- Return to the last selected path in the class browser when a new class tree is assigned if possible. Work your way back up the tree and select the first item that is in the tree.
 
 IMPROVEMENTS
 
