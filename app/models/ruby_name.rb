@@ -35,7 +35,7 @@ class RubyName
   def self.from_karidoc_filename(filename)
     parts = filename[karidoc_filepath.length+1..-1].split(File::SEPARATOR)
     parts[-1] = File.basename(parts[-1], '.karidoc')
-    if parts.last =~ /^#/
+    if parts.last.start_with?('#')
       parts[-2..-1] = parts[-2..-1].join
     end
     parts.join('::')
