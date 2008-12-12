@@ -92,63 +92,29 @@ describe "A SearchController, in general" do
     
     @delegate = stub_everything('SearchController delegate')
     controller.delegate = @delegate
+    
+    @urls = [
+      OSX::NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/dup.karidoc')),
+      OSX::NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/try_lock.karidoc'))
+    ]
+    @matches = [
+      SearchKit::Match.alloc.initWithURL_score(@urls.first, 1.2345),
+      SearchKit::Match.alloc.initWithURL_score(@urls.last, 2.3456)
+    ]
+    results_array_controller.content = @matches
+    
+    controller.awakeFromNib
+  end
+  
+  it "should make the results_array_controller sort by relevance score" do
+    results_array_controller.arrangedObjects.should == @matches.reverse
   end
   
   it "should tell its delegate that a specific search result was chosen" do
-    url1 = OSX::NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/dup.karidoc'))
-    url2 = OSX::NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/try_lock.karidoc'))
-    match1 = SearchKit::Match.alloc.initWithURL_score(url1, 1.2345)
-    match2 = SearchKit::Match.alloc.initWithURL_score(url2, 2.3456)
-    
-    results_array_controller.content = [match1, match2]
-    results_table_view.stubs(:selectedRow).returns(1)
-    
+    results_table_view.stubs(:selectedRow).returns(0)
     @delegate.expects(:searchController_selectedFile).with do |search_controller, matched_url|
-      search_controller == controller and matched_url.path == url2.path
+      search_controller == controller and matched_url.path == @urls.last.path
     end
-    
     controller.rowDoubleClicked(results_table_view)
   end
 end
-
-# describe 'SearchController' do
-#   before do
-#     @controller = SearchController.alloc.init
-#   end
-# 
-#   it "should send a result selected event to its delegate with a file path" do
-#     result = mock("MetaData Result Item")
-#     result.stubs(:valueForAttribute).returns('/some/file.karidoc'.to_ns)
-#     results = [result]
-#     
-#     tableView_mock = mock("Results TablView")
-#     tableView_mock.stubs(:selectedRow => 0)
-#     
-#     metadata_array_controller_mock = mock("MetaData Array Controller")
-#     metadata_array_controller_mock.expects(:arrangedObjects).returns(results)
-#     assigns(:metadata_array_controller, metadata_array_controller_mock)
-#     
-#     delegate_mock = mock("Delegate")
-#     delegate_mock.expects(:searchController_selectedFile).with(@controller, '/some/file.karidoc')
-#     assigns(:delegate, delegate_mock)
-#     
-#     @controller.rowDoubleClicked(tableView_mock)
-#   end
-#   
-#   FULL_NAME = 'com_fngtps_kari_karidoc_fullName'
-#   
-#   it "should search for text like the full name" do
-#     assigns(:search_string, 'foo')
-#     query.should == "((#{FULL_NAME} LIKE[wcd] 'foo*') || (#{FULL_NAME} LIKE[c] '*f*o*o*'))"
-#   end
-#   
-#   private
-#   
-#   def query
-#     @controller.send(:query)
-#   end
-#   
-#   def assigns(name, value = nil)
-#     @controller.assigns(name, value)
-#   end
-# end
