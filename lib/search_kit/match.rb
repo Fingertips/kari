@@ -5,7 +5,7 @@ module SearchKit
     kvc_accessor :name
     
     def name
-      @name ||= RubyName.from_karidoc_filename(self.URL.path)
+      @name ||= RubyName.from_karidoc_filename(self.URL.path.to_s)
     end
     objc_method :name, [:id]
   end
