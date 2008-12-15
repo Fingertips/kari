@@ -14,13 +14,13 @@ describe "A Watcher" do
   include TemporaryApplicationSupportPath
   
   before do
-    @watcher = Watcher.new(:manager => Manager.new)
+    @watcher = Watcher.new
     OSX::NSNotificationCenter.defaultCenter.stubs(:postNotificationName_object)
   end
   
   after do
-    @watcher.manager.close
     @watcher.stop
+    Manager.reset!
   end
   
   it "should have RI paths to index" do
@@ -57,19 +57,16 @@ describe "A Watcher" do
   end
   
   it "should rebuild indices for paths using the manager" do
-    Thread.expects(:new).yields
-    
     paths = ['/Library/Ruby/Gems/1.8/doc/nap-0.2/ri', '/Library/Ruby/Gems/1.8/doc/nap-0.1/ri']
     paths.each do |path|
-      @watcher.manager.expects(:examine).with(path)
+      Manager.instance.expects(:examine).with(path)
     end
-    @watcher.manager.expects(:write_to_disk).at_least(1)
+    Manager.instance.expects(:write_to_disk).at_least(1)
     
     @watcher.rebuild(paths)
   end
   
   it "should notify about the start and end of indexing" do
-    Thread.expects(:new).yields
     OSX::NSNotificationCenter.defaultCenter.expects(:postNotificationName_object).with('KariDidStartIndexingNotification', nil)
     OSX::NSNotificationCenter.defaultCenter.expects(:postNotificationName_object).with('KariDidFinishIndexingNotification', nil)
     

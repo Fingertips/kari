@@ -89,7 +89,7 @@ describe 'ApplicationController, during awakeFromNib' do
   
   include ApplicationControllerSpecHelper
   
-  before(:all) do
+  before do
     OSX::NSUserDefaults.stubs(:standardUserDefaults).returns(stub(:registerDefaults => true))
   end
   
@@ -174,18 +174,18 @@ describe 'ApplicationController, in general' do
   end
   
   it "should create a special search back forward item when a switching back to the webView" do
-    select_file!
+    load_url!
     webView.backForwardList.currentItem.URLString.should == 'kari://search/ActiveRecord'
   end
   
   it "should tell the webViewController to load a file if the searchController calls its selectedFile delegate method" do
-    webViewController.expects(:load_file).with('/some/file.karidoc')
-    select_file! '/some/file.karidoc'
+    webViewController.expects(:load_url).with('/some/file.karidoc')
+    load_url! '/some/file.karidoc'
   end
   
   it "should bring the webView forward and hide the results table view if a user selected a search result"  do
     should_bring_webView_to_front do
-      select_file!
+      load_url!
     end
   end
   
@@ -234,7 +234,7 @@ describe 'ApplicationController, in general' do
     controller.searchControllerWillStartSearching
   end
   
-  def select_file!(file = nil)
+  def load_url!(file = nil)
     controller.searchController_selectedFile(nil, file)
   end
 end

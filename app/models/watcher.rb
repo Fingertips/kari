@@ -5,10 +5,9 @@ require 'rdoc/ri/ri_paths'
 class Watcher
   DEVELOPMENT_FILTER = /nap|json|finger|activerecord/i
   
-  attr_accessor :manager, :fsevents
+  attr_accessor :fsevents
   
-  def initialize(options={})
-    @manager = options[:manager]
+  def initialize
     @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
       handleEvents(events)
     end
@@ -50,8 +49,8 @@ class Watcher
   def rebuild(*paths)
     OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidStartIndexingNotification', nil)
     paths.flatten.each do |path|
-      @manager.examine(path)
-      @manager.write_to_disk
+      Manager.instance.examine(path)
+      Manager.instance.write_to_disk
     end
     OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidFinishIndexingNotification', nil)
   end

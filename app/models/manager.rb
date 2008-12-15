@@ -183,4 +183,11 @@ class Manager
   def self.instance
     @instance ||= initialize_from_disk
   end
+  
+  def self.reset!
+    unless @instance.nil?
+      @instance.close
+      @instance = nil
+    end
+  end
 end

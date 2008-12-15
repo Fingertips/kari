@@ -32,7 +32,7 @@ class ApplicationController < Rucola::RCController
     
     @processing = 0
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
-    @watcher = Watcher.new(:manager => Manager.instance)
+    @watcher = Watcher.new
     
     @classTreeController.objc_send(
       :addObserver, self,
