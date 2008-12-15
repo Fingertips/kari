@@ -22,12 +22,18 @@ class SearchController < Rucola::RCController
     query = (sender.is_a?(String) || sender.is_a?(OSX::NSString) ? sender : sender.stringValue)
     unless query.blank?
       @delegate.searchControllerWillStartSearching
-      self.results = Manager.instance.search(query)
+      self.results = Manager.instance.search(query_with_partial_matching(query))
       @delegate.searchControllerFinishedSearching
     end
   end
   
   def rowDoubleClicked(tableview)
     @delegate.searchController_selectedFile(self, @results_array_controller.arrangedObjects[tableview.selectedRow].URL)
+  end
+  
+  private
+  
+  def query_with_partial_matching(query)
+    "*#{query.split(' ').join('*')}*"
   end
 end

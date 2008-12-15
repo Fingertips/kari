@@ -37,17 +37,15 @@ describe "A SearchController, when performing a search" do
     controller.delegate = @delegate
   end
   
-  it "should send the search query, from the search_field, to the Manager instance" do
-    search_field.stringValue = 'a pot of gold'
-    Manager.instance.expects(:search).with('a pot of gold')
-    controller.search(search_field)
+  it "should send the search query, adjusted for partial string matching, to the Manager instance" do
+    Manager.instance.expects(:search).with('*a*pot*of*gold*')
+    controller.search('a pot of gold')
   end
   
-  ['a pot of gold', 'a pot of gold'.to_ns].each do |query|
-    it "should send the search query, passed as a #{query.class.name}, to the Manager instance" do
-      Manager.instance.expects(:search).with(query)
-      controller.search(query)
-    end
+  it "should send the search query, from the search_field, to the Manager instance" do
+    search_field.stringValue = 'a pot of gold'
+    Manager.instance.expects(:search).with('*a*pot*of*gold*')
+    controller.search(search_field)
   end
   
   it "should not send the search query, from the search_field, to the Manager instance if it's empty" do
@@ -56,11 +54,9 @@ describe "A SearchController, when performing a search" do
     controller.search(search_field)
   end
   
-  ['', ''.to_ns].each do |query|
-    it "should not send the search query, passed as a #{query.class.name}, to the Manager instance if it's empty" do
-      Manager.instance.expects(:search).never
-      controller.search(query)
-    end
+  it "should not send the search query to the Manager instance if it's empty" do
+    Manager.instance.expects(:search).never
+    controller.search('')
   end
   
   it "should assign the search results to the `results' KVC accessor" do
