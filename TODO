@@ -1,14 +1,11 @@
 ELOY
 
-- In the XCode documentation for JS (DashCode) there is a JS function described which allows to copy stuff to the paste board.
-- Consistenly use snake/camel case for all the ib_outlets.
-
+- Improve class browser UI, see http://tr.im/21ca
 - Status bar. For:
   - Show where links in the docs go.
   - Search results count, like the Finder Search window.
-
-- Browser for Manager#namespace.
-- Check possibilities to wrap SKSearchRef via BridgeSupport (with Laurent).
+- Rewrite to MacRuby.
+- Consistenly use snake/camel case for all the ib_outlets.
 
 MANFRED
 
@@ -16,8 +13,8 @@ MANFRED
 
 ANYONE
 
-- Improve class browser UI, see http://tr.im/21ca
 - Return to the last selected path in the class browser when a new class tree is assigned if possible. Work your way back up the tree and select the first item that is in the tree.
+- Filter the nodes in the class browser. Eg: http://tr.im/2ary
 
 IMPROVEMENTS
 
@@ -25,3 +22,4 @@ IMPROVEMENTS
 - Use a code highlighter to highlight examples
 - Flag karidoc files with 'broken characters' (to prevent bugreports and gently nudge authors to fix their documentation)
 - Make clicking the gem name/version, in the header, open the gem directory in the Finder.
+- Check possibilities to wrap SKSearchRef via BridgeSupport (with Laurent).
