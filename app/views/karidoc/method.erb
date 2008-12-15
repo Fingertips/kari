@@ -2,25 +2,27 @@
   <h1><%= header_with_markup(description.path, description.separator, description.name) %> <span class="version"><%= description.gem_version %></span></h1>
 </div>
 <div class="body">
-  <p>
-    <span class="visibility"><%=h description.visibility %></span>
-    <% if description.params.start_with?('(') %>
-      <span><%=h description.name + description.params %></span>
-    <% else %>
-      <span><%=h description.params %></span>
+  <div class="inner">
+    <p>
+      <span class="visibility"><%=h description.visibility %></span>
+      <% if description.params.start_with?('(') %>
+        <span><%=h description.name + description.params %></span>
+      <% else %>
+        <span><%=h description.params %></span>
+      <% end %>
+    </p>
+    <% unless description.comment.blank? %>
+    <div class="comment">
+      <%= flow description.comment %>
+    </div>
     <% end %>
-  </p>
-  <% unless description.comment.blank? %>
-  <div class="comment">
-    <%= flow description.comment %>
+    <% unless description.aliases.empty? %>
+    <h2>Aliases</h2>
+    <ul>
+      <% description.aliases.each do |method| %>
+      <li><%=h method.name %></li>
+      <% end %>
+    </ul>
+    <% end %>
   </div>
-  <% end %>
-  <% unless description.aliases.empty? %>
-  <h2>Aliases</h2>
-  <ul>
-    <% description.aliases.each do |method| %>
-    <li><%=h method.name %></li>
-    <% end %>
-  </ul>
-  <% end %>
 </div>

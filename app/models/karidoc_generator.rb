@@ -47,6 +47,10 @@ class KaridocGenerator
       :full_name => descriptions.first.full_name,
       :template_path => template_path,
       :stylesheet => File.expand_path('../../assets/karidoc.css', __FILE__),
+      :javascripts => [
+        File.expand_path('../../assets/jquery-1.2.6.min.js', __FILE__), 
+        File.expand_path('../../assets/karidoc.js', __FILE__)
+      ],
       :partials => partials
     )
     namespace.extend HTMLHelpers

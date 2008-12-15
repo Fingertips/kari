@@ -42,6 +42,11 @@ div.header h1
 }
 div.body
 {
+  padding: 0;
+  margin: 0;
+}
+div.body div.inner
+{
   padding: 6px 7px 7px 7px;
 }
 h1 span.version

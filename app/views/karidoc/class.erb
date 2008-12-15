@@ -2,64 +2,66 @@
   <h1><%= header_with_markup(description.path, description.separator, description.name) %> <span class="version"><%= description.gem_version %></span></h1>
 </div>
 <div class="body">
-  <% unless description.comment.blank? %>
-  <div class="comment">
-    <%= flow description.comment %>
+  <div class="inner">
+    <% unless description.comment.blank? %>
+    <div class="comment">
+      <%= flow description.comment %>
+    </div>
+    <% end %>
+    <% unless description.instance_methods.empty? %>
+    <h2>Instance methods</h2>
+    <ul>
+      <% description.instance_methods.each do |method| %>
+      <li><a href="<%=u description.name %>/<%=u "##{method.name}" %>.karidoc"><%= method.name %></a></li>
+      <% end %>
+    </ul>
+    <% end %>
+    <% unless description.class_methods.empty? %>
+    <h2>Class methods</h2>
+    <ul>
+      <% description.class_methods.each do |method| %>
+      <li><a href="<%=u description.name %>/<%=u method.name %>.karidoc"><%= method.name %></a></li>
+      <% end %>
+    </ul>
+    <% end %>
+    <% unless description.includes.empty? %>
+    <h2>Includes</h2>
+    <ul>
+      <% description.includes.each do |inc| %>
+      <li><%= inc.name %></li>
+      <% end %>
+    </ul>
+    <% end %>
+    <% unless description.attributes.empty? %>
+    <h2>Attributes</h2>
+    <ul>
+      <% description.attributes.each do |attribute| %>
+      <li>
+        <span><%=h attribute.rw.downcase %></span>
+        <span>–</span>
+        <span><%=h attribute.name %></span>
+        <% if attribute.comment %>
+        <%= flow attribute.comment %>
+        <% end %>
+      </li>
+      <% end %>
+    </ul>
+    <% end %>
+    <% unless description.constants.empty? %>
+    <h2>Constants</h2>
+    <table>
+      <% description.constants.each do |constant| %>
+        <tr>
+          <td><%=h constant.name %></td>
+          <td><code><%=h constant.value %></code></td>
+        </tr>
+        <% if constant.comment %>
+        <tr class="comment">
+          <td colspan="2"><%= flow constant.comment %></td>
+        </tr>
+        <% end %>
+      <% end %>
+    </table>
+    <% end %>
   </div>
-  <% end %>
-  <% unless description.instance_methods.empty? %>
-  <h2>Instance methods</h2>
-  <ul>
-    <% description.instance_methods.each do |method| %>
-    <li><a href="<%=u description.name %>/<%=u "##{method.name}" %>.karidoc"><%= method.name %></a></li>
-    <% end %>
-  </ul>
-  <% end %>
-  <% unless description.class_methods.empty? %>
-  <h2>Class methods</h2>
-  <ul>
-    <% description.class_methods.each do |method| %>
-    <li><a href="<%=u description.name %>/<%=u method.name %>.karidoc"><%= method.name %></a></li>
-    <% end %>
-  </ul>
-  <% end %>
-  <% unless description.includes.empty? %>
-  <h2>Includes</h2>
-  <ul>
-    <% description.includes.each do |inc| %>
-    <li><%= inc.name %></li>
-    <% end %>
-  </ul>
-  <% end %>
-  <% unless description.attributes.empty? %>
-  <h2>Attributes</h2>
-  <ul>
-    <% description.attributes.each do |attribute| %>
-    <li>
-      <span><%=h attribute.rw.downcase %></span>
-      <span>–</span>
-      <span><%=h attribute.name %></span>
-      <% if attribute.comment %>
-      <%= flow attribute.comment %>
-      <% end %>
-    </li>
-    <% end %>
-  </ul>
-  <% end %>
-  <% unless description.constants.empty? %>
-  <h2>Constants</h2>
-  <table>
-    <% description.constants.each do |constant| %>
-      <tr>
-        <td><%=h constant.name %></td>
-        <td><code><%=h constant.value %></code></td>
-      </tr>
-      <% if constant.comment %>
-      <tr class="comment">
-        <td colspan="2"><%= flow constant.comment %></td>
-      </tr>
-      <% end %>
-    <% end %>
-  </table>
-  <% end %>
 </div>
