@@ -25,11 +25,7 @@ class ApplicationController < Rucola::RCController
              :name, 'KariOpenDocumentation',
            :object, nil
     )
-    
-    [%w(startedIndexing: KariDidStartIndexingNotification), %w(finishedIndexing: KariDidFinishIndexingNotification)].each do |m, n|
-      OSX::NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, m, n, nil)
-    end
-    
+        
     @processing = 0
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
     @watcher = Watcher.new

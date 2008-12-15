@@ -15,7 +15,6 @@ describe "A Watcher" do
   
   before do
     @watcher = Watcher.new
-    OSX::NSNotificationCenter.defaultCenter.stubs(:postNotificationName_object)
   end
   
   after do
@@ -64,13 +63,6 @@ describe "A Watcher" do
     Manager.instance.expects(:write_to_disk).at_least(1)
     
     @watcher.rebuild(paths)
-  end
-  
-  it "should notify about the start and end of indexing" do
-    OSX::NSNotificationCenter.defaultCenter.expects(:postNotificationName_object).with('KariDidStartIndexingNotification', nil)
-    OSX::NSNotificationCenter.defaultCenter.expects(:postNotificationName_object).with('KariDidFinishIndexingNotification', nil)
-    
-    @watcher.rebuild([])
   end
   
   it "should stop FSEvents for watcher when stopped" do

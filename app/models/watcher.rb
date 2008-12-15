@@ -47,12 +47,10 @@ class Watcher
   end
   
   def rebuild(*paths)
-    OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidStartIndexingNotification', nil)
     paths.flatten.each do |path|
       Manager.instance.examine(path)
       Manager.instance.write_to_disk
     end
-    OSX::NSNotificationCenter.defaultCenter.postNotificationName_object('KariDidFinishIndexingNotification', nil)
   end
   
   def stop

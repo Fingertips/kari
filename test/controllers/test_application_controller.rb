@@ -106,12 +106,6 @@ describe 'ApplicationController, during awakeFromNib' do
     controller.awakeFromNib
   end
   
-  it "should register itself as an observer for the `KariDidFinishIndexingNotification' notification" do
-    should_observe_notification('KariDidStartIndexingNotification', 'startedIndexing:')
-    should_observe_notification('KariDidFinishIndexingNotification', 'finishedIndexing:')
-    controller.awakeFromNib
-  end
-  
   private
   
   def should_observe_notification(name, selector, object = nil, observer = controller)
