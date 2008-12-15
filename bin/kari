@@ -43,9 +43,12 @@ class Kari
     FileUtils.mkdir_p(Rucola::RCApp.application_support_path)
   end
   
+  def copy_karidoc
+    `rm -Rf '#{Rucola::RCApp.application_support_path}' && cp -R '#{Rucola::RCApp.system_defined_application_support_path}' '#{Rucola::RCApp.application_support_path}'`
+  end
+  
   def rebuild_karidoc
-    manager = Manager.new
-    watcher = Watcher.new(:manager => manager)
+    watcher = Watcher.new
     watcher.forceRebuild
     sleep 0.5
   end
@@ -63,6 +66,10 @@ class Kari
     rebuilder.clean
     
     case command
+    when 'update-karidoc'
+      rebuilder.copy_karidoc
+      rebuilder.rebuild_karidoc
+      rebuilder.replace_karidoc
     when 'replace-karidoc'
       rebuilder.rebuild_karidoc
       rebuilder.replace_karidoc
