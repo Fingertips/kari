@@ -12,7 +12,7 @@
 -(SKIndexRef)index;
 -(void)setIndex:(SKIndexRef)index;
 
--(NSNumber*)count;
+-(NSNumber*)lopsidedCount;
 
 -(NSMutableArray*)search:(NSString*)query;
 

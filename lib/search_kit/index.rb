@@ -68,6 +68,16 @@ module SearchKit #:nodoc:
       end
     end
     
+    # Returns the number of documents in the index.
+    def count
+      documentCount = lopsidedCount.to_i
+      unless documentCount == 0
+        documentCount - @countDifference
+      else
+        0
+      end
+    end
+    
     # Close the index. You should always close the index after using it to free up memory and
     # locks.
     def close
@@ -97,7 +107,14 @@ module SearchKit #:nodoc:
         url = OSX::NSURL.fileURLWithPath(path)
         document = OSX::SKDocumentCreateWithURL(url)
         # FIXME: the third param is a MIMETypeHint that is used to select a SpotLight importer
-        OSX::SKIndexAddDocument(index, document, nil, true)
+        result = OSX::SKIndexAddDocument(index, document, nil, true)
+        
+        if @countDifference.nil?
+          flush
+          @countDifference = lopsidedCount.to_i - 1
+        end
+        
+        result
       else
         raise SearchKit::Exceptions::IndexError, "Can't add a document, the internal index is nil."
       end

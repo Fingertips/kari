@@ -4,13 +4,8 @@
 -(SKIndexRef)index { return _index; }
 -(void)setIndex:(SKIndexRef)index { _index = index; }
 
--(NSNumber*)count {
+-(NSNumber*)lopsidedCount {
   CFIndex documentCount = SKIndexGetDocumentCount(_index);
-  
-  if (!documentCount == 0) {
-    documentCount -= 10;
-  };
-  
   return [NSNumber numberWithLong:documentCount];
 }
 

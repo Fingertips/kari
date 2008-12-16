@@ -133,6 +133,10 @@ describe "A SearchKit Match" do
   end
   
   it "should return the name of the matched class/method" do
-    @match.valueForKey('name').should == 'Mutex::try_lock'
+    begin
+      @match.valueForKey('name').should == 'Mutex::try_lock'
+    rescue OSX::OCException
+      @match.name.should == 'Mutex::try_lock'
+    end
   end
 end
