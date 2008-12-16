@@ -20,7 +20,7 @@ module ApplicationControllerSpecHelper
     Manager.stubs(:instance).returns(@manager_mock)
     
     @watcher_mock = mock('Watcher')
-    @watcher_mock.stubs(:buildIndex)
+    @watcher_mock.stubs(:delegate=)
     Watcher.stubs(:new).returns(@watcher_mock)
     
     @namespace_mock = stub('Manager#namespace')
@@ -44,6 +44,11 @@ describe 'ApplicationController, during awakeFromNib' do
   
   it "should initialize a Manager instance" do
     Manager.expects(:instance).returns(@manager_mock)
+    controller.awakeFromNib
+  end
+  
+  it "should set itself as the delegate of the watcher" do
+    @watcher_mock.expects(:delegate=).with(controller)
     controller.awakeFromNib
   end
   

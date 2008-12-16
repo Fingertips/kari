@@ -43,6 +43,7 @@ class ApplicationController < Rucola::RCController
     @bookmarkController.delegate = self
     @searchController.delegate = self
     @webViewController.delegate = self
+    @watcher.delegate = self
     @webViewController.home!
   end
   

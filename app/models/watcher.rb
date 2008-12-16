@@ -5,7 +5,7 @@ require 'rdoc/ri/ri_paths'
 class Watcher
   DEVELOPMENT_FILTER = /nap|json|finger|activerecord/i
   
-  attr_accessor :fsevents
+  attr_accessor :fsevents, :delegate
   
   def initialize
     @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
@@ -39,7 +39,7 @@ class Watcher
     path = baseDir(events.map { |e| e.path })
     log.debug "Found changes in `#{path}'"
     if path =~ DEVELOPMENT_FILTER
-      runCommandWithPaths(path)
+      runKaridocUpdateCommandWithPaths(path)
     else
       log.debug "Skipping `#{path}' because we're just testing right now"
     end
@@ -47,18 +47,21 @@ class Watcher
   end
   
   def forceRebuild
-    runCommandWithPaths(riPaths)
+    runKaridocUpdateCommandWithPaths(riPaths)
   end
   
-  def runCommandWithPaths(*paths)
+  def runKaridocUpdateCommandWithPaths(*paths)
     quoted_paths = paths.flatten.map { |path| "'#{path}'" }.join(' ')
     command = "#{kariPath} update-karidoc #{quoted_paths}"
-    log.debug "Running: #{command}"
-    unless Kernel.system(command)
-      log.debug "Command failed: `#{$?}'"
-      return false
+    
+    if delegate and delegate.respond_to?(:startedIndexing)
+      delegate.startedIndexing(self)
     end
-    true
+    
+    log.debug "Starting thread: #{command}"
+    Thread.start do
+      Kernel.system(command)
+    end
   end
   
   def examineAll

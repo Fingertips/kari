@@ -40,18 +40,18 @@ describe "A Watcher" do
   end
   
   it "should handle events coming from FSEvents" do
-    @watcher.expects(:runCommandWithPaths).with('/Library/Ruby/Gems/1.8/doc/nap-0.2/ri')
+    @watcher.expects(:runKaridocUpdateCommandWithPaths).with('/Library/Ruby/Gems/1.8/doc/nap-0.2/ri')
     @watcher.handleEvents(events)
   end
   
   it "should set the last event id as the last even id" do
-    @watcher.stubs(:runCommandWithPaths)
+    @watcher.stubs(:runKaridocUpdateCommandWithPaths)
     @watcher.expects(:setLastEventId).with(events.last.id)
     @watcher.handleEvents(events)
   end
   
   it "should be able to force a rebuild" do
-    @watcher.expects(:runCommandWithPaths).with(@watcher.riPaths)
+    @watcher.expects(:runKaridocUpdateCommandWithPaths).with(@watcher.riPaths)
     @watcher.forceRebuild
   end
   
@@ -66,8 +66,31 @@ describe "A Watcher" do
   end
   
   it "should contruct a correct command to issue to the shell" do
+    Thread.stubs(:start).yields
+    
     Kernel.expects(:system).with("#{@watcher.kariPath} update-karidoc '/bogus/path/1' '/bogus/path/2'")
-    @watcher.runCommandWithPaths('/bogus/path/1', '/bogus/path/2')
+    @watcher.runKaridocUpdateCommandWithPaths('/bogus/path/1', '/bogus/path/2')
+  end
+  
+  it "should notify the delegate it started indexing if there is a delegate" do
+    Thread.stubs(:start)
+    Kernel.stubs(:system)
+    
+    controller = mock
+    controller.stubs(:respond_to?).returns(true)
+    controller.expects(:startedIndexing).with(@watcher)
+    @watcher.delegate = controller
+    
+    @watcher.runKaridocUpdateCommandWithPaths
+  end
+  
+  it "should not notify the delegate it started indexing if there is no delegate" do
+    Thread.stubs(:start)
+    Kernel.stubs(:system)
+    
+    lambda {
+      @watcher.runKaridocUpdateCommandWithPaths
+    }.should.not.raise(NoMethodError)
   end
   
   protected
