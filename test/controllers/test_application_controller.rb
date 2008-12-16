@@ -52,6 +52,16 @@ describe 'ApplicationController, during awakeFromNib' do
     controller.awakeFromNib
   end
   
+  it "should register for notications" do
+    [
+      [:addObserver, controller, :selector, 'externalRequestForDocumentation:', :name, 'KariOpenDocumentation', :object, nil],
+      [:addObserver, controller, :selector, 'finishedIndexing:', :name, 'KariDidFinishIndexing', :object, nil]
+    ].each do |params|
+      OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(*params)
+    end
+    controller.awakeFromNib
+  end
+  
   private
   
   def should_observe_notification(name, selector, object = nil, observer = controller)

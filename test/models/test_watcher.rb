@@ -93,6 +93,13 @@ describe "A Watcher" do
     }.should.not.raise(NoMethodError)
   end
   
+  it "should notify the main application that it finished examining (distributed)" do
+    OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(
+      :postNotificationName, 'KariDidFinishIndexing', :object, nil
+    )
+    @watcher.examine([])
+  end
+  
   protected
   
   def events

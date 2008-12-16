@@ -73,6 +73,9 @@ class Watcher
       Manager.instance.examine(path)
       Manager.instance.write_to_disk
     end
+    OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
+      :postNotificationName, 'KariDidFinishIndexing', :object, nil
+    )
   end
   
   def stop

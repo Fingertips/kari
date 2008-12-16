@@ -26,6 +26,12 @@ class ApplicationController < Rucola::RCController
              :name, 'KariOpenDocumentation',
            :object, nil
     )
+    OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
+      :addObserver, self,
+         :selector, 'finishedIndexing:',
+             :name, 'KariDidFinishIndexing',
+           :object, nil
+    )
     
     @processing = 0
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
