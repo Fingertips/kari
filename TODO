@@ -9,6 +9,7 @@ ELOY
 
 MANFRED
 
+- Lock the karidoc directory somehow when indexing so we don't accidentally revert index updates
 - Think about a way to solve the uppercased instance method problem in the RubyName optimization
 
 ANYONE
