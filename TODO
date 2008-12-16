@@ -1,7 +1,5 @@
 ELOY
 
-- Improve class browser UI, see http://tr.im/21ca
-- Remove BookmarkBar.
 - Add search Filter bar, see http://tr.im/2aw6
 - Status bar. For:
   - Show where links in the docs go.
