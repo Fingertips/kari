@@ -4,7 +4,6 @@ describe "Watcher" do
   include TemporaryApplicationSupportPath
   
   it "should start watching the RI paths after intialization" do
-    OSX::NSUserDefaults.stubs(:standardUserDefaults).returns({})
     Rucola::FSEvents.expects(:start_watching)
     Watcher.new
   end
@@ -14,6 +13,7 @@ describe "A Watcher" do
   include TemporaryApplicationSupportPath
   
   before do
+    Rucola::FSEvents.stubs(:start_watching).returns(stub(:stop))
     @watcher = Watcher.new
   end
   
@@ -30,7 +30,7 @@ describe "A Watcher" do
     @watcher.watchPaths.sort.should == %w(/Library/Ruby/Gems/1.8/doc /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/doc /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/share/ri/1.8/system)
   end
   
-  it "should have nil as default for the FSEvent ID " do
+  it "should have nil as default for the FSEvent ID" do
     @watcher.lastEventId.should.be.nil
   end
   
@@ -40,34 +40,34 @@ describe "A Watcher" do
   end
   
   it "should handle events coming from FSEvents" do
-    @watcher.expects(:rebuild).with('/Library/Ruby/Gems/1.8/doc/nap-0.2/ri')
+    @watcher.expects(:runCommandWithPaths).with('/Library/Ruby/Gems/1.8/doc/nap-0.2/ri')
     @watcher.handleEvents(events)
   end
   
   it "should set the last event id as the last even id" do
-    @watcher.stubs(:rebuild)
+    @watcher.stubs(:runCommandWithPaths)
     @watcher.expects(:setLastEventId).with(events.last.id)
     @watcher.handleEvents(events)
   end
   
   it "should be able to force a rebuild" do
-    @watcher.expects(:rebuild).with(@watcher.riPaths)
+    @watcher.expects(:runCommandWithPaths).with(@watcher.riPaths)
     @watcher.forceRebuild
   end
   
-  it "should rebuild indices for paths using the manager" do
-    paths = ['/Library/Ruby/Gems/1.8/doc/nap-0.2/ri', '/Library/Ruby/Gems/1.8/doc/nap-0.1/ri']
-    paths.each do |path|
-      Manager.instance.expects(:examine).with(path)
-    end
-    Manager.instance.expects(:write_to_disk).at_least(1)
-    
-    @watcher.rebuild(paths)
+  it "should be able to examine all RI paths" do
+    @watcher.expects(:examine).with(@watcher.riPaths)
+    @watcher.examineAll
   end
   
   it "should stop FSEvents for watcher when stopped" do
     @watcher.fsevents.expects(:stop).at_least(1)
     @watcher.stop
+  end
+  
+  it "should contruct a correct command to issue to the shell" do
+    Kernel.expects(:system).with("#{@watcher.kariPath} update-karidoc '/bogus/path/1' '/bogus/path/2'")
+    @watcher.runCommandWithPaths('/bogus/path/1', '/bogus/path/2')
   end
   
   protected

@@ -13,6 +13,8 @@ require 'fileutils'
 
 $:.push(File.expand_path('../test_helper', __FILE__))
 
+require 'dangerous_methods_override'
+require 'user_preferences'
 require 'global_spec_helper'
 require 'assert_difference'
 require 'temporary_application_support_path'
@@ -34,15 +36,9 @@ TEST_ROOT = File.expand_path(File.dirname(__FILE__))
 require 'osx/cocoa'
 Thread.new { OSX.CFRunLoopRun }
 
-# We don't want test ruining our preferences
-OSX::NSUserDefaults.stubs(:standardUserDefaults).raises(
-  StandardError.new('Please stub OSX::NSUserDefaults#standardUserDefaults in your tests')
-)
-
 def silence_warnings
   old_verbose, $VERBOSE = $VERBOSE, nil
   yield
 ensure
   $VERBOSE = old_verbose
 end
-

@@ -25,7 +25,7 @@ class ApplicationController < Rucola::RCController
              :name, 'KariOpenDocumentation',
            :object, nil
     )
-        
+    
     @processing = 0
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
     @watcher = Watcher.new

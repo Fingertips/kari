@@ -22,6 +22,10 @@ class Watcher
     @watchPaths ||= RI::Paths.path(true, false, false, false) + basePaths(RI::Paths.path(false, true, true, true))
   end
   
+  def kariPath
+    File.join(Rucola::RCApp.root_path, 'bin', 'kari')
+  end
+  
   def lastEventId
     PreferencesController.preferences['LastFSEventId']
   end
@@ -35,7 +39,7 @@ class Watcher
     path = baseDir(events.map { |e| e.path })
     log.debug "Found changes in `#{path}'"
     if path =~ DEVELOPMENT_FILTER
-      rebuild(path)
+      runCommandWithPaths(path)
     else
       log.debug "Skipping `#{path}' because we're just testing right now"
     end
@@ -43,10 +47,25 @@ class Watcher
   end
   
   def forceRebuild
-    rebuild(riPaths)
+    runCommandWithPaths(riPaths)
   end
   
-  def rebuild(*paths)
+  def runCommandWithPaths(*paths)
+    quoted_paths = paths.flatten.map { |path| "'#{path}'" }.join(' ')
+    command = "#{kariPath} update-karidoc #{quoted_paths}"
+    log.debug "Running: #{command}"
+    unless Kernel.system(command)
+      log.debug "Command failed: `#{$?}'"
+      return false
+    end
+    true
+  end
+  
+  def examineAll
+    examine(riPaths)
+  end
+  
+  def examine(*paths)
     paths.flatten.each do |path|
       Manager.instance.examine(path)
       Manager.instance.write_to_disk
@@ -100,5 +119,5 @@ class Watcher
       current = union(current, path)
     end
     current
-  end
+  end  
 end

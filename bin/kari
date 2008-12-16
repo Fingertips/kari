@@ -49,8 +49,11 @@ class Kari
   
   def rebuild_karidoc
     watcher = Watcher.new
-    watcher.forceRebuild
-    sleep 0.5
+    unless options[:paths].blank?
+      watcher.examine(options[:paths])
+    else
+      watcher.examineAll
+    end
   end
   
   def replace_karidoc
@@ -89,11 +92,13 @@ class Kari
     
     OptionParser.new do |opts|
       opts.banner = "Usage: kari [command] [options]"
-
+      
       opts.on("-d", "--output-directory DIRECTORY", String, "Specify the output directory") do |directory|
         options[:output_directory] = File.expand_path(directory)
       end
     end.parse!(argv)
+    
+    options[:paths] = argv
     
     run_command(command, options)
   end

@@ -3,10 +3,6 @@ require File.expand_path('../../test_helper', __FILE__)
 xdescribe "ApplicationController, when a bookmarkBarToggledVisibility notification is received" do
   tests ApplicationController
   
-  before(:all) do
-    OSX::NSUserDefaults.stubs(:standardUserDefaults).returns(stub(:registerDefaults => true))
-  end
-  
   def after_setup
     ib_outlets :webView => OSX::NSView.alloc.initWithFrame([0, 20, 100, 100]),
                :resultsScrollView => OSX::NSScrollView.alloc.initWithFrame([0, 20, 100, 100])
@@ -42,7 +38,6 @@ xdescribe "ApplicationController, when a bookmarkBarToggledVisibility notificati
         controller.bookmarkBarToggledVisibility(@bookmarkBar)
       end
     end
-    
   end
   
   private
@@ -89,10 +84,6 @@ describe 'ApplicationController, during awakeFromNib' do
   
   include ApplicationControllerSpecHelper
   
-  before do
-    OSX::NSUserDefaults.stubs(:standardUserDefaults).returns(stub(:registerDefaults => true))
-  end
-  
   it "should set the correct default kvc values" do
     controller.stubs(:buildIndex)
     controller.awakeFromNib
@@ -118,10 +109,6 @@ describe 'ApplicationController, in general' do
   
   include ApplicationControllerSpecHelper
   include TemporaryApplicationSupportPath
-  
-  before do
-    OSX::NSUserDefaults.stubs(:standardUserDefaults).returns({})
-  end
   
   it "should update the `processing' state when a `KariDidStartIndexingNotification' is received" do
     assigns(:processing, 0)
