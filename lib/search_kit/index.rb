@@ -122,20 +122,6 @@ module SearchKit #:nodoc:
       end
     end
     
-    # Returns the number of documents in the index. Note that the count is only up to date after
-    # a +flush+.
-    def count
-      unless index.nil?
-        if (count = OSX::SKIndexGetDocumentCount(index)) != 0
-          count - 9
-        else
-          raise SearchKit::Exceptions::IndexError, "Can't perform OSX::SKIndexGetDocumentCount on the index `#{index}'. Please make sure you're operating on a valid index."
-        end
-      else
-        raise SearchKit::Exceptions::IndexError, "Can't get the document count, the internal index is nil."
-      end
-    end
-    
     # Commit all the index changes to the backing store
     def flush
       unless index.nil?

@@ -1,40 +1,37 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 describe "The SearchKit Index" do
+  before do
+    @path = File.join(Dir.tmpdir, 'search_kit_index')
+    File.unlink(@path) rescue nil
+  end
+  
+  after do
+    File.unlink(@path) rescue nil
+  end
+  
   it "should create and close new index" do
-    path = File.join(Dir.tmpdir, 'search_kit_index')
-    
-    index = SearchKit::Index.create(path)
+    index = SearchKit::Index.create(@path)
     index.should.not.be.nil
     index.close
-    
-    File.unlink(path)
   end
   
   it "should open and close an existing index" do
-    path = File.join(Dir.tmpdir, 'search_kit_index')
-    
-    index = SearchKit::Index.create(path)
+    index = SearchKit::Index.create(@path)
     index.close
     
-    index = SearchKit::Index.open(path)
+    index = SearchKit::Index.open(@path)
     index.should.not.be.nil
     index.close
-    
-    File.unlink(path)
   end
   
   it "should allow block syntax for open" do
-    path = File.join(Dir.tmpdir, 'search_kit_index')
-    
-    index = SearchKit::Index.create(path)
+    index = SearchKit::Index.create(@path)
     index.close
     
-    SearchKit::Index.open(path) do |index|
+    SearchKit::Index.open(@path) do |index|
       index.kind_of?(SearchKit::Index).should == true
     end
-    
-    File.unlink(path)
   end
 end
 
@@ -43,34 +40,36 @@ describe "A SearchKit Index" do
   
   before do
     @path = File.join(Dir.tmpdir, 'search_kit_index')
+    File.unlink(@path) rescue nil
+    
     @index = SearchKit::Index.create(@path)
     @filenames = Dir[file_fixture('normal/ri/**/*.*')]
   end
   
   after do
     @index.close
-    File.unlink(@path)
+    File.unlink(@path) rescue nil
   end
   
-  it "should raise an error when trying to count documents on an invalid document" do
+  it "should not raise an error when trying to count documents on an empty document" do
     lambda {
       @index.count
-    }.should.raise(SearchKit::Exceptions::IndexError)
+    }.should.not.raise
   end
   
   it "should know the number of documents in the index" do
+    @index.count.should == 0
+    
     @filenames[0,3].each_with_index do |filename, index|
       @index.addDocument(filename)
     end
     @index.flush
-    sleep 0.1
     @index.count.should == 3
     
     @filenames[0,3].each_with_index do |filename, index|
       @index.removeDocument(filename)
     end
     @index.flush
-    sleep 0.1
     @index.count.should == 0
   end
   

@@ -12,6 +12,8 @@
 -(SKIndexRef)index;
 -(void)setIndex:(SKIndexRef)index;
 
+-(NSNumber*)count;
+
 -(NSMutableArray*)search:(NSString*)query;
 
 @end
