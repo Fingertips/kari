@@ -7,8 +7,8 @@ class BookmarkController < Rucola::RCController
   attr_accessor :bookmarkBar, :delegate
   
   def awakeFromNib
-    @bookmarkBar.bookmarks = self.bookmarks
-    @bookmarkBar.delegate = self
+    # @bookmarkBar.bookmarks = self.bookmarks
+    # @bookmarkBar.delegate = self
     self.populateBookmarkMenu
   end
   
@@ -41,10 +41,10 @@ class BookmarkController < Rucola::RCController
   
   # actions
   
-  def toggleVisibilityBookmarksBar(sender)
-    #@bookmarkBar.hidden = !@bookmarkBar.hidden?
-    @delegate.bookmarkBarToggledVisibility(@bookmarkBar)
-  end
+  # def toggleVisibilityBookmarksBar(sender)
+  #   #@bookmarkBar.hidden = !@bookmarkBar.hidden?
+  #   @delegate.bookmarkBarToggledVisibility(@bookmarkBar)
+  # end
   
   # events
   
@@ -57,14 +57,14 @@ class BookmarkController < Rucola::RCController
   end
   
   def bookmarksReordered(dragged_bookmark)
-    @bookmarks = @bookmarkBar.bookmarks
+    #@bookmarks = @bookmarkBar.bookmarks
     self.bookmarksChanged(false)
   end
   
   def bookmarksChanged(reset_bookmark_bar = true)
     self.saveBookmarks
     self.resetBookmarkMenu
-    @bookmarkBar.bookmarks = @bookmarks if reset_bookmark_bar
+    #@bookmarkBar.bookmarks = @bookmarks if reset_bookmark_bar
   end
   
   # bookmark menu
@@ -130,8 +130,8 @@ class BookmarkController < Rucola::RCController
     case item.action
     when 'openRemoveBookmarkSheet:' then return !@bookmarks.empty?
     when 'openAddBookmarkSheet:' then return @webViewController.bookmarkable?
-    when 'toggleVisibilityBookmarksBar:'
-      item.title = @bookmarkBar.hidden? ? 'Show Bookmarks Bar' : 'Hide Bookmarks Bar'
+    # when 'toggleVisibilityBookmarksBar:'
+    #   item.title = @bookmarkBar.hidden? ? 'Show Bookmarks Bar' : 'Hide Bookmarks Bar'
     end
     true
   end

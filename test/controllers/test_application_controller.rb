@@ -1,55 +1,5 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-xdescribe "ApplicationController, when a bookmarkBarToggledVisibility notification is received" do
-  tests ApplicationController
-  
-  def after_setup
-    ib_outlets :webView => OSX::NSView.alloc.initWithFrame([0, 20, 100, 100]),
-               :resultsScrollView => OSX::NSScrollView.alloc.initWithFrame([0, 20, 100, 100])
-    
-    window.stubs(:frame).returns(OSX::NSRect.new(0, 0, 100, 100))
-    @bookmarkBar = OSX::NSView.alloc.initWithFrame([0, 0, 100, 20])
-  end
-  
-  it "should resize the window to shrink if the bookmark bar is hidden" do
-    @bookmarkBar.hidden = true
-    should_resize_window_height :from => 100, :to => 80
-    controller.bookmarkBarToggledVisibility(@bookmarkBar)
-  end
-  
-  it "should resize the window to grow if the bookmark bar is not hidden" do
-    @bookmarkBar.hidden = false
-    should_resize_window_height :from => 80, :to => 100
-    controller.bookmarkBarToggledVisibility(@bookmarkBar)
-  end
-  
-  %w{ webView resultsScrollView }.each do |view|
-    
-    it "should increase the height of the #{view} if the bookmark bar is hidden" do
-      @bookmarkBar.hidden = true
-      assert_difference("#{view}.frame.height", +20) do
-        controller.bookmarkBarToggledVisibility(@bookmarkBar)
-      end
-    end
-    
-    it "should decrease the height of the #{view} if the bookmark bar is not hidden" do
-      @bookmarkBar.hidden = false
-      assert_difference("#{view}.frame.height", -20) do
-        controller.bookmarkBarToggledVisibility(@bookmarkBar)
-      end
-    end
-  end
-  
-  private
-  
-  def should_resize_window_height(options)
-    window.stubs(:frame).returns(OSX::NSRect.new(0, 0, 100, options[:from]))
-    window.expects(:setFrame_display_animate).with do |new_frame, display, animate|
-      display && animate && new_frame.width == 100 and new_frame.height == options[:to]
-    end
-  end
-end
-
 module ApplicationControllerSpecHelper
   include FixtureHelpers
   
@@ -101,6 +51,71 @@ describe 'ApplicationController, during awakeFromNib' do
   
   def should_observe_notification(name, selector, object = nil, observer = controller)
     OSX::NSNotificationCenter.defaultCenter.expects(:addObserver_selector_name_object).with(observer, selector, name, object)
+  end
+end
+
+describe "ApplicationController, when toggling the class browser visibility" do
+  tests ApplicationController
+  
+  def after_setup
+    ib_outlets :webView => OSX::NSView.alloc.initWithFrame([0, 0, 200, 200]),
+               :resultsScrollView => OSX::NSScrollView.alloc.initWithFrame([0, 0, 200, 200]),
+               :classBrowser => OSX::NSBrowser.alloc.initWithFrame([0, 200, 200, 135])
+    
+    window.stubs(:frame).returns(OSX::NSRect.new(0, 0, 200, 200))
+    OSX::NSViewAnimation.any_instance.stubs(:startAnimation)
+    @views = %w{ resultsScrollView classBrowser webView }
+  end
+  
+  it "should return a hash with animation properties for a view, which makes the view end up at the same Y position as before (basically moving the view)" do
+    OSX::NSValue.stubs(:valueWithRect).with(webView.frame).returns(webView.frame.inspect)
+    controller.send(:move_view, webView).should == { OSX::NSViewAnimationTargetKey => webView, OSX::NSViewAnimationEndFrameKey => webView.frame.inspect }
+  end
+  
+  it "should enlarge the window to show the browser when the `toggle class browser' button state is off" do
+    stub_view_animations!
+    
+    expected_window_frame = window.frame.dup
+    expected_window_frame.height -= 135
+    expected_window_frame.y += 135
+    
+    OSX::NSValue.expects(:valueWithRect).with do |new_window_frame|
+      new_window_frame == expected_window_frame
+    end.returns(expected_window_frame.inspect)
+    
+    expected_window_animation = { OSX::NSViewAnimationTargetKey => window, OSX::NSViewAnimationEndFrameKey => expected_window_frame.inspect }
+    controller.expects(:animate).with(expected_window_animation, *@views)
+    
+    button = OSX::NSButton.alloc.init
+    button.state = OSX::NSOffState
+    controller.toggleClassBrowser(OSX::NSButton.alloc.init)
+  end
+  
+  it "should shrink the window to hide the browser when the `toggle class browser' button state is on" do
+    stub_view_animations!
+    
+    expected_window_frame = window.frame.dup
+    expected_window_frame.height += 135
+    expected_window_frame.y -= 135
+    
+    OSX::NSValue.expects(:valueWithRect).with do |new_window_frame|
+      new_window_frame == expected_window_frame
+    end.returns(expected_window_frame.inspect)
+    
+    expected_window_animation = { OSX::NSViewAnimationTargetKey => window, OSX::NSViewAnimationEndFrameKey => expected_window_frame.inspect }
+    controller.expects(:animate).with(expected_window_animation, *@views)
+    
+    button = OSX::NSButton.alloc.init
+    button.state = OSX::NSOnState
+    controller.toggleClassBrowser(button)
+  end
+  
+  private
+  
+  def stub_view_animations!
+    @views.each do |view|
+      controller.stubs(:move_view).with(eval(view)).returns(view)
+    end
   end
 end
 

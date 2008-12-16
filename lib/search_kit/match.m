@@ -13,6 +13,8 @@
     [self setURL:url];
     [self setScore:score];
     return self;
+  } else {
+    return nil;
   }
 }
 

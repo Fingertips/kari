@@ -8,6 +8,7 @@ class ApplicationController < Rucola::RCController
   ib_outlet :bookmarkController
   ib_outlet :resultsScrollView
   ib_outlet :addBookmarkToolbarButton
+  ib_outlet :classBrowser
   ib_outlet :classTreeController
   
   kvc_accessor :processing, :class_tree
@@ -81,6 +82,20 @@ class ApplicationController < Rucola::RCController
     end
   end
   
+  def toggleClassBrowser(toggle_button)
+    new_window_frame = @window.frame
+    if toggle_button.state == OSX::NSOnState
+      new_window_frame.height += 135
+      new_window_frame.y -= 135
+    else
+      new_window_frame.height -= 135
+      new_window_frame.y += 135
+    end
+    
+    resize_window = { OSX::NSViewAnimationTargetKey => @window, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(new_window_frame) }
+    animate(resize_window, move_view(@resultsScrollView), move_view(@classBrowser), move_view(@webView))
+  end
+  
   def activateSearchField(sender = nil)
     @window.makeFirstResponder(@searchTextField)
   end
@@ -144,66 +159,6 @@ class ApplicationController < Rucola::RCController
     @webViewController.load_url bookmark.url
   end
   
-  # def bookmarkBarToggledVisibility(bookmarkBar)
-  #   offset = (bookmarkBar.frame.height.zero? ? -OSX::SABookmarkBar::HEIGHT : OSX::SABookmarkBar::HEIGHT)
-  #   p offset
-  #   
-  #   # move the y position of the webView and the resultsScrollView up/down, the view is flipped so subtract the offset
-  #   # webView_frame = @webView.frame
-  #   # @webView.frameSize = OSX::NSSize.new(webView_frame.width, webView_frame.height - offset)
-  #   # 
-  #   # scrollView_frame = @resultsScrollView.frame
-  #   # @resultsScrollView.frameSize = OSX::NSSize.new(scrollView_frame.width, scrollView_frame.height - offset)
-  #   
-  #   # resize the window
-  #   window_frame = @window.frame
-  #   #new_size = OSX::NSSize.new(window_frame.width, window_frame.height + offset)
-  #   new_size = OSX::NSSize.new(window_frame.width, window_frame.height - offset)
-  #   new_origin = OSX::NSPoint.new(window_frame.x, window_frame.y + offset)
-  #   #@window.setFrame_display_animate(OSX::NSRect.new(new_origin, new_size), true, true)
-  #   
-  #   windowRect = OSX::NSRect.new(new_origin, new_size)
-  #   windowResize = { OSX::NSViewAnimationTargetKey => @window, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(windowRect) }
-  #   
-  #   bookmarkBarRect = OSX::NSRect.new(bookmarkBar.frame.origin, OSX::NSSize.new(bookmarkBar.frame.width, bookmarkBar.frame.height - offset))
-  #   bookmarkBarResize = { OSX::NSViewAnimationTargetKey => bookmarkBar, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(bookmarkBarRect) }
-  #   
-  #   webView_frame = @webView.frame
-  #   webViewRect = OSX::NSRect.new(webView_frame.origin, OSX::NSSize.new(webView_frame.width, webView_frame.height))
-  #   webViewResize = { OSX::NSViewAnimationTargetKey => @webView, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(webViewRect) }
-  #   
-  #   scrollView_frame = @resultsScrollView.frame
-  #   scrollViewRect = OSX::NSRect.new(scrollView_frame.origin, OSX::NSSize.new(scrollView_frame.width, scrollView_frame.height))
-  #   scrollViewResize = { OSX::NSViewAnimationTargetKey => @resultsScrollView, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(scrollViewRect) }
-  #   
-  #   animation = OSX::NSViewAnimation.alloc.initWithViewAnimations([windowResize, bookmarkBarResize, webViewResize, scrollViewResize])
-  #   animation.animationBlockingMode = OSX::NSAnimationBlocking
-  #   animation.duration = 0.15
-  #   animation.startAnimation
-  # end
-  
-  def bookmarkBarToggledVisibility(bookmarkBar)
-    OSX::CATransaction.begin
-    #OSX::NSAnimationContext.beginGrouping
-    
-    offset = 21
-    
-    bookmarkBar_frame = bookmarkBar.frame
-    #bookmarkBar.animator.frame = OSX::NSRect.new(OSX::NSPoint.new(bookmarkBar_frame.origin.x, bookmarkBar_frame.origin.y + offset), bookmarkBar.frame.size)
-    #p bookmarkBar.layer
-    #p bookmarkBar.layer.objc_methods.sort.grep(/frame|position/i)
-    bookmarkBar.layer.position = OSX::NSPoint.new(bookmarkBar_frame.origin.x, bookmarkBar_frame.origin.y - offset)
-    
-    window_frame = @window.frame
-    @window.animator.setFrame_display(OSX::NSRect.new(OSX::NSPoint.new(window_frame.origin.x, window_frame.origin.y + offset), OSX::NSSize.new(window_frame.width, window_frame.height - offset)), true)
-    
-    webView_frame = @webView.frame
-    @webView.animator.frame = OSX::NSRect.new(webView_frame.origin, OSX::NSSize.new(webView_frame.width, webView_frame.height))
-    
-    #OSX::NSAnimationContext.endGrouping
-    OSX::CATransaction.commit
-  end
-  
   # WebViewController delegate methods
   
   def webViewFinishedLoading(aNotification)
@@ -221,5 +176,17 @@ class ApplicationController < Rucola::RCController
   def bring_webView_to_front!
     @webView.hidden = false
     @resultsScrollView.hidden = true
+  end
+  
+  def animate(*view_animations)
+    animation = OSX::NSViewAnimation.alloc.initWithViewAnimations(view_animations)
+    animation.animationBlockingMode = OSX::NSAnimationBlocking
+    animation.duration = 0.3
+    animation.startAnimation
+  end
+  
+  # Use the current frame of the control, as this will lead to the desired effect of "moving" the control. Ie: keeping the Y difference the same.
+  def move_view(view)
+    { OSX::NSViewAnimationTargetKey => view, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(view.frame) }
   end
 end
