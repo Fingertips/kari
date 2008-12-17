@@ -1,6 +1,12 @@
 class ApplicationController < Rucola::RCController
   STATUS_BAR_HEIGHT = 20
   
+  def setup_toggleClassBrowserVisbilityButton_state!
+    p @splitView.frame
+    p contentView_minus_statusBar_frame
+    @toggleClassBrowserVisbilityButton.state = (contentView_minus_statusBar_frame == @splitView.frame ? OSX::NSOnState : OSX::NSOffState)
+  end
+  
   def topViewOfSplitView
     @topViewOfSplitView ||= @splitView.subviews.first
   end
@@ -10,10 +16,10 @@ class ApplicationController < Rucola::RCController
   end
   
   def toggleClassBrowser(toggle_button)
+    #OSX::NSUserDefaults.standardUserDefaults['ClassBrowserVisible'] = toggle_button.state
+    
     if toggle_button.state == OSX::NSOnState
-      splitView_frame = @window.contentView.frame.dup
-      splitView_frame.height -= STATUS_BAR_HEIGHT
-      splitView_frame.y += STATUS_BAR_HEIGHT
+      splitView_frame = contentView_minus_statusBar_frame
     else
       splitView_frame = @splitView.frame.dup
       splitView_frame.height += (topViewOfSplitView.frame.height + @splitView.dividerThickness)
@@ -38,16 +44,23 @@ class ApplicationController < Rucola::RCController
       bottom_frame.height = new_frame.height - top_frame.height
       bottom_frame.width = new_frame.width
       
-      # p [top_frame, bottom_frame]
-      # p new_frame
-      # p top_frame.height + bottom_frame.height + @splitView.dividerThickness
+      p [top_frame, bottom_frame]
+      p new_frame
+      p top_frame.height + bottom_frame.height + @splitView.dividerThickness
       
       topViewOfSplitView.frame, bottomViewOfSplitView.frame = top_frame, bottom_frame
     end
   end
   
   def setup_splitView!
-    splitView_resizeSubviewsWithOldSize(nil, nil)
+    # p class_browser_height
+    # p @splitView.frame
+    # new_frame = contentView_minus_statusBar_frame
+    # new_frame.height += class_browser_height + @splitView.dividerThickness
+    # p new_frame
+    # @splitView.frame = new_frame
+    # p @splitView.frame
+    # splitView_resizeSubviewsWithOldSize(nil, nil)
   end
   
   def will_update_split_view
@@ -59,16 +72,32 @@ class ApplicationController < Rucola::RCController
     if @will_update_split_view
       @will_update_split_view = false
     else
-      @class_browser_height = @classBrowser.frame.height
+      self.class_browser_height = @classBrowser.frame.height
     end
   end
   
+  def class_browser_height=(height)
+    preferences['ClassBrowserHeight'] = height
+    @class_browser_height = height
+  end
+  
+  # test
   def class_browser_height
-    #@class_browser_height ||= @classBrowser.frame.height
-    @class_browser_height || 157
+    @class_browser_height || (preferences['ClassBrowserHeight'].to_i if preferences['ClassBrowserHeight']) || 157
   end
   
   private
+  
+  def preferences
+    OSX::NSUserDefaults.standardUserDefaults
+  end
+  
+  def contentView_minus_statusBar_frame
+    frame = @window.contentView.frame.dup
+    frame.height -= STATUS_BAR_HEIGHT
+    frame.y += STATUS_BAR_HEIGHT
+    frame
+  end
   
   def animate(*view_animations)
     animation = OSX::NSViewAnimation.alloc.initWithViewAnimations(view_animations)

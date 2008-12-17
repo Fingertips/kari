@@ -19,6 +19,7 @@ class ApplicationController < Rucola::RCController
   ib_outlet :classBrowser
   ib_outlet :classTreeController
   ib_outlet :splitView
+  ib_outlet :toggleClassBrowserVisbilityButton
   
   kvc_accessor :processing, :class_tree
   
@@ -28,6 +29,9 @@ class ApplicationController < Rucola::RCController
   end
   
   def awakeFromNib
+    p @classBrowser.frame
+    p @classBrowser.titleHeight
+    #setup_toggleClassBrowserVisbilityButton_state!
     setup_splitView!
     
     # Register notifications

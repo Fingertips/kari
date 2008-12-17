@@ -8,13 +8,13 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="703"/>
-			<integer value="237"/>
 			<integer value="304"/>
-			<integer value="257"/>
-			<integer value="715"/>
-			<integer value="214"/>
+			<integer value="237"/>
 			<integer value="439"/>
+			<integer value="21"/>
+			<integer value="703"/>
+			<integer value="214"/>
+			<integer value="257"/>
 			<integer value="468"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -838,7 +838,7 @@
 										<bool key="EncodedWithXMLCoder">YES</bool>
 										<object class="NSBrowser" id="512834108">
 											<reference key="NSNextResponder" ref="3588758"/>
-											<int key="NSvFlags">274</int>
+											<int key="NSvFlags">266</int>
 											<string key="NSFrame">{{0, 1}, {619, 157}}</string>
 											<reference key="NSSuperview" ref="3588758"/>
 											<bool key="NSEnabled">YES</bool>
@@ -2325,6 +2325,14 @@
 					</object>
 					<int key="connectionID">717</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">toggleClassBrowserVisbilityButton</string>
+						<reference key="source" ref="231439656"/>
+						<reference key="destination" ref="468252614"/>
+					</object>
+					<int key="connectionID">718</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -3725,7 +3733,7 @@
 					<reference ref="9"/>
 					<string>{{843, 639}, {619, 485}}</string>
 					<integer value="0"/>
-					<integer value="1"/>
+					<reference ref="9"/>
 					<string>{619, 500}</string>
 					<string>{619, 500}</string>
 					<string>{{56, 731}, {233, 25}}</string>
@@ -3932,7 +3940,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">717</int>
+			<int key="maxID">718</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3964,10 +3972,12 @@
 							<string>resultsScrollView</string>
 							<string>searchController</string>
 							<string>splitView</string>
+							<string>toggleClassBrowserVisbilityButton</string>
 							<string>webView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
