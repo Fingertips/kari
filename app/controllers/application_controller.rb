@@ -1,4 +1,12 @@
 class ApplicationController < Rucola::RCController
+  def self.concerned_with(name)
+    require File.expand_path("../application_controller/#{name}", __FILE__)
+  end
+  
+  concerned_with 'split_view'
+  concerned_with 'web_view'
+  concerned_with 'search'
+  
   ib_outlet :window
   ib_outlet :webView
   ib_outlet :webViewController
@@ -10,6 +18,7 @@ class ApplicationController < Rucola::RCController
   ib_outlet :addBookmarkToolbarButton
   ib_outlet :classBrowser
   ib_outlet :classTreeController
+  ib_outlet :splitView
   
   kvc_accessor :processing, :class_tree
   
@@ -19,6 +28,8 @@ class ApplicationController < Rucola::RCController
   end
   
   def awakeFromNib
+    setup_splitView!
+    
     # Register notifications
     OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
       :addObserver, self,
@@ -45,6 +56,8 @@ class ApplicationController < Rucola::RCController
     )
     
     # Lets wrap it up!
+    @splitView.delegate = self
+    
     @window.delegate = self
     @bookmarkController.delegate = self
     @searchController.delegate = self
@@ -89,20 +102,6 @@ class ApplicationController < Rucola::RCController
     end
   end
   
-  def toggleClassBrowser(toggle_button)
-    new_window_frame = @window.frame
-    if toggle_button.state == OSX::NSOnState
-      new_window_frame.height += 135
-      new_window_frame.y -= 135
-    else
-      new_window_frame.height -= 135
-      new_window_frame.y += 135
-    end
-    
-    resize_window = { OSX::NSViewAnimationTargetKey => @window, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(new_window_frame) }
-    animate(resize_window, move_view(@resultsScrollView), move_view(@classBrowser), move_view(@webView))
-  end
-  
   def activateSearchField(sender = nil)
     @window.makeFirstResponder(@searchTextField)
   end
@@ -120,8 +119,6 @@ class ApplicationController < Rucola::RCController
     ).runOperation
   end
   
-  # Application delegate methods
-  
   def applicationDidFinishLaunching(aNotification)
     activateSearchField
   end
@@ -132,50 +129,12 @@ class ApplicationController < Rucola::RCController
     Manager.instance.close
   end
   
-  # Window delegate matehods
-  
   def windowWillClose(notification)
     OSX::NSApplication.sharedApplication.terminate(self)
   end
   
-  # SearchController delegate methods
-  
-  def searchControllerWillStartSearching
-    @addBookmarkToolbarButton.enabled = false
-    @searchProgressIndicator.startAnimation(self)
-    
-    @webView.hidden = true
-    @resultsScrollView.hidden = false
-  end
-  
-  def searchControllerFinishedSearching
-    @searchProgressIndicator.stopAnimation(self)
-  end
-  
-  def searchController_selectedFile(sender, url)
-    @webViewController.load_url(url)
-    @webViewController.add_search_back_forward_item(@searchTextField.stringValue)
-    @webView.hidden = false
-    @resultsScrollView.hidden = true
-    @window.makeFirstResponder(@webView)
-  end
-  
-  # BookmarkController delegate methods
-  
   def bookmarkClicked(bookmark)
     @webViewController.load_url bookmark.url
-  end
-  
-  # WebViewController delegate methods
-  
-  def webViewFinishedLoading(aNotification)
-    @addBookmarkToolbarButton.enabled = @webViewController.bookmarkable?
-    bring_webView_to_front!
-  end
-  
-  def webView_didSelectSearchQuery(webView, query)
-    @searchTextField.stringValue = query
-    @searchController.search(@searchTextField)
   end
   
   private
@@ -183,17 +142,5 @@ class ApplicationController < Rucola::RCController
   def bring_webView_to_front!
     @webView.hidden = false
     @resultsScrollView.hidden = true
-  end
-  
-  def animate(*view_animations)
-    animation = OSX::NSViewAnimation.alloc.initWithViewAnimations(view_animations)
-    animation.animationBlockingMode = OSX::NSAnimationBlocking
-    animation.duration = 0.3
-    animation.startAnimation
-  end
-  
-  # Use the current frame of the control, as this will lead to the desired effect of "moving" the control. Ie: keeping the Y difference the same.
-  def move_view(view)
-    { OSX::NSViewAnimationTargetKey => view, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(view.frame) }
   end
 end

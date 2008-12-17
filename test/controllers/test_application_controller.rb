@@ -26,6 +26,8 @@ module ApplicationControllerSpecHelper
     @namespace_mock = stub('Manager#namespace')
     @namespace_mock.stubs(:tree).returns({})
     @manager_mock.stubs(:namespace).returns(@namespace_mock)
+    
+    controller.stubs(:setup_splitView!)
   end
 end
 
@@ -33,6 +35,11 @@ describe 'ApplicationController, during awakeFromNib' do
   tests ApplicationController
   
   include ApplicationControllerSpecHelper
+  
+  xit "should setup the splitView so the top is hidden if necessary" do
+    controller.expects(:setup_splitView!)
+    controller.awakeFromNib
+  end
   
   it "should set the correct default kvc values" do
     controller.stubs(:buildIndex)
@@ -69,68 +76,54 @@ describe 'ApplicationController, during awakeFromNib' do
   end
 end
 
-describe "ApplicationController, when toggling the class browser visibility" do
+describe "ApplicationController, when dealing with the positioning of the splitView" do
   tests ApplicationController
   
   def after_setup
-    ib_outlets :webView => OSX::NSView.alloc.initWithFrame([0, 0, 200, 200]),
-               :resultsScrollView => OSX::NSScrollView.alloc.initWithFrame([0, 0, 200, 200]),
-               :classBrowser => OSX::NSBrowser.alloc.initWithFrame([0, 200, 200, 135])
+    ib_outlets :classBrowser => OSX::NSBrowser.alloc.initWithFrame([0, 200, 200, 100]),
+               :splitView => OSX::NSSplitView.alloc.initWithFrame([0, 0, 200, 200])
     
-    window.stubs(:frame).returns(OSX::NSRect.new(0, 0, 200, 200))
-    OSX::NSViewAnimation.any_instance.stubs(:startAnimation)
-    @views = %w{ resultsScrollView classBrowser webView }
+    window.stubs(:contentView).returns(OSX::NSView.alloc.initWithFrame(OSX::NSRect.new(0, 0, 200, 200)))
+    
+    splitView.vertical = false
+    2.times { splitView.addSubview OSX::NSView.alloc.initWithFrame([0, 0, 200, 100]) }
   end
   
-  it "should return a hash with animation properties for a view, which makes the view end up at the same Y position as before (basically moving the view)" do
-    OSX::NSValue.stubs(:valueWithRect).with(webView.frame).returns(webView.frame.inspect)
-    controller.send(:move_view, webView).should == { OSX::NSViewAnimationTargetKey => webView, OSX::NSViewAnimationEndFrameKey => webView.frame.inspect }
+  it "should make the split view span the complete content view of the window, minus the status bar, when the `toggle class browser' button state is turned on" do
+    expected_split_view_frame = window.contentView.frame.dup
+    expected_split_view_frame.height -= ApplicationController::STATUS_BAR_HEIGHT
+    expected_split_view_frame.y += ApplicationController::STATUS_BAR_HEIGHT
+    
+    should_animate_scrollView_to_frame(expected_split_view_frame)
+    controller.toggleClassBrowser(button(OSX::NSOnState))
   end
   
-  it "should enlarge the window to show the browser when the `toggle class browser' button state is off" do
-    stub_view_animations!
+  it "should only show the bottom part of the split view when the `toggle class browser' button state is turned off" do
+    expected_split_view_frame = window.contentView.frame.dup
+    expected_split_view_frame.height += (100 + splitView.dividerThickness)
     
-    expected_window_frame = window.frame.dup
-    expected_window_frame.height -= 135
-    expected_window_frame.y += 135
-    
-    OSX::NSValue.expects(:valueWithRect).with do |new_window_frame|
-      new_window_frame == expected_window_frame
-    end.returns(expected_window_frame.inspect)
-    
-    expected_window_animation = { OSX::NSViewAnimationTargetKey => window, OSX::NSViewAnimationEndFrameKey => expected_window_frame.inspect }
-    controller.expects(:animate).with(expected_window_animation, *@views)
-    
-    button = OSX::NSButton.alloc.init
-    button.state = OSX::NSOffState
-    controller.toggleClassBrowser(OSX::NSButton.alloc.init)
-  end
-  
-  it "should shrink the window to hide the browser when the `toggle class browser' button state is on" do
-    stub_view_animations!
-    
-    expected_window_frame = window.frame.dup
-    expected_window_frame.height += 135
-    expected_window_frame.y -= 135
-    
-    OSX::NSValue.expects(:valueWithRect).with do |new_window_frame|
-      new_window_frame == expected_window_frame
-    end.returns(expected_window_frame.inspect)
-    
-    expected_window_animation = { OSX::NSViewAnimationTargetKey => window, OSX::NSViewAnimationEndFrameKey => expected_window_frame.inspect }
-    controller.expects(:animate).with(expected_window_animation, *@views)
-    
-    button = OSX::NSButton.alloc.init
-    button.state = OSX::NSOnState
-    controller.toggleClassBrowser(button)
+    should_animate_scrollView_to_frame(expected_split_view_frame)
+    controller.toggleClassBrowser(button(OSX::NSOffState))
   end
   
   private
   
-  def stub_view_animations!
-    @views.each do |view|
-      controller.stubs(:move_view).with(eval(view)).returns(view)
-    end
+  def should_animate_scrollView_to_frame(expected_split_view_frame)
+    OSX::NSValue.expects(:valueWithRect).with do |new_split_view_frame|
+      unless new_split_view_frame == expected_split_view_frame
+        puts "New splitView frame: #{new_split_view_frame.inspect}\ndoes not match expected frame: #{expected_split_view_frame.inspect}"
+      end
+      new_split_view_frame == expected_split_view_frame
+    end.returns(expected_split_view_frame.inspect)
+    
+    expected_split_view_animation = { OSX::NSViewAnimationTargetKey => splitView, OSX::NSViewAnimationEndFrameKey => expected_split_view_frame.inspect }
+    controller.expects(:animate).with(expected_split_view_animation)
+  end
+  
+  def button(state)
+    button = OSX::NSButton.alloc.init
+    button.state = state
+    button
   end
 end
 
