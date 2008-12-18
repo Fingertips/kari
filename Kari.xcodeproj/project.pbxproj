@@ -16,6 +16,8 @@
 		51137C0F0D854905000EADF3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 51137C0B0D854905000EADF3 /* InfoPlist.strings */; };
 		51137C200D854A14000EADF3 /* KariDocImporter.mdimporter in Copy Spotlight Importer */ = {isa = PBXBuildFile; fileRef = 51137C130D854A14000EADF3 /* KariDocImporter.mdimporter */; };
 		51137C220D854B70000EADF3 /* Kari.icns in Resources */ = {isa = PBXBuildFile; fileRef = 51137C210D854B70000EADF3 /* Kari.icns */; };
+		5130B8390EFAB20000944BE5 /* MGViewAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5130B8370EFAB20000944BE5 /* MGViewAnimation.h */; };
+		5130B83A0EFAB20000944BE5 /* MGViewAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5130B8380EFAB20000944BE5 /* MGViewAnimation.m */; };
 		514292CE0CC66CDC00F9CEEF /* app in Resources */ = {isa = PBXBuildFile; fileRef = 514292B90CC66CDC00F9CEEF /* app */; };
 		514292CF0CC66CDC00F9CEEF /* config in Resources */ = {isa = PBXBuildFile; fileRef = 514292C10CC66CDC00F9CEEF /* config */; };
 		514292D00CC66CDC00F9CEEF /* misc in Resources */ = {isa = PBXBuildFile; fileRef = 514292C40CC66CDC00F9CEEF /* misc */; };
@@ -72,6 +74,8 @@
 		51137C0C0D854905000EADF3 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		51137C130D854A14000EADF3 /* KariDocImporter.mdimporter */ = {isa = PBXFileReference; lastKnownFileType = folder; path = KariDocImporter.mdimporter; sourceTree = "<group>"; };
 		51137C210D854B70000EADF3 /* Kari.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Kari.icns; sourceTree = "<group>"; };
+		5130B8370EFAB20000944BE5 /* MGViewAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGViewAnimation.h; sourceTree = "<group>"; };
+		5130B8380EFAB20000944BE5 /* MGViewAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGViewAnimation.m; sourceTree = "<group>"; };
 		514292B90CC66CDC00F9CEEF /* app */ = {isa = PBXFileReference; lastKnownFileType = folder; path = app; sourceTree = "<group>"; };
 		514292C10CC66CDC00F9CEEF /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
 		514292C40CC66CDC00F9CEEF /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
@@ -170,6 +174,8 @@
 				516499AE0EEEBFBD0000C1E3 /* Index.m */,
 				51CAD5FC0EF02CC7008F5EDF /* match.h */,
 				51CAD5FD0EF02CC7008F5EDF /* match.m */,
+				5130B8370EFAB20000944BE5 /* MGViewAnimation.h */,
+				5130B8380EFAB20000944BE5 /* MGViewAnimation.m */,
 				638CCA7C0DF06404008C4936 /* BridgeSupport */,
 				514292B90CC66CDC00F9CEEF /* app */,
 				514292C10CC66CDC00F9CEEF /* config */,
@@ -232,6 +238,7 @@
 			files = (
 				516499AF0EEEBFBD0000C1E3 /* Index.h in Headers */,
 				51CAD5FE0EF02CC7008F5EDF /* match.h in Headers */,
+				5130B8390EFAB20000944BE5 /* MGViewAnimation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +314,7 @@
 				4DDCA70A0ACC9A6100E082CE /* main.m in Sources */,
 				516499B00EEEBFBD0000C1E3 /* Index.m in Sources */,
 				51CAD5FF0EF02CC7008F5EDF /* match.m in Sources */,
+				5130B83A0EFAB20000944BE5 /* MGViewAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

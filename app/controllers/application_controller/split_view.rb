@@ -111,7 +111,7 @@ class ApplicationController < Rucola::RCController
   end
   
   def animate(*view_animations)
-    animation = OSX::NSViewAnimation.alloc.initWithViewAnimations(view_animations)
+    animation = OSX::MGViewAnimation.alloc.initWithViewAnimations(view_animations)
     animation.animationBlockingMode = OSX::NSAnimationBlocking
     animation.duration = 0.3
     animation.startAnimation
