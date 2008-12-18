@@ -29,9 +29,7 @@ class ApplicationController < Rucola::RCController
   end
   
   def awakeFromNib
-    p @classBrowser.frame
-    p @classBrowser.titleHeight
-    #setup_toggleClassBrowserVisbilityButton_state!
+    # First things first, make it look as it should!
     setup_splitView!
     
     # Register notifications

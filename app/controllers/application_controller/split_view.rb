@@ -1,12 +1,6 @@
 class ApplicationController < Rucola::RCController
   STATUS_BAR_HEIGHT = 20
   
-  def setup_toggleClassBrowserVisbilityButton_state!
-    p @splitView.frame
-    p contentView_minus_statusBar_frame
-    @toggleClassBrowserVisbilityButton.state = (contentView_minus_statusBar_frame == @splitView.frame ? OSX::NSOnState : OSX::NSOffState)
-  end
-  
   def topViewOfSplitView
     @topViewOfSplitView ||= @splitView.subviews.first
   end
@@ -16,63 +10,53 @@ class ApplicationController < Rucola::RCController
   end
   
   def toggleClassBrowser(toggle_button)
-    #OSX::NSUserDefaults.standardUserDefaults['ClassBrowserVisible'] = toggle_button.state
-    
-    if toggle_button.state == OSX::NSOnState
-      splitView_frame = contentView_minus_statusBar_frame
-    else
-      splitView_frame = @splitView.frame.dup
-      splitView_frame.height += (topViewOfSplitView.frame.height + @splitView.dividerThickness)
+    will_animate_splitView do
+      splitView_frame, top_frame, bottom_frame = calculate_splitView_frames
+      splitView_animation = { OSX::NSViewAnimationTargetKey => @splitView, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(splitView_frame) }
+      
+      # If the class browser is _not_ visible, so we are going to make it dissapear,
+      # then we shouldn't animate the bottom view. The reason being that if can become
+      # ugly if the bottom view shrinks faster than the total split view.
+      # Ie: You will see a empty piece of frame for a split second.
+      # To fix this we simply set the complete frame without animating,
+      # so it will actually appear from under the status bar.
+      #
+      # However, if we are going to show the class browser we should animate,
+      # otherwise the same problem as before will occur (seeing an empty piece of frame for a moment).
+      if class_browser_visible?
+        bottomView_animation = { OSX::NSViewAnimationTargetKey => bottomViewOfSplitView, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(bottom_frame) }
+        animate(splitView_animation, bottomView_animation)
+      else
+        bottomViewOfSplitView.frame = bottom_frame
+        animate(splitView_animation)
+      end
     end
-    
-    splitView_animation = { OSX::NSViewAnimationTargetKey => @splitView, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(splitView_frame) }
-    animate(splitView_animation)
   end
   
   def splitView_resizeSubviewsWithOldSize(splitView, old_size)
-    will_update_split_view do
-      new_frame = @splitView.frame
-      top_frame = topViewOfSplitView.frame
-      bottom_frame = bottomViewOfSplitView.frame
-      
-      # The NSBrowser instance has a height of 135px in Interface Builder,
-      # but for some reason it's 157px when I query it: @classBrowser.frame.height
-      top_frame.height = class_browser_height - (2 * @splitView.dividerThickness) - 4
-      top_frame.width = new_frame.width
-      
-      bottom_frame.y = top_frame.height + @splitView.dividerThickness
-      bottom_frame.height = new_frame.height - top_frame.height
-      bottom_frame.width = new_frame.width
-      
-      p [top_frame, bottom_frame]
-      p new_frame
-      p top_frame.height + bottom_frame.height + @splitView.dividerThickness
-      
-      topViewOfSplitView.frame, bottomViewOfSplitView.frame = top_frame, bottom_frame
+    return if updating_splitView?
+    
+    will_update_splitView do
+      splitView_frame, top_frame, bottom_frame = calculate_splitView_frames
+      @splitView.frame = splitView_frame
+      topViewOfSplitView.frame = top_frame
+      bottomViewOfSplitView.frame = bottom_frame
     end
   end
   
   def setup_splitView!
-    # p class_browser_height
-    # p @splitView.frame
-    # new_frame = contentView_minus_statusBar_frame
-    # new_frame.height += class_browser_height + @splitView.dividerThickness
-    # p new_frame
-    # @splitView.frame = new_frame
-    # p @splitView.frame
-    # splitView_resizeSubviewsWithOldSize(nil, nil)
-  end
-  
-  def will_update_split_view
-    @will_update_split_view = true
-    yield
+    splitView_resizeSubviewsWithOldSize(nil, nil)
   end
   
   def splitViewDidResizeSubviews(notification)
-    if @will_update_split_view
-      @will_update_split_view = false
+    return if animating_splitView?
+    
+    if updating_splitView?
+      done_updating_splitView!
     else
-      self.class_browser_height = @classBrowser.frame.height
+      # Since the class browser fits to the top frame, and the top frame returns the correct
+      # height whereas the browser does not for some reason, we actually store the height of the top frame.
+      self.class_browser_height = topViewOfSplitView.frame.height
     end
   end
   
@@ -81,15 +65,42 @@ class ApplicationController < Rucola::RCController
     @class_browser_height = height
   end
   
-  # test
   def class_browser_height
-    @class_browser_height || (preferences['ClassBrowserHeight'].to_i if preferences['ClassBrowserHeight']) || 157
+    @class_browser_height ||= ((preferences['ClassBrowserHeight'].to_i if preferences['ClassBrowserHeight']) || 135) # should become a default pref
   end
   
   private
   
   def preferences
     OSX::NSUserDefaults.standardUserDefaults
+  end
+  
+  def class_browser_visible?
+    preferences['ClassBrowserVisible'].to_ruby
+  end
+  
+  def updating_splitView?
+    @updating_splitView
+  end
+  
+  def done_updating_splitView!
+    @updating_splitView = false
+  end
+  
+  def will_update_splitView
+    @updating_splitView = true
+    yield
+  end
+  
+  def animating_splitView?
+    @animating_splitView
+  end
+  
+  def will_animate_splitView(&block)
+    @animating_splitView = true
+    will_update_splitView(&block)
+    done_updating_splitView!
+    @animating_splitView = false
   end
   
   def contentView_minus_statusBar_frame
@@ -104,5 +115,25 @@ class ApplicationController < Rucola::RCController
     animation.animationBlockingMode = OSX::NSAnimationBlocking
     animation.duration = 0.3
     animation.startAnimation
+  end
+  
+  def calculate_splitView_frames
+    splitView_frame = @splitView.frame
+    top_frame = topViewOfSplitView.frame
+    bottom_frame = bottomViewOfSplitView.frame
+    
+    top_frame.height = class_browser_height
+    top_frame.width = bottom_frame.width = splitView_frame.width
+    bottom_frame.y = top_frame.height + @splitView.dividerThickness
+    
+    if class_browser_visible?
+      splitView_frame.height = contentView_minus_statusBar_frame.height
+      bottom_frame.height = splitView_frame.height - top_frame.height - @splitView.dividerThickness
+    else
+      bottom_frame.height = contentView_minus_statusBar_frame.height
+      splitView_frame.height = top_frame.height + @splitView.dividerThickness + bottom_frame.height
+    end
+    
+    [splitView_frame, top_frame, bottom_frame]
   end
 end

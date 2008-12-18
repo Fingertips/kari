@@ -8,14 +8,14 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="304"/>
-			<integer value="237"/>
+			<integer value="468"/>
+			<integer value="2"/>
 			<integer value="439"/>
-			<integer value="21"/>
 			<integer value="703"/>
 			<integer value="214"/>
+			<integer value="304"/>
+			<integer value="237"/>
 			<integer value="257"/>
-			<integer value="468"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -746,7 +746,7 @@
 			<object class="NSWindowTemplate" id="331163929">
 				<int key="NSWindowStyleMask">4111</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{234, 91}, {619, 500}}</string>
+				<string key="NSWindowRect">{{227, 109}, {619, 500}}</string>
 				<int key="NSWTFlags">1886912512</int>
 				<string key="NSWindowTitle">Kari</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -838,8 +838,8 @@
 										<bool key="EncodedWithXMLCoder">YES</bool>
 										<object class="NSBrowser" id="512834108">
 											<reference key="NSNextResponder" ref="3588758"/>
-											<int key="NSvFlags">266</int>
-											<string key="NSFrame">{{0, 1}, {619, 157}}</string>
+											<int key="NSvFlags">274</int>
+											<string key="NSFrameSize">{619, 157}</string>
 											<reference key="NSSuperview" ref="3588758"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSBrowserCell" key="NSCellPrototype">
@@ -2333,6 +2333,22 @@
 					</object>
 					<int key="connectionID">718</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.ClassBrowserVisible</string>
+						<reference key="source" ref="468252614"/>
+						<reference key="destination" ref="75247886"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="468252614"/>
+							<reference key="NSDestination" ref="75247886"/>
+							<string key="NSLabel">value: values.ClassBrowserVisible</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.ClassBrowserVisible</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">720</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -3726,14 +3742,14 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{76, 569}, {55, 25}}</string>
-					<string>{{234, 91}, {619, 500}}</string>
+					<string>{{227, 109}, {619, 500}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{234, 91}, {619, 500}}</string>
+					<string>{{227, 109}, {619, 500}}</string>
 					<reference ref="9"/>
 					<reference ref="9"/>
 					<string>{{843, 639}, {619, 485}}</string>
 					<integer value="0"/>
-					<reference ref="9"/>
+					<integer value="1"/>
 					<string>{619, 500}</string>
 					<string>{619, 500}</string>
 					<string>{{56, 731}, {233, 25}}</string>
@@ -3940,7 +3956,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">718</int>
+			<int key="maxID">720</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
