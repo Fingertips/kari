@@ -81,49 +81,51 @@ describe "ApplicationController, when dealing with the positioning of the splitV
   
   def after_setup
     ib_outlets :classBrowser => OSX::NSBrowser.alloc.initWithFrame([0, 200, 200, 100]),
-               :splitView => OSX::NSSplitView.alloc.initWithFrame([0, 0, 200, 200])
+               :splitView => OSX::NSSplitView.alloc.initWithFrame([0, 20, 200, 280])
     
     window.stubs(:contentView).returns(OSX::NSView.alloc.initWithFrame(OSX::NSRect.new(0, 0, 200, 200)))
     
     splitView.vertical = false
-    2.times { splitView.addSubview OSX::NSView.alloc.initWithFrame([0, 0, 200, 100]) }
+    splitView.addSubview OSX::NSView.alloc.initWithFrame([0, 0, 200, 100]) # top
+    splitView.addSubview OSX::NSView.alloc.initWithFrame([0, 0, 200, 180]) # bottom
+    
+    OSX::NSUserDefaults.standardUserDefaults['ClassBrowserHeight'] = classBrowser.frame.height
   end
   
   it "should make the split view span the complete content view of the window, minus the status bar, when the `toggle class browser' button state is turned on" do
-    expected_split_view_frame = window.contentView.frame.dup
-    expected_split_view_frame.height -= ApplicationController::STATUS_BAR_HEIGHT
-    expected_split_view_frame.y += ApplicationController::STATUS_BAR_HEIGHT
+    self.class_browser_visible = true
     
-    should_animate_scrollView_to_frame(expected_split_view_frame)
-    controller.toggleClassBrowser(button(OSX::NSOnState))
+    assert_difference('splitView.frame.height', -classBrowser.frame.height) do
+      #assert_no_difference('controller.topViewOfSplitView.frame.height') do
+        assert_difference('controller.bottomViewOfSplitView.frame.height', -(classBrowser.frame.height + splitView.dividerThickness)) do
+          controller.toggleClassBrowser(nil)
+        end
+      #end
+    end
   end
   
   it "should only show the bottom part of the split view when the `toggle class browser' button state is turned off" do
-    expected_split_view_frame = window.contentView.frame.dup
-    expected_split_view_frame.height += (100 + splitView.dividerThickness)
+    set_class_browser_state_to_visible!
+    self.class_browser_visible = false
     
-    should_animate_scrollView_to_frame(expected_split_view_frame)
-    controller.toggleClassBrowser(button(OSX::NSOffState))
+    assert_difference('splitView.frame.height', +(classBrowser.frame.height + splitView.dividerThickness)) do
+      #assert_no_difference('controller.topViewOfSplitView.frame.height') do
+        #assert_difference('controller.bottomViewOfSplitView.frame.height', +(classBrowser.frame.height + splitView.dividerThickness)) do
+          controller.toggleClassBrowser(nil)
+        #end
+      #end
+    end
   end
   
   private
   
-  def should_animate_scrollView_to_frame(expected_split_view_frame)
-    OSX::NSValue.expects(:valueWithRect).with do |new_split_view_frame|
-      unless new_split_view_frame == expected_split_view_frame
-        puts "New splitView frame: #{new_split_view_frame.inspect}\ndoes not match expected frame: #{expected_split_view_frame.inspect}"
-      end
-      new_split_view_frame == expected_split_view_frame
-    end.returns(expected_split_view_frame.inspect)
-    
-    expected_split_view_animation = { OSX::NSViewAnimationTargetKey => splitView, OSX::NSViewAnimationEndFrameKey => expected_split_view_frame.inspect }
-    controller.expects(:animate).with(expected_split_view_animation)
+  def class_browser_visible=(value)
+    OSX::NSUserDefaults.standardUserDefaults['ClassBrowserVisible'] = value.to_ns
   end
   
-  def button(state)
-    button = OSX::NSButton.alloc.init
-    button.state = state
-    button
+  def set_class_browser_state_to_visible!
+    self.class_browser_visible = true
+    controller.toggleClassBrowser(nil)
   end
 end
 

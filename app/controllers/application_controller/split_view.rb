@@ -23,13 +23,13 @@ class ApplicationController < Rucola::RCController
       #
       # However, if we are going to show the class browser we should animate,
       # otherwise the same problem as before will occur (seeing an empty piece of frame for a moment).
-      if class_browser_visible?
+      # if class_browser_visible?
         bottomView_animation = { OSX::NSViewAnimationTargetKey => bottomViewOfSplitView, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(bottom_frame) }
         animate(splitView_animation, bottomView_animation)
-      else
-        bottomViewOfSplitView.frame = bottom_frame
-        animate(splitView_animation)
-      end
+      # else
+      #   bottomViewOfSplitView.frame = bottom_frame
+      #   animate(splitView_animation)
+      # end
     end
   end
   
