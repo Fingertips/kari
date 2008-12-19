@@ -126,6 +126,10 @@ class ApplicationController < Rucola::RCController
     @webViewController.load_url bookmark.url
   end
   
+  def changedSearchFilter(sender)
+    puts sender.selectedTag
+  end
+  
   private
   
   def bring_webView_to_front!

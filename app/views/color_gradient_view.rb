@@ -20,6 +20,10 @@ class ColorGradientView < OSX::NSView
     path.stroke
   end
   
+  def mouseDown(event)
+    # nuffin' to see
+  end
+  
   private
   
   def gradient

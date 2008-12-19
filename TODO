@@ -19,7 +19,7 @@ ANYONE
 
 IMPROVEMENTS
 
-- Maybe move splitView related code from ApplicationController into a subclass of NSSplitView.
+- Move splitView related code from ApplicationController into a subclass of NSSplitView and be sure to override resetCursorRect to _not_ use a different cursor when the divider is hidden.
 - Find and show Ruby installations in the source list of the 'Browse Ruby Installation' dialog
 - Use a code highlighter to highlight examples
 - Flag karidoc files with 'broken characters' (to prevent bugreports and gently nudge authors to fix their documentation)
