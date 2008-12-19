@@ -9,7 +9,7 @@ class WebViewController < Rucola::RCController
   end
   
   def awakeFromNib
-    @webview.preferences.tabsToLinks = true
+    @webview.objc_send(:preferences).tabsToLinks = true
     
     @webview.frameLoadDelegate = self
     @webview.policyDelegate = self

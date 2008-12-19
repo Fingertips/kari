@@ -44,22 +44,17 @@ class ApplicationController < Rucola::RCController
   end
   
   def class_browser_height=(height)
-    preferences['ClassBrowserHeight'] = height
-    @class_browser_height = height
+    @class_browser_height = preferences.interface.class_browser_height = height
   end
   
   def class_browser_height
-    @class_browser_height ||= ((preferences['ClassBrowserHeight'].to_i if preferences['ClassBrowserHeight']) || 135) # should become a default pref
+    @class_browser_height ||= preferences.interface.class_browser_height
   end
   
   private
   
-  def preferences
-    OSX::NSUserDefaults.standardUserDefaults
-  end
-  
   def class_browser_visible?
-    preferences['ClassBrowserVisible'].to_ruby
+    preferences.interface.class_browser_visible
   end
   
   def updating_splitView?

@@ -8,14 +8,14 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="468"/>
-			<integer value="2"/>
-			<integer value="439"/>
 			<integer value="703"/>
 			<integer value="214"/>
-			<integer value="304"/>
-			<integer value="237"/>
+			<integer value="2"/>
+			<integer value="468"/>
 			<integer value="257"/>
+			<integer value="237"/>
+			<integer value="304"/>
+			<integer value="439"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -720,6 +720,10 @@
 				<string key="NSName">_NSMainMenu</string>
 			</object>
 			<object class="NSUserDefaultsController" id="75247886">
+				<object class="NSMutableArray" key="NSDeclaredKeys">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+					<string>Preferences.Interface.class_browser_visible</string>
+				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSArrayController" id="597617964">
@@ -2335,19 +2339,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.ClassBrowserVisible</string>
+						<string key="label">value: values.Preferences.Interface.class_browser_visible</string>
 						<reference key="source" ref="468252614"/>
 						<reference key="destination" ref="75247886"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="468252614"/>
 							<reference key="NSDestination" ref="75247886"/>
-							<string key="NSLabel">value: values.ClassBrowserVisible</string>
+							<string key="NSLabel">value: values.Preferences.Interface.class_browser_visible</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.ClassBrowserVisible</string>
+							<string key="NSKeyPath">values.Preferences.Interface.class_browser_visible</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">720</int>
+					<int key="connectionID">721</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3956,7 +3960,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">720</int>
+			<int key="maxID">721</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
