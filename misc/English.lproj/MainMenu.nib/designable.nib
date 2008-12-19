@@ -8,14 +8,14 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="703"/>
 			<integer value="214"/>
-			<integer value="2"/>
 			<integer value="468"/>
 			<integer value="257"/>
-			<integer value="237"/>
-			<integer value="304"/>
 			<integer value="439"/>
+			<integer value="715"/>
+			<integer value="703"/>
+			<integer value="304"/>
+			<integer value="237"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -720,10 +720,6 @@
 				<string key="NSName">_NSMainMenu</string>
 			</object>
 			<object class="NSUserDefaultsController" id="75247886">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>Preferences.Interface.class_browser_visible</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSArrayController" id="597617964">
@@ -750,7 +746,7 @@
 			<object class="NSWindowTemplate" id="331163929">
 				<int key="NSWindowStyleMask">4111</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{227, 109}, {619, 500}}</string>
+				<string key="NSWindowRect">{{329, 529}, {619, 500}}</string>
 				<int key="NSWTFlags">1886912512</int>
 				<string key="NSWindowTitle">Kari</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -843,13 +839,13 @@
 										<object class="NSBrowser" id="512834108">
 											<reference key="NSNextResponder" ref="3588758"/>
 											<int key="NSvFlags">274</int>
-											<string key="NSFrameSize">{619, 157}</string>
+											<string key="NSFrameSize">{619, 138}</string>
 											<reference key="NSSuperview" ref="3588758"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSBrowserCell" key="NSCellPrototype">
 												<int key="NSCellFlags">67239488</int>
 												<int key="NSCellFlags2">2048</int>
-												<string key="NSContents"/>
+												<string key="NSContents"> </string>
 												<object class="NSFont" key="NSSupport">
 													<string key="NSName">LucidaGrande</string>
 													<double key="NSSize">1.200000e+01</double>
@@ -858,14 +854,14 @@
 											</object>
 											<string key="NSPathSeparator">/</string>
 											<int key="NSMinColumnWidth">150</int>
-											<int key="NSNumberOfVisibleColumns">1</int>
+											<int key="NSNumberOfVisibleColumns">4</int>
 											<int key="NSColumnResizingType">2</int>
 											<double key="NSPreferedColumnWidth">2.000000e+02</double>
 											<bool key="NSAllowsTypeSelect">YES</bool>
 											<int key="NSBrFlags">469778432</int>
 										</object>
 									</object>
-									<string key="NSFrameSize">{619, 135}</string>
+									<string key="NSFrameSize">{619, 115}</string>
 									<reference key="NSSuperview" ref="541196921"/>
 									<string key="NSClassName">NSView</string>
 								</object>
@@ -887,7 +883,7 @@
 														<object class="NSTableView" id="617442522">
 															<reference key="NSNextResponder" ref="68079917"/>
 															<int key="NSvFlags">256</int>
-															<string key="NSFrameSize">{617, 478}</string>
+															<string key="NSFrameSize">{617, 454}</string>
 															<reference key="NSSuperview" ref="68079917"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="_NSCornerView" key="NSCornerView">
@@ -960,7 +956,7 @@
 															<bool key="NSAllowsTypeSelect">YES</bool>
 														</object>
 													</object>
-													<string key="NSFrame">{{1, 1}, {617, 478}}</string>
+													<string key="NSFrame">{{1, 1}, {617, 454}}</string>
 													<reference key="NSSuperview" ref="652670063"/>
 													<reference key="NSNextKeyView" ref="617442522"/>
 													<reference key="NSDocView" ref="617442522"/>
@@ -987,7 +983,7 @@
 													<double key="NSPercent">9.983416e-01</double>
 												</object>
 											</object>
-											<string key="NSFrameSize">{619, 480}</string>
+											<string key="NSFrameSize">{619, 456}</string>
 											<reference key="NSSuperview" ref="44055128"/>
 											<reference key="NSNextKeyView" ref="68079917"/>
 											<int key="NSsFlags">562</int>
@@ -1018,7 +1014,7 @@
 													<string>public.url-name</string>
 												</object>
 											</object>
-											<string key="NSFrameSize">{619, 480}</string>
+											<string key="NSFrameSize">{619, 456}</string>
 											<reference key="NSSuperview" ref="44055128"/>
 											<reference key="NSNextKeyView"/>
 											<string key="FrameName"/>
@@ -1045,13 +1041,20 @@
 											<bool key="AllowsUndo">YES</bool>
 										</object>
 									</object>
-									<string key="NSFrame">{{0, 144}, {619, 480}}</string>
+									<string key="NSFrame">{{0, 124}, {619, 456}}</string>
 									<reference key="NSSuperview" ref="541196921"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 							</object>
-							<string key="NSFrame">{{0, 20}, {619, 624}}</string>
+							<string key="NSFrame">{{0, 20}, {619, 580}}</string>
 							<reference key="NSSuperview" ref="869287963"/>
+						</object>
+						<object class="NSCustomView" id="961184896">
+							<reference key="NSNextResponder" ref="869287963"/>
+							<int key="NSvFlags">266</int>
+							<string key="NSFrame">{{0, 476}, {619, 24}}</string>
+							<reference key="NSSuperview" ref="869287963"/>
+							<string key="NSClassName">ColorGradientView</string>
 						</object>
 					</object>
 					<string key="NSFrameSize">{619, 500}</string>
@@ -2400,6 +2403,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="764101758"/>
 							<reference ref="541196921"/>
+							<reference ref="961184896"/>
 						</object>
 						<reference key="parent" ref="331163929"/>
 					</object>
@@ -3375,6 +3379,12 @@
 						<reference key="object" ref="512834108"/>
 						<reference key="parent" ref="3588758"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">722</int>
+						<reference key="object" ref="961184896"/>
+						<reference key="parent" ref="869287963"/>
+						<string key="objectName">ColorGradientView</string>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -3636,6 +3646,7 @@
 					<string>714.IBPluginDependency</string>
 					<string>715.IBPluginDependency</string>
 					<string>716.IBPluginDependency</string>
+					<string>722.IBPluginDependency</string>
 					<string>73.IBPluginDependency</string>
 					<string>73.ImportedFromIB2</string>
 					<string>74.IBPluginDependency</string>
@@ -3746,9 +3757,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{76, 569}, {55, 25}}</string>
-					<string>{{227, 109}, {619, 500}}</string>
+					<string>{{329, 529}, {619, 500}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{227, 109}, {619, 500}}</string>
+					<string>{{329, 529}, {619, 500}}</string>
 					<reference ref="9"/>
 					<reference ref="9"/>
 					<string>{{843, 639}, {619, 485}}</string>
@@ -3924,6 +3935,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
@@ -3960,7 +3972,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">721</int>
+			<int key="maxID">722</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
