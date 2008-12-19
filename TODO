@@ -1,6 +1,6 @@
 ELOY
 
-- Add search Filter bar, see http://tr.im/2aw6
+- Resize search filter bar buttons so they aren't bigger than necessary.
 - Status bar. For:
   - Show where links in the docs go.
   - Search results count, like the Finder Search window.
