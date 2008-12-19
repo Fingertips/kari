@@ -96,7 +96,7 @@ describe "ApplicationController, when dealing with the positioning of the splitV
     splitView.addSubview OSX::NSView.alloc.initWithFrame([0, 0, 200, 100]) # top
     splitView.addSubview OSX::NSView.alloc.initWithFrame([0, 109, 200, 180]) # bottom
     
-    OSX::NSUserDefaults.standardUserDefaults['ClassBrowserHeight'] = classBrowser.frame.height
+    preferences.interface.stubs(:class_browser_height).returns(classBrowser.frame.height)
   end
   
   it "should make the split view span the complete content view of the window, minus the status bar, when the `toggle class browser' button state is turned on" do
@@ -127,7 +127,7 @@ describe "ApplicationController, when dealing with the positioning of the splitV
   private
   
   def class_browser_visible=(value)
-    OSX::NSUserDefaults.standardUserDefaults['ClassBrowserVisible'] = value.to_ns
+    preferences.interface.stubs(:class_browser_visible).returns(value)
   end
   
   def set_class_browser_state_to_visible!
