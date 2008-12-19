@@ -1,5 +1,12 @@
 require File.expand_path('../../test_helper', __FILE__)
 
+class ApplicationController
+  # Directly apply the frame instead of animating, so we can use assert_difference.
+  def animate(views)
+    views.each { |view, frame| view.frame = frame }
+  end
+end
+
 module ApplicationControllerSpecHelper
   include FixtureHelpers
   
@@ -87,7 +94,7 @@ describe "ApplicationController, when dealing with the positioning of the splitV
     
     splitView.vertical = false
     splitView.addSubview OSX::NSView.alloc.initWithFrame([0, 0, 200, 100]) # top
-    splitView.addSubview OSX::NSView.alloc.initWithFrame([0, 0, 200, 180]) # bottom
+    splitView.addSubview OSX::NSView.alloc.initWithFrame([0, 109, 200, 180]) # bottom
     
     OSX::NSUserDefaults.standardUserDefaults['ClassBrowserHeight'] = classBrowser.frame.height
   end
@@ -95,12 +102,12 @@ describe "ApplicationController, when dealing with the positioning of the splitV
   it "should make the split view span the complete content view of the window, minus the status bar, when the `toggle class browser' button state is turned on" do
     self.class_browser_visible = true
     
-    assert_difference('splitView.frame.height', -classBrowser.frame.height) do
-      #assert_no_difference('controller.topViewOfSplitView.frame.height') do
-        assert_difference('controller.bottomViewOfSplitView.frame.height', -(classBrowser.frame.height + splitView.dividerThickness)) do
+    assert_difference("splitView.frame.height", -classBrowser.frame.height) do
+      assert_no_difference('controller.topViewOfSplitView.frame.height') do
+        assert_difference("controller.bottomViewOfSplitView.frame.height", -(classBrowser.frame.height + splitView.dividerThickness)) do
           controller.toggleClassBrowser(nil)
         end
-      #end
+      end
     end
   end
   
@@ -109,11 +116,11 @@ describe "ApplicationController, when dealing with the positioning of the splitV
     self.class_browser_visible = false
     
     assert_difference('splitView.frame.height', +(classBrowser.frame.height + splitView.dividerThickness)) do
-      #assert_no_difference('controller.topViewOfSplitView.frame.height') do
-        #assert_difference('controller.bottomViewOfSplitView.frame.height', +(classBrowser.frame.height + splitView.dividerThickness)) do
+      assert_no_difference('controller.topViewOfSplitView.frame.height') do
+        assert_difference('controller.bottomViewOfSplitView.frame.height', +(classBrowser.frame.height + splitView.dividerThickness)) do
           controller.toggleClassBrowser(nil)
-        #end
-      #end
+        end
+      end
     end
   end
   

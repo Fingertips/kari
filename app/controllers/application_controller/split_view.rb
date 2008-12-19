@@ -12,24 +12,7 @@ class ApplicationController < Rucola::RCController
   def toggleClassBrowser(toggle_button)
     will_animate_splitView do
       splitView_frame, top_frame, bottom_frame = calculate_splitView_frames
-      splitView_animation = { OSX::NSViewAnimationTargetKey => @splitView, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(splitView_frame) }
-      
-      # If the class browser is _not_ visible, so we are going to make it dissapear,
-      # then we shouldn't animate the bottom view. The reason being that if can become
-      # ugly if the bottom view shrinks faster than the total split view.
-      # Ie: You will see a empty piece of frame for a split second.
-      # To fix this we simply set the complete frame without animating,
-      # so it will actually appear from under the status bar.
-      #
-      # However, if we are going to show the class browser we should animate,
-      # otherwise the same problem as before will occur (seeing an empty piece of frame for a moment).
-      # if class_browser_visible?
-        bottomView_animation = { OSX::NSViewAnimationTargetKey => bottomViewOfSplitView, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(bottom_frame) }
-        animate(splitView_animation, bottomView_animation)
-      # else
-      #   bottomViewOfSplitView.frame = bottom_frame
-      #   animate(splitView_animation)
-      # end
+      animate(@splitView => splitView_frame, bottomViewOfSplitView => bottom_frame, topViewOfSplitView => top_frame)
     end
   end
   
@@ -110,7 +93,10 @@ class ApplicationController < Rucola::RCController
     frame
   end
   
-  def animate(*view_animations)
+  def animate(views)
+    view_animations = views.map do |view, frame|
+      { OSX::NSViewAnimationTargetKey => view, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(frame) }
+    end
     animation = OSX::MGViewAnimation.alloc.initWithViewAnimations(view_animations)
     animation.animationBlockingMode = OSX::NSAnimationBlocking
     animation.duration = 0.3
