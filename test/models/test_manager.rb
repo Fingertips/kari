@@ -130,6 +130,20 @@ describe "An empty Manager" do
     @manager.descriptions['Binding'].should.not.be.nil
     @manager.namespace.get(['Binding']).should.not.be.nil
   end
+  
+  it "should add and update documents to/in the index" do
+    %w{ Binding.karidoc Binding/#dup.karidoc }.each do |file|
+      @manager.search_index.expects(:removeDocument).with(File.join(Rucola::RCApp.application_support_path, 'Karidoc', file))
+      @manager.search_index.expects(:addDocument).with(File.join(Rucola::RCApp.application_support_path, 'Karidoc', file))
+    end
+    @manager.examine(ALTERNATE_RI_PATH)
+  end
+  
+  it "should remove documents from the index" do
+    @manager.search_index.expects(:removeDocument).with(File.join(Rucola::RCApp.application_support_path, 'Karidoc', 'Binding', '#clone.karidoc'))
+    @manager.search_index.expects(:addDocument).with(File.join(Rucola::RCApp.application_support_path, 'Karidoc', 'Binding', '#clone.karidoc')).never
+    @manager.update_karidoc(['Binding#clone'])
+  end
 end
 
 describe "A filled Manager" do

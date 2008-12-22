@@ -108,6 +108,7 @@ module SearchKit #:nodoc:
         document = OSX::SKDocumentCreateWithURL(url)
         # FIXME: the third param is a MIMETypeHint that is used to select a SpotLight importer
         result = OSX::SKIndexAddDocument(index, document, nil, true)
+        #result = OSX::SKIndexAddDocumentWithText(index, document, nil, true) # TODO: make a new method for this function!
         
         if @countDifference.nil?
           flush
