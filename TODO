@@ -1,7 +1,5 @@
 ELOY
 
-- Status bar. For:
-  - Show where links in the docs go.
 - Rewrite to MacRuby.
 - Consistenly use snake/camel case for all the ib_outlets.
 
@@ -12,6 +10,8 @@ MANFRED
 
 ANYONE
 
+- Karidoc test gem:
+  - Add doc and external (http|https) links to test the status bar.
 - Return to the last selected path in the class browser when a new class tree is assigned if possible. Work your way back up the tree and select the first item that is in the tree.
 - Filter the nodes in the class browser. Eg: http://tr.im/2ary
 

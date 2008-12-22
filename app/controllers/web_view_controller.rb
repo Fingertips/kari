@@ -1,6 +1,7 @@
 class WebViewController < Rucola::RCController
   ib_outlet :webview
   ib_outlet :backForwardButton
+  ib_outlet :cursorOverLinkTextField
   
   attr_accessor :delegate, :doc_title
   
@@ -13,6 +14,7 @@ class WebViewController < Rucola::RCController
     
     @webview.frameLoadDelegate = self
     @webview.policyDelegate = self
+    @webview.UIDelegate = self
     
     OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
                                                       :selector,    'webViewFinishedLoading:',
@@ -47,6 +49,14 @@ class WebViewController < Rucola::RCController
   
   def webView_didReceiveTitle_forFrame(webView, title, frame)
     @doc_title = title.to_s
+  end
+  
+  def webView_mouseDidMoveOverElement_modifierFlags(webView, element, flags)
+    if url = element['WebElementLinkURL']
+      @cursorOverLinkTextField.stringValue = (url.absoluteString.end_with?('karidoc') ? RubyName.from_karidoc_filename(url.path) : url.absoluteString)
+    else
+      @cursorOverLinkTextField.stringValue = ''
+    end
   end
   
   def bookmarkable?

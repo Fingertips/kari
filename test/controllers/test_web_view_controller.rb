@@ -17,7 +17,7 @@ describe "WebViewController, when initializing" do
   end
 
   it "should enable the tabsToLinks preference" do
-    webview.preferences.tabsToLinks.should.be 1
+    webview.objc_send(:preferences).tabsToLinks.should.be 1
   end
 end
 
@@ -27,34 +27,36 @@ describe 'WebViewController, in general' do
   include WebViewControllerSpecHelper
   
   def after_setup
+    ib_outlets :cursorOverLinkTextField => OSX::NSTextField.alloc.init
+    
     @mainframe = mock("WebView mainFrame")
     webview.stubs(:mainFrame).returns(@mainframe)
     
     @file = '/some/path/to/a/file.karidoc'
     @file_url = /file:\/\/.*#{@file}/
   end
-
+  
   it "should take a NSURL instance and load it in the webview" do
     @mainframe.expects(:loadRequest).with do |request|
       request.URL.absoluteString.to_s =~ @file_url
     end
     controller.load_url OSX::NSURL.fileURLWithPath(@file)
   end
-
+  
   it "should take a ruby string URL, create a NSURL and load it in the webview" do
     @mainframe.expects(:loadRequest).with do |request|
       request.URL.absoluteString.to_s =~ @file_url
     end
     controller.load_url "file://#{@file}"
   end
-
+  
   it "should take a NSString URL, create a NSURL and load it in the webview" do
     @mainframe.expects(:loadRequest).with do |request|
       request.URL.absoluteString.to_s =~ @file_url
     end
     controller.load_url "file://#{@file}".to_ns
   end
-
+  
   it "should take a string file path, create a NSURL and send it to load_url" do
     expects_load_url_with_url_that_matches(@file_url)
     controller.load_file(@file)
@@ -65,6 +67,26 @@ describe 'WebViewController, in general' do
     
     controller.webView_didReceiveTitle_forFrame(nil, 'some title', nil)
     controller.doc_title.should == 'some title'
+  end
+  
+  it "should show the rubyname of a link that a user is hovering the cursor over in the status bar if it's a karidoc" do
+    Rucola::RCApp.stubs(:application_support_path).returns('/Users/eloy/Library/Application Support/Kari')
+    url = OSX::NSURL.fileURLWithPath('/Users/eloy/Library/Application Support/Kari/Karidoc/Mutex/#exclusive_unlock.karidoc')
+    
+    controller.webView_mouseDidMoveOverElement_modifierFlags(nil, { 'WebElementLinkURL' => url }, nil)
+    cursorOverLinkTextField.stringValue.should == 'Mutex#exclusive_unlock'
+  end
+  
+  it "should show the full URL of a link a user is hovering the cursor over in the status bar if it's not to a karidoc" do
+    url = OSX::NSURL.URLWithString("http://www.fngtps.com")
+    controller.webView_mouseDidMoveOverElement_modifierFlags(nil, { 'WebElementLinkURL' => url }, nil)
+    cursorOverLinkTextField.stringValue.should == url.absoluteString
+  end
+  
+  it "should empty the link a user is hovering over from the status bar if the user moves the cursor away" do
+    cursorOverLinkTextField.stringValue = 'Mutex#exclusive_unlock'
+    controller.webView_mouseDidMoveOverElement_modifierFlags(nil, {}, nil)
+    cursorOverLinkTextField.stringValue.should.be.empty
   end
 end
 
