@@ -69,12 +69,7 @@ class ApplicationController < Rucola::RCController
   def will_update_splitView
     @updating_splitView = true
     yield
-    
-    if class_browser_visible?
-      @window.enableCursorRects
-    else
-      @window.disableCursorRects
-    end
+    @splitView.disableDivider = !class_browser_visible?
   end
   
   def animating_splitView?
