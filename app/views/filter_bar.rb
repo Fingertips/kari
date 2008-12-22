@@ -1,6 +1,4 @@
-# http://www.katoemba.net/makesnosenseatall/2008/01/09/nsview-with-gradient-background/
-
-class ColorGradientView < OSX::NSView
+class FilterBar < OSX::NSView
   STARTING_COLOR = OSX::NSColor.colorWithCalibratedWhite_alpha(0.91, 1.0)
   ENDING_COLOR = OSX::NSColor.colorWithCalibratedWhite_alpha(0.82, 1.0)
   LINE_COLOR = OSX::NSColor.colorWithCalibratedWhite_alpha(0.251, 1.0)
