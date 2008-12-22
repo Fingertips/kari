@@ -21,9 +21,12 @@ class ApplicationController < Rucola::RCController
   ib_outlet :splitView
   ib_outlet :toggleClassBrowserVisbilityButton
   
-  kvc_accessor :processing, :class_tree
+  kvc_accessor :class_tree
+  kvc_accessor :processing
+  kvc_accessor :search_mode
   
   def after_init
+    self.search_mode = false
     PreferencesController.registerDefaults
     OSX::NSApplication.sharedApplication.setDelegate(self)
   end
@@ -128,12 +131,5 @@ class ApplicationController < Rucola::RCController
   
   def changedSearchFilter(sender)
     puts sender.selectedTag
-  end
-  
-  private
-  
-  def bring_webView_to_front!
-    @webView.hidden = false
-    @resultsScrollView.hidden = true
   end
 end

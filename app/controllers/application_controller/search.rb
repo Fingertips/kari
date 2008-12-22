@@ -1,10 +1,8 @@
 class ApplicationController < Rucola::RCController
   def searchControllerWillStartSearching
+    self.search_mode = true
     @addBookmarkToolbarButton.enabled = false
     @searchProgressIndicator.startAnimation(self)
-    
-    @webView.hidden = true
-    @resultsScrollView.hidden = false
   end
   
   def searchControllerFinishedSearching
@@ -14,8 +12,7 @@ class ApplicationController < Rucola::RCController
   def searchController_selectedFile(sender, url)
     @webViewController.load_url(url)
     @webViewController.add_search_back_forward_item(@searchTextField.stringValue)
-    @webView.hidden = false
-    @resultsScrollView.hidden = true
+    self.search_mode = false
     @window.makeFirstResponder(@webView)
   end
 end
