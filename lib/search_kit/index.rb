@@ -103,21 +103,28 @@ module SearchKit #:nodoc:
     #   index.addDocument(filename)
     #   index.close
     def addDocument(path, mime_type_hint=nil)
-      unless index.nil?
-        url = OSX::NSURL.fileURLWithPath(path)
-        document = OSX::SKDocumentCreateWithURL(url)
-        # FIXME: the third param is a MIMETypeHint that is used to select a SpotLight importer
-        result = OSX::SKIndexAddDocument(index, document, nil, true)
-        #result = OSX::SKIndexAddDocumentWithText(index, document, nil, true) # TODO: make a new method for this function!
-        
-        if @countDifference.nil?
-          flush
-          @countDifference = lopsidedCount.to_i - 1
-        end
-        
-        result
-      else
-        raise SearchKit::Exceptions::IndexError, "Can't add a document, the internal index is nil."
+      willAddDocument(path) do |document|
+        OSX::SKIndexAddDocument(index, document, nil, true)
+      end
+    end
+    
+    # Add a document with a certain path to the index, but specify the text to be indexed rather
+    # than having the document at the specified path being indexed.
+    #
+    # * _path_: Path to the file to index
+    # * _text_: The document text to index
+    #
+    # Make sure you specify +allow_updating+ when opening the index, otherwise you will not be able
+    # to change it.
+    #
+    # Example:
+    #
+    #   index = SearchKit::Index.open(File.expand_path('~/.address_book_index'), true)
+    #   index.addDocumentWithText(filename, 'The quick brown fox jumps over the lazy dog')
+    #   index.close
+    def addDocumentWithText(path, text)
+      willAddDocument(path) do |document|
+        OSX::SKIndexAddDocumentWithText(index, document, text, true)
       end
     end
     
@@ -173,5 +180,24 @@ module SearchKit #:nodoc:
     #   index.close
     def search(query)
     end if false # Hack to get RDoc to pick up the docs for #search which is implemented in Objective-C (Index.m).
+    
+    private
+    
+    def willAddDocument(path)
+      unless index.nil?
+        url = OSX::NSURL.fileURLWithPath(path)
+        document = OSX::SKDocumentCreateWithURL(url)
+        result = yield(document)
+        
+        if @countDifference.nil?
+          flush
+          @countDifference = lopsidedCount.to_i - 1
+        end
+        
+        result
+      else
+        raise SearchKit::Exceptions::IndexError, "Can't add a document, the internal index is nil."
+      end
+    end
   end
 end

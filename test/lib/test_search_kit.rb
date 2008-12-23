@@ -84,6 +84,13 @@ describe "A SearchKit Index" do
     @index.addDocument(@filenames.first).should == true
   end
   
+  it "should be able to add a document with a specified string to the index" do
+    @index.addDocumentWithText(@filenames.first, 'The quick brown fox jumps over the lazy dog').should == true
+    @index.flush
+    @index.count.should == 1
+    @index.search('fox').first.URL.path.should == @filenames.first
+  end
+  
   it "should be able to remove documents from the index" do
     @index.addDocument(@filenames.first)
     @index.removeDocument(@filenames.first).should == true
