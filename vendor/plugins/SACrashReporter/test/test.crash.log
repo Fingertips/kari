@@ -1,0 +1,78 @@
+**********
+
+     Host Name: eloys-computer.local
+     Date/Time: Mon Oct 15 23:37:41 +0200 2007
+    OS Version: 10.4.10 (8R2232)
+Report Version: SACrashReporter version 1
+
+       Command: Crasher
+          Path: /Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/MacOS/Crasher
+
+       Version: 1.0 (1.0)
+
+           PID: 775
+
+     Exception: uninitialized constant SACrashReporter::SACrashReporter
+
+BACKTRACE:
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/lib/SACrashReporter.rb:112:in `submit'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/Resources/AppController.rb:14:in `awakeFromNib'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/lib/SACrashReporter.rb:93:in `NSApplicationMain'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/lib/SACrashReporter.rb:93:in `run_app'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/Resources/rb_main.rb:28
+
+**********
+
+     Host Name: eloys-computer.local
+     Date/Time: Mon Oct 15 23:51:00 +0200 2007
+    OS Version: 10.4.10 (8R2232)
+Report Version: SACrashReporter version 1
+
+       Command: Crasher
+          Path: /Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/MacOS/Crasher
+
+       Version: 1.0 (1.0)
+
+           PID: 857
+
+     Exception: /Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/Resources/AppController.rb:16: syntax error, unexpected ')', expecting kEND
+
+BACKTRACE:
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/Resources/rb_main.rb:17:in `require'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/Resources/rb_main.rb:17:in `rb_main_init'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/Resources/rb_main.rb:16:in `each'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/Resources/rb_main.rb:16:in `rb_main_init'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/lib/SACrashReporter.rb:92:in `run_app'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/Resources/rb_main.rb:28
+
+**********
+
+     Host Name: eloys-computer.local
+     Date/Time: Tue Oct 16 00:05:13 +0200 2007
+    OS Version: 10.4.10 (8R2232)
+Report Version: SACrashReporter version 1
+
+       Command: Crasher
+          Path: /Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/MacOS/Crasher
+
+       Version: 1.0 (1.0)
+
+           PID: 908
+
+     Exception: Can't get Objective-C method signature for selector 'setStringValue:' of receiver #<OSX::NSTextView:0x343258 class='NSTextView' id=0x5d2b00>
+
+BACKTRACE:
+/Library/Frameworks/RubyCocoa.framework/Versions/A/Resources/ruby/osx/objc/oc_wrapper.rb:50:in `ocm_send'
+/Library/Frameworks/RubyCocoa.framework/Versions/A/Resources/ruby/osx/objc/oc_wrapper.rb:50:in `method_missing'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/lib/SACrashReporter.rb:14:in `awakeFromNib'
+/Library/Frameworks/RubyCocoa.framework/Versions/A/Resources/ruby/osx/objc/oc_wrapper.rb:50:in `ocm_send'
+/Library/Frameworks/RubyCocoa.framework/Versions/A/Resources/ruby/osx/objc/oc_wrapper.rb:50:in `method_missing'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/lib/SACrashReporter.rb:121:in `submit'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/Resources/AppController.rb:14:in `awakeFromNib'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/lib/SACrashReporter.rb:94:in `NSApplicationMain'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/lib/SACrashReporter.rb:94:in `run_app'
+/Users/eloy/Documents/DEVELOPMENT/RubyCocoa/SARubyCocoaExtensions/SAAppKit/SACrashReporter/sample_app/Crasher/build/Release/Crasher.app/Contents/Resources/rb_main.rb:28
+
+**********
+
+FooBar

@@ -1,0 +1,33 @@
+ELOY
+
+- Rewrite to MacRuby.
+- Consistenly use snake/camel case for all the ib_outlets.
+
+MANFRED
+
+- Find a way to reload the indices without crashing
+  - Generate in the background
+  - Close manager
+  - Move to the Application Support directory
+  - Open manager
+- Lock the karidoc directory somehow when indexing so we don't accidentally revert index updates
+- Think about a way to solve the uppercased instance method problem in the RubyName optimization
+
+ANYONE
+
+- Karidoc test gem:
+  - Add doc and external (http|https) links to test the status bar.
+- Return to the last selected path in the class browser when a new class tree is assigned if possible. Work your way back up the tree and select the first item that is in the tree.
+- Filter the nodes in the class browser. Eg: http://tr.im/2ary
+
+IMPROVEMENTS
+
+- Resize search filter bar buttons so they aren't bigger than necessary. Don't use NSMatrix if we want this. (For instance MGScopeBar)
+- Move splitView related code from ApplicationController into a subclass of NSSplitView.
+- Find and show Ruby installations in the source list of the 'Browse Ruby Installation' dialog
+- Use a code highlighter to highlight examples
+- Flag karidoc files with 'broken characters' (to prevent bugreports and gently nudge authors to fix their documentation)
+- Make clicking the gem name/version, in the header, open the gem directory in the Finder.
+- Check possibilities to wrap SKSearchRef via BridgeSupport (with Laurent).
+- Autolink URLs in the documentation.
+- Make parts of the RubyName in the header of the documentation clickable.

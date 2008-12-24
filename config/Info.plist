@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Kari</string>
+	<key>CFBundleIconFile</key>
+	<string>Kari.icns</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>0.14</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.fngtps.Kari</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.14</string>
+	<key>SUFeedURL</key>
+	<string>http://updates.kari.fngtps.com/appcast.xml</string>
+	<key>SUAppDescription</key>
+	<string>Ruby documentation viewer.</string>
+	<key>SUPublicReleaseNotesURL</key>
+	<string>http://updates.kari.fngtps.com/</string>
+	<key>SUPublicReleaseURL</key>
+	<string>http://updates.kari.fngtps.com/</string>
+	<key>SACrashReporterDeveloperName</key>
+	<string>Fingertips</string>
+	<key>SACrashReporterPostURL</key>
+	<string>http://superalloy.nl/crash_reporter.php</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeIdentifier</key>
+			<string>com.fngtps.kari.karidoc</string>
+			<key>UTTypeReferenceURL</key>
+			<string>http://www.fngtps.com/kari</string>
+			<key>UTTypeDescription</key>
+			<string>Kari Ruby HTML documentation</string>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.content</string>
+			</array>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>com.apple.ostype</key>
+				<string>XXXX</string>
+				<key>public.filename-extension</key>
+				<array>
+					<string>karidoc</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

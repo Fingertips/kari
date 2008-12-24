@@ -1,0 +1,41 @@
+require 'rake/testtask'
+
+VENDOR_SOURCE = 'vendor_source'
+VENDOR = 'vendor'
+SAMPLE_APP = 'sample_app/Crasher'
+
+task :default => [:test, :doc, :sample_app]
+
+desc "Run the tests"
+task :test do
+  tests = Dir.entries('test').select {|x| /\.rb\z/ =~ x}
+  tests.each { |test| ruby "test/#{test} -rs" }
+end
+# Rake::TestTask.new do |t|
+#   t.test_files = FileList['test/test_*.rb']
+#   t.verbose = true
+# end
+
+desc "Create the documentation"
+task :doc do
+  sh "rdoc lib/"
+end
+
+desc "Clean the source tree"
+task :clean do
+  rm_rf "doc"
+  rm_rf "#{SAMPLE_APP}/build"
+end
+
+desc "Remove all unnecessary files"
+task :dist do
+  rm_rf "doc/"
+  rm_rf "sample_app/"
+  rm_rf "test/"
+end
+
+desc "Run the sample application"
+task :sample_app do
+  sh "cd #{SAMPLE_APP} && xcodebuild"
+  sh "open '#{SAMPLE_APP}/build/Release/Crasher.app'"
+end

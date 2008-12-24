@@ -1,0 +1,21 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {sendReport = id; toggleExpansion = id; }; 
+            CLASS = SACrashReporter; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                commentTextfield = id; 
+                crashLogDataTextfield = id; 
+                crashLogWindow = id; 
+                footnoteTextfield = id; 
+                sendReportButton = id; 
+                statusSpinner = id; 
+                statusTextField = id; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}

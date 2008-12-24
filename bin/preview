@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+require 'osx/cocoa'
+
+require 'tmpdir'
+require 'erb'
+
+$:.unshift File.expand_path("../../app/helpers", __FILE__)
+require 'description_extensions'
+require 'flow_helpers'
+require 'html_helpers'
+
+$:.unshift File.expand_path("../../app/models", __FILE__)
+require 'karidoc_generator'
+require 'ruby_name'
+require 'namespace'
+
+$:.unshift File.expand_path("../../lib", __FILE__)
+require 'core_ext'
+
+module Rucola
+  module RCApp
+    def self.application_support_path
+      File.join(Dir.tmpdir, 'karidoc')
+    end
+  end
+end
+
+unless ARGV.empty?
+  `open #{KaridocGenerator.generate(ARGV)}`
+else
+  puts "Usage: #{$0} /Library/Ruby/Gems/1.8/doc/activesupport-2.1.0/ri/ActiveSupport/Multibyte/cdesc-Multibyte.yaml"
+end

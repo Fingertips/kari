@@ -1,0 +1,431 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4DDCA7070ACC9A6100E082CE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		4DDCA7080ACC9A6100E082CE /* rb_main.rb in Resources */ = {isa = PBXBuildFile; fileRef = E8F5E25803AEB7C803A81C6F /* rb_main.rb */; };
+		4DDCA70A0ACC9A6100E082CE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		4DDCA70D0ACC9A6100E082CE /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */; };
+		51137C0D0D854905000EADF3 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51137C070D854905000EADF3 /* Info.plist */; };
+		51137C0F0D854905000EADF3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 51137C0B0D854905000EADF3 /* InfoPlist.strings */; };
+		51137C200D854A14000EADF3 /* KariDocImporter.mdimporter in Copy Spotlight Importer */ = {isa = PBXBuildFile; fileRef = 51137C130D854A14000EADF3 /* KariDocImporter.mdimporter */; };
+		51137C220D854B70000EADF3 /* Kari.icns in Resources */ = {isa = PBXBuildFile; fileRef = 51137C210D854B70000EADF3 /* Kari.icns */; };
+		5130B8390EFAB20000944BE5 /* MGViewAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5130B8370EFAB20000944BE5 /* MGViewAnimation.h */; };
+		5130B83A0EFAB20000944BE5 /* MGViewAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5130B8380EFAB20000944BE5 /* MGViewAnimation.m */; };
+		514292CE0CC66CDC00F9CEEF /* app in Resources */ = {isa = PBXBuildFile; fileRef = 514292B90CC66CDC00F9CEEF /* app */; };
+		514292CF0CC66CDC00F9CEEF /* config in Resources */ = {isa = PBXBuildFile; fileRef = 514292C10CC66CDC00F9CEEF /* config */; };
+		514292D00CC66CDC00F9CEEF /* misc in Resources */ = {isa = PBXBuildFile; fileRef = 514292C40CC66CDC00F9CEEF /* misc */; };
+		514292D10CC66CDC00F9CEEF /* test in Resources */ = {isa = PBXBuildFile; fileRef = 514292CA0CC66CDC00F9CEEF /* test */; };
+		514292D20CC66CDC00F9CEEF /* vendor in Resources */ = {isa = PBXBuildFile; fileRef = 514292CC0CC66CDC00F9CEEF /* vendor */; };
+		514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 514292ED0CC6823A00F9CEEF /* MainMenu.nib */; };
+		516499AF0EEEBFBD0000C1E3 /* Index.h in Headers */ = {isa = PBXBuildFile; fileRef = 516499AD0EEEBFBD0000C1E3 /* Index.h */; };
+		516499B00EEEBFBD0000C1E3 /* Index.m in Sources */ = {isa = PBXBuildFile; fileRef = 516499AE0EEEBFBD0000C1E3 /* Index.m */; };
+		51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
+		51CAD5FE0EF02CC7008F5EDF /* match.h in Headers */ = {isa = PBXBuildFile; fileRef = 51CAD5FC0EF02CC7008F5EDF /* match.h */; };
+		51CAD5FF0EF02CC7008F5EDF /* match.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CAD5FD0EF02CC7008F5EDF /* match.m */; };
+		51E0DC1C0D80411600C898A2 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 51E0DBCA0D80411600C898A2 /* lib */; };
+		638CCA7D0DF06404008C4936 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = 638CCA7C0DF06404008C4936 /* BridgeSupport */; };
+		AE975ACCD6AC76DA87E3FF08 /* RubyCocoa.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */; };
+		B140F0D6F7878A81F09EBBAB /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		51137C040D8548A3000EADF3 /* Copy Spotlight Importer */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/Spotlight;
+			dstSubfolderSpec = 1;
+			files = (
+				51137C200D854A14000EADF3 /* KariDocImporter.mdimporter in Copy Spotlight Importer */,
+			);
+			name = "Copy Spotlight Importer";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92DB482C3578FE99246A03F2 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B140F0D6F7878A81F09EBBAB /* Sparkle.framework in Copy Frameworks */,
+				AE975ACCD6AC76DA87E3FF08 /* RubyCocoa.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = misc/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		1D71E4C3139CD53D99A6E93C /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = vendor/frameworks/Sparkle.framework; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = main.m; path = misc/main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		4DDCA7110ACC9A6100E082CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = config/Info.plist; sourceTree = "<group>"; };
+		4DDCA7120ACC9A6100E082CE /* Kari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kari.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		51137C070D854905000EADF3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51137C0C0D854905000EADF3 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		51137C130D854A14000EADF3 /* KariDocImporter.mdimporter */ = {isa = PBXFileReference; lastKnownFileType = folder; path = KariDocImporter.mdimporter; sourceTree = "<group>"; };
+		51137C210D854B70000EADF3 /* Kari.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Kari.icns; sourceTree = "<group>"; };
+		5130B8370EFAB20000944BE5 /* MGViewAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGViewAnimation.h; sourceTree = "<group>"; };
+		5130B8380EFAB20000944BE5 /* MGViewAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGViewAnimation.m; sourceTree = "<group>"; };
+		514292B90CC66CDC00F9CEEF /* app */ = {isa = PBXFileReference; lastKnownFileType = folder; path = app; sourceTree = "<group>"; };
+		514292C10CC66CDC00F9CEEF /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
+		514292C40CC66CDC00F9CEEF /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
+		514292CA0CC66CDC00F9CEEF /* test */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test; sourceTree = "<group>"; };
+		514292CC0CC66CDC00F9CEEF /* vendor */ = {isa = PBXFileReference; lastKnownFileType = folder; path = vendor; sourceTree = "<group>"; };
+		514292EE0CC6823A00F9CEEF /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = misc/English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		516499AD0EEEBFBD0000C1E3 /* Index.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Index.h; path = lib/search_kit/Index.h; sourceTree = "<group>"; };
+		516499AE0EEEBFBD0000C1E3 /* Index.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Index.m; path = lib/search_kit/Index.m; sourceTree = "<group>"; };
+		51CAD5FC0EF02CC7008F5EDF /* match.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = match.h; path = lib/search_kit/match.h; sourceTree = "<group>"; };
+		51CAD5FD0EF02CC7008F5EDF /* match.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = match.m; path = lib/search_kit/match.m; sourceTree = "<group>"; };
+		51E0DBCA0D80411600C898A2 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
+		638CCA7C0DF06404008C4936 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BridgeSupport; path = misc/BridgeSupport; sourceTree = "<group>"; };
+		E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /System/Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
+		E8F5E25803AEB7C803A81C6F /* rb_main.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; name = rb_main.rb; path = misc/rb_main.rb; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4DDCA70B0ACC9A6100E082CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */,
+				4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */,
+				4DDCA70D0ACC9A6100E082CE /* RubyCocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */,
+				1D71E4C3139CD53D99A6E93C /* Sparkle.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4DDCA7120ACC9A6100E082CE /* Kari.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* Kari */ = {
+			isa = PBXGroup;
+			children = (
+				51137C210D854B70000EADF3 /* Kari.icns */,
+				51137C130D854A14000EADF3 /* KariDocImporter.mdimporter */,
+				51137C050D854905000EADF3 /* KariDocImporter.mdimporter */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				4DDCA7110ACC9A6100E082CE /* Info.plist */,
+				51E0DBCA0D80411600C898A2 /* lib */,
+			);
+			name = Kari;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				514292ED0CC6823A00F9CEEF /* MainMenu.nib */,
+				E8F5E25803AEB7C803A81C6F /* rb_main.rb */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				516499AD0EEEBFBD0000C1E3 /* Index.h */,
+				516499AE0EEEBFBD0000C1E3 /* Index.m */,
+				51CAD5FC0EF02CC7008F5EDF /* match.h */,
+				51CAD5FD0EF02CC7008F5EDF /* match.m */,
+				5130B8370EFAB20000944BE5 /* MGViewAnimation.h */,
+				5130B8380EFAB20000944BE5 /* MGViewAnimation.m */,
+				638CCA7C0DF06404008C4936 /* BridgeSupport */,
+				514292B90CC66CDC00F9CEEF /* app */,
+				514292C10CC66CDC00F9CEEF /* config */,
+				514292C40CC66CDC00F9CEEF /* misc */,
+				514292CA0CC66CDC00F9CEEF /* test */,
+				514292CC0CC66CDC00F9CEEF /* vendor */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		51137C050D854905000EADF3 /* KariDocImporter.mdimporter */ = {
+			isa = PBXGroup;
+			children = (
+				51137C060D854905000EADF3 /* Contents */,
+			);
+			path = KariDocImporter.mdimporter;
+			sourceTree = "<group>";
+		};
+		51137C060D854905000EADF3 /* Contents */ = {
+			isa = PBXGroup;
+			children = (
+				51137C070D854905000EADF3 /* Info.plist */,
+				51137C080D854905000EADF3 /* MacOS */,
+				51137C0A0D854905000EADF3 /* Resources */,
+			);
+			path = Contents;
+			sourceTree = "<group>";
+		};
+		51137C080D854905000EADF3 /* MacOS */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = MacOS;
+			sourceTree = "<group>";
+		};
+		51137C0A0D854905000EADF3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				51137C0B0D854905000EADF3 /* InfoPlist.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4DDCA7040ACC9A6100E082CE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				516499AF0EEEBFBD0000C1E3 /* Index.h in Headers */,
+				51CAD5FE0EF02CC7008F5EDF /* match.h in Headers */,
+				5130B8390EFAB20000944BE5 /* MGViewAnimation.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4DDCA7030ACC9A6100E082CE /* Kari */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4DDCA70E0ACC9A6100E082CE /* Build configuration list for PBXNativeTarget "Kari" */;
+			buildPhases = (
+				4DDCA7040ACC9A6100E082CE /* Headers */,
+				4DDCA7050ACC9A6100E082CE /* Resources */,
+				4DDCA7090ACC9A6100E082CE /* Sources */,
+				4DDCA70B0ACC9A6100E082CE /* Frameworks */,
+				92DB482C3578FE99246A03F2 /* Copy Frameworks */,
+				51137C040D8548A3000EADF3 /* Copy Spotlight Importer */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Kari;
+			productInstallPath = "$(HOME)/Applications";
+			productName = Kari;
+			productReference = 4DDCA7120ACC9A6100E082CE /* Kari.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 4D7A7B570ABF745500C2D4C0 /* Build configuration list for PBXProject "Kari" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 0;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* Kari */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4DDCA7030ACC9A6100E082CE /* Kari */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4DDCA7050ACC9A6100E082CE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DDCA7070ACC9A6100E082CE /* InfoPlist.strings in Resources */,
+				4DDCA7080ACC9A6100E082CE /* rb_main.rb in Resources */,
+				514292CE0CC66CDC00F9CEEF /* app in Resources */,
+				514292CF0CC66CDC00F9CEEF /* config in Resources */,
+				514292D00CC66CDC00F9CEEF /* misc in Resources */,
+				514292D10CC66CDC00F9CEEF /* test in Resources */,
+				514292D20CC66CDC00F9CEEF /* vendor in Resources */,
+				514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */,
+				51E0DC1C0D80411600C898A2 /* lib in Resources */,
+				51137C0D0D854905000EADF3 /* Info.plist in Resources */,
+				51137C0F0D854905000EADF3 /* InfoPlist.strings in Resources */,
+				51137C220D854B70000EADF3 /* Kari.icns in Resources */,
+				638CCA7D0DF06404008C4936 /* BridgeSupport in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4DDCA7090ACC9A6100E082CE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DDCA70A0ACC9A6100E082CE /* main.m in Sources */,
+				516499B00EEEBFBD0000C1E3 /* Index.m in Sources */,
+				51CAD5FF0EF02CC7008F5EDF /* match.m in Sources */,
+				5130B83A0EFAB20000944BE5 /* MGViewAnimation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		51137C0B0D854905000EADF3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				51137C0C0D854905000EADF3 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		514292ED0CC6823A00F9CEEF /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				514292EE0CC6823A00F9CEEF /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4D7A7B580ABF745500C2D4C0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+			};
+			name = Debug;
+		};
+		4D7A7B590ABF745500C2D4C0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+			};
+			name = Release;
+		};
+		4DDCA70F0ACC9A6100E082CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/vendor/frameworks\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Kari;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		4DDCA7100ACC9A6100E082CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/vendor/frameworks\"";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Kari;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4D7A7B570ABF745500C2D4C0 /* Build configuration list for PBXProject "Kari" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4D7A7B580ABF745500C2D4C0 /* Debug */,
+				4D7A7B590ABF745500C2D4C0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4DDCA70E0ACC9A6100E082CE /* Build configuration list for PBXNativeTarget "Kari" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4DDCA70F0ACC9A6100E082CE /* Debug */,
+				4DDCA7100ACC9A6100E082CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
