@@ -27,7 +27,7 @@ class Manager
   end
   
   def add_karidoc_to_namespace(full_name)
-    @namespace.set(RubyName.split(full_name), RubyName.karidoc_filename(full_name))
+    @namespace.set(RubyName.split(full_name), RubyName.relative_karidoc_path(full_name))
   end
   
   def add_description(full_name, file)

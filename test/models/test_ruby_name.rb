@@ -89,6 +89,12 @@ describe "RubyName" do
     end
   end
   
+  it "should convert Ruby names to a relative Karidoc path" do
+    CASES.each do |c|
+      RubyName.relative_karidoc_path(c[:ruby_name]).should == c[:karidoc_path].split('/')[2..-1].join('/')
+    end
+  end
+  
   it "should return the karidoc filepath" do
     RubyName.karidoc_filepath.should.start_with(Rucola::RCApp.application_support_path)
     RubyName.karidoc_filepath.should.end_with('Karidoc')
