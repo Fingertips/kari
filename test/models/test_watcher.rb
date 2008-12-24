@@ -7,6 +7,11 @@ describe "Watcher" do
     Rucola::FSEvents.expects(:start_watching)
     Watcher.new
   end
+  
+  it "should not start watching the RI paths after initialization if told not to" do
+    Rucola::FSEvents.expects(:start_watching).never
+    Watcher.new(:watch_fs_events => false)
+  end
 end
 
 describe "A Watcher" do
@@ -51,7 +56,7 @@ describe "A Watcher" do
   end
   
   it "should be able to force a rebuild" do
-    @watcher.expects(:runKaridocUpdateCommandWithPaths).with(@watcher.riPaths)
+    @watcher.expects(:runKaridocUpdateCommandWithPaths).with(@watcher.watchPaths)
     @watcher.forceRebuild
   end
   

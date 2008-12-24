@@ -9,7 +9,7 @@ require 'rake/rdoctask'
 
 # Application configuration
 
-PUBLISH_URI = URI.parse('scp://eloy@updates.kari.fngtps.com/var/www/updates.kari/htdocs')
+PUBLISH_URI = URI.parse('scp://updates.kari.fngtps.com/var/www/updates.kari/htdocs')
 APPCAST_URI = PUBLISH_URI
 
 # Tasks

@@ -24,8 +24,16 @@ module Rucola
 end
 Rucola::RCApp.application_support_path = File.join(Dir.tmpdir, 'Kari')
 
-require File.join(Rucola::RCApp.root_path, 'build', 'bundles', 'Index.bundle')
-require File.join(Rucola::RCApp.root_path, 'build', 'bundles', 'Match.bundle')
+module OSX
+  class Index < OSX::NSObject
+    attr_accessor :index
+    
+    def lopsidedCount
+      0
+    end
+  end
+  class Match < OSX::NSObject; end
+end
 
 require File.expand_path('../../config/boot', __FILE__)
 
@@ -48,7 +56,7 @@ class Kari
   end
   
   def rebuild_karidoc
-    watcher = Watcher.new
+    watcher = Watcher.new(:watch_fs_events => false)
     unless options[:paths].blank?
       watcher.examine(options[:paths])
     else

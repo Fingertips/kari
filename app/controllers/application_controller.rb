@@ -102,7 +102,6 @@ class ApplicationController < Rucola::RCController
   
   def finishedIndexing(notification)
     Manager.reset!
-    log.debug("Assigning new class tree with #{Manager.instance.namespace.tree[:children].length} top-level definitions")
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
     if self.processing > 0
       self.processing -= 1

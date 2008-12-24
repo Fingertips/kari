@@ -3,18 +3,20 @@ require 'rucola/fsevents'
 require 'rdoc/ri/ri_paths'
 
 class Watcher
-  DEVELOPMENT_FILTER = /nap|json|finger|activerecord|unichars/i
+  #DEVELOPMENT_FILTER = /nap|json|finger|activerecord|unichars/i
+  DEVELOPMENT_FILTER = /./
   
   attr_accessor :fsevents, :delegate
   
-  def initialize
-    @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
-      handleEvents(events)
+  def initialize(options={})
+    if options[:watch_fs_events].nil? or options[:watch_fs_events]
+      @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
+        handleEvents(events)
+      end
     end
   end
   
   def riPaths
-    #@riPaths ||= RI::Paths.path(true, true, true, true)
     RI::Paths.path(true, true, true, true).grep(DEVELOPMENT_FILTER)
   end
   
