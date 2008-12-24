@@ -29,7 +29,7 @@ class UserPreferences
 end
 
 # We don't want test ruining our preferences
-class OSX::NSUserDefaults < OSX::NSObject
+class NSUserDefaults < NSObject
   def self.standardUserDefaults
     UserPreferences.instance
   end

@@ -1,10 +1,3 @@
-module StringExtensions
-  # Returns true when the string is blank
-  def blank?
-    empty?
-  end
-end
-
 class String
   unless '>= 1.8.7'.respond_to?(:start_with?)
     # Returns true when the string starts with the specified prefix
@@ -20,9 +13,7 @@ class String
     end
   end
   
-  include StringExtensions
-end
-
-class OSX::NSString
-  include StringExtensions
+  def blank?
+    empty?
+  end
 end
