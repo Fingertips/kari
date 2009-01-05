@@ -78,3 +78,8 @@ namespace :test do
     end
   end
 end
+
+desc "Build and install a release version of Kari"
+task :install => :build do
+  sh "sudo rm -Rf /Applications/Kari.app && cp -R #{File.join(SOURCE_ROOT, 'build', 'Release', 'Kari.app')} /Applications/"
+end
