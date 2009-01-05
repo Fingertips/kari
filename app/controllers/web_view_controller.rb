@@ -1,7 +1,7 @@
 class WebViewController < Rucola::RCController
-  ib_outlet :webview
-  ib_outlet :backForwardButton
-  ib_outlet :cursorOverLinkTextField
+  attr_writer :webview
+  attr_writer :backForwardButton
+  attr_writer :cursorOverLinkTextField
   
   attr_accessor :delegate, :doc_title
   
@@ -120,17 +120,14 @@ class WebViewController < Rucola::RCController
       @webview.goForward(self)
     end
   end
-  ib_action :goBackOrForward
   
   def fontLarger(sender)
     @webview.makeTextLarger(self)
   end
-  ib_action :fontLarger
   
   def fontSmaller(sender)
     @webview.makeTextSmaller(self)
   end
-  ib_action :fontSmaller
   
   def validateMenuItem(item)
     case item.action

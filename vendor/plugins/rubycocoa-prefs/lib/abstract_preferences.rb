@@ -9,9 +9,9 @@ class Preferences
   end
   
   class << self
-    # A shortcut method for access to <tt>OSX::NSUserDefaults.standardUserDefaults</tt>.
+    # A shortcut method for access to <tt>NSUserDefaults.standardUserDefaults</tt>.
     def user_defaults
-      OSX::NSUserDefaults.standardUserDefaults
+      NSUserDefaults.standardUserDefaults
     end
     
     # A hash of all default values for the user defaults
@@ -111,7 +111,7 @@ class Preferences
     # to get rubyish callback handling, instead of handling it yourself by defining
     # the observeValueForKeyPath_ofObject_change_context method.
     #
-    #   class PreferencesController < OSX::NSWindowController
+    #   class PreferencesController < NSWindowController
     #     include Preferences::KVOCallbackHelper
     #
     #     def init
@@ -127,12 +127,12 @@ class Preferences
     #   end
     def observe(name, observer)
       key_path = "values.#{self.class.section_defaults_key}.#{name}"
-      OSX::NSUserDefaultsController.sharedUserDefaultsController.
-        addObserver_forKeyPath_options_context(observer, key_path, OSX::NSKeyValueObservingOptionNew, nil)
+      NSUserDefaultsController.sharedUserDefaultsController.
+        addObserver_forKeyPath_options_context(observer, key_path, NSKeyValueObservingOptionNew, nil)
     end
   end
   
-  class StringArrayWrapper < OSX::NSObject
+  class StringArrayWrapper < NSObject
     class << self
       attr_accessor :key_path
       
@@ -155,7 +155,7 @@ class Preferences
       end
     end
     
-    kvc_accessor :string
+    attr_accessor :string
     attr_accessor :index
     
     def initWithString_index(string, index)
@@ -198,14 +198,14 @@ class Preferences
   
   # Extend your class with this module to get access to a few KVC accessor helper methods.
   module AccessorHelpers
-    # Defines a kvc_accessor which reads and writes
+    # Defines a attr_accessor which reads and writes
     # to the specified preferences path (<tt>path_to_eval_to_object</tt>).
     #
     # This is useful for binding, for instance, UI elements
     # to an array in the NSUserDefaults which is normally immutable.
     #
-    #   class PreferencesController < OSX::NSWindowController
-    #     defaults_kvc_accessor :an_array_of_dictionaries, 'preferences.keyword.url_mappings'
+    #   class PreferencesController < NSWindowController
+    #     defaults_attr_accessor :an_array_of_dictionaries, 'preferences.keyword.url_mappings'
     #   end
     #
     # Binding a NSArrayController to File's Owner with key path: <tt>an_array_of_dictionaries</tt>,
@@ -214,8 +214,8 @@ class Preferences
     #   preferences_controller.valueForKey('an_array_of_dictionaries') # => [{'key' => 'value 1'}, {'key' => 'value 2'}]
     #   preferences_controller.setValueForKey([{'key' => 'value 1'}], 'an_array_of_dictionaries')
     #   preferences_controller.valueForKey('an_array_of_dictionaries') # => [{'key' => 'value 1'}]
-    def defaults_kvc_accessor(name, path_to_eval_to_object)
-      kvc_accessor(name)
+    def defaults_attr_accessor(name, path_to_eval_to_object)
+      attr_accessor(name)
       
       class_eval %{
         def #{name}
@@ -228,16 +228,16 @@ class Preferences
       }, __FILE__, __LINE__
     end
     
-    # Defines read and write KVC accessors like defaults_kvc_accessor does,
+    # Defines read and write KVC accessors like defaults_attr_accessor does,
     # but is used specifically for defaults defined with Namespace#string_array_defaults_accessor.
     #
-    #   class PreferencesController < OSX::NSWindowController
-    #     defualts_string_array_kvc_accessor :an_array_of_strings, 'preferences.keyword.highlight_words'
+    #   class PreferencesController < NSWindowController
+    #     defualts_string_array_attr_accessor :an_array_of_strings, 'preferences.keyword.highlight_words'
     #   end
     #
     # See Namespace#string_array_defaults_accessor for more info.
-    def defualts_string_array_kvc_accessor(name, path_to_eval_to_object)
-      defaults_kvc_accessor(name, "#{path_to_eval_to_object}_wrapped")
+    def defualts_string_array_attr_accessor(name, path_to_eval_to_object)
+      defaults_attr_accessor(name, "#{path_to_eval_to_object}_wrapped")
       
       class_eval %{
         def #{name}=(new_wrappers)

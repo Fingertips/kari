@@ -1,10 +1,10 @@
 class SearchController < Rucola::RCController
-  kvc_accessor :results
+  attr_accessor :results
   attr_accessor :delegate
   
-  ib_outlets :results_array_controller
-  ib_outlet :results_table_view
-  ib_outlet :search_field
+  attr_writer :results_array_controller
+  attr_writer :results_table_view
+  attr_writer :search_field
   
   def after_init
     @results = OSX::NSMutableArray.alloc.init

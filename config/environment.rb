@@ -1,13 +1,5 @@
 Rucola::Initializer.run do |config|
-  # Settings specified in environment/release.rb and environment/debug.rb take precident
-  # over these settings.
-  #
-  # Load any custom Objective-C frameworks
-  # config.objc_frameworks = %w(webkit quartz iokit)
-  #
-  # Use active_record bindings
-  # config.use_active_record = true
-  
+  config.load_paths << (RCApp.root_path + 'app/helpers').to_s
   config.frameworks << 'WebKit'
   
   Thread.abort_on_exception = true

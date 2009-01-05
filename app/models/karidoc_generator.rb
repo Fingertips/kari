@@ -1,7 +1,15 @@
 require 'yaml'
 require 'fileutils'
-require 'rdoc/ri/ri_descriptions'
-require 'rdoc/markup/simple_markup/to_flow'
+
+if defined?(MACRUBY_VERSION)
+  require 'rdoc/ri/descriptions'
+  require 'rdoc/markup/to_flow'
+else
+  require 'rdoc/ri/ri_descriptions'
+  require 'rdoc/markup/simple_markup/to_flow'
+end
+
+require 'description_extensions'
 
 module RI
   class Description

@@ -1,10 +1,10 @@
 class ToolbarController < Rucola::RCController
-  ib_outlet :window, :historyBackAndForwardView, :searchView, :addBookmarkView, :toggleClassBrowserView
+  attr_writer :window, :historyBackAndForwardView, :searchView, :addBookmarkView, :toggleClassBrowserView
   
   def after_init
-    @toolbar = OSX::NSToolbar.alloc.initWithIdentifier('MainWindowToolbar')
+    @toolbar = NSToolbar.alloc.initWithIdentifier('MainWindowToolbar')
     @toolbar.delegate = self
-    @toolbar.displayMode = OSX::NSToolbarDisplayModeIconOnly
+    @toolbar.displayMode = NSToolbarDisplayModeIconOnly
   end
   
   def awakeFromNib
@@ -12,7 +12,7 @@ class ToolbarController < Rucola::RCController
     @window.toolbar = @toolbar
   end
   
-  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'AddBookmarkItem', 'ToggleClassBrowserItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
+  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'AddBookmarkItem', 'ToggleClassBrowserItem', NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
   def toolbarAllowedItemIdentifiers(toolbar)
     TOOLBAR_ITEMS
   end
@@ -21,11 +21,11 @@ class ToolbarController < Rucola::RCController
   end
   
   def toolbar_itemForItemIdentifier_willBeInsertedIntoToolbar(toolbar, identifier, flag)
-    item = OSX::NSToolbarItem.alloc.initWithItemIdentifier(identifier)
-    return item if identifier == OSX::NSToolbarFlexibleSpaceItemIdentifier
+    item = NSToolbarItem.alloc.initWithItemIdentifier(identifier)
+    return item if identifier == NSToolbarFlexibleSpaceItemIdentifier
     custom_view = self.instance_variable_get("@#{identifier[0...1].downcase + identifier[1..-1].gsub(/Item$/, 'View')}".to_sym)
     item.view = custom_view
-    item.minSize = item.maxSize = OSX::NSMakeSize(OSX::NSWidth(custom_view.frame), OSX::NSHeight(custom_view.frame))
+    item.minSize = item.maxSize = NSMakeSize(NSWidth(custom_view.frame), NSHeight(custom_view.frame))
     return item
   end
 end

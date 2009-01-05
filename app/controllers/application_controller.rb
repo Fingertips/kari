@@ -7,23 +7,23 @@ class ApplicationController < Rucola::RCController
   concerned_with 'web_view'
   concerned_with 'search'
   
-  ib_outlet :window
-  ib_outlet :webView
-  ib_outlet :webViewController
-  ib_outlet :searchController
-  ib_outlet :searchProgressIndicator
-  ib_outlet :searchTextField
-  ib_outlet :bookmarkController
-  ib_outlet :resultsScrollView
-  ib_outlet :addBookmarkToolbarButton
-  ib_outlet :classBrowser
-  ib_outlet :classTreeController
-  ib_outlet :splitView
-  ib_outlet :toggleClassBrowserVisbilityButton
+  attr_writer :window
+  attr_writer :webView
+  attr_writer :webViewController
+  attr_writer :searchController
+  attr_writer :searchProgressIndicator
+  attr_writer :searchTextField
+  attr_writer :bookmarkController
+  attr_writer :resultsScrollView
+  attr_writer :addBookmarkToolbarButton
+  attr_writer :classBrowser
+  attr_writer :classTreeController
+  attr_writer :splitView
+  attr_writer :toggleClassBrowserVisbilityButton
   
-  kvc_accessor :class_tree
-  kvc_accessor :processing
-  kvc_accessor :search_mode
+  attr_accessor :class_tree
+  attr_accessor :processing
+  attr_accessor :search_mode
   
   def after_init
     self.search_mode = false

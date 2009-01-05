@@ -1,8 +1,8 @@
 class BookmarkController < Rucola::RCController
-  ib_outlet :window, :bookmarkMenu
-  ib_outlet :addBookmarkSheet, :addBookmarkTitleTextField
-  ib_outlet :removeBookmarkSheet, :removeBookmarkPopup
-  ib_outlet :webViewController
+  attr_writer :window, :bookmarkMenu
+  attr_writer :addBookmarkSheet, :addBookmarkTitleTextField
+  attr_writer :removeBookmarkSheet, :removeBookmarkPopup
+  attr_writer :webViewController
   
   attr_accessor :delegate
   

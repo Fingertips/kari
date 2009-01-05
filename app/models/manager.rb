@@ -1,5 +1,5 @@
 require 'find'
-require 'rdoc/ri/ri_paths'
+require (defined?(MACRUBY_VERSION) ? 'rdoc/ri/paths' : 'rdoc/ri/ri_paths')
 
 class Manager
   SYSTEM_RI_PATH         = RI::Paths.path(true, false, false, false).first
