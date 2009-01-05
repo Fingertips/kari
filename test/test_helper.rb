@@ -1,5 +1,4 @@
-ENV['RUBYCOCOA_ENV'] = 'test'
-ENV['RUBYCOCOA_ROOT'] = File.expand_path('../../', __FILE__)
+ENV['RUCOLA_ENV'] = 'test'
 
 require 'rubygems'
 require 'test/unit'
