@@ -4,9 +4,23 @@ ENV['RUBYCOCOA_ROOT'] = SOURCE_ROOT = File.expand_path('../../', __FILE__)
 ENV['RUBYCOCOA_ENV'] = 'debug'
 ENV['DONT_START_RUBYCOCOA_APP'] = 'true'
 
-require 'rubygems' rescue LoadError
-require 'rucola'
+require 'osx/cocoa'
+
+module OSX
+  class Index < OSX::NSObject
+    attr_accessor :index
+    
+    def lopsidedCount
+      0
+    end
+  end
+  class Match < OSX::NSObject; end
+end
+
+require File.expand_path('../../misc/rb_main', __FILE__)
+
 require 'tmpdir'
+require 'optparse'
 
 module Rucola
   module RCApp
@@ -24,20 +38,6 @@ module Rucola
 end
 Rucola::RCApp.application_support_path = File.join(Dir.tmpdir, 'Kari')
 
-module OSX
-  class Index < OSX::NSObject
-    attr_accessor :index
-    
-    def lopsidedCount
-      0
-    end
-  end
-  class Match < OSX::NSObject; end
-end
-
-require File.expand_path('../../config/boot', __FILE__)
-
-require 'optparse'
 
 class Kari
   attr_accessor :options
