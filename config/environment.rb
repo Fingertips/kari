@@ -8,7 +8,7 @@ Rucola::Initializer.run do |config|
   # Use active_record bindings
   # config.use_active_record = true
   
-  config.objc_frameworks = %w{ WebKit }
+  config.frameworks << 'WebKit'
   
   Thread.abort_on_exception = true
   

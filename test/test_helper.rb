@@ -1,8 +1,7 @@
 ENV['RUCOLA_ENV'] = 'test'
 
 require 'rubygems'
-require 'test/unit'
-require 'test/spec'
+#require 'test/spec'
 require 'mocha'
 require 'tmpdir'
 require 'fileutils'
@@ -11,6 +10,7 @@ $: << "/Users/eloy/code/MacRuby/rucola/lib"
 require File.expand_path('../../config/boot', __FILE__)
 #require 'rucola'
 #require 'rucola/test_helper'
+require 'rucola/test_spec'
 require 'rucola/test_case'
 
 $: << File.expand_path('../test_helper', __FILE__)
@@ -27,8 +27,8 @@ $: << File.expand_path('../../lib', __FILE__)
 
 require 'core_ext'
 
-ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
-ObjectiveC.require('lib/search_kit/Match')
+# ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
+# ObjectiveC.require('lib/search_kit/Match')
 
 TEST_ROOT = File.expand_path(File.dirname(__FILE__))
 
