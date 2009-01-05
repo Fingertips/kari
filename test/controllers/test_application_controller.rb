@@ -28,7 +28,8 @@ module ApplicationControllerSpecHelper
     
     @watcher_mock = mock('Watcher')
     @watcher_mock.stubs(:delegate=)
-    Watcher.stubs(:new).returns(@watcher_mock)
+    @watcher_mock.stubs(:initWithWatchers).returns(@watcher_mock)
+    Watcher.stubs(:alloc).returns(@watcher_mock)
     
     @namespace_mock = stub('Manager#namespace')
     @namespace_mock.stubs(:tree).returns({})
@@ -68,8 +69,7 @@ describe 'ApplicationController, during awakeFromNib' do
   
   it "should register for notications" do
     [
-      [:addObserver, controller, :selector, 'externalRequestForDocumentation:', :name, 'KariOpenDocumentation', :object, nil],
-      [:addObserver, controller, :selector, 'finishedIndexing:', :name, 'KariDidFinishIndexing', :object, nil]
+      [:addObserver, controller, :selector, 'externalRequestForDocumentation:', :name, 'KariOpenDocumentation', :object, nil]
     ].each do |params|
       OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(*params)
     end

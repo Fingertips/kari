@@ -42,16 +42,10 @@ class ApplicationController < Rucola::RCController
              :name, 'KariOpenDocumentation',
            :object, nil
     )
-    OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
-      :addObserver, self,
-         :selector, 'finishedIndexing:',
-             :name, 'KariDidFinishIndexing',
-           :object, nil
-    )
     
     @processing = 0
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
-    @watcher = Watcher.new
+    @watcher = Watcher.alloc.initWithWatchers
     
     @classTreeController.objc_send(
       :addObserver, self,
@@ -97,11 +91,11 @@ class ApplicationController < Rucola::RCController
     @watcher.forceRebuild
   end
   
-  def startedIndexing(notification)
+  def startedIndexing(sender)
     self.processing += 1
   end
   
-  def finishedIndexing(notification)
+  def finishedIndexing(sender)
     Manager.reset!
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
     if self.processing > 0

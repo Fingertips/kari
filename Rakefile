@@ -1,5 +1,6 @@
 # Load Rucola tasks
 SOURCE_ROOT = File.dirname(__FILE__)
+require 'find'
 require 'rubygems'
 require 'rucola/rucola_support'
 load 'rucola/tasks/main.rake'
@@ -52,5 +53,28 @@ namespace :documentation do
     rdoc.rdoc_dir = 'documentation'
     rdoc.rdoc_files.include("app/**/*.rb", "lib/**/*.rb")
     rdoc.options << "--all" << "--charset" << "utf-8"
+  end
+end
+
+namespace :test do
+  TYPES = [:controllers, :helpers, :lib, :models, :views]
+  
+  TYPES.each do |t|
+    desc "Run #{t} tests"
+    task t do
+      run_tests_in(File.join(SOURCE_ROOT, 'test', t.to_s))
+    end
+  end
+  
+  desc "Run tests in separate processes in order to minimize lingering memory references"
+  task :all => TYPES do
+  end
+  
+  def run_tests_in(path)
+    Find.find(path) do |filename|
+      if filename =~ /test_.*\.rb$/
+        sh "/usr/bin/env ruby #{filename}"
+      end
+    end
   end
 end

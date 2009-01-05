@@ -56,7 +56,7 @@ class Kari
   end
   
   def rebuild_karidoc
-    watcher = Watcher.new(:watch_fs_events => false)
+    watcher = Watcher.alloc.init
     unless options[:paths].blank?
       watcher.examine(options[:paths])
     else
@@ -79,17 +79,16 @@ class Kari
   
   def self.run_command(command, options)
     rebuilder = new(options)
-    rebuilder.clean
     
     case command
     when 'update-karidoc'
+      rebuilder.clean
       rebuilder.copy_karidoc
       rebuilder.rebuild_karidoc
-      rebuilder.replace_karidoc
     when 'replace-karidoc'
-      rebuilder.rebuild_karidoc
       rebuilder.replace_karidoc
     when 'package-karidoc'
+      rebuilder.clean
       rebuilder.rebuild_karidoc
       rebuilder.package_karidoc
     else
