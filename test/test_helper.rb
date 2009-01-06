@@ -1,4 +1,7 @@
-ENV['RUCOLA_ENV'] = 'test'
+require "pathname"
+
+RUCOLA_ENV = 'test'
+RUCOLA_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 
 require 'rubygems'
 #require 'test/spec'
@@ -7,9 +10,8 @@ require 'tmpdir'
 require 'fileutils'
 
 $: << "/Users/eloy/code/MacRuby/rucola/lib"
-require File.expand_path('../../config/boot', __FILE__)
-#require 'rucola'
-#require 'rucola/test_helper'
+require 'rucola'
+require 'rucola/test_helpers'
 require 'rucola/test_spec'
 require 'rucola/test_case'
 
@@ -21,24 +23,18 @@ require 'global_spec_helper'
 require 'assert_difference'
 require 'temporary_application_support_path'
 require 'fixture_helpers'
-require 'objective-c'
 
-$: << File.expand_path('../../lib', __FILE__)
+require 'objective-c'
+ObjectiveC.require('lib/search_kit/Match')
+ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
+
+require File.expand_path('../../config/boot', __FILE__)
+
+#$: << File.expand_path('../../lib', __FILE__)
 
 require 'core_ext'
-
-# ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
-# ObjectiveC.require('lib/search_kit/Match')
 
 TEST_ROOT = File.expand_path(File.dirname(__FILE__))
 
 # Needed by some OSX classes, like WebView, to function properly.
-require 'osx/cocoa'
-Thread.new { OSX.CFRunLoopRun }
-
-def silence_warnings
-  old_verbose, $VERBOSE = $VERBOSE, nil
-  yield
-ensure
-  $VERBOSE = old_verbose
-end
+Thread.new { CFRunLoopRun() }

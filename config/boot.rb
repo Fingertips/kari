@@ -6,15 +6,15 @@ require 'pathname'
 module Rucola
   class << self
     def set_environment!
-      Object.const_set("RUCOLA_ENV", discover_environment) unless defined?(RUCOLA_ENV)
+      Object.const_set("RUCOLA_ENV", discover_environment) unless defined?(::RUCOLA_ENV)
     end
     
     def set_root!
-      Object.const_set("RUCOLA_ROOT", Pathname.new(discover_root)) unless defined?(RUCOLA_ROOT)
+      Object.const_set("RUCOLA_ROOT", Pathname.new(discover_root)) unless defined?(::RUCOLA_ROOT)
     end
     
     def boot!
-      pick_boot.run unless booted?
+      pick_boot.run #unless booted?
     end
     
     def booted?

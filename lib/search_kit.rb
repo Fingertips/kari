@@ -1,6 +1,4 @@
-require 'osx/cocoa'
-
-OSX.load_bridge_support_file(File.join(Rucola::RCApp.root_path, 'misc', 'BridgeSupport', 'SearchKit.bridgesupport'))
+load_bridge_support_file(File.join(Rucola::RCApp.root_path, 'misc', 'BridgeSupport', 'SearchKit.bridgesupport'))
 
 # Wrapper implementation around OS X's SearchKit.
 module SearchKit

@@ -1,3 +1,6 @@
+#!/usr/bin/env macruby
+
+require File.expand_path('../../../app/models/namespace', __FILE__)
 require File.expand_path('../../test_helper', __FILE__)
 
 describe "A Namespace" do
@@ -12,14 +15,16 @@ describe "A Namespace" do
     @namespace.should.not.respond_to?(:unknown)
   end
   
-  it "should respond to namespace keys" do
-    @namespace.full_name.should == 'Object'
-  end
-  
-  it "should throw an exception on unknown keys" do
-    lambda {
-      @namespace.unknown
-    }.should.raise(NoMethodError)
+  unless_on_macruby do
+    it "should respond to namespace keys" do
+      @namespace.full_name.should == 'Object'
+    end
+    
+    it "should throw an exception on unknown keys" do
+      lambda {
+        @namespace.unknown
+      }.should.raise(NoMethodError)
+    end
   end
   
   it "should be able to assign new keys to the namespace" do

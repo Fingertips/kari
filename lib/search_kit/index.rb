@@ -1,11 +1,11 @@
 module SearchKit #:nodoc:
   # Objective-C classes are always defined on the OSX module,
   # so we use this workaround to be able to extend the class in our own SearchKit module.
-  Index = OSX::Index #:nodoc:
+  Index = ::Index #:nodoc:
   
-  # SearchKit::Index is a wrapper around a OSX::SKIndex. It indexes documents which can then be
+  # SearchKit::Index is a wrapper around a SKIndex. It indexes documents which can then be
   # queried.
-  class Index < OSX::NSObject
+  class Index < NSObject
     # Creates a new index on disk
     #
     # * _path_: Path to the index
@@ -17,8 +17,8 @@ module SearchKit #:nodoc:
     #
     #   SearchKit::Index.create(File.expand_path('~/.address_book_index'))
     #   SearchKit::Index.create(File.expand_path('~/.visualizer/indices'), 'nodes')
-    def self.create(path, name=nil, type=OSX::KSKIndexInverted)
-      if index = OSX::SKIndexCreateWithURL(OSX::NSURL.fileURLWithPath(path), name, type, nil)
+    def self.create(path, name=nil, type=KSKIndexInverted)
+      if index = SKIndexCreateWithURL(NSURL.fileURLWithPath(path), name, type, nil)
         alloc.initWithIndex(index)
       else
         raise SearchKit::Exceptions::IndexError, "Couldn't create a SearchKit index at `#{path}' with name `#{name}'"
@@ -41,7 +41,7 @@ module SearchKit #:nodoc:
     #     index.addDocument(filename)
     #   end
     def self.open(path, name=nil, allow_updating=false, &block)
-      if skindex = OSX::SKIndexOpenWithURL(OSX::NSURL.fileURLWithPath(path), name, allow_updating)
+      if skindex = SKIndexOpenWithURL(NSURL.fileURLWithPath(path), name, allow_updating)
         index = alloc.initWithIndex(skindex)
         if block
           begin
@@ -82,7 +82,7 @@ module SearchKit #:nodoc:
     # locks.
     def close
       unless index.nil?
-        OSX::SKIndexClose(index)
+        SKIndexClose(index)
       else
         raise SearchKit::Exceptions::IndexError, "Can't close the index, the internal index is nil."
       end
@@ -104,7 +104,7 @@ module SearchKit #:nodoc:
     #   index.close
     def addDocument(path, mime_type_hint=nil)
       willAddDocument(path) do |document|
-        OSX::SKIndexAddDocument(index, document, nil, true)
+        SKIndexAddDocument(index, document, nil, true)
       end
     end
     
@@ -124,7 +124,7 @@ module SearchKit #:nodoc:
     #   index.close
     def addDocumentWithText(path, text)
       willAddDocument(path) do |document|
-        OSX::SKIndexAddDocumentWithText(index, document, text, true)
+        SKIndexAddDocumentWithText(index, document, text, true)
       end
     end
     
@@ -139,9 +139,9 @@ module SearchKit #:nodoc:
     #   index.close
     def removeDocument(path)
       unless index.nil?
-        url = OSX::NSURL.fileURLWithPath(path)
-        document = OSX::SKDocumentCreateWithURL(url)
-        OSX::SKIndexRemoveDocument(index, document)
+        url = NSURL.fileURLWithPath(path)
+        document = SKDocumentCreateWithURL(url)
+        SKIndexRemoveDocument(index, document)
       else
         raise SearchKit::Exceptions::IndexError, "Can't remove a document, the internal index is nil."
       end
@@ -150,7 +150,7 @@ module SearchKit #:nodoc:
     # Commit all the index changes to the backing store
     def flush
       unless index.nil?
-        OSX::SKIndexFlush(index)
+        SKIndexFlush(index)
       else
         raise SearchKit::Exceptions::IndexError, "Can't flush to file, the internal index is nil."
       end
@@ -160,7 +160,7 @@ module SearchKit #:nodoc:
     # don't want to call it after every index update.
     def compact
       unless index.nil?
-        OSX::SKIndexCompact(index)
+        SKIndexCompact(index)
       else
         raise SearchKit::Exceptions::IndexError, "Can't compact the index, the internal index is nil."
       end
@@ -185,8 +185,8 @@ module SearchKit #:nodoc:
     
     def willAddDocument(path)
       unless index.nil?
-        url = OSX::NSURL.fileURLWithPath(path)
-        document = OSX::SKDocumentCreateWithURL(url)
+        url = NSURL.fileURLWithPath(path)
+        document = SKDocumentCreateWithURL(url)
         result = yield(document)
         
         if @countDifference.nil?

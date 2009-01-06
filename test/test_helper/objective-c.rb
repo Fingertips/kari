@@ -5,7 +5,6 @@ module ObjectiveC
     def require(path, *frameworks)
       compile path, *frameworks
       Kernel.require bundle_path(path)
-      OSX.ns_import klass(path).to_sym
     end
     
     private
@@ -44,7 +43,7 @@ module ObjectiveC
       ensure_output_dir!
       frameworks.unshift 'Foundation'
       
-      command = "gcc -o #{bundle_path(path)} -flat_namespace -undefined suppress -bundle #{frameworks.map { |f| "-framework #{f}" }.join(' ')} -I#{File.dirname(full_path)} #{full_path}"
+      command = "gcc -o #{bundle_path(path)} -arch x86_64 -fobjc-gc -flat_namespace -undefined suppress -bundle #{frameworks.map { |f| "-framework #{f}" }.join(' ')} -I#{File.dirname(full_path)} #{full_path}"
       unless system(command)
         raise CompileError, "Unable to compile class `#{klass(path)}' at path: `#{full_path}'."
       end

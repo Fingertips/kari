@@ -1,3 +1,5 @@
+#!/usr/bin/env macruby
+
 require File.expand_path('../../test_helper', __FILE__)
 
 PRIMARY_RI_PATH = File.join(TEST_ROOT, 'fixtures', 'normal', 'ri')
