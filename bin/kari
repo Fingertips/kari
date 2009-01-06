@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-ENV['RUBYCOCOA_ROOT'] = SOURCE_ROOT = File.expand_path('../../', __FILE__)
-ENV['RUBYCOCOA_ENV'] = 'debug'
+ENV['RUBYCOCOA_ROOT'] ||= SOURCE_ROOT = File.expand_path('../../', __FILE__)
+ENV['RUBYCOCOA_ENV']  ||= 'debug'
 ENV['DONT_START_RUBYCOCOA_APP'] = 'true'
 
 require 'osx/cocoa'
@@ -17,7 +17,11 @@ module OSX
   class Match < OSX::NSObject; end
 end
 
-require File.expand_path('../../misc/rb_main', __FILE__)
+begin
+  require File.join(ENV['RUBYCOCOA_ROOT'], 'rb_main')
+rescue LoadError
+  require File.join(ENV['RUBYCOCOA_ROOT'], 'misc', 'rb_main')
+end
 
 require 'tmpdir'
 require 'optparse'

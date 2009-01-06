@@ -38,7 +38,7 @@ class Watcher < OSX::NSObject
   end
   
   def kariPath
-    File.join(Rucola::RCApp.root_path, 'bin', 'kari')
+    "env RUBYCOCOA_ROOT=#{ENV['RUBYCOCOA_ROOT']} RUBYCOCOA_ENV=#{ENV['RUBYCOCOA_ENV']} #{File.join(Rucola::RCApp.root_path, 'bin', 'kari')}"
   end
   
   def lastEventId
