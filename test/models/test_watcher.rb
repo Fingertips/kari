@@ -31,6 +31,23 @@ describe "Watcher" do
     end
     watcher.initWithWatchers
   end
+  
+  it "should calculate the union between two paths" do
+    Watcher.union('', '').should == '/'
+    Watcher.union('/', '/').should == '/'
+    Watcher.union('/Library/Ruby', '/Library/Ruby').should == '/Library/Ruby'
+    Watcher.union('/Library/Ruby/1', '/Library/Ruby/2').should == '/Library/Ruby'
+    Watcher.union('/System/Frameworks/Ruby/Current/Doc', '/Library/Ruby/1').should == '/'
+    Watcher.union('/System/Frameworks/Ruby/Current/Doc', '/System/Frameworks/MacRuby/Doc').should == '/System/Frameworks'
+  end
+  
+  it "should calculate basePaths for a list of paths" do
+    Watcher.basePaths([]).should == []
+    Watcher.basePaths(['/Library/Ruby']).should == ['/Library/Ruby']
+    Watcher.basePaths(['/Library/Ruby/1', '/Library/Ruby/2']).should == ['/Library/Ruby']
+    Watcher.basePaths(['/System/Frameworks/Ruby/Current/Doc', '/Library/Ruby/1', '/Library/Ruby/2']).should == ['/Library/Ruby', '/System/Frameworks/Ruby/Current/Doc']
+    Watcher.basePaths(['/', '/Library/Ruby/1', '/Library/Ruby/2', '/tmp/something']).should == ["/Library/Ruby", "/tmp/something"]
+  end
 end
 
 describe "A Watcher" do
@@ -65,7 +82,7 @@ describe "A Watcher" do
   end
   
   it "should handle events coming from FSEvents" do
-    @watcher.expects(:runKaridocUpdateCommandWithPaths).with('/Library/Ruby/Gems/1.8/doc/nap-0.2/ri')
+    @watcher.expects(:runKaridocUpdateCommandWithPaths).with(['/Library/Ruby/Gems/1.8/doc/nap-0.2/ri'])
     @watcher.handleEvents(events)
   end
   
