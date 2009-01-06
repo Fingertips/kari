@@ -1,3 +1,5 @@
+#!/usr/local/bin/macruby
+
 require File.expand_path('../../test_helper', __FILE__)
 
 describe "A HashTree in general" do

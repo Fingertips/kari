@@ -14,10 +14,12 @@ class UserPreferences
   def [](key)
     @defaults.merge(@preferences)[key]
   end
+  alias_method :objectForKey, :[]
   
   def []=(key, value)
     @preferences[key] = value
   end
+  alias_method :setObjectForKey, :[]=
   
   def synchronize
   end
