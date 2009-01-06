@@ -1,4 +1,4 @@
-class StatusBar < OSX::NSView
+class StatusBar < NSView
   def selectedBackgroundColor
     [0.588, 0.588, 0.588, 1]
   end
@@ -27,8 +27,8 @@ class StatusBar < OSX::NSView
   
   def initWithFrame(frame)
     if super_initWithFrame(frame)
-      [OSX::NSWindowDidResignKeyNotification, OSX::NSWindowDidBecomeKeyNotification].each do |name|
-        OSX::NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, :windowChangedKey, name, nil)
+      [NSWindowDidResignKeyNotification, NSWindowDidBecomeKeyNotification].each do |name|
+        NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, :windowChangedKey, name, nil)
       end
       self
     end
@@ -48,12 +48,12 @@ class StatusBar < OSX::NSView
   
   def drawRect(rect)
     @bar_height ||= bounds.size.height
-    context = OSX::NSGraphicsContext.currentContext.graphicsPort
+    context = NSGraphicsContext.currentContext.graphicsPort
     separatorLineColor, topLineColor, backgroundColor = barColors
     
     # draw background
-    OSX::CGContextSetRGBFillColor(context, *backgroundColor)
-    OSX::CGContextFillRect(context, OSX::CGRect.new(rect.origin, rect.size))
+    CGContextSetRGBFillColor(context, *backgroundColor)
+    CGContextFillRect(context, CGRect.new(rect.origin, rect.size))
     
     # white-ish top line
     from = [rect.origin.x, (@bar_height - 1)]
@@ -67,11 +67,11 @@ class StatusBar < OSX::NSView
   end
   
   def drawLine(context, from, to, color)
-    OSX::CGContextSetLineWidth(context, 1.0)
-    OSX::CGContextBeginPath(context)
-    OSX::CGContextMoveToPoint(context, *from)
-    OSX::CGContextAddLineToPoint(context, *to)
-    OSX::CGContextSetRGBStrokeColor(context, *color)
-    OSX::CGContextStrokePath(context)
+    CGContextSetLineWidth(context, 1.0)
+    CGContextBeginPath(context)
+    CGContextMoveToPoint(context, *from)
+    CGContextAddLineToPoint(context, *to)
+    CGContextSetRGBStrokeColor(context, *color)
+    CGContextStrokePath(context)
   end
 end

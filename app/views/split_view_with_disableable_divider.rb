@@ -1,4 +1,4 @@
-class SplitViewWithDisableableDivider < OSX::NSSplitView
+class SplitViewWithDisableableDivider < NSSplitView
   attr_reader :disableDivider
   def disableDivider=(value)
     @disableDivider = value

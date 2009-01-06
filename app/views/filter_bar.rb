@@ -1,7 +1,7 @@
-class FilterBar < OSX::NSView
-  STARTING_COLOR = OSX::NSColor.colorWithCalibratedWhite_alpha(0.91, 1.0)
-  ENDING_COLOR = OSX::NSColor.colorWithCalibratedWhite_alpha(0.82, 1.0)
-  LINE_COLOR = OSX::NSColor.colorWithCalibratedWhite_alpha(0.251, 1.0)
+class FilterBar < NSView
+  STARTING_COLOR = NSColor.colorWithCalibratedWhite(0.91, alpha: 1.0)
+  ENDING_COLOR = NSColor.colorWithCalibratedWhite(0.82, alpha: 1.0)
+  LINE_COLOR = NSColor.colorWithCalibratedWhite(0.251, alpha: 1.0)
   ANGLE = 270
   
   def drawRect(rect)
@@ -10,10 +10,10 @@ class FilterBar < OSX::NSView
     gradient.drawInRect_angle(bounds, ANGLE)
     
     LINE_COLOR.set
-    path = OSX::NSBezierPath.bezierPath
+    path = NSBezierPath.bezierPath
     path.lineWidth = 0
-    path.moveToPoint(OSX::NSMakePoint(0, 0))
-    path.lineToPoint(OSX::NSMakePoint(bounds.width, 0))
+    path.moveToPoint(NSMakePoint(0, 0))
+    path.lineToPoint(NSMakePoint(bounds.width, 0))
     path.closePath
     path.stroke
   end
@@ -21,6 +21,6 @@ class FilterBar < OSX::NSView
   private
   
   def gradient
-    @gradient ||= OSX::NSGradient.alloc.initWithStartingColor_endingColor(STARTING_COLOR, ENDING_COLOR)
+    @gradient ||= NSGradient.alloc.initWithStartingColor_endingColor(STARTING_COLOR, ENDING_COLOR)
   end
 end

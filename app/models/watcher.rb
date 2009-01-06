@@ -1,6 +1,6 @@
 require 'set'
 require 'rucola/fsevents'
-require 'rdoc/ri/ri_paths'
+require (defined?(MACRUBY_VERSION) ? 'rdoc/ri/paths' : 'rdoc/ri/ri_paths')
 
 class Watcher
   DEVELOPMENT_FILTER = /nap|json|finger|activerecord/i

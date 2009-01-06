@@ -1,4 +1,4 @@
-class SearchField < OSX::NSSearchField
+class SearchField < NSSearchField
   FORWARD_SELECTORS = %w(moveUp: moveDown: insertNewline:)
   
   attr_accessor :keyDelegate

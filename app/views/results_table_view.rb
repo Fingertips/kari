@@ -1,12 +1,12 @@
-class ResultsTableView < OSX::NSTableView
+class ResultsTableView < NSTableView
   def awakeFromNib
     self.rowHeight = 24
-    setIntercellSpacing(OSX::NSSize.new(0.0, 3.0))
+    setIntercellSpacing(NSSize.new(0.0, 3.0))
     tableColumns.first.dataCell = ResultCell.alloc.init
   end
   
   def _highlightColorForCell(cell)
-    OSX::NSColor.secondarySelectedControlColor
+    NSColor.secondarySelectedControlColor
   end
   
   def acceptsFirstResponder
@@ -41,14 +41,14 @@ class ResultsTableView < OSX::NSTableView
   end
 end
 
-class ResultCell < OSX::NSCell
+class ResultCell < NSCell
   LEFT_MARGIN = 10
   
   def drawInteriorWithFrame_inView(frame, view)
-    attributes = { OSX::NSFontAttributeName => OSX::NSFont.fontWithName_size('Baskerville', 16) }
+    attributes = { NSFontAttributeName => NSFont.fontWithName_size('Baskerville', 16) }
     
     objectValue.drawAtPoint_withAttributes(
-      OSX::NSMakePoint(frame.origin.x + LEFT_MARGIN, frame.origin.y - 2),
+      NSMakePoint(frame.origin.x + LEFT_MARGIN, frame.origin.y - 2),
       attributes
     )
   end
