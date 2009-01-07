@@ -1,3 +1,5 @@
+#!/usr/bin/env macruby
+
 require File.expand_path('../../test_helper', __FILE__)
 
 describe "SearchField" do
@@ -27,7 +29,7 @@ describe "SearchField" do
   it "should only forward key events to the keyDelegate if the keyDelegate wants it" do
     @keyDelegate.stubs(:wantsForwardedKeyEvents?).returns(false)
     
-    search_field.expects(:tryToPerform_with).with('insertNewline:', nil)
+    search_field.expects('tryToPerform:with:').with('insertNewline:', nil)
     search_field.textView_doCommandBySelector(nil, 'insertNewline:')
   end
 end

@@ -8,7 +8,7 @@ class SearchField < NSSearchField
     if @keyDelegate.wantsForwardedKeyEvents? and FORWARD_SELECTORS.include? selector
       @keyDelegate.tryToPerform_with(selector, textView)
     else
-      tryToPerform_with(selector, textView)
+      tryToPerform(selector, with: textView)
     end
   end
 end
