@@ -28,7 +28,7 @@ class ApplicationController < Rucola::RCController
   def after_init
     self.search_mode = false
     PreferencesController.registerDefaults
-    OSX::NSApplication.sharedApplication.setDelegate(self)
+    NSApplication.sharedApplication.setDelegate(self)
   end
   
   def awakeFromNib
@@ -36,29 +36,27 @@ class ApplicationController < Rucola::RCController
     setup_splitView!
     
     # Register notifications
-    OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
-      :addObserver, self,
-         :selector, 'externalRequestForDocumentation:',
-             :name, 'KariOpenDocumentation',
-           :object, nil
-    )
-    OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
-      :addObserver, self,
-         :selector, 'finishedIndexing:',
-             :name, 'KariDidFinishIndexing',
-           :object, nil
-    )
+    NSDistributedNotificationCenter.defaultCenter.
+       addObserver self,
+         selector: 'externalRequestForDocumentation:',
+             name: 'KariOpenDocumentation',
+           object: nil
+    
+    NSDistributedNotificationCenter.defaultCenter.
+       addObserver self,
+         selector: 'finishedIndexing:',
+             name: 'KariDidFinishIndexing',
+           object: nil
     
     @processing = 0
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
     @watcher = Watcher.new
     
-    @classTreeController.objc_send(
-      :addObserver, self,
-       :forKeyPath, 'selectionIndexPaths',
-          :options, OSX::NSKeyValueObservingOptionNew,
-          :context, nil
-    )
+    @classTreeController.
+      addObserver self,
+      forKeyPath: 'selectionIndexPaths',
+         options: NSKeyValueObservingOptionNew,
+         context: nil
     
     # Lets wrap it up!
     @splitView.delegate = self
@@ -122,7 +120,7 @@ class ApplicationController < Rucola::RCController
   end
   
   def windowWillClose(notification)
-    OSX::NSApplication.sharedApplication.terminate(self)
+    NSApplication.sharedApplication.terminate(self)
   end
   
   def bookmarkClicked(bookmark)

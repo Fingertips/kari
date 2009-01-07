@@ -1,3 +1,5 @@
+#!/usr/bin/env macruby
+
 require File.expand_path('../../test_helper', __FILE__)
 
 class ApplicationController
@@ -12,9 +14,9 @@ module ApplicationControllerSpecHelper
   
   def after_setup
     ib_outlets :webViewController => WebViewController.alloc.init,
-               :webView => OSX::WebView.alloc.init,
-               :resultsScrollView => OSX::NSScrollView.alloc.init,
-               :searchTextField => OSX::NSSearchField.alloc.init
+               :webView => WebView.alloc.init,
+               :resultsScrollView => NSScrollView.alloc.init,
+               :searchTextField => NSSearchField.alloc.init
     
     webViewController.instance_variable_set(:@webview, webView)
     webViewController.stubs(:load_file)
@@ -68,10 +70,10 @@ describe 'ApplicationController, during awakeFromNib' do
   
   it "should register for notications" do
     [
-      [:addObserver, controller, :selector, 'externalRequestForDocumentation:', :name, 'KariOpenDocumentation', :object, nil],
-      [:addObserver, controller, :selector, 'finishedIndexing:', :name, 'KariDidFinishIndexing', :object, nil]
+      [controller, 'externalRequestForDocumentation:', 'KariOpenDocumentation', nil],
+      [controller, 'finishedIndexing:', 'KariDidFinishIndexing', nil],
     ].each do |params|
-      OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(*params)
+      NSDistributedNotificationCenter.defaultCenter.expects('addObserver:selector:name:object:').with(*params)
     end
     controller.awakeFromNib
   end
@@ -79,7 +81,7 @@ describe 'ApplicationController, during awakeFromNib' do
   private
   
   def should_observe_notification(name, selector, object = nil, observer = controller)
-    OSX::NSNotificationCenter.defaultCenter.expects(:addObserver_selector_name_object).with(observer, selector, name, object)
+    NSNotificationCenter.defaultCenter.expects(:addObserver_selector_name_object).with(observer, selector, name, object)
   end
 end
 
@@ -87,14 +89,14 @@ describe "ApplicationController, when dealing with the positioning of the splitV
   tests ApplicationController
   
   def after_setup
-    ib_outlets :classBrowser => OSX::NSBrowser.alloc.initWithFrame([0, 200, 200, 100]),
+    ib_outlets :classBrowser => NSBrowser.alloc.initWithFrame([0, 200, 200, 100]),
                :splitView => SplitViewWithDisableableDivider.alloc.initWithFrame([0, 20, 200, 280])
     
-    window.stubs(:contentView).returns(OSX::NSView.alloc.initWithFrame(OSX::NSRect.new(0, 0, 200, 200)))
+    window.stubs(:contentView).returns(NSView.alloc.initWithFrame(NSRect.new([0, 0], [200, 200])))
     
     splitView.vertical = false
-    splitView.addSubview OSX::NSView.alloc.initWithFrame([0, 0, 200, 100]) # top
-    splitView.addSubview OSX::NSView.alloc.initWithFrame([0, 109, 200, 180]) # bottom
+    splitView.addSubview NSView.alloc.initWithFrame([0, 0, 200, 100]) # top
+    splitView.addSubview NSView.alloc.initWithFrame([0, 109, 200, 180]) # bottom
     splitView.stubs(:super_resetCursorRects)
     
     preferences.interface.stubs(:class_browser_height).returns(classBrowser.frame.height)
