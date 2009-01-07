@@ -16,9 +16,9 @@ class WebViewController < Rucola::RCController
     @webview.policyDelegate = self
     @webview.UIDelegate = self
     
-    OSX::NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
+    NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
                                                       :selector,    'webViewFinishedLoading:',
-                                                      :name,        OSX::WebViewProgressFinishedNotification,
+                                                      :name,        WebViewProgressFinishedNotification,
                                                       :object,      nil
   end
   
@@ -69,17 +69,17 @@ class WebViewController < Rucola::RCController
   
   # Loads a regular file path like: "/some/path/to/file.karidoc"
   def load_file(file)
-    load_url OSX::NSURL.fileURLWithPath(file)
+    load_url NSURL.fileURLWithPath(file)
   end
   
   # Loads a NSURL in the main frame or creates a NSURL for a string.
   def load_url(url)
-    url = OSX::NSURL.URLWithString(url) if url.is_a?(String) or url.is_a?(OSX::NSCFString)
-    @webview.mainFrame.loadRequest OSX::NSURLRequest.requestWithURL(url)
+    url = NSURL.URLWithString(url) if url.is_a?(String) or url.is_a?(NSCFString)
+    @webview.mainFrame.loadRequest NSURLRequest.requestWithURL(url)
   end
   
   def add_search_back_forward_item(query)
-    @webview.backForwardList.addItem OSX::WebHistoryItem.alloc.initWithURLString_title_lastVisitedTimeInterval("kari://search/#{query}", "Kari Search Query Item", 0)
+    @webview.backForwardList.addItem WebHistoryItem.alloc.initWithURLString("kari://search/#{query}", title: "Kari Search Query Item", lastVisitedTimeInterval: 0)
   end
   
   def can_go_back?
@@ -101,7 +101,7 @@ class WebViewController < Rucola::RCController
   # helpers
   
   def blank!
-    load_url OSX::NSURL.URLWithString('about:blank')
+    load_url NSURL.URLWithString('about:blank')
   end
   
   def home!

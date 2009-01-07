@@ -1,5 +1,9 @@
 require 'singleton'
 
+# TODO: require from an installed macruby
+$: << "/Users/eloy/code/MacRuby/trunk/lib"
+require 'objc_ext/ns_user_defaults'
+
 class Preferences
   include Singleton
   
@@ -66,7 +70,7 @@ class Preferences
         
         class_eval do
           define_method(name) do
-            Preferences.user_defaults[key_path].to_ruby
+            Preferences.user_defaults[key_path]
           end
           
           define_method("#{name}=") do |value|
@@ -128,7 +132,10 @@ class Preferences
     def observe(name, observer)
       key_path = "values.#{self.class.section_defaults_key}.#{name}"
       NSUserDefaultsController.sharedUserDefaultsController.
-        addObserver_forKeyPath_options_context(observer, key_path, NSKeyValueObservingOptionNew, nil)
+        addObserver observer,
+        forKeyPath: key_path,
+           options: NSKeyValueObservingOptionNew,
+           context: nil
     end
   end
   
@@ -137,7 +144,7 @@ class Preferences
       attr_accessor :key_path
       
       def array
-        Preferences.user_defaults[key_path].to_ruby
+        Preferences.user_defaults[key_path]
       end
       
       def array=(array)
@@ -155,8 +162,7 @@ class Preferences
       end
     end
     
-    attr_accessor :string
-    attr_accessor :index
+    attr_accessor :string, :index
     
     def initWithString_index(string, index)
       if init
@@ -198,14 +204,14 @@ class Preferences
   
   # Extend your class with this module to get access to a few KVC accessor helper methods.
   module AccessorHelpers
-    # Defines a attr_accessor which reads and writes
+    # Defines a kvc_accessor which reads and writes
     # to the specified preferences path (<tt>path_to_eval_to_object</tt>).
     #
     # This is useful for binding, for instance, UI elements
     # to an array in the NSUserDefaults which is normally immutable.
     #
     #   class PreferencesController < NSWindowController
-    #     defaults_attr_accessor :an_array_of_dictionaries, 'preferences.keyword.url_mappings'
+    #     defaults_kvc_accessor :an_array_of_dictionaries, 'preferences.keyword.url_mappings'
     #   end
     #
     # Binding a NSArrayController to File's Owner with key path: <tt>an_array_of_dictionaries</tt>,
@@ -214,7 +220,7 @@ class Preferences
     #   preferences_controller.valueForKey('an_array_of_dictionaries') # => [{'key' => 'value 1'}, {'key' => 'value 2'}]
     #   preferences_controller.setValueForKey([{'key' => 'value 1'}], 'an_array_of_dictionaries')
     #   preferences_controller.valueForKey('an_array_of_dictionaries') # => [{'key' => 'value 1'}]
-    def defaults_attr_accessor(name, path_to_eval_to_object)
+    def defaults_kvc_accessor(name, path_to_eval_to_object)
       attr_accessor(name)
       
       class_eval %{
@@ -228,16 +234,16 @@ class Preferences
       }, __FILE__, __LINE__
     end
     
-    # Defines read and write KVC accessors like defaults_attr_accessor does,
+    # Defines read and write KVC accessors like defaults_kvc_accessor does,
     # but is used specifically for defaults defined with Namespace#string_array_defaults_accessor.
     #
     #   class PreferencesController < NSWindowController
-    #     defualts_string_array_attr_accessor :an_array_of_strings, 'preferences.keyword.highlight_words'
+    #     defualts_string_array_kvc_accessor :an_array_of_strings, 'preferences.keyword.highlight_words'
     #   end
     #
     # See Namespace#string_array_defaults_accessor for more info.
-    def defualts_string_array_attr_accessor(name, path_to_eval_to_object)
-      defaults_attr_accessor(name, "#{path_to_eval_to_object}_wrapped")
+    def defualts_string_array_kvc_accessor(name, path_to_eval_to_object)
+      defaults_kvc_accessor(name, "#{path_to_eval_to_object}_wrapped")
       
       class_eval %{
         def #{name}=(new_wrappers)
@@ -253,12 +259,13 @@ class Preferences
   module KVOCallbackHelper
     # We need to actually define the method on the class because otherwise the method is not
     # resolved at runtime, probably a bug in RubyCocoa.
+    # TODO: check if this also applies in MacRuby.
     def self.included(klass)
       klass.class_eval do
-        def observeValueForKeyPath_ofObject_change_context(key_path, observed, change, context)
+        def observeValueForKeyPath(key_path, ofObject: observed, change: change, context: context)
           value_key_path = key_path.sub(/^values\./, '')
           callback_method = "#{key_path.split('.').last}_changed"
-          send(callback_method, Preferences.user_defaults[value_key_path].to_ruby)
+          send(callback_method, Preferences.user_defaults[value_key_path])
         end
       end
     end

@@ -1,9 +1,12 @@
+#!/usr/bin/env macruby
+
 require File.expand_path('../test_helper', __FILE__)
 require 'abstract_preferences'
 
 class Preferences
   class TestDefaults < Namespace
     defaults_accessor :an_option, true
+    defaults_accessor :another_option, true
     string_array_defaults_accessor :a_string_array, %w{ foo bar baz }, 'TestDefaultsStringWrapper'
     defaults_accessor :an_array, %w{ foo bar baz }
   end
@@ -27,13 +30,13 @@ describe "Preferences" do
   end
   
   it "should synchronize changes to disk" do
-    OSX::NSUserDefaults.standardUserDefaults.expects(:synchronize)
+    NSUserDefaults.standardUserDefaults.expects(:synchronize)
     preferences.save
   end
 end
 
 describe "Preferences::AbstractPreferencesNamespace" do
-  before do
+  def setup
     @prefs = Preferences::TestDefaults.instance
   end
   
@@ -52,10 +55,10 @@ describe "Preferences::AbstractPreferencesNamespace" do
   end
   
   it "should create a query method for boolean preferences" do
-    @prefs.an_option = true
-    assert @prefs.an_option?
-    @prefs.an_option = false
-    assert !@prefs.an_option?
+    @prefs.another_option = true
+    assert @prefs.another_option?
+    @prefs.another_option = false
+    assert !@prefs.another_option?
   end
   
   it "should return an array of wrapped strings for a string_array_defaults_accessor" do
@@ -70,11 +73,11 @@ describe "Preferences::AbstractPreferencesNamespace" do
   it "should register an observer for a key path" do
     observer_mock = mock('Object that observes a preference value')
     
-    shared_defaults = OSX::NSUserDefaultsController.sharedUserDefaultsController
-    shared_defaults.expects(:addObserver_forKeyPath_options_context).with do |observer, key_path, options, context|
+    shared_defaults = NSUserDefaultsController.sharedUserDefaultsController
+    shared_defaults.expects('addObserver:forKeyPath:options:context:').with do |observer, key_path, options, context|
       observer == observer_mock &&
         key_path == 'values.Preferences.TestDefaults.an_option' &&
-        options == OSX::NSKeyValueObservingOptionNew &&
+        options == NSKeyValueObservingOptionNew &&
         context.nil?
     end
     
@@ -83,11 +86,11 @@ describe "Preferences::AbstractPreferencesNamespace" do
 end
 
 describe "A Preferences::StringArrayWrapper subclass" do
-  before do
+  def setup
     @prefs = Preferences::TestDefaults.instance
   end
   
-  after do
+  def teardown
     @prefs.a_string_array = %w{ foo bar baz }
   end
   
@@ -123,18 +126,18 @@ describe "A Preferences::StringArrayWrapper subclass" do
   end
 end
 
-class ClassThatExtendsWithAccessorHelpers < OSX::NSObject
+class ClassThatExtendsWithAccessorHelpers < NSObject
   extend Preferences::AccessorHelpers
   
   defualts_string_array_kvc_accessor :a_kvc_string_array, 'Preferences::TestDefaults.instance.a_string_array'
 end
 
 describe "A class that extends with Preferences::AccessorHelpers and uses ::defualts_string_array_kvc_accessor" do
-  before do
+  def setup
     @instance = ClassThatExtendsWithAccessorHelpers.alloc.init
   end
   
-  after do
+  def teardown
     Preferences::TestDefaults.instance.a_string_array = %w{ foo bar baz }
   end
   
@@ -155,18 +158,18 @@ describe "A class that extends with Preferences::AccessorHelpers and uses ::defu
   end
 end
 
-class ClassThatExtendsWithAccessorHelpers < OSX::NSObject
+class ClassThatExtendsWithAccessorHelpers < NSObject
   extend Preferences::AccessorHelpers
   
   defaults_kvc_accessor :a_kvc_array, 'preferences.test_defaults.an_array'
 end
 
 describe "A class that extends with Preferences::AccessorHelpers and uses defaults_kvc_accessor" do
-  before do
+  def setup
     @instance = ClassThatExtendsWithAccessorHelpers.alloc.init
   end
   
-  after do
+  def teardown
     Preferences::TestDefaults.instance.an_array = %w{ foo bar baz }
   end
   
@@ -175,7 +178,7 @@ describe "A class that extends with Preferences::AccessorHelpers and uses defaul
   end
   
   it "should define a defaults kvc writer accessor" do
-    @instance.setValue_forKey(['bar'], 'a_kvc_array')
+    @instance.setValue(['bar'], forKey: 'a_kvc_array')
     @instance.a_kvc_array.should == ['bar']
   end
 end
@@ -185,17 +188,17 @@ class ClassThatIncludesKVOCallbackHelper
 end
 
 describe "A class that includes Preferences::KVOCallbackHelper" do
-  before do
+  def setup
     @instance = ClassThatIncludesKVOCallbackHelper.new
   end
   
   it "should call the method inflected from the key path with the new value of the preference" do
     Preferences::TestDefaults.instance.an_option = true
     @instance.expects(:an_option_changed).with(true)
-    @instance.observeValueForKeyPath_ofObject_change_context('values.Preferences.TestDefaults.an_option', nil, {}, nil)
+    @instance.observeValueForKeyPath('values.Preferences.TestDefaults.an_option', ofObject: nil, change: {}, context: nil)
     
     Preferences::TestDefaults.instance.an_option = false
     @instance.expects(:an_option_changed).with(false)
-    @instance.observeValueForKeyPath_ofObject_change_context('values.Preferences.TestDefaults.an_option', nil, {}, nil)
+    @instance.observeValueForKeyPath('values.Preferences.TestDefaults.an_option', ofObject: nil, change: {}, context: nil)
   end
 end

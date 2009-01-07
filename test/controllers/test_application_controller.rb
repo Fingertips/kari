@@ -149,23 +149,23 @@ describe 'ApplicationController, in general' do
     assigns(:processing, 0)
     
     controller.startedIndexing(nil)
-    controller.valueForKey('processing').to_ruby.should.be 1
+    controller.valueForKey('processing').should.be 1
     
     controller.startedIndexing(nil)
-    controller.valueForKey('processing').to_ruby.should.be 2
+    controller.valueForKey('processing').should.be 2
   end
   
   it "should update the `processing' state when a `KariDidFinishIndexingNotification' is received" do
     assigns(:processing, 2)
     
     controller.finishedIndexing(nil)
-    controller.valueForKey('processing').to_ruby.should.be 1
+    controller.valueForKey('processing').should.be 1
     
     controller.finishedIndexing(nil)
-    controller.valueForKey('processing').to_ruby.should.be 0
+    controller.valueForKey('processing').should.be 0
     
     controller.finishedIndexing(nil)
-    controller.valueForKey('processing').to_ruby.should.be 0
+    controller.valueForKey('processing').should.be 0
   end
   
   it "should update the `class_tree' when a `KariDidFinishIndexingNotification' is received" do
@@ -181,13 +181,13 @@ describe 'ApplicationController, in general' do
   it "should set search_mode to `true' if a user started searching" do
     controller.search_mode = false
     controller.searchControllerWillStartSearching
-    controller.valueForKey('search_mode').to_ruby.should.be true
+    controller.valueForKey('search_mode').should.be true
   end
   
   it "should set search_mode to `false' if a user selected a search result"  do
     controller.search_mode = true
     load_url!
-    controller.valueForKey('search_mode').to_ruby.should.be false
+    controller.valueForKey('search_mode').should.be false
   end
   
   it "should create a special search back forward item when a switching back to the webView" do
@@ -210,7 +210,7 @@ describe 'ApplicationController, in general' do
     webViewController.stubs(:bookmarkable?).returns(true)
     controller.search_mode = true
     controller.webViewFinishedLoading(nil)
-    controller.valueForKey('search_mode').to_ruby.should.be false
+    controller.valueForKey('search_mode').should.be false
   end
   
   it "should close all resources when terminating" do
