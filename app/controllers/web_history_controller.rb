@@ -36,7 +36,7 @@ class WebHistoryController < Rucola::RCController
   #   @history.allItems.each { |history_item| addMenuItemForHistoryItem history_item }
   # end
   
-  def after_init
+  def initialize
     WebHistory.optionalSharedHistory = @history = WebHistory.alloc.init
     
     # Ensure the application support directory

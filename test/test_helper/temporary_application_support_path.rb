@@ -1,11 +1,12 @@
 module TemporaryApplicationSupportPath
-  def self.included(base)
-    base.send(:before) do
-      TemporaryApplicationSupportPath.stub
-    end
-    base.send(:after) do
-      TemporaryApplicationSupportPath.cleanup
-    end
+  def setup
+    super
+    TemporaryApplicationSupportPath.stub
+  end
+  
+  def teardown
+    super
+    TemporaryApplicationSupportPath.cleanup
   end
   
   def self.stub
