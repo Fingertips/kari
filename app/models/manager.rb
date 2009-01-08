@@ -21,6 +21,10 @@ class Manager
     end
   end
   
+  def inspect
+    "#<Manager:#{object_id} descriptions=#{length}>"
+  end
+  
   def length
     @descriptions.length
   end

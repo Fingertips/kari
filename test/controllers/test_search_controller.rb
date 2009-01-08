@@ -1,10 +1,12 @@
+#!/usr/bin/env macruby
+
 require File.expand_path('../../test_helper', __FILE__)
 
 describe "A SearchController, when initializing" do
   tests SearchController
   
   it "should have an empty KVC accessible results array" do
-    controller.valueForKey('results').should == [].to_ns
+    controller.valueForKey('results').should == []
   end
 end
 
@@ -12,7 +14,7 @@ describe "A SearchController, when awaking from nib" do
   tests SearchController
   
   def after_setup
-    ib_outlets :results_table_view => OSX::NSTableView.alloc.init,
+    ib_outlets :results_table_view => NSTableView.alloc.init,
                :search_field => SearchField.alloc.init
     
     controller.awakeFromNib
@@ -83,19 +85,19 @@ describe "A SearchController, in general" do
   include FixtureHelpers
   
   def after_setup
-    ib_outlets :results_table_view => OSX::NSTableView.alloc.init,
-               :results_array_controller => OSX::NSArrayController.alloc.init
+    ib_outlets :results_table_view => NSTableView.alloc.init,
+               :results_array_controller => NSArrayController.alloc.init
     
     @delegate = stub_everything('SearchController delegate')
     controller.delegate = @delegate
     
     @urls = [
-      OSX::NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/dup.karidoc')),
-      OSX::NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/try_lock.karidoc'))
+      NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/dup.karidoc')),
+      NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/try_lock.karidoc'))
     ]
     @matches = [
-      SearchKit::Match.alloc.initWithURL_score(@urls.first, 1.2345),
-      SearchKit::Match.alloc.initWithURL_score(@urls.last, 2.3456)
+      SearchKit::Match.alloc.initWithURL(@urls.first, score: 1.2345),
+      SearchKit::Match.alloc.initWithURL(@urls.last, score: 2.3456)
     ]
     results_array_controller.content = @matches
     

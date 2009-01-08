@@ -6,8 +6,8 @@ class SearchController < Rucola::RCController
   attr_writer :results_table_view
   attr_writer :search_field
   
-  def after_init
-    @results = OSX::NSMutableArray.alloc.init
+  def initialize
+    @results = NSMutableArray.alloc.init
   end
   
   def awakeFromNib
@@ -15,11 +15,11 @@ class SearchController < Rucola::RCController
     # @results_table_view.delegate = self
     @results_table_view.target = self
     @results_table_view.doubleAction = 'rowDoubleClicked:'
-    @results_array_controller.sortDescriptors = [OSX::NSSortDescriptor.alloc.initWithKey_ascending('score', false)]
+    @results_array_controller.sortDescriptors = [NSSortDescriptor.alloc.initWithKey('score', ascending: false)]
   end
   
   def search(sender)
-    query = (sender.is_a?(String) || sender.is_a?(OSX::NSString) ? sender : sender.stringValue)
+    query = (sender.is_a?(String) || sender.is_a?(NSString) ? sender : sender.stringValue)
     unless query.blank?
       @delegate.searchControllerWillStartSearching
       self.results = Manager.instance.search(query_with_partial_matching(query))
