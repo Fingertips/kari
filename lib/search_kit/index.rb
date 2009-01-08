@@ -191,7 +191,7 @@ module SearchKit #:nodoc:
         
         if @countDifference.nil?
           flush
-          @countDifference = lopsidedCount.to_i - 1
+          @countDifference = lopsidedCount.intValue - 1
         end
         
         result

@@ -1,3 +1,5 @@
+#!/usr/bin/env macruby
+
 require File.expand_path('../../test_helper', __FILE__)
 
 describe "The SearchKit Index" do
@@ -120,7 +122,7 @@ describe "A SearchKit Index" do
     
     match.should.be.an.instance_of SearchKit::Match
     match.URL.path.should == @filenames.find { |f| File.basename(f) == 'cdesc-Binding.yaml' }
-    match.score.to_ruby.should.be.an.instance_of Float
+    match.score.should.be.an.instance_of Float
   end
 end
 
@@ -129,20 +131,20 @@ describe "A SearchKit Match" do
   
   before do
     Rucola::RCApp.stubs(:application_support_path).returns(file_fixture('')[0..-2])
-    @url = OSX::NSURL.fileURLWithPath(file_fixture('Karidoc', 'Mutex', 'try_lock.karidoc'))
+    @url = NSURL.fileURLWithPath(file_fixture('Karidoc', 'Mutex', 'try_lock.karidoc'))
     @score = 1.2345
-    @match = SearchKit::Match.alloc.initWithURL_score(@url, @score)
+    @match = SearchKit::Match.alloc.initWithURL(@url, score: @score)
   end
   
   it "should initialize with a document NSURL and relevance score" do
     @match.valueForKey('URL').path.should == @url.path
-    @match.valueForKey('score').to_ruby.should == @score
+    @match.valueForKey('score').should == @score
   end
   
   it "should return the name of the matched class/method" do
     begin
       @match.valueForKey('name').should == 'Mutex::try_lock'
-    rescue OSX::OCException
+    rescue OCException
       @match.name.should == 'Mutex::try_lock'
     end
   end
