@@ -1,7 +1,7 @@
 module TemporaryApplicationSupportPath
   def setup
-    super
     TemporaryApplicationSupportPath.stub
+    super
   end
   
   def teardown

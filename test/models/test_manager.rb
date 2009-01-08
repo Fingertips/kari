@@ -35,11 +35,13 @@ end
 describe "A Manager" do
   include TemporaryApplicationSupportPath
   
-  before do
+  def setup
+    super
     @manager = Manager.new
   end
   
-  after do
+  def teardown
+    super
     @manager.close
   end
   
