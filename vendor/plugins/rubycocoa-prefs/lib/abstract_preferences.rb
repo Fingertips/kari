@@ -183,6 +183,8 @@ class Preferences
       @string = string
       set_string!
     end
+    # FIXME: http://www.macruby.org/trac/ticket/201
+    alias_method :setString, :string=
     
     def set_string!
       if @index
@@ -231,6 +233,10 @@ class Preferences
         def #{name}=(new_defaults)
           #{path_to_eval_to_object} = @#{name} = new_defaults
         end
+        
+        # alias_method :setFoo, :foo=
+        # FIXME: http://www.macruby.org/trac/ticket/201
+        alias_method :set#{name[0,1].upcase}#{name[1..-1]}, :#{name}=
       }, __FILE__, __LINE__
     end
     
