@@ -57,11 +57,13 @@ describe "An empty Manager" do
   include TemporaryApplicationSupportPath
   include FixtureHelpers
   
-  before do
+  def setup
+    super
     @manager = Manager.new
   end
   
-  after do
+  def teardown
+    super
     @manager.close
   end
   
