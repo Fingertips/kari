@@ -5,21 +5,22 @@ class WebViewController < Rucola::RCController
   
   attr_accessor :delegate, :doc_title
   
-  def after_init
+  def initialize
     @doc_title = ''
   end
   
   def awakeFromNib
-    @webview.objc_send(:preferences).tabsToLinks = true
+    @webview.preferences.tabsToLinks = true
     
     @webview.frameLoadDelegate = self
     @webview.policyDelegate = self
     @webview.UIDelegate = self
     
-    NSNotificationCenter.defaultCenter.objc_send :addObserver, self,
-                                                      :selector,    'webViewFinishedLoading:',
-                                                      :name,        WebViewProgressFinishedNotification,
-                                                      :object,      nil
+    NSNotificationCenter.defaultCenter.
+      addObserver self,
+        selector: 'webViewFinishedLoading:',
+            name: WebViewProgressFinishedNotification,
+          object: nil
   end
   
   def webViewFinishedLoading(aNotification)

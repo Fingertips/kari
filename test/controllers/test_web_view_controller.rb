@@ -1,3 +1,5 @@
+#!/usr/bin/env macruby
+
 require File.expand_path('../../test_helper', __FILE__)
 
 module WebViewControllerSpecHelper
@@ -12,12 +14,12 @@ describe "WebViewController, when initializing" do
   tests WebViewController
   
   def after_setup
-    ib_outlets :webview => OSX::WebView.alloc.init
+    ib_outlets :webview => WebView.alloc.init
     controller.awakeFromNib
   end
 
   it "should enable the tabsToLinks preference" do
-    webview.objc_send(:preferences).tabsToLinks.should.be 1
+    webview.preferences.tabsToLinks.should.be true
   end
 end
 
@@ -27,7 +29,7 @@ describe 'WebViewController, in general' do
   include WebViewControllerSpecHelper
   
   def after_setup
-    ib_outlets :cursorOverLinkTextField => OSX::NSTextField.alloc.init
+    ib_outlets :cursorOverLinkTextField => NSTextField.alloc.init
     
     @mainframe = mock("WebView mainFrame")
     webview.stubs(:mainFrame).returns(@mainframe)
@@ -40,7 +42,7 @@ describe 'WebViewController, in general' do
     @mainframe.expects(:loadRequest).with do |request|
       request.URL.absoluteString.to_s =~ @file_url
     end
-    controller.load_url OSX::NSURL.fileURLWithPath(@file)
+    controller.load_url NSURL.fileURLWithPath(@file)
   end
   
   it "should take a ruby string URL, create a NSURL and load it in the webview" do
@@ -54,7 +56,7 @@ describe 'WebViewController, in general' do
     @mainframe.expects(:loadRequest).with do |request|
       request.URL.absoluteString.to_s =~ @file_url
     end
-    controller.load_url "file://#{@file}".to_ns
+    controller.load_url "file://#{@file}"
   end
   
   it "should take a string file path, create a NSURL and send it to load_url" do
@@ -71,14 +73,14 @@ describe 'WebViewController, in general' do
   
   it "should show the rubyname of a link that a user is hovering the cursor over in the status bar if it's a karidoc" do
     Rucola::RCApp.stubs(:application_support_path).returns('/Users/eloy/Library/Application Support/Kari')
-    url = OSX::NSURL.fileURLWithPath('/Users/eloy/Library/Application Support/Kari/Karidoc/Mutex/#exclusive_unlock.karidoc')
+    url = NSURL.fileURLWithPath('/Users/eloy/Library/Application Support/Kari/Karidoc/Mutex/#exclusive_unlock.karidoc')
     
     controller.webView_mouseDidMoveOverElement_modifierFlags(nil, { 'WebElementLinkURL' => url }, nil)
     cursorOverLinkTextField.stringValue.should == 'Mutex#exclusive_unlock'
   end
   
   it "should show the full URL of a link a user is hovering the cursor over in the status bar if it's not to a karidoc" do
-    url = OSX::NSURL.URLWithString("http://www.fngtps.com")
+    url = NSURL.URLWithString("http://www.fngtps.com")
     controller.webView_mouseDidMoveOverElement_modifierFlags(nil, { 'WebElementLinkURL' => url }, nil)
     cursorOverLinkTextField.stringValue.should == url.absoluteString
   end
@@ -136,12 +138,12 @@ describe "WebViewController, when with back/forward items" do
   tests WebViewController
   
   def after_setup
-    ib_outlets :webview => OSX::WebView.alloc.init,
+    ib_outlets :webview => WebView.alloc.init,
                :delegate => stub_everything('Delegate')
     
     @query = 'Binding'
     controller.add_search_back_forward_item(@query)
-    @url = OSX::NSURL.URLWithString("kari://search/#{@query}")
+    @url = NSURL.URLWithString("kari://search/#{@query}")
   end
   
   it "should create a new WebHistoryItem representing a search query" do
@@ -152,7 +154,7 @@ describe "WebViewController, when with back/forward items" do
     delegate.expects(:webView_didSelectSearchQuery).with(webview, @query)
     listener = mock('Decision Listener')
     listener.expects(:ignore)
-    controller.webView_decidePolicyForNavigationAction_request_frame_decisionListener(nil, nil, OSX::NSURLRequest.requestWithURL(@url), nil, listener)
+    controller.webView_decidePolicyForNavigationAction_request_frame_decisionListener(nil, nil, NSURLRequest.requestWithURL(@url), nil, listener)
   end
   
   it "should set the correct BackForward current item if a special search back/forward item was requested" do
@@ -160,11 +162,11 @@ describe "WebViewController, when with back/forward items" do
     
     assigns(:going_back_or_forward, 0)
     webview.backForwardList.expects(:goBack)
-    controller.webView_decidePolicyForNavigationAction_request_frame_decisionListener(nil, nil, OSX::NSURLRequest.requestWithURL(@url), nil, listener)
+    controller.webView_decidePolicyForNavigationAction_request_frame_decisionListener(nil, nil, NSURLRequest.requestWithURL(@url), nil, listener)
     
     assigns(:going_back_or_forward, 1)
     webview.backForwardList.expects(:goForward)
-    controller.webView_decidePolicyForNavigationAction_request_frame_decisionListener(nil, nil, OSX::NSURLRequest.requestWithURL(@url), nil, listener)
+    controller.webView_decidePolicyForNavigationAction_request_frame_decisionListener(nil, nil, NSURLRequest.requestWithURL(@url), nil, listener)
     
     assigns(:going_back_or_forward).should.be nil
   end
@@ -176,7 +178,7 @@ describe "WebViewController, when with back/forward items" do
     
     assert_no_difference('webview.backForwardList.backListCount') do
       2.times do
-        webview.backForwardList.addItem OSX::WebHistoryItem.alloc.initWithURLString_title_lastVisitedTimeInterval("about:blank", "", 0)
+        webview.backForwardList.addItem WebHistoryItem.alloc.initWithURLString_title_lastVisitedTimeInterval("about:blank", "", 0)
       end
       controller.send(:clear_blank_back_forward_items!)
     end
