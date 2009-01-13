@@ -1,9 +1,20 @@
 require 'yaml'
 require 'fileutils'
+require 'erb'
 
 if defined?(MACRUBY_VERSION)
   require 'rdoc/ri/descriptions'
   require 'rdoc/markup/to_flow'
+  
+  ::RI = RDoc::RI
+  
+  class ::Struct
+    module SM
+      module Flow
+        P = RDoc::Markup::Flow::P
+      end
+    end
+  end
 else
   require 'rdoc/ri/ri_descriptions'
   require 'rdoc/markup/simple_markup/to_flow'
