@@ -1,3 +1,5 @@
+require "core_ext"
+
 class SearchController < Rucola::RCController
   attr_accessor :results
   attr_accessor :delegate
