@@ -17,7 +17,7 @@ class ApplicationController < Rucola::RCController
     end
   end
   
-  def splitView_resizeSubviewsWithOldSize(splitView, old_size)
+  def splitView(splitView, resizeSubviewsWithOldSize: old_size)
     return if updating_splitView?
     
     will_update_splitView do
@@ -29,7 +29,7 @@ class ApplicationController < Rucola::RCController
   end
   
   def setup_splitView!
-    splitView_resizeSubviewsWithOldSize(nil, nil)
+    splitView(nil, resizeSubviewsWithOldSize: nil)
   end
   
   def splitViewDidResizeSubviews(notification)
@@ -90,12 +90,13 @@ class ApplicationController < Rucola::RCController
     frame
   end
   
+  # FIXME: Broken. Does arrive here and calls methods, but no actual animation occurs. Same with NSViewAnimation.
   def animate(views)
     view_animations = views.map do |view, frame|
-      { OSX::NSViewAnimationTargetKey => view, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(frame) }
+      { NSViewAnimationTargetKey => view, NSViewAnimationEndFrameKey => NSValue.valueWithRect(frame) }
     end
-    animation = OSX::MGViewAnimation.alloc.initWithViewAnimations(view_animations)
-    animation.animationBlockingMode = OSX::NSAnimationBlocking
+    animation = MGViewAnimation.alloc.initWithViewAnimations(view_animations)
+    animation.animationBlockingMode = NSAnimationBlocking
     animation.duration = 0.3
     animation.startAnimation
   end

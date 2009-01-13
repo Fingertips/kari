@@ -1,7 +1,7 @@
 class ToolbarController < Rucola::RCController
   attr_writer :window, :historyBackAndForwardView, :searchView, :addBookmarkView, :toggleClassBrowserView
   
-  def after_init
+  def initialize
     @toolbar = NSToolbar.alloc.initWithIdentifier('MainWindowToolbar')
     @toolbar.delegate = self
     @toolbar.displayMode = NSToolbarDisplayModeIconOnly
@@ -20,7 +20,7 @@ class ToolbarController < Rucola::RCController
     TOOLBAR_ITEMS
   end
   
-  def toolbar_itemForItemIdentifier_willBeInsertedIntoToolbar(toolbar, identifier, flag)
+  def toolbar(toolbar, itemForItemIdentifier: identifier, willBeInsertedIntoToolbar: flag)
     item = NSToolbarItem.alloc.initWithItemIdentifier(identifier)
     return item if identifier == NSToolbarFlexibleSpaceItemIdentifier
     custom_view = self.instance_variable_get("@#{identifier[0...1].downcase + identifier[1..-1].gsub(/Item$/, 'View')}".to_sym)

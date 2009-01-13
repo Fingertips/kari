@@ -1,7 +1,8 @@
 class SplitViewWithDisableableDivider < NSSplitView
   attr_reader :disableDivider
-  def disableDivider=(value)
-    @disableDivider = value
+  
+  def disableDivider=(disabled)
+    @disableDivider = disabled
     resetCursorRects
   end
   
