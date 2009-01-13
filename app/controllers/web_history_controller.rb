@@ -47,7 +47,7 @@ class WebHistoryController < Rucola::RCController
   end
   
   def awakeFromNib
-    @history.loadFromURL_error(@history_file_path)
+    @history.loadFromURL(@history_file_path, error: nil)
   end
   
   def goToHistoryItem(sender)

@@ -13,7 +13,8 @@ class BookmarkController < Rucola::RCController
   # crud
   
   def bookmarks
-    @bookmarks ||= PreferencesController.preferences['Bookmarks'].map {|h| OSX::SABookmark.alloc.initWithHash(h) }
+    #@bookmarks ||= PreferencesController.preferences['Bookmarks'].map {|h| OSX::SABookmark.alloc.initWithHash(h) }
+    []
   end
   
   def saveBookmarks

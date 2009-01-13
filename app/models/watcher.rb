@@ -8,9 +8,11 @@ class Watcher
   attr_accessor :fsevents, :delegate
   
   def initialize
-    @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
-      handleEvents(events)
-    end
+    # @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
+    #   handleEvents(events)
+    # end
+    block = proc { handleEvents(events) }
+    @fsevents = Rucola::FSEvents.start_watching(watchPaths,  { :since => lastEventId, :latency => 5.0 }, &block)
   end
   
   def riPaths

@@ -26,9 +26,13 @@ class StatusBar < NSView
   # --------------------------
   
   def initWithFrame(frame)
-    if super_initWithFrame(frame)
+    if super
       [NSWindowDidResignKeyNotification, NSWindowDidBecomeKeyNotification].each do |name|
-        NSNotificationCenter.defaultCenter.addObserver_selector_name_object(self, :windowChangedKey, name, nil)
+        NSNotificationCenter.defaultCenter.
+          addObserver self,
+            selector: 'windowChangedKey:',
+                name: name,
+              object: nil
       end
       self
     end

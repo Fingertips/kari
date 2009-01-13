@@ -7,7 +7,7 @@ class FilterBar < NSView
   def drawRect(rect)
     bounds = self.bounds
     
-    gradient.drawInRect_angle(bounds, ANGLE)
+    gradient.drawInRect(bounds, angle: ANGLE)
     
     LINE_COLOR.set
     path = NSBezierPath.bezierPath
@@ -21,6 +21,6 @@ class FilterBar < NSView
   private
   
   def gradient
-    @gradient ||= NSGradient.alloc.initWithStartingColor_endingColor(STARTING_COLOR, ENDING_COLOR)
+    @gradient ||= NSGradient.alloc.initWithStartingColor(STARTING_COLOR, endingColor: ENDING_COLOR)
   end
 end

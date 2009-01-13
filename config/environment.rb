@@ -10,4 +10,8 @@ Rucola::Initializer.run do |config|
       ["/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8", "/Library/Ruby/Gems/1.8"]
     end
   end
+
+  framework 'Cocoa' # needs to be loaded before objc_ext
+  require 'objc_ext/ns_user_defaults'
+  require 'objc_ext/ns_rect'
 end

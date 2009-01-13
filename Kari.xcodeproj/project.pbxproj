@@ -11,7 +11,6 @@
 		4DDCA7080ACC9A6100E082CE /* rb_main.rb in Resources */ = {isa = PBXBuildFile; fileRef = E8F5E25803AEB7C803A81C6F /* rb_main.rb */; };
 		4DDCA70A0ACC9A6100E082CE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		4DDCA70D0ACC9A6100E082CE /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */; };
 		51137C0D0D854905000EADF3 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51137C070D854905000EADF3 /* Info.plist */; };
 		51137C0F0D854905000EADF3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 51137C0B0D854905000EADF3 /* InfoPlist.strings */; };
 		51137C200D854A14000EADF3 /* KariDocImporter.mdimporter in Copy Spotlight Importer */ = {isa = PBXBuildFile; fileRef = 51137C130D854A14000EADF3 /* KariDocImporter.mdimporter */; };
@@ -26,13 +25,12 @@
 		514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 514292ED0CC6823A00F9CEEF /* MainMenu.nib */; };
 		516499AF0EEEBFBD0000C1E3 /* Index.h in Headers */ = {isa = PBXBuildFile; fileRef = 516499AD0EEEBFBD0000C1E3 /* Index.h */; };
 		516499B00EEEBFBD0000C1E3 /* Index.m in Sources */ = {isa = PBXBuildFile; fileRef = 516499AE0EEEBFBD0000C1E3 /* Index.m */; };
-		51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
 		51CAD5FE0EF02CC7008F5EDF /* match.h in Headers */ = {isa = PBXBuildFile; fileRef = 51CAD5FC0EF02CC7008F5EDF /* match.h */; };
 		51CAD5FF0EF02CC7008F5EDF /* match.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CAD5FD0EF02CC7008F5EDF /* match.m */; };
 		51E0DC1C0D80411600C898A2 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 51E0DBCA0D80411600C898A2 /* lib */; };
+		51FA09F80F1CE4B800D906EA /* MacRuby.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51FA09F70F1CE4B800D906EA /* MacRuby.framework */; };
+		51FA0A130F1CE4C500D906EA /* MacRuby.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 51FA09F70F1CE4B800D906EA /* MacRuby.framework */; };
 		638CCA7D0DF06404008C4936 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = 638CCA7C0DF06404008C4936 /* BridgeSupport */; };
-		AE975ACCD6AC76DA87E3FF08 /* RubyCocoa.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */; };
-		B140F0D6F7878A81F09EBBAB /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,8 +51,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B140F0D6F7878A81F09EBBAB /* Sparkle.framework in Copy Frameworks */,
-				AE975ACCD6AC76DA87E3FF08 /* RubyCocoa.framework in Copy Frameworks */,
+				51FA0A130F1CE4C500D906EA /* MacRuby.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -64,7 +61,6 @@
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = misc/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		1D71E4C3139CD53D99A6E93C /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = vendor/frameworks/Sparkle.framework; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = main.m; path = misc/main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -87,8 +83,8 @@
 		51CAD5FC0EF02CC7008F5EDF /* match.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = match.h; path = lib/search_kit/match.h; sourceTree = "<group>"; };
 		51CAD5FD0EF02CC7008F5EDF /* match.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = match.m; path = lib/search_kit/match.m; sourceTree = "<group>"; };
 		51E0DBCA0D80411600C898A2 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
+		51FA09F70F1CE4B800D906EA /* MacRuby.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacRuby.framework; path = /Library/Frameworks/MacRuby.framework; sourceTree = "<absolute>"; };
 		638CCA7C0DF06404008C4936 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BridgeSupport; path = misc/BridgeSupport; sourceTree = "<group>"; };
-		E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /System/Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
 		E8F5E25803AEB7C803A81C6F /* rb_main.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; name = rb_main.rb; path = misc/rb_main.rb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -97,9 +93,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */,
 				4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */,
-				4DDCA70D0ACC9A6100E082CE /* RubyCocoa.framework in Frameworks */,
+				51FA09F80F1CE4B800D906EA /* MacRuby.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,9 +111,8 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				51FA09F70F1CE4B800D906EA /* MacRuby.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
-				E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */,
-				1D71E4C3139CD53D99A6E93C /* Sparkle.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -351,6 +345,7 @@
 		4D7A7B580ABF745500C2D4C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_ENABLE_OBJC_GC = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;

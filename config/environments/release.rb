@@ -5,7 +5,7 @@ Rucola::Initializer.run do |config|
   # Most of the times you would probably only bundle gems if you're targeting
   # a ruby which is compatible and contains the right site libs.
   
-  config.dependency_types = :gem
+  # config.dependency_types = :gem
   
   # You can completely disable the usage of rubygems by setting this to false.
   # Unless you're using gems which are installed on a system by default, it's
