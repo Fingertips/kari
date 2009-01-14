@@ -5,7 +5,7 @@ module SearchKit #:nodoc:
   
   # SearchKit::Index is a wrapper around a SKIndex. It indexes documents which can then be
   # queried.
-  class Index < NSObject
+  class Index
     # Creates a new index on disk
     #
     # * _path_: Path to the index
