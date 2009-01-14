@@ -1,7 +1,7 @@
 module SearchKit #:nodoc:
   # Objective-C classes are always defined on the OSX module,
   # so we use this workaround to be able to extend the class in our own SearchKit module.
-  Index = ::Index #:nodoc:
+  # Index = ::Index #:nodoc:
   
   # SearchKit::Index is a wrapper around a SKIndex. It indexes documents which can then be
   # queried.
@@ -56,6 +56,8 @@ module SearchKit #:nodoc:
         raise SearchKit::Exceptions::IndexError, "Couldn't open the SearchKit index at `#{path}' with name `#{name}'"
       end
     end
+    
+    attr_accessor :index
     
     # Initialize an Index instance with an already open SKIndex.
     #

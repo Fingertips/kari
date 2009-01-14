@@ -1,5 +1,5 @@
 module SearchKit
-  Match = ::Match
+  # Match = ::Match
   
   class Match < NSObject
     attr_accessor :name

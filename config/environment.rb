@@ -1,8 +1,10 @@
-framework 'Cocoa' # needs to be loaded before objc_ext
-
 Rucola::Initializer.run do |config|
-  config.load_paths << (RCApp.root_path + 'app/helpers').to_s
-  config.frameworks << 'WebKit'
+  config.load_path (RCApp.root_path + 'app/helpers').to_s
+  
+  config.framework 'WebKit'
+  
+  config.require 'objc_ext/ns_user_defaults'
+  config.require 'objc_ext/ns_rect'
   
   Thread.abort_on_exception = true
   
@@ -12,7 +14,4 @@ Rucola::Initializer.run do |config|
       ["/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8", "/Library/Ruby/Gems/1.8"]
     end
   end
-  
-  require 'objc_ext/ns_user_defaults'
-  require 'objc_ext/ns_rect'
 end
