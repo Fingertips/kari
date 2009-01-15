@@ -1,5 +1,5 @@
 Rucola::Initializer.run do |config|
-  config.load_path (RCApp.root_path + 'app/helpers').to_s
+  config.load_path (Rucola::RCApp.root_path + 'app/helpers').to_s
   
   config.framework 'WebKit'
   

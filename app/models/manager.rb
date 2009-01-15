@@ -2,6 +2,8 @@ require 'find'
 require (defined?(MACRUBY_VERSION) ? 'rdoc/ri/paths' : 'rdoc/ri/ri_paths')
 require 'search_kit'
 
+puts 'hier!'
+
 class Manager
   SYSTEM_RI_PATH         = RI::Paths.path(true, false, false, false).first
   RI_PATH_VERSION_REGEXP = /\/\w*-([\d\.]*)\//

@@ -14,7 +14,7 @@ module Rucola
     end
     
     def boot!
-      pick_boot.run unless booted?
+      pick_boot.run #unless booted? # uhm, why is this needed???
     end
     
     def booted?

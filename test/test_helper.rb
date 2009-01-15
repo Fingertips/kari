@@ -3,13 +3,13 @@ require "pathname"
 RUCOLA_ENV = 'test'
 RUCOLA_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 
-require 'rubygems'
+#require 'rubygems'
 #require 'test/spec'
 require 'mocha'
 require 'tmpdir'
 require 'fileutils'
 
-$: << "/Users/eloy/code/MacRuby/rucola/lib"
+$:.unshift "/Users/eloy/code/MacRuby/rucola/lib"
 require 'rucola'
 require 'rucola/test_helpers'
 require 'rucola/test_spec'
