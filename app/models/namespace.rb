@@ -20,5 +20,10 @@ class Namespace
     super or @namespace.has_key?(method.to_s)
   end
   
-  public :binding
+  # MacRuby bug: http://www.macruby.org/trac/ticket/208
+  #public :binding
+  alias_method :__binding, :binding
+  def binding
+    __binding
+  end
 end

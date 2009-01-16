@@ -12,6 +12,7 @@ if defined?(MACRUBY_VERSION)
     module SM
       module Flow
         P = RDoc::Markup::Flow::P
+        VERB = RDoc::Markup::Flow::VERB
       end
     end
   end
