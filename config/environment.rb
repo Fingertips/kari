@@ -6,6 +6,8 @@ Rucola::Initializer.run do |config|
   config.require 'objc_ext/ns_user_defaults'
   config.require 'objc_ext/ns_rect'
   
+  config.require 'ruby_version'
+  
   Thread.abort_on_exception = true
   
   # FIXME: Hack to get around the fact that we don't use rubygems in release.

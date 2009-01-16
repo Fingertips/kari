@@ -21,6 +21,8 @@ else
 end
 
 require 'description_extensions'
+require 'flow_helpers'
+require 'html_helpers'
 
 module RI
   class Description

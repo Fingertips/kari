@@ -1,9 +1,15 @@
 require 'find'
-require (defined?(MACRUBY_VERSION) ? 'rdoc/ri/paths' : 'rdoc/ri/ri_paths')
+require on_macruby? ? 'rdoc/ri/paths' : 'rdoc/ri/ri_paths'
 require 'search_kit'
 
 class Manager
-  SYSTEM_RI_PATH         = RI::Paths.path(true, false, false, false).first
+  if on_macruby?
+    # no system ri because macruby fails while trying to create documentation atm
+    SYSTEM_RI_PATH = "/usr/share/ri/1.8/system"
+  else
+    SYSTEM_RI_PATH = RI::Paths.path(true, false, false, false).first
+  end
+  
   RI_PATH_VERSION_REGEXP = /\/\w*-([\d\.]*)\//
   
   attr_accessor :descriptions, :namespace, :search_index
