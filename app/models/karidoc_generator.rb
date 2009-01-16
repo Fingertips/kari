@@ -60,7 +60,6 @@ class KaridocGenerator
     partials = ['method', 'class', 'module'].inject({}) do |partials, t|
       partials[t] = self.class.template(File.join(template_path, "#{t}.erb")); partials
     end
-    
     namespace = Namespace.new(
       :descriptions => descriptions,
       :full_name => descriptions.first.full_name,

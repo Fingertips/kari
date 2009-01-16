@@ -1,3 +1,5 @@
+require 'plugins/rubycocoa-prefs/lib/abstract_preferences'
+
 class Preferences
   class Interface < Namespace
     defaults_accessor :class_browser_visible, false
