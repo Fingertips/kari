@@ -15,16 +15,14 @@ describe "A Namespace" do
     @namespace.should.not.respond_to?(:unknown)
   end
   
-  unless_on_macruby do
-    it "should respond to namespace keys" do
-      @namespace.full_name.should == 'Object'
-    end
-    
-    it "should throw an exception on unknown keys" do
-      lambda {
-        @namespace.unknown
-      }.should.raise(NoMethodError)
-    end
+  it "should respond to namespace keys" do
+    @namespace.full_name.should == 'Object'
+  end
+  
+  it "should throw an exception on unknown keys" do
+    lambda {
+      @namespace.unknown
+    }.should.raise(NoMethodError)
   end
   
   it "should be able to assign new keys to the namespace" do
