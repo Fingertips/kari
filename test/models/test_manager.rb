@@ -43,6 +43,11 @@ describe "Manager" do
     file_path.should.end_with?('1')
   end
   
+  it "should return the location where to search the current karidocs" do
+    Manager.current_filepath.should.start_with?(@application_support_path)
+    Manager.current_filepath.should.end_with?('Karidoc.current')
+  end
+  
   private
   
   def remove_manager_singleton!
@@ -226,5 +231,13 @@ describe "A filled Manager" do
       @manager.descriptions['Binding'] = ['/missing', '/missing', '/missing']
       @manager.update_karidoc(['Binding'])
     }.should.not.raise
+  end
+  
+  it "should symlink the created Karidocs to the current Karidocs" do
+    File.should.not.exist(Manager.current_filepath)
+    @manager.update_symlink
+    File.should.exist(Manager.current_filepath)
+    @manager.update_symlink
+    File.should.exist(Manager.current_filepath)
   end
 end

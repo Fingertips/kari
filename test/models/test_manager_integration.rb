@@ -51,6 +51,8 @@ class ManagerTestCache
       FileUtils.touch(BASE_PATH_CACHE)
       FileUtils.rm_rf(BASE_PATH_TMP)
       `cp -r #{BASE_PATH_CACHE} #{BASE_PATH_TMP}`
+      karidoc = File.join(application_support_path, Dir.entries(application_support_path).grep(/Karidoc\.\d+\.\d+/).first)
+      FileUtils.ln_sf(karidoc, File.join(application_support_path, 'Karidoc.current'))
     end
     
     def setup_manager
@@ -77,6 +79,17 @@ class ManagerTestCache
         yield
       end
       t(m.real.round)
+    end
+    
+    def l(path)
+      puts "{!} Files in #{path}"
+      if File.exist?(path)
+        Find.find(path) do |filename|
+          puts "#{filename} (#{File.ftype(filename)})"
+        end
+      else
+        puts "  - #{path} doesn't exist at the moment"
+      end
     end
   end
 end

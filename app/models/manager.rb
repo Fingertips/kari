@@ -175,6 +175,11 @@ class Manager
     end if exist?
   end
   
+  def update_symlink
+    log.debug "Symlinking #{self.class.current_filepath} => #{filepath}"
+    FileUtils.ln_sf(filepath, self.class.current_filepath)
+  end
+  
   def close
     log.debug "Closing SearchKit index"
     @search_index.close
@@ -192,8 +197,12 @@ class Manager
     File.join(Rucola::RCApp.application_support_path, "Karidoc.%d.%d" % [$$, n])
   end
   
+  def self.current_filepath
+    File.join(Rucola::RCApp.application_support_path, 'Karidoc.current')
+  end
+  
   def self.initialize_from_disk
-    index = new
+    index = new(:filepath => current_filepath)
     index.read_from_disk
     index
   end
