@@ -27,7 +27,6 @@ class ApplicationController < Rucola::RCController
   
   def after_init
     self.search_mode = false
-    PreferencesController.registerDefaults
     OSX::NSApplication.sharedApplication.setDelegate(self)
   end
   
@@ -112,7 +111,7 @@ class ApplicationController < Rucola::RCController
   end
   
   def applicationWillTerminate(aNotification)
-    PreferencesController.synchronize
+    preferences.save
     @watcher.stop
     Manager.instance.close
   end
@@ -121,7 +120,7 @@ class ApplicationController < Rucola::RCController
     OSX::NSApplication.sharedApplication.terminate(self)
   end
   
-  def bookmarkClicked(bookmark)
+  def bookmarkSelected(bookmark)
     @webViewController.load_url bookmark.url
   end
   

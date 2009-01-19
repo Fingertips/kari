@@ -7,8 +7,8 @@ class Watcher < OSX::NSObject
   
   def initWithWatchers
     if init
-      log.debug("Watching FSEvents since #{lastEventId}")
-      @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
+      log.debug("Watching FSEvents since #{preferences.general.last_fs_event_id}")
+      @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => preferences.general.last_fs_event_id, :latency => 5.0) do |events|
         handleEvents(events)
       end
       OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
@@ -39,14 +39,10 @@ class Watcher < OSX::NSObject
     "env RUBYCOCOA_ROOT=#{Rucola::RCApp.root_path} RUBYCOCOA_ENV=#{Rucola::RCApp.env} #{File.join(Rucola::RCApp.root_path, 'bin', 'kari')}"
   end
   
-  def lastEventId
-    PreferencesController.preferences['LastFSEventId']
-  end
-  
   def setLastEventId(id)
     log.debug("Setting last event ID to #{id}")
-    PreferencesController.preferences['LastFSEventId'] = id
-    PreferencesController.synchronize
+    preferences.general.last_fs_event_id = id
+    preferences.save
   end
   
   def handleEvents(events)

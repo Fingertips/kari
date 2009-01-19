@@ -10,37 +10,35 @@ class BookmarkController < Rucola::RCController
     populateBookmarkMenu
   end
   
-  # crud
-  
   def bookmarks
-    @bookmarks ||= PreferencesController.preferences['Bookmarks'].map { |attributes| Bookmark.alloc.initWithHash(attributes) }
+    @bookmarks ||= preferences.general.bookmarks.map { |attributes| Bookmark.alloc.initWithHash(attributes) }
   end
   
   def saveBookmarks
-    PreferencesController.preferences['Bookmarks'] = @bookmarks.map { |b| b.to_hash }
+    preferences.general.bookmarks = bookmarks.map { |b| b.to_hash }.to_ns
+    preferences.save
   end
   
-  def addBookmark(title, url)
-    @bookmarks.push Bookmark.createWithHash({ :title => @addBookmarkTitleTextField.stringValue, :url => @webViewController.url })
-    bookmarksChanged
+  def bookmarksChanged
+    saveBookmarks
+    resetBookmarkMenu
+  end
+  
+  def addBookmark
+    bookmarks << Bookmark.createWithHash({ 'title' => @addBookmarkTitleTextField.stringValue, 'url' => @webViewController.url })
     closeAddBookmarkSheet(self)
+    bookmarksChanged
   end
   
   def removeBookmark(sender)
     selected_title = @removeBookmarkPopup.titleOfSelectedItem.to_s
-    @bookmarks.delete @bookmarks.select{ |bm| bm.title == selected_title }.first
+    bookmarks.delete(bookmarks.find { |bm| bm.title == selected_title })
     closeRemoveBookmarkSheet(self)
     bookmarksChanged
   end
   
-  # Events
-  
-  def bookmarkClicked(bookmark)
-    @delegate.bookmarkClicked(bookmark)
-  end
-  
-  def bookmarkMenuSelected(menuItem)
-    bookmarkClicked Bookmark[menuItem.tag]
+  def bookmarkSelected(menuItem)
+    @delegate.bookmarkSelected Bookmark[menuItem.tag]
   end
   
   # Bookmark menu
@@ -57,7 +55,7 @@ class BookmarkController < Rucola::RCController
     item.tag = bookmark.id
     item.enabled = true
     item.target = self
-    item.action = 'bookmarkMenuSelected:'
+    item.action = 'bookmarkSelected:'
     key_equivalent = @bookmarkMenu.numberOfItems.to_i - 2
     if key_equivalent < 11
       item.keyEquivalent = key_equivalent == 10 ? '0' : key_equivalent.to_s
@@ -112,12 +110,4 @@ class BookmarkController < Rucola::RCController
     end
     true
   end
-  
-  private
-  
-  def bookmarksChanged(reset_bookmark_bar = true)
-    saveBookmarks
-    resetBookmarkMenu
-  end
-  
 end

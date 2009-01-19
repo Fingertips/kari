@@ -1,6 +1,6 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-describe 'PreferencesController' do
+xdescribe 'PreferencesController' do
   include GlobalSpecHelper
   
   before do
@@ -11,13 +11,5 @@ describe 'PreferencesController' do
     #
     # @document = mock('Document')
     # @controller.stubs(:document).returns(@document)
-  end
-  
-  xit "should return a predefined list of bookmarks if there's no preference file yet and store it in the preferences" do
-    prefs = ['Foo', 'Bar']
-    silence_warnings { PreferencesController::DEFAULT_BOOKMARKS = prefs }
-    
-    PreferencesController.registerDefaults
-    PreferencesController.preferences['Bookmarks'].should == make_bookmark_hashes(prefs).to_ns
   end
 end

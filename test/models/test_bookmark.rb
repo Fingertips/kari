@@ -2,7 +2,7 @@ require File.expand_path('../../test_helper', __FILE__)
 
 module BookmarkSpecHelpers
   def attributes
-    { :title => 'String', :url => 'file:///Karidoc/String.karidoc' }
+    { 'title' => 'String', 'url' => 'file:///Karidoc/String.karidoc' }
   end
   
   def create_bookmark
@@ -17,8 +17,14 @@ describe "Bookmark" do
   
   it "should create from a hash" do
     bookmark = create_bookmark
-    bookmark.title.should == attributes[:title]
-    bookmark.url.should == attributes[:url]
+    bookmark.title.should == attributes['title']
+    bookmark.url.should == attributes['url']
+  end
+  
+  it "should automatically set the order_index when creating from hash" do
+    create_bookmark.order_index.should == 0
+    create_bookmark.order_index.should == 1
+    create_bookmark.order_index.should == 2
   end
   
   it "should automatically add an id and order index when not specified during creation" do
@@ -45,7 +51,7 @@ describe "Bookmark" do
   end
   
   private
-  include BookmarkSpecHelpers  
+  include BookmarkSpecHelpers
 end
 
 describe "A Bookmark" do
@@ -54,9 +60,9 @@ describe "A Bookmark" do
   end
   
   it "should init with a data hash" do
-    bookmark = Bookmark.alloc.initWithHash(attributes.merge(:id => 12, :order_index => 14))
-    bookmark.title.should == attributes[:title]
-    bookmark.url.should == attributes[:url]
+    bookmark = Bookmark.alloc.initWithHash(attributes.merge('id' => 12, 'order_index' => 14))
+    bookmark.title.should == attributes['title']
+    bookmark.url.should == attributes['url']
     bookmark.id.should == 12
     bookmark.order_index.should == 14
     
@@ -75,12 +81,12 @@ describe "A Bookmark" do
     bookmark = create_bookmark
     hash     = bookmark.to_hash
     
-    hash[:order_index].should == 0
-    hash[:id].should == 0
-    hash[:title].should == attributes[:title]
-    hash[:url].should == attributes[:url]
+    hash['order_index'].should == 0
+    hash['id'].should == 0
+    hash['title'].should == attributes['title']
+    hash['url'].should == attributes['url']
   end
   
   private
-  include BookmarkSpecHelpers  
+  include BookmarkSpecHelpers
 end

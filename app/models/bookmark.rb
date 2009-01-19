@@ -5,7 +5,7 @@ class Bookmark < OSX::NSObject
     @@bookmarks ||= {}
     id = @@bookmarks.empty? ? 0 : @@bookmarks.keys.sort.last.next
     order_index = @@bookmarks.length
-    self.alloc.initWithHash(options.merge({:id => id, :order_index => order_index}))
+    self.alloc.initWithHash(options.merge({'id' => id, 'order_index' => order_index}))
   end
   
   def self.[](id)
@@ -18,10 +18,10 @@ class Bookmark < OSX::NSObject
   
   def initWithHash(options)
     if self.init
-      @id          = options[:id].to_i
-      @title       = options[:title].to_s
-      @url         = options[:url].to_s
-      @order_index = options[:order_index].to_i
+      @id          = options['id'].to_i
+      @title       = options['title'].to_s
+      @url         = options['url'].to_s
+      @order_index = options['order_index'].to_i
       
       @@bookmarks ||= {}
       @@bookmarks[@id] = self
@@ -31,7 +31,7 @@ class Bookmark < OSX::NSObject
   end
   
   def <=>(other)
-    if other.respond_to?(:order_index)
+    if other.respond_to?('order_index')
       order_index <=> other.order_index
     else
       super
@@ -39,6 +39,10 @@ class Bookmark < OSX::NSObject
   end
   
   def to_hash
-    { :id => @id, :title => @title, :url => @url, :order_index => @order_index }
+    { 'id' => @id, 'title' => @title, 'url' => @url, 'order_index' => @order_index }
+  end
+  
+  def inspect
+    "#<Bookmark #{to_hash.inspect[1..-2]}>"
   end
 end
