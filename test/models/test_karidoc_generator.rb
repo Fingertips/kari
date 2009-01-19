@@ -30,9 +30,8 @@ describe "KaridocGenerator" do
   
   it "should memoize ERB templates" do
     template_file = File.join(File.expand_path('../../../app/views/karidoc', __FILE__), 'layout.erb')
-    ERB.expects(:new).returns('').times(1)
     KaridocGenerator.template(template_file)
-    KaridocGenerator.template(template_file)
+    KaridocGenerator.instance_variable_get(:@template)[template_file].should.not.be nil
   end
   
   it "should recursively delete empty directories" do
