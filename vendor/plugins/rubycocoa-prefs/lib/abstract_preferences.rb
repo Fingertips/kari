@@ -53,16 +53,17 @@ class Preferences
         @section_defaults_key ||= name.gsub('::', '.')
       end
       
-      # Defines a reader and writer method for a user defaults key for this section.
+      # Defines a reader and writer method for a user defaults key for this
+      # section. The +default_value+ is optional. 
       #
       # If the preference is a boolean value, inflected from the default value,
       # a query method is also defined.
       #
       #   # Defines #confirm_quit, #confirm_quit=, and #confirm_quit? It's default value is <tt>true</tt>.
       #   defaults_accessor :confirm_quit, true
-      def defaults_accessor(name, default_value)
+      def defaults_accessor(name, default_value = nil)
         key_path = "#{section_defaults_key}.#{name}"
-        Preferences.default_values[key_path] = default_value
+        Preferences.default_values[key_path] = default_value if default_value
         
         class_eval do
           define_method(name) do

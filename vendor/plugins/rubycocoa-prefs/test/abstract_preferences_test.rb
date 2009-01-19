@@ -3,6 +3,7 @@ require 'abstract_preferences'
 
 class Preferences
   class TestDefaults < Namespace
+    defaults_accessor :without_default
     defaults_accessor :an_option, true
     string_array_defaults_accessor :a_string_array, %w{ foo bar baz }, 'TestDefaultsStringWrapper'
     defaults_accessor :an_array, %w{ foo bar baz }
@@ -43,6 +44,10 @@ describe "Preferences::AbstractPreferencesNamespace" do
   
   it "should should add default values to the Preferences.default_values" do
     Preferences.default_values['Preferences.TestDefaults.an_option'].should == true
+  end
+  
+  it "should not need a default value" do
+    Preferences.default_values['Preferences.TestDefaults.without_default'].should.be nil
   end
   
   it "should register user defaults with ::defaults_accessor" do
