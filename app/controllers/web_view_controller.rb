@@ -53,7 +53,7 @@ class WebViewController < Rucola::RCController
   
   def webView_mouseDidMoveOverElement_modifierFlags(webView, element, flags)
     if url = element['WebElementLinkURL']
-      @cursorOverLinkTextField.stringValue = (url.absoluteString.end_with?('karidoc') ? RubyName.from_karidoc_filename(url.path) : url.absoluteString)
+      @cursorOverLinkTextField.stringValue = (url.absoluteString.end_with?('karidoc') ? RubyName.from_karidoc_filename(Manager.instance.filepath, url.path) : url.absoluteString)
     else
       @cursorOverLinkTextField.stringValue = ''
     end

@@ -3,35 +3,6 @@ require File.expand_path('../../test_helper', __FILE__)
 describe "Watcher" do
   include TemporaryApplicationSupportPath
   
-  it "should start watching the RI paths after intialization" do
-    Rucola::FSEvents.expects(:start_watching)
-    OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).times(2)
-    Watcher.alloc.initWithWatchers
-  end
-  
-  it "should not start watching the RI paths after initialization if told not to" do
-    Rucola::FSEvents.expects(:start_watching).never
-    OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).never
-    Watcher.alloc.init
-  end
-  
-  it "should listen to notications" do
-    Rucola::FSEvents.stubs(:start_watching)
-    watcher = Watcher.alloc.init
-    [
-      ['finishedUpdating:', 'KariDidFinishUpdating'],
-      ['finishedReplacing:', 'KariDidFinishReplacing']
-    ].each do |selector, name|
-      OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(
-        :addObserver, watcher,
-        :selector, selector,
-        :name, name,
-        :object, nil
-      )
-    end
-    watcher.initWithWatchers
-  end
-  
   it "should calculate the union between two paths" do
     Watcher.union('', '').should == '/'
     Watcher.union('/', '/').should == '/'
@@ -48,138 +19,156 @@ describe "Watcher" do
     Watcher.basePaths(['/System/Frameworks/Ruby/Current/Doc', '/Library/Ruby/1', '/Library/Ruby/2']).should == ['/Library/Ruby', '/System/Frameworks/Ruby/Current/Doc']
     Watcher.basePaths(['/', '/Library/Ruby/1', '/Library/Ruby/2', '/tmp/something']).should == ["/Library/Ruby", "/tmp/something"]
   end
+  
+  it "should empty the queue during init" do
+    watcher = Watcher.alloc
+    watcher.stubs(:super_init).returns(watcher)
+    watcher.init
+    watcher.examineQueue.should.be.empty?
+  end
 end
 
 describe "A Watcher" do
   include TemporaryApplicationSupportPath
   
   before do
-    Rucola::FSEvents.stubs(:start_watching).returns(stub(:stop))
-    OSX::NSDistributedNotificationCenter.defaultCenter.stubs(:objc_send)
-    @watcher = Watcher.alloc.initWithWatchers
+    @watcher = Watcher.alloc
+    @watcher.stubs(:super_init).returns(@watcher)
+    @watcher.init
   end
   
   after do
     @watcher.stop
-    Manager.reset!
   end
   
-  it "should have RI paths to index" do
-    @watcher.riPaths.should.not.be.empty
+  it "should know the path to the kari commandline utility" do
+    @watcher.kariPath.should.start_with?(Rucola::RCApp.root_path)
+    @watcher.kariPath.should.end_with?('kari')
   end
   
-  it "should know which paths to watch for changes" do
-    @watcher.watchPaths.sort.should == %w(/Library/Ruby/Gems/1.8/doc /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/doc /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/share/ri/1.8/system)
+  it "should know the environment for the kari task" do
+    @watcher.kariEnvironment.keys.should.include('RUBYCOCOA_ROOT')
+    @watcher.kariEnvironment.keys.should.include('RUBYCOCOA_ENV')
   end
   
-  it "should have nil as default for the FSEvent ID" do
-    @watcher.lastEventId.should.be.nil
+  it "should know which paths to watch" do
+    @watcher.watchPaths.length.should == 2
   end
   
-  it "should store the last FSEvent ID" do
-    @watcher.setLastEventId(12)
-    @watcher.lastEventId.should == 12
+  it "should know all the ri paths on the system" do
+    (@watcher.riPaths - @watcher.watchPaths).length.should == 1
+    @watcher.riPaths.length.should == 2
   end
   
-  it "should handle events coming from FSEvents" do
-    @watcher.expects(:runKaridocUpdateCommandWithPaths).with(['/Library/Ruby/Gems/1.8/doc/nap-0.2/ri'])
-    @watcher.handleEvents(events)
+  it "should start watching the watchPaths when started" do
+    Rucola::FSEvents.expects(:start_watching).with(@watcher.watchPaths, :since => nil, :latency => 5.0).returns(stub(:stop))
+    @watcher.start
   end
   
-  it "should set the last event id as the last even id" do
-    @watcher.stubs(:runKaridocUpdateCommandWithPaths)
-    @watcher.expects(:setLastEventId).with(events.last.id)
-    @watcher.handleEvents(events)
-  end
-  
-  it "should be able to force a rebuild" do
-    @watcher.expects(:runKaridocUpdateCommandWithPaths).with(@watcher.watchPaths)
-    @watcher.forceRebuild
-  end
-  
-  it "should be able to examine all RI paths" do
-    @watcher.expects(:examine).with(@watcher.riPaths)
-    @watcher.examineAll
-  end
-  
-  it "should stop FSEvents for watcher when stopped" do
+  it "should stop watching the watchPaths when stopped" do
+    @watcher.fsevents = mock()
+    # Mocha gets confused when the after block calls stop too
     @watcher.fsevents.expects(:stop).at_least(1)
     @watcher.stop
   end
   
-  it "should construct a correct update command to issue to the shell" do
-    Thread.stubs(:start).yields
-    
-    Kernel.expects(:system).with("#{@watcher.kariPath} update-karidoc '/bogus/path/1' '/bogus/path/2'")
-    @watcher.runKaridocUpdateCommandWithPaths('/bogus/path/1', '/bogus/path/2')
+  it "should know the lastEventId" do
+    @watcher.lastEventId.should.be.nil
+    @watcher.setLastEventId(34123)
+    @watcher.lastEventId.should == 34123
+    @watcher.setLastEventId(34140)
+    @watcher.lastEventId.should == 34140
   end
   
-  it "should send a notification when the thread is done indexing" do
-    OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(
-      :postNotificationName, 'KariDidFinishUpdating', :object, nil
-    )
-    Thread.stubs(:start).yields
-    Kernel.stubs(:system)
+  it "should append paths to the examineQueue" do
+    @watcher.stubs(:signal)
+    path = '/path/to/ri'
     
-    @watcher.runKaridocUpdateCommandWithPaths
+    @watcher << [path]
+    @watcher.examineQueue.last.should == path
   end
   
-  it "should notify the delegate it started indexing if there is a delegate" do
-    Thread.stubs(:start)
-    Kernel.stubs(:system)
-    
-    controller = mock
-    controller.stubs(:respond_to?).returns(true)
-    controller.expects(:startedIndexing).with(@watcher)
-    @watcher.delegate = controller
-    
-    @watcher.runKaridocUpdateCommandWithPaths
+  it "should send a signal to itself when something is added to the examineQueue" do
+    @watcher.expects(:signal)
+    @watcher << ['/path/to/ri']
   end
   
-  it "should not notify the delegate it started indexing if there is no delegate" do
-    Thread.stubs(:start)
-    Kernel.stubs(:system)
+  it "should handle events generated by FSEvents" do
+    @watcher.stubs(:signal)
+    @watcher.handleEvents(events)
     
-    lambda {
-      @watcher.runKaridocUpdateCommandWithPaths
-    }.should.not.raise(NoMethodError)
+    @watcher.examineQueue.should == ["/Library/Ruby/Gems/1.8/doc/nap-0.2/ri"]
+    @watcher.lastEventId.should == 541
   end
   
-  it "should replace karidoc when updating is finished" do
-    @watcher.expects(:runKaridocReplaceCommand)
-    @watcher.finishedUpdating(nil)
+  it "should start a new task when signalled and having no task yet" do
+    paths = expect_task_configured_and_launched
+    @watcher << paths
   end
   
-  it "should contruct a correct replace command to issue to the shell" do
-    Thread.stubs(:start).yields
+  it "should start a new task when signalled and having no running task" do
+    @watcher.task = mock(:isRunning => false)
+    paths = expect_task_configured_and_launched
+    @watcher << paths
+  end
+  
+  it "should not start a new task when there is still a task running" do
+    @watcher.task = stub(:isRunning => true)
+    OSX::NSTask.expects(:alloc).never
+    @watcher << ['/path/to/ri']
+  end
+  
+  it "should notify the delegate that it started updating documentation" do
+    @watcher.task = stub(:isRunning => false)
+    task = task_allocation_stub
+    @watcher.delegate = stub
+    @watcher.delegate.expects(:startedIndexing).with(@watcher)
+    @watcher.delegate.stubs(:finishedIndexing)
     
-    Kernel.expects(:system).with("#{@watcher.kariPath} replace-karidoc")
-    @watcher.runKaridocReplaceCommand
+    @watcher << ['/path/to/ri']
   end
   
-  it "should send a notification when the thread is done replacing" do
-    OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(
-      :postNotificationName, 'KariDidFinishReplacing', :object, nil
-    )
-    Thread.stubs(:start).yields
-    Kernel.stubs(:system)
+  it "should notify the delegate that it finished updating documentation" do
+    @watcher.task = stub(:isRunning => false)
+    task = task_allocation_stub
+    @watcher.delegate = stub
+    @watcher.delegate.stubs(:startedIndexing)
+    @watcher.delegate.expects(:finishedIndexing).with(@watcher)
     
-    @watcher.runKaridocReplaceCommand
+    @watcher << ['/path/to/ri']
   end
   
-  it "should notify the delegate it finished indexing if there is a delegate" do
-    controller = mock
-    controller.stubs(:respond_to?).returns(true)
-    controller.expects(:finishedIndexing).with(@watcher)
-    @watcher.delegate = controller
+  it "should notify the delegate that it finished updating documentation when there is a current task" do
+    @watcher.task = stub(:isRunning => false)
+    task = task_allocation_stub
+    @watcher.delegate = stub
+    @watcher.delegate.stubs(:startedIndexing)
+    @watcher.delegate.expects(:finishedIndexing).with(@watcher)
     
-    @watcher.finishedReplacing(nil)
+    @watcher << ['/path/to/ri']
   end
   
-  it "should not notify the delegate it finished indexing if there is no delegate" do
-    lambda {
-      @watcher.finishedReplacing(nil)
-    }.should.not.raise(NoMethodError)
+  it "should not notify the delegate that it finished updating documentation when there is no current task" do
+    task = task_allocation_stub
+    @watcher.delegate = stub
+    @watcher.delegate.stubs(:startedIndexing)
+    @watcher.delegate.expects(:finishedIndexing).never
+    
+    @watcher << ['/path/to/ri']
+  end
+  
+  it "should queue all the riPaths when a rebuild is forced" do
+    @watcher.expects(:<<).with(@watcher.riPaths)
+    @watcher.forceRebuild
+  end
+  
+  it "should empty it's queue when asked" do
+    @watcher.stubs(:signal)
+    
+    @watcher << ['/path/to/ri']
+    @watcher.examineQueue.should.not.be.empty
+    @watcher.emptyQueue
+    @watcher.examineQueue.should.be.empty
   end
   
   protected
@@ -191,5 +180,32 @@ describe "A Watcher" do
       stub(:id => 540, :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/REST/cdesc-REST.yaml'),
       stub(:id => 541, :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/REST/Response/new-c.yaml')
     ]
+  end
+  
+  def task_allocation_stub
+    task = stub(
+      :environment= => nil,
+      :launchPath= => nil,
+      :arguments= => nil,
+      :launch => nil
+    )
+    task.stubs(:init).returns(task)
+    OSX::NSTask.stubs(:alloc).returns(task)
+    task
+  end
+  
+  def expect_task_configured_and_launched
+    paths = ["/Library/Ruby/Gems/1.8/doc/nap-0.2/ri"]
+    
+    Manager.stubs(:next_filepath).returns(next_filepath = '/path/to/next')
+    
+    task = task_allocation_stub
+    task.stubs(:isRunning).returns(true)
+    task.expects(:environment=).with(@watcher.kariEnvironment)
+    task.expects(:launchPath=).with(@watcher.kariPath)
+    task.expects(:arguments=).with(['--old', Manager.instance.filepath, '--new', next_filepath, *paths])
+    task.expects(:launch)
+    
+    paths
   end
 end

@@ -4,26 +4,30 @@ describe "KaridocGenerator" do
   include TemporaryApplicationSupportPath
   include FixtureHelpers
   
+  before do
+    @karidoc_path = File.join(Rucola::RCApp.application_support_path, 'Karidoc.6345.1')
+  end
+  
   after do
     KaridocGenerator.class_eval { @template = nil }
   end
   
   it "should generate a documentation file for a ri class description" do
     description_file = file_fixture('normal', 'ri', 'Binding', 'cdesc-Binding.yaml')
-    filename = KaridocGenerator.generate(description_file)
-    File.should.exist(File.join(Rucola::RCApp.application_support_path, filename))
+    filename = KaridocGenerator.generate(@karidoc_path, description_file)
+    File.should.exist(File.join(@karidoc_path, filename))
   end
   
   it "should generate a documentation file for a ri instance method description" do
     description_file = file_fixture('normal', 'ri', 'Binding', 'clone-i.yaml')
-    filename = KaridocGenerator.generate(description_file)
-    File.should.exist(File.join(Rucola::RCApp.application_support_path, filename))
+    filename = KaridocGenerator.generate(@karidoc_path, description_file)
+    File.should.exist(File.join(@karidoc_path, filename))
   end
   
   it "should generate a documentation file for a ri class method description" do
     description_file = file_fixture('normal', 'ri', 'Mutex', 'new-c.yaml')
-    filename = KaridocGenerator.generate(description_file)
-    File.should.exist(File.join(Rucola::RCApp.application_support_path, filename))
+    filename = KaridocGenerator.generate(@karidoc_path, description_file)
+    File.should.exist(File.join(@karidoc_path, filename))
   end
   
   it "should memoize ERB templates" do
@@ -49,7 +53,7 @@ describe "KaridocGenerator, on a generated karidoc tree" do
   include TemporaryApplicationSupportPath
   include FixtureHelpers
   
-  before do
+  before do    
     @manager = Manager.new
     @manager.examine(File.join(TEST_ROOT, 'fixtures', 'normal', 'ri'))
   end
@@ -60,24 +64,26 @@ describe "KaridocGenerator, on a generated karidoc tree" do
   
   it "should clear documentation files for a description" do
     full_name = 'Binding'
-    filename = RubyName.karidoc_filename(full_name)
+    filename = RubyName.karidoc_filename(@manager.filepath, full_name)
     
     File.should.exist?(filename)
-    KaridocGenerator.clear(full_name)
+    KaridocGenerator.clear(@manager.filepath, full_name)
     File.should.not.exist(filename)
   end
   
   it "should clear documentation directories when they're empty" do
     names = ['Binding#clone', 'Binding#dup']
-    File.should.exist?(File.dirname(RubyName.karidoc_filename(names.first)))
-    names.each { |full_name, description_filename| KaridocGenerator.clear(full_name) }
-    File.should.not.exist?(File.dirname(RubyName.karidoc_filename(names.first)))
+    dirname = File.dirname(RubyName.karidoc_filename(@manager.filepath, names.first))
+    
+    File.should.exist?(dirname)
+    names.each { |full_name, description_filename| KaridocGenerator.clear(@manager.filepath, full_name) }
+    File.should.not.exist(dirname)
   end
   
   it "should silently ignore clearing missing documentation directories" do
     names = ['Binding#clone']*3
     lambda {
-      names.each { |full_name, description_filename| KaridocGenerator.clear(full_name) }
+      names.each { |full_name, description_filename| KaridocGenerator.clear(@manager.filepath, full_name) }
     }.should.not.raise
   end
 end
@@ -87,7 +93,8 @@ describe "A KaridocGenerator" do
   include FixtureHelpers
   
   before do
-    @generator = KaridocGenerator.new([
+    @karidoc_path = File.join(Rucola::RCApp.application_support_path, 'Karidoc.6345.1')
+    @generator = KaridocGenerator.new(@karidoc_path, [
       file_fixture('normal', 'ri', 'Binding', 'cdesc-Binding.yaml'),
       file_fixture('alternate', 'ri', 'Binding', 'cdesc-Binding.yaml')
     ])
@@ -95,8 +102,8 @@ describe "A KaridocGenerator" do
   
   it "should generate" do
     filename = @generator.generate
-    filename.should == '/Karidoc/Binding.karidoc'
-    File.read(File.join(Rucola::RCApp.application_support_path, filename)).should =~ /<title>Binding<\/title>/
+    filename.should == '/Binding.karidoc'
+    File.read(File.join(@karidoc_path, filename)).should =~ /<title>Binding<\/title>/
   end
   
   it "should render ri descriptions" do

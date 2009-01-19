@@ -1,42 +1,46 @@
 require 'set'
 require 'rucola/fsevents'
 require 'rdoc/ri/ri_paths'
+require 'monitor'
 
 class Watcher < OSX::NSObject
   attr_accessor :fsevents, :delegate
+  attr_accessor :examineQueue, :task
   
-  def initWithWatchers
-    if init
-      log.debug("Watching FSEvents since #{lastEventId}")
-      @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
-        handleEvents(events)
-      end
-      OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
-        :addObserver, self,
-           :selector, 'finishedUpdating:',
-               :name, 'KariDidFinishUpdating',
-             :object, nil
-      )
-      OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
-        :addObserver, self,
-           :selector, 'finishedReplacing:',
-               :name, 'KariDidFinishReplacing',
-             :object, nil
-      )
+  include MonitorMixin
+  
+  def init
+    if super_init
+      emptyQueue
       self
     end
   end
   
-  def riPaths
-    RI::Paths.path(true, true, true, true)
+  def kariPath
+    File.join(Rucola::RCApp.root_path, 'bin', 'kari')
+  end
+  
+  def kariEnvironment
+    { 'RUBYCOCOA_ROOT' => Rucola::RCApp.root_path, 'RUBYCOCOA_ENV' => Rucola::RCApp.env }
   end
   
   def watchPaths
-    RI::Paths.path(true, false, false, false) + self.class.basePaths(RI::Paths.path(false, true, true, true))
+    self.class.basePaths(RI::Paths.path(false, true, true, true))
   end
   
-  def kariPath
-    "env RUBYCOCOA_ROOT=#{Rucola::RCApp.root_path} RUBYCOCOA_ENV=#{Rucola::RCApp.env} #{File.join(Rucola::RCApp.root_path, 'bin', 'kari')}"
+  def riPaths
+    self.class.basePaths(RI::Paths.path(true, true, true, true))
+  end
+  
+  def start
+    log.debug("Watching FSEvents since #{lastEventId}")
+    @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
+      handleEvents(events)
+    end
+  end
+  
+  def stop
+    @fsevents.stop if @fsevents
   end
   
   def lastEventId
@@ -49,72 +53,66 @@ class Watcher < OSX::NSObject
     PreferencesController.synchronize
   end
   
+  def <<(paths)
+    log_with_signature("Adding paths to queue: #{paths}")
+    examineQueue.synchronize do
+      examineQueue.concat paths
+    end
+    signal
+  end
+  
   def handleEvents(events)
     paths = events.map { |e| e.path }
-    log.debug "Found changes in #{paths.inspect}"
+    log_with_signature "Found changes in #{paths.inspect}"
     paths = self.class.basePaths(paths)
-    log.debug "Using paths: #{paths.inspect}"
-    runKaridocUpdateCommandWithPaths(paths)
+    log_with_signature "Using paths: #{paths.inspect}"
+    self << paths
     setLastEventId(events.last.id)
   end
   
+  def signal
+    if !task or !task.isRunning
+      delegate.finishedIndexing(self) if delegate and task
+      
+      log_with_signature "Starting a new task"
+      synchronize do
+        paths = []
+        examineQueue.synchronize do
+          paths = self.class.basePaths(examineQueue)
+          emptyQueue
+        end
+        
+        unless paths.empty?
+          log_with_signature "Starting task for paths: #{paths.inspect}"
+          log_with_signature "#{kariPath} --old #{Manager.instance.filepath} --new #{Manager.next_filepath} #{paths.join(' ')}"
+          
+          self.task = OSX::NSTask.alloc.init
+          task.environment = kariEnvironment
+          task.launchPath  = kariPath
+          task.arguments   = ['--old', Manager.instance.filepath, '--new', Manager.next_filepath, *paths]
+          task.launch
+          
+          log_with_signature "Notify the delegate that we started indexing"
+          delegate.startedIndexing(self) if delegate
+        end
+      end
+    elsif task and task.isRunning
+      log_with_signature "Task is still running"
+    end
+  end
+  
   def forceRebuild
-    runKaridocUpdateCommandWithPaths(watchPaths)
+    self << riPaths
   end
   
-  def runKaridocUpdateCommandWithPaths(*paths)
-    quoted_paths = paths.flatten.map { |path| "'#{path}'" }.join(' ')
-    command = "#{kariPath} update-karidoc #{quoted_paths}"
-    
-    if delegate and delegate.respond_to?(:startedIndexing)
-      delegate.startedIndexing(self)
-    end
-    
-    log.debug "Starting thread: #{command}"
-    Thread.start do
-      Kernel.system(command)
-      OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
-        :postNotificationName, 'KariDidFinishUpdating', :object, nil
-      )
-    end
+  def emptyQueue
+    self.examineQueue = []
+    self.examineQueue.extend(MonitorMixin)
   end
   
-  def finishedUpdating(notification)
-    log.debug "Got notification: KariDidFinishUpdating"
-    runKaridocReplaceCommand
-  end
-  
-  def runKaridocReplaceCommand
-    command = "#{kariPath} replace-karidoc"
-    log.debug "Starting thread: #{command}"
-    Thread.start do
-      Kernel.system(command)
-      OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
-        :postNotificationName, 'KariDidFinishReplacing', :object, nil
-      )
-    end
-  end
-  
-  def finishedReplacing(notification)
-    log.debug "Got notification: KariDidFinishReplacing"
-    if delegate and delegate.respond_to?(:finishedIndexing)
-      delegate.finishedIndexing(self)
-    end
-  end
-  
-  def examineAll
-    examine(riPaths)
-  end
-  
-  def examine(*paths)
-    paths.flatten.each do |path|
-      Manager.instance.examine(path)
-      Manager.instance.write_to_disk
-    end
-  end
-  
-  def stop
-    @fsevents.stop
+  def log_with_signature(message)
+    method = caller(1)[0].split(' ').last[1..-2]
+    log.debug "[#{self.class.name}##{method}] #{message}"
   end
   
   protected

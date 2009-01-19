@@ -5,10 +5,13 @@ class Manager
   SYSTEM_RI_PATH         = RI::Paths.path(true, false, false, false).first
   RI_PATH_VERSION_REGEXP = /\/\w*-([\d\.]*)\//
   
-  attr_accessor :descriptions, :namespace, :search_index
+  attr_accessor :descriptions, :namespace, :search_index, :filepath
   
-  def initialize
+  def initialize(options={})
     log.debug "Initializing new indices"
+    @filepath = options[:filepath] || self.class.next_filepath
+    ensure_filepath!
+    
     @descriptions = {}
     @namespace = HashTree.new
     
@@ -17,7 +20,6 @@ class Manager
       @search_index = SearchKit::Index.open(search_index_filename, nil, true)
     else
       log.debug "Creating SearchKit index (#{search_index_filename})"
-      ensure_filepath!
       @search_index = SearchKit::Index.create(search_index_filename)
     end
   end
@@ -116,13 +118,13 @@ class Manager
     log.debug "Updating Karidocs for #{changed.length} descriptions"
     changed.each do |full_name|
       if @descriptions[full_name]
-        karidoc_path = KaridocGenerator.generate(@descriptions[full_name])
+        karidoc_path = KaridocGenerator.generate(filepath, @descriptions[full_name])
         karidoc_filename = File.join(filepath, karidoc_path)
         
         @search_index.removeDocument(karidoc_path)
         @search_index.addDocumentWithText(karidoc_path, File.read(karidoc_filename))
       else
-        karidoc_path = KaridocGenerator.clear(full_name)
+        karidoc_path = KaridocGenerator.clear(filepath, full_name)
         karidoc_filename = File.join(filepath, karidoc_path)
         
         @search_index.removeDocument(karidoc_path)
@@ -138,10 +140,6 @@ class Manager
   
   def search(query)
     @search_index.search(query)
-  end
-  
-  def filepath
-    Rucola::RCApp.application_support_path
   end
   
   def ensure_filepath!
@@ -179,6 +177,18 @@ class Manager
   def close
     log.debug "Closing SearchKit index"
     @search_index.close
+  end
+  
+  def self.next_filepath
+    n = 0
+    while(File.exist?(next_filepath = generate_filepath(n)))
+      n += 1
+    end
+    next_filepath
+  end
+  
+  def self.generate_filepath(n)
+    File.join(Rucola::RCApp.application_support_path, "Karidoc.%d.%d" % [$$, n])
   end
   
   def self.initialize_from_disk

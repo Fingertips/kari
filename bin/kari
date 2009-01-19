@@ -26,22 +26,6 @@ end
 require 'tmpdir'
 require 'optparse'
 
-module Rucola
-  module RCApp
-    class << self
-      alias system_defined_application_support_path application_support_path
-      def application_support_path
-        @application_support_path
-      end
-      
-      def application_support_path=(path)
-        @application_support_path = path
-      end
-    end
-  end
-end
-Rucola::RCApp.application_support_path = File.join(Dir.tmpdir, 'Kari')
-
 class Kari
   attr_accessor :options
   
@@ -49,73 +33,75 @@ class Kari
     @options = options
   end
   
-  def clean
-    FileUtils.rm_rf(Rucola::RCApp.application_support_path)
-    FileUtils.mkdir_p(Rucola::RCApp.application_support_path)
-  end
+  # def clean
+  #   FileUtils.rm_rf(Rucola::RCApp.application_support_path)
+  #   FileUtils.mkdir_p(Rucola::RCApp.application_support_path)
+  # end
+  # 
+  # def copy_karidoc
+  #   execute "rm -Rf '#{Rucola::RCApp.application_support_path}' && cp -R '#{Rucola::RCApp.system_defined_application_support_path}' '#{Rucola::RCApp.application_support_path}'"
+  # end
+  # 
+  # def rebuild_karidoc
+  #   watcher = Watcher.alloc.init
+  #   unless options[:paths].blank?
+  #     watcher.examine(options[:paths])
+  #   else
+  #     watcher.examineAll
+  #   end
+  # end
+  # 
+  # def replace_karidoc
+  #   execute "rm -Rf '#{Rucola::RCApp.system_defined_application_support_path}' && cp -R '#{Rucola::RCApp.application_support_path}' '#{Rucola::RCApp.system_defined_application_support_path}'"
+  # end
+  # 
+  # def package_karidoc
+  #   execute "cd #{Rucola::RCApp.application_support_path} && tar -cjf #{File.expand_path('Karidoc.tar.bz2', options[:output_directory])} *"
+  # end
+  # 
+  # def execute(command)
+  #   log.debug("[^] #{command}")
+  #   `#{command}`
+  # end
   
-  def copy_karidoc
-    execute "rm -Rf '#{Rucola::RCApp.application_support_path}' && cp -R '#{Rucola::RCApp.system_defined_application_support_path}' '#{Rucola::RCApp.application_support_path}'"
-  end
-  
-  def rebuild_karidoc
-    watcher = Watcher.alloc.init
-    unless options[:paths].blank?
-      watcher.examine(options[:paths])
-    else
-      watcher.examineAll
-    end
-  end
-  
-  def replace_karidoc
-    execute "rm -Rf '#{Rucola::RCApp.system_defined_application_support_path}' && cp -R '#{Rucola::RCApp.application_support_path}' '#{Rucola::RCApp.system_defined_application_support_path}'"
-  end
-  
-  def package_karidoc
-    execute "cd #{Rucola::RCApp.application_support_path} && tar -cjf #{File.expand_path('Karidoc.tar.bz2', options[:output_directory])} *"
-  end
-  
-  def execute(command)
-    log.debug("[^] #{command}")
-    `#{command}`
-  end
-  
-  def self.run_command(command, options)
-    rebuilder = new(options)
-    
-    case command
-    when 'update-karidoc'
-      rebuilder.clean
-      rebuilder.copy_karidoc
-      rebuilder.rebuild_karidoc
-    when 'replace-karidoc'
-      rebuilder.replace_karidoc
-    when 'package-karidoc'
-      rebuilder.clean
-      rebuilder.rebuild_karidoc
-      rebuilder.package_karidoc
-    else
-      puts "[!] Unknown command `#{command}'"
-    end
-  end
+  # def self.run_command(command, options)
+  #   rebuilder = new(options)
+  #   
+  #   case command
+  #   when 'update-karidoc'
+  #     rebuilder.clean
+  #     rebuilder.copy_karidoc
+  #     rebuilder.rebuild_karidoc
+  #   when 'replace-karidoc'
+  #     rebuilder.replace_karidoc
+  #   when 'package-karidoc'
+  #     rebuilder.clean
+  #     rebuilder.rebuild_karidoc
+  #     rebuilder.package_karidoc
+  #   else
+  #     puts "[!] Unknown command `#{command}'"
+  #   end
+  # end
   
   def self.run(argv)
-    command = argv.shift
-    options = {
-      :output_directory => Dir.pwd
-    }
-    
-    OptionParser.new do |opts|
-      opts.banner = "Usage: kari [command] [options]"
-      
-      opts.on("-d", "--output-directory DIRECTORY", String, "Specify the output directory") do |directory|
-        options[:output_directory] = File.expand_path(directory)
-      end
-    end.parse!(argv)
-    
-    options[:paths] = argv
-    
-    run_command(command, options)
+    log.debug("#{$0} #{argv.join(' ')}")
+    sleep 20
+    # command = argv.shift
+    # options = {
+    #   :output_directory => Dir.pwd
+    # }
+    # 
+    # OptionParser.new do |opts|
+    #   opts.banner = "Usage: kari [command] [options]"
+    #   
+    #   opts.on("-d", "--output-directory DIRECTORY", String, "Specify the output directory") do |directory|
+    #     options[:output_directory] = File.expand_path(directory)
+    #   end
+    # end.parse!(argv)
+    # 
+    # options[:paths] = argv
+    # 
+    # run_command(command, options)
   end
 end
 
