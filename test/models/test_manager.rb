@@ -24,21 +24,21 @@ describe "Manager" do
   end
   
   it "should generate file paths for karidoc" do
-    file_path = Manager.generate_file_path(0)
+    file_path = Manager.generate_filepath(0)
     file_path.should.start_with?(@application_support_path)
     file_path.should.end_with?('0')
     
-    file_path = Manager.generate_file_path(10)
+    file_path = Manager.generate_filepath(10)
     file_path.should.start_with?(@application_support_path)
     file_path.should.end_with?('10')
   end
   
   it "should find the next usable file path for karidoc" do
-    FileUtils.mkdir_p(file_path = Manager.next_file_path)
+    FileUtils.mkdir_p(file_path = Manager.next_filepath)
     file_path.should.start_with?(@application_support_path)
     file_path.should.end_with?('0')
     
-    FileUtils.mkdir_p(file_path = Manager.next_file_path)
+    FileUtils.mkdir_p(file_path = Manager.next_filepath)
     file_path.should.start_with?(@application_support_path)
     file_path.should.end_with?('1')
   end
@@ -153,7 +153,7 @@ describe "An empty Manager" do
   
   it "should add and update documents to/in the index" do
     %w{ Binding.karidoc Binding/#dup.karidoc }.each do |file|
-      karidoc_filename = File.join('', 'Karidoc', file)
+      karidoc_filename = File.join('', file)
       
       @manager.search_index.expects(:removeDocument).with(karidoc_filename)
       @manager.search_index.expects(:addDocumentWithText)
@@ -162,7 +162,7 @@ describe "An empty Manager" do
   end
   
   it "should remove documents from the index" do
-    @manager.search_index.expects(:removeDocument).with(File.join('', 'Karidoc', 'Binding', '#clone.karidoc'))
+    @manager.search_index.expects(:removeDocument).with(File.join('', 'Binding', '#clone.karidoc'))
     @manager.search_index.expects(:addDocumentWithText).never
     @manager.update_karidoc(['Binding#clone'])
   end
@@ -222,10 +222,6 @@ describe "A filled Manager" do
   end
   
   it "should not break when updating the Karidocs and all YAML description turn out to be missing" do
-    p @manager.filepath
-    Find.find(@manager.filepath) do |filename|
-      p filename
-    end
     lambda {
       @manager.descriptions['Binding'] = ['/missing', '/missing', '/missing']
       @manager.update_karidoc(['Binding'])

@@ -118,11 +118,12 @@ class Manager
     log.debug "Updating Karidocs for #{changed.length} descriptions"
     changed.each do |full_name|
       if @descriptions[full_name]
-        karidoc_path = KaridocGenerator.generate(filepath, @descriptions[full_name])
-        karidoc_filename = File.join(filepath, karidoc_path)
-        
-        @search_index.removeDocument(karidoc_path)
-        @search_index.addDocumentWithText(karidoc_path, File.read(karidoc_filename))
+        if karidoc_path = KaridocGenerator.generate(filepath, @descriptions[full_name])
+          karidoc_filename = File.join(filepath, karidoc_path)
+          
+          @search_index.removeDocument(karidoc_path)
+          @search_index.addDocumentWithText(karidoc_path, File.read(karidoc_filename))
+        end
       else
         karidoc_path = KaridocGenerator.clear(filepath, full_name)
         karidoc_filename = File.join(filepath, karidoc_path)
