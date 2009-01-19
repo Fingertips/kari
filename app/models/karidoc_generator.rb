@@ -19,19 +19,25 @@ class KaridocGenerator
   
   def generate
     descriptions = description_files.map do |file|
-      description = YAML.load_file(file)
-      description.filename = file
-      description
-    end
+      begin
+        description = YAML.load_file(file)
+        description.filename = file
+        description
+      rescue Errno::ENOENT
+        nil
+      end
+    end.compact
     
-    full_name = descriptions.first.full_name
-    karidoc_filename = RubyName.karidoc_filename(full_name)
-    
-    FileUtils.mkdir_p(File.dirname(karidoc_filename))
-    File.open(karidoc_filename, 'w') do |file|
-      file.write(render(descriptions))
+    unless descriptions.empty?
+      full_name = descriptions.first.full_name
+      karidoc_filename = RubyName.karidoc_filename(full_name)
+      
+      FileUtils.mkdir_p(File.dirname(karidoc_filename))
+      File.open(karidoc_filename, 'w') do |file|
+        file.write(render(descriptions))
+      end
+      self.class.compute_relative_path(karidoc_filename)
     end
-    karidoc_filename
   end
   
   def render(descriptions)
@@ -73,10 +79,14 @@ class KaridocGenerator
     file_name = RubyName.karidoc_filename(full_name)
     dir_name  = File.dirname(file_name)
     
-    FileUtils.rm_f(file_name)
+    begin
+      FileUtils.rm(file_name)
+    rescue Errno::ENOENT
+    end
+    
     clear_if_empty(dir_name)
     
-    file_name
+    compute_relative_path(file_name)
   end
   
   def self.clear_if_empty(dir_name)
@@ -84,5 +94,9 @@ class KaridocGenerator
       FileUtils.rm_rf(dir_name)
       clear_if_empty(File.dirname(dir_name))
     end
-  end  
+  end
+  
+  def self.compute_relative_path(filename)
+    filename[Rucola::RCApp.application_support_path.length..-1]
+  end
 end

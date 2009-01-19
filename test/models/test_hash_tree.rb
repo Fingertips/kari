@@ -20,8 +20,33 @@ describe "A HashTree in general" do
   
   it "should prune a subtree but leave the rest intact" do
     @tree.prune(%w(Binding))
-    @tree.get(%w(Binding)).should.be nil
-    @tree.get(%w(Kernel Fun dup)).should.not.be nil
+    
+    @tree.get(%w(Binding)).should.be.nil
+    @tree.get(%w(Binding clone)).should.be.nil
+    @tree.get(%w(Binding dup)).should.be.nil
+    @tree.get(%w(Kernel Fun dup)).should.not.be.nil
+  end
+  
+  it "should prune a subtree when the last children disappear and the value is nil" do
+    @tree.prune(%w(Binding clone))
+    @tree.prune(%w(Binding dup))
+    
+    @tree.get(%w(Binding clone)).should.be.nil
+    @tree.get(%w(Binding dup)).should.be.nil
+    @tree.get(%w(Binding)).should.be.nil
+    @tree.get(%w(Kernel Fun dup)).should.not.be.nil
+  end
+  
+  it "should not prune a subtree when the last children disappear, but the value isn't nil" do
+    @tree.set(%w(Binding), 'Binding')
+    
+    @tree.prune(%w(Binding clone))
+    @tree.prune(%w(Binding dup))
+    
+    @tree.get(%w(Binding clone)).should.be.nil
+    @tree.get(%w(Binding dup)).should.be.nil
+    @tree.get(%w(Binding)).should.not.be.nil
+    @tree.get(%w(Kernel Fun dup)).should.not.be.nil
   end
   
   it "should know it's not empty" do

@@ -1,12 +1,30 @@
 #!/usr/bin/env ruby
 
-ENV['RUBYCOCOA_ROOT'] = SOURCE_ROOT = File.expand_path('../../', __FILE__)
-ENV['RUBYCOCOA_ENV'] = 'debug'
+ENV['RUBYCOCOA_ROOT'] ||= SOURCE_ROOT = File.expand_path('../../', __FILE__)
+ENV['RUBYCOCOA_ENV']  ||= 'debug'
 ENV['DONT_START_RUBYCOCOA_APP'] = 'true'
 
-require 'rubygems' rescue LoadError
-require 'rucola'
+require 'osx/cocoa'
+
+module OSX
+  class Index < OSX::NSObject
+    attr_accessor :index
+    
+    def lopsidedCount
+      0
+    end
+  end
+  class Match < OSX::NSObject; end
+end
+
+begin
+  require File.join(ENV['RUBYCOCOA_ROOT'], 'rb_main')
+rescue LoadError
+  require File.join(ENV['RUBYCOCOA_ROOT'], 'misc', 'rb_main')
+end
+
 require 'tmpdir'
+require 'optparse'
 
 module Rucola
   module RCApp
@@ -24,13 +42,6 @@ module Rucola
 end
 Rucola::RCApp.application_support_path = File.join(Dir.tmpdir, 'Kari')
 
-require File.join(Rucola::RCApp.root_path, 'build', 'bundles', 'Index.bundle')
-require File.join(Rucola::RCApp.root_path, 'build', 'bundles', 'Match.bundle')
-
-require File.expand_path('../../config/boot', __FILE__)
-
-require 'optparse'
-
 class Kari
   attr_accessor :options
   
@@ -44,11 +55,11 @@ class Kari
   end
   
   def copy_karidoc
-    `rm -Rf '#{Rucola::RCApp.application_support_path}' && cp -R '#{Rucola::RCApp.system_defined_application_support_path}' '#{Rucola::RCApp.application_support_path}'`
+    execute "rm -Rf '#{Rucola::RCApp.application_support_path}' && cp -R '#{Rucola::RCApp.system_defined_application_support_path}' '#{Rucola::RCApp.application_support_path}'"
   end
   
   def rebuild_karidoc
-    watcher = Watcher.new
+    watcher = Watcher.alloc.init
     unless options[:paths].blank?
       watcher.examine(options[:paths])
     else
@@ -57,26 +68,30 @@ class Kari
   end
   
   def replace_karidoc
-    `rm -Rf '#{Rucola::RCApp.system_defined_application_support_path}' && cp -R '#{Rucola::RCApp.application_support_path}' '#{Rucola::RCApp.system_defined_application_support_path}'`
+    execute "rm -Rf '#{Rucola::RCApp.system_defined_application_support_path}' && cp -R '#{Rucola::RCApp.application_support_path}' '#{Rucola::RCApp.system_defined_application_support_path}'"
   end
   
   def package_karidoc
-    `cd #{Rucola::RCApp.application_support_path} && tar -cjf #{File.expand_path('Karidoc.tar.bz2', options[:output_directory])} *`
+    execute "cd #{Rucola::RCApp.application_support_path} && tar -cjf #{File.expand_path('Karidoc.tar.bz2', options[:output_directory])} *"
+  end
+  
+  def execute(command)
+    log.debug("[^] #{command}")
+    `#{command}`
   end
   
   def self.run_command(command, options)
     rebuilder = new(options)
-    rebuilder.clean
     
     case command
     when 'update-karidoc'
+      rebuilder.clean
       rebuilder.copy_karidoc
       rebuilder.rebuild_karidoc
-      rebuilder.replace_karidoc
     when 'replace-karidoc'
-      rebuilder.rebuild_karidoc
       rebuilder.replace_karidoc
     when 'package-karidoc'
+      rebuilder.clean
       rebuilder.rebuild_karidoc
       rebuilder.package_karidoc
     else

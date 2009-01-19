@@ -1,0 +1,7 @@
+h1. Kari 0.15 2008-12-24
+
+* Replaced search backend with SearchKit.
+* Added class browser.
+* Use FSEvents for automatic documentation update after RI changes.
+* Added non-functional filter bar.
+* Dropped the bookmark bar.

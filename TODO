@@ -5,6 +5,11 @@ ELOY
 
 MANFRED
 
+- Find a way to reload the indices without crashing
+  - Generate in the background
+  - Close manager
+  - Move to the Application Support directory
+  - Open manager
 - Lock the karidoc directory somehow when indexing so we don't accidentally revert index updates
 - Think about a way to solve the uppercased instance method problem in the RubyName optimization
 
@@ -24,3 +29,5 @@ IMPROVEMENTS
 - Flag karidoc files with 'broken characters' (to prevent bugreports and gently nudge authors to fix their documentation)
 - Make clicking the gem name/version, in the header, open the gem directory in the Finder.
 - Check possibilities to wrap SKSearchRef via BridgeSupport (with Laurent).
+- Autolink URLs in the documentation.
+- Make parts of the RubyName in the header of the documentation clickable.

@@ -38,7 +38,7 @@ class HashTree
     end
   end
   
-  def prune(path)
+  def prune(path, at=nil)
     at ||= @tree
     head = path.first
     rest = path[1..-1]

@@ -11,19 +11,19 @@ describe "KaridocGenerator" do
   it "should generate a documentation file for a ri class description" do
     description_file = file_fixture('normal', 'ri', 'Binding', 'cdesc-Binding.yaml')
     filename = KaridocGenerator.generate(description_file)
-    File.should.exist(filename)
+    File.should.exist(File.join(Rucola::RCApp.application_support_path, filename))
   end
   
   it "should generate a documentation file for a ri instance method description" do
     description_file = file_fixture('normal', 'ri', 'Binding', 'clone-i.yaml')
     filename = KaridocGenerator.generate(description_file)
-    File.should.exist(filename)
+    File.should.exist(File.join(Rucola::RCApp.application_support_path, filename))
   end
   
   it "should generate a documentation file for a ri class method description" do
     description_file = file_fixture('normal', 'ri', 'Mutex', 'new-c.yaml')
     filename = KaridocGenerator.generate(description_file)
-    File.should.exist(filename)
+    File.should.exist(File.join(Rucola::RCApp.application_support_path, filename))
   end
   
   it "should memoize ERB templates" do
@@ -60,9 +60,11 @@ describe "KaridocGenerator, on a generated karidoc tree" do
   
   it "should clear documentation files for a description" do
     full_name = 'Binding'
-    File.should.exist?(RubyName.karidoc_filename(full_name))
+    filename = RubyName.karidoc_filename(full_name)
+    
+    File.should.exist?(filename)
     KaridocGenerator.clear(full_name)
-    File.should.not.exist?(RubyName.karidoc_filename(full_name))
+    File.should.not.exist(filename)
   end
   
   it "should clear documentation directories when they're empty" do
@@ -93,12 +95,24 @@ describe "A KaridocGenerator" do
   
   it "should generate" do
     filename = @generator.generate
-    filename.should == RubyName.karidoc_filename('Binding')
-    File.read(filename).should =~ /<title>Binding<\/title>/
+    filename.should == '/Karidoc/Binding.karidoc'
+    File.read(File.join(Rucola::RCApp.application_support_path, filename)).should =~ /<title>Binding<\/title>/
   end
   
   it "should render ri descriptions" do
     result = @generator.render([YAML::load_file(@generator.description_files.first)])
     result.should =~ /<title>Binding<\/title>/
+  end
+  
+  it "should generate when there are missing YAML descriptions" do
+     @generator.description_files << file_fixture('missing', 'Binding', 'cdesc-Binding.yaml')
+     lambda {
+       @generator.generate
+     }.should.not.raise(Errno::ENOENT)
+  end
+  
+  it "should not generate when all YAML descriptions are missing" do
+    @generator.description_files = []
+    @generator.generate.should.be.nil
   end
 end

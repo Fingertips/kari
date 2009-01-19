@@ -42,16 +42,10 @@ class ApplicationController < Rucola::RCController
              :name, 'KariOpenDocumentation',
            :object, nil
     )
-    OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
-      :addObserver, self,
-         :selector, 'finishedIndexing:',
-             :name, 'KariDidFinishIndexing',
-           :object, nil
-    )
     
     @processing = 0
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
-    @watcher = Watcher.new
+    @watcher = Watcher.alloc.initWithWatchers
     
     @classTreeController.objc_send(
       :addObserver, self,
@@ -76,7 +70,8 @@ class ApplicationController < Rucola::RCController
     # We probably want to store the current selectionIndexPath as well before loading the new tree.
     if node = @classTreeController.selectedObjects.first
       unless !node.path or node.path.empty?
-        @webViewController.load_file node.path
+        karidoc_filename = File.join(Rucola::RCApp.application_support_path, 'Karidoc', node.path)
+        @webViewController.load_file(karidoc_filename)
       else
         log.debug("Can't open class browser at: `#{node.path}'")
       end
@@ -96,11 +91,12 @@ class ApplicationController < Rucola::RCController
     @watcher.forceRebuild
   end
   
-  def startedIndexing(notification)
+  def startedIndexing(sender)
     self.processing += 1
   end
   
-  def finishedIndexing(notification)
+  def finishedIndexing(sender)
+    Manager.reset!
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
     if self.processing > 0
       self.processing -= 1

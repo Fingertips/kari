@@ -133,15 +133,17 @@ describe "An empty Manager" do
   
   it "should add and update documents to/in the index" do
     %w{ Binding.karidoc Binding/#dup.karidoc }.each do |file|
-      @manager.search_index.expects(:removeDocument).with(File.join(Rucola::RCApp.application_support_path, 'Karidoc', file))
-      @manager.search_index.expects(:addDocument).with(File.join(Rucola::RCApp.application_support_path, 'Karidoc', file))
+      karidoc_filename = File.join('', 'Karidoc', file)
+      
+      @manager.search_index.expects(:removeDocument).with(karidoc_filename)
+      @manager.search_index.expects(:addDocumentWithText)
     end
     @manager.examine(ALTERNATE_RI_PATH)
   end
   
   it "should remove documents from the index" do
-    @manager.search_index.expects(:removeDocument).with(File.join(Rucola::RCApp.application_support_path, 'Karidoc', 'Binding', '#clone.karidoc'))
-    @manager.search_index.expects(:addDocument).with(File.join(Rucola::RCApp.application_support_path, 'Karidoc', 'Binding', '#clone.karidoc')).never
+    @manager.search_index.expects(:removeDocument).with(File.join('', 'Karidoc', 'Binding', '#clone.karidoc'))
+    @manager.search_index.expects(:addDocumentWithText).never
     @manager.update_karidoc(['Binding#clone'])
   end
 end
@@ -197,5 +199,12 @@ describe "A filled Manager" do
   it "should forward search queries to the SearchKit::Index instance" do
     @manager.search_index.expects(:search).with('a pot of gold')
     @manager.search('a pot of gold')
+  end
+  
+  it "should not break when updating the Karidocs and all YAML description turn out to be missing" do
+    lambda {
+      @manager.update_karidoc(['Binding'])
+      @manager.descriptions['Binding'] = ['/missing', '/missing', '/missing']
+    }.should.not.raise
   end
 end

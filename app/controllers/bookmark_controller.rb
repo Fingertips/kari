@@ -13,7 +13,7 @@ class BookmarkController < Rucola::RCController
   # crud
   
   def bookmarks
-    @bookmarks ||= PreferencesController.preferences['Bookmarks'].map {|h| OSX::SABookmark.alloc.initWithHash(h) }
+    @bookmarks ||= PreferencesController.preferences['Bookmarks'].map { |attributes| Bookmark.alloc.initWithHash(attributes) }
   end
   
   def saveBookmarks
@@ -21,7 +21,7 @@ class BookmarkController < Rucola::RCController
   end
   
   def addBookmark(title, url)
-    @bookmarks.push OSX::SABookmark.createWithHash({ :title => @addBookmarkTitleTextField.stringValue, :url => @webViewController.url })
+    @bookmarks.push Bookmark.createWithHash({ :title => @addBookmarkTitleTextField.stringValue, :url => @webViewController.url })
     bookmarksChanged
     closeAddBookmarkSheet(self)
   end
@@ -40,13 +40,13 @@ class BookmarkController < Rucola::RCController
   end
   
   def bookmarkMenuSelected(menuItem)
-    bookmarkClicked OSX::SABookmark.bookmarkForID(menuItem.tag)
+    bookmarkClicked Bookmark[menuItem.tag]
   end
   
   # Bookmark menu
   
   def populateBookmarkMenu
-    bookmarks.sort_by { |bookmark| bookmark.order_index }.each do |bookmark|
+    bookmarks.sort.each do |bookmark|
       @bookmarkMenu.addItem createMenuItemForBookmark(bookmark)
     end
   end
@@ -90,7 +90,7 @@ class BookmarkController < Rucola::RCController
   
   def openRemoveBookmarkSheet(sender)
     @removeBookmarkPopup.removeAllItems
-    @removeBookmarkPopup.addItemsWithTitles @bookmarks.sort_by{ |bm| bm.order_index }.map{ |bm| bm.title }
+    @removeBookmarkPopup.addItemsWithTitles @bookmarks.sort.map{ |bm| bm.title }
     
     OSX::NSApp.beginSheet_modalForWindow_modalDelegate_didEndSelector_contextInfo(@removeBookmarkSheet, @window, self, 'removeBookmarkSheetDidEnd:', nil)
   end

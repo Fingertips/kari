@@ -90,8 +90,8 @@ describe "A SearchController, in general" do
     controller.delegate = @delegate
     
     @urls = [
-      OSX::NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/dup.karidoc')),
-      OSX::NSURL.fileURLWithPath(file_fixture('Karidoc/Mutex/try_lock.karidoc'))
+      OSX::NSURL.fileURLWithPath('/Karidoc/Mutex/dup.karidoc'),
+      OSX::NSURL.fileURLWithPath('/Karidoc/Mutex/try_lock.karidoc')
     ]
     @matches = [
       SearchKit::Match.alloc.initWithURL_score(@urls.first, 1.2345),
@@ -109,7 +109,7 @@ describe "A SearchController, in general" do
   it "should tell its delegate that a specific search result was chosen" do
     results_table_view.stubs(:selectedRow).returns(0)
     @delegate.expects(:searchController_selectedFile).with do |search_controller, matched_url|
-      search_controller == controller and matched_url.path == @urls.last.path
+      search_controller == controller and matched_url.path[-@urls.last.path.length..-1] == @urls.last.path
     end
     controller.rowDoubleClicked(results_table_view)
   end

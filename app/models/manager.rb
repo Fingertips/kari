@@ -13,8 +13,10 @@ class Manager
     @namespace = HashTree.new
     
     if File.exist?(search_index_filename)
+      log.debug "Opening SearchKit index (#{search_index_filename})"
       @search_index = SearchKit::Index.open(search_index_filename, nil, true)
     else
+      log.debug "Creating SearchKit index (#{search_index_filename})"
       ensure_filepath!
       @search_index = SearchKit::Index.create(search_index_filename)
     end
@@ -25,7 +27,7 @@ class Manager
   end
   
   def add_karidoc_to_namespace(full_name)
-    @namespace.set(RubyName.split(full_name), RubyName.karidoc_filename(full_name))
+    @namespace.set(RubyName.split(full_name), RubyName.relative_karidoc_path(full_name))
   end
   
   def add_description(full_name, file)
@@ -63,7 +65,7 @@ class Manager
     if @descriptions[full_name].delete(file)
       if @descriptions[full_name].empty?
         @descriptions.delete(full_name)
-        @namespace.set(RubyName.split(full_name), nil)
+        @namespace.prune(RubyName.split(full_name))
       end
       true
     else
@@ -114,12 +116,16 @@ class Manager
     log.debug "Updating Karidocs for #{changed.length} descriptions"
     changed.each do |full_name|
       if @descriptions[full_name]
-        karidoc_filename = KaridocGenerator.generate(@descriptions[full_name])
-        @search_index.removeDocument(karidoc_filename)
-        @search_index.addDocument(karidoc_filename)
+        karidoc_path = KaridocGenerator.generate(@descriptions[full_name])
+        karidoc_filename = File.join(filepath, karidoc_path)
+        
+        @search_index.removeDocument(karidoc_path)
+        @search_index.addDocumentWithText(karidoc_path, File.read(karidoc_filename))
       else
-        karidoc_filename = KaridocGenerator.clear(full_name)
-        @search_index.removeDocument(karidoc_filename)
+        karidoc_path = KaridocGenerator.clear(full_name)
+        karidoc_filename = File.join(filepath, karidoc_path)
+        
+        @search_index.removeDocument(karidoc_path)
       end
     end
   end
@@ -155,7 +161,7 @@ class Manager
   end
   
   def write_to_disk
-    log.debug "Writing index to disk"
+    log.debug "Writing index to disk (#{filename} #{@descriptions.length} descriptions)"
     ensure_filepath!
     @search_index.flush
     File.open(filename, 'w') do |file|
@@ -166,11 +172,12 @@ class Manager
   def read_from_disk
     File.open(filename, 'r') do |file|
       @descriptions, @namespace = Marshal.load(file.read)
-      log.debug "Read index from disk (#{@descriptions.length} descriptions)"
+      log.debug "Read index from disk (#{filename}: #{@descriptions.length} descriptions)"
     end if exist?
   end
   
   def close
+    log.debug "Closing SearchKit index"
     @search_index.close
   end
   

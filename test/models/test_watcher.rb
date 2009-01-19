@@ -5,7 +5,48 @@ describe "Watcher" do
   
   it "should start watching the RI paths after intialization" do
     Rucola::FSEvents.expects(:start_watching)
-    Watcher.new
+    OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).times(2)
+    Watcher.alloc.initWithWatchers
+  end
+  
+  it "should not start watching the RI paths after initialization if told not to" do
+    Rucola::FSEvents.expects(:start_watching).never
+    OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).never
+    Watcher.alloc.init
+  end
+  
+  it "should listen to notications" do
+    Rucola::FSEvents.stubs(:start_watching)
+    watcher = Watcher.alloc.init
+    [
+      ['finishedUpdating:', 'KariDidFinishUpdating'],
+      ['finishedReplacing:', 'KariDidFinishReplacing']
+    ].each do |selector, name|
+      OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(
+        :addObserver, watcher,
+        :selector, selector,
+        :name, name,
+        :object, nil
+      )
+    end
+    watcher.initWithWatchers
+  end
+  
+  it "should calculate the union between two paths" do
+    Watcher.union('', '').should == '/'
+    Watcher.union('/', '/').should == '/'
+    Watcher.union('/Library/Ruby', '/Library/Ruby').should == '/Library/Ruby'
+    Watcher.union('/Library/Ruby/1', '/Library/Ruby/2').should == '/Library/Ruby'
+    Watcher.union('/System/Frameworks/Ruby/Current/Doc', '/Library/Ruby/1').should == '/'
+    Watcher.union('/System/Frameworks/Ruby/Current/Doc', '/System/Frameworks/MacRuby/Doc').should == '/System/Frameworks'
+  end
+  
+  it "should calculate basePaths for a list of paths" do
+    Watcher.basePaths([]).should == []
+    Watcher.basePaths(['/Library/Ruby']).should == ['/Library/Ruby']
+    Watcher.basePaths(['/Library/Ruby/1', '/Library/Ruby/2']).should == ['/Library/Ruby']
+    Watcher.basePaths(['/System/Frameworks/Ruby/Current/Doc', '/Library/Ruby/1', '/Library/Ruby/2']).should == ['/Library/Ruby', '/System/Frameworks/Ruby/Current/Doc']
+    Watcher.basePaths(['/', '/Library/Ruby/1', '/Library/Ruby/2', '/tmp/something']).should == ["/Library/Ruby", "/tmp/something"]
   end
 end
 
@@ -14,7 +55,8 @@ describe "A Watcher" do
   
   before do
     Rucola::FSEvents.stubs(:start_watching).returns(stub(:stop))
-    @watcher = Watcher.new
+    OSX::NSDistributedNotificationCenter.defaultCenter.stubs(:objc_send)
+    @watcher = Watcher.alloc.initWithWatchers
   end
   
   after do
@@ -40,7 +82,7 @@ describe "A Watcher" do
   end
   
   it "should handle events coming from FSEvents" do
-    @watcher.expects(:runKaridocUpdateCommandWithPaths).with('/Library/Ruby/Gems/1.8/doc/nap-0.2/ri')
+    @watcher.expects(:runKaridocUpdateCommandWithPaths).with(['/Library/Ruby/Gems/1.8/doc/nap-0.2/ri'])
     @watcher.handleEvents(events)
   end
   
@@ -51,7 +93,7 @@ describe "A Watcher" do
   end
   
   it "should be able to force a rebuild" do
-    @watcher.expects(:runKaridocUpdateCommandWithPaths).with(@watcher.riPaths)
+    @watcher.expects(:runKaridocUpdateCommandWithPaths).with(@watcher.watchPaths)
     @watcher.forceRebuild
   end
   
@@ -65,11 +107,21 @@ describe "A Watcher" do
     @watcher.stop
   end
   
-  it "should contruct a correct command to issue to the shell" do
+  it "should construct a correct update command to issue to the shell" do
     Thread.stubs(:start).yields
     
     Kernel.expects(:system).with("#{@watcher.kariPath} update-karidoc '/bogus/path/1' '/bogus/path/2'")
     @watcher.runKaridocUpdateCommandWithPaths('/bogus/path/1', '/bogus/path/2')
+  end
+  
+  it "should send a notification when the thread is done indexing" do
+    OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(
+      :postNotificationName, 'KariDidFinishUpdating', :object, nil
+    )
+    Thread.stubs(:start).yields
+    Kernel.stubs(:system)
+    
+    @watcher.runKaridocUpdateCommandWithPaths
   end
   
   it "should notify the delegate it started indexing if there is a delegate" do
@@ -93,11 +145,41 @@ describe "A Watcher" do
     }.should.not.raise(NoMethodError)
   end
   
-  it "should notify the main application that it finished examining (distributed)" do
+  it "should replace karidoc when updating is finished" do
+    @watcher.expects(:runKaridocReplaceCommand)
+    @watcher.finishedUpdating(nil)
+  end
+  
+  it "should contruct a correct replace command to issue to the shell" do
+    Thread.stubs(:start).yields
+    
+    Kernel.expects(:system).with("#{@watcher.kariPath} replace-karidoc")
+    @watcher.runKaridocReplaceCommand
+  end
+  
+  it "should send a notification when the thread is done replacing" do
     OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(
-      :postNotificationName, 'KariDidFinishIndexing', :object, nil
+      :postNotificationName, 'KariDidFinishReplacing', :object, nil
     )
-    @watcher.examine([])
+    Thread.stubs(:start).yields
+    Kernel.stubs(:system)
+    
+    @watcher.runKaridocReplaceCommand
+  end
+  
+  it "should notify the delegate it finished indexing if there is a delegate" do
+    controller = mock
+    controller.stubs(:respond_to?).returns(true)
+    controller.expects(:finishedIndexing).with(@watcher)
+    @watcher.delegate = controller
+    
+    @watcher.finishedReplacing(nil)
+  end
+  
+  it "should not notify the delegate it finished indexing if there is no delegate" do
+    lambda {
+      @watcher.finishedReplacing(nil)
+    }.should.not.raise(NoMethodError)
   end
   
   protected

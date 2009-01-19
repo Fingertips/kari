@@ -1,5 +1,6 @@
 # Load Rucola tasks
 SOURCE_ROOT = File.dirname(__FILE__)
+require 'find'
 require 'rubygems'
 require 'rucola/rucola_support'
 load 'rucola/tasks/main.rake'
@@ -9,7 +10,7 @@ require 'rake/rdoctask'
 
 # Application configuration
 
-PUBLISH_URI = URI.parse('scp://eloy@updates.kari.fngtps.com/var/www/updates.kari/htdocs')
+PUBLISH_URI = URI.parse('scp://updates.kari.fngtps.com/var/www/updates.kari/htdocs')
 APPCAST_URI = PUBLISH_URI
 
 # Tasks
@@ -53,4 +54,32 @@ namespace :documentation do
     rdoc.rdoc_files.include("app/**/*.rb", "lib/**/*.rb")
     rdoc.options << "--all" << "--charset" << "utf-8"
   end
+end
+
+namespace :test do
+  TYPES = [:controllers, :helpers, :lib, :models, :views]
+  
+  TYPES.each do |t|
+    desc "Run #{t} tests"
+    task t do
+      run_tests_in(File.join(SOURCE_ROOT, 'test', t.to_s))
+    end
+  end
+  
+  desc "Run tests in separate processes in order to minimize lingering memory references"
+  task :all => TYPES do
+  end
+  
+  def run_tests_in(path)
+    Find.find(path) do |filename|
+      if filename =~ /test_.*\.rb$/
+        sh "/usr/bin/env ruby #{filename}"
+      end
+    end
+  end
+end
+
+desc "Build and install a release version of Kari"
+task :install => :build do
+  sh "sudo rm -Rf /Applications/Kari.app && cp -R #{File.join(SOURCE_ROOT, 'build', 'Release', 'Kari.app')} /Applications/"
 end

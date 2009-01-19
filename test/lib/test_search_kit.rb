@@ -129,7 +129,7 @@ describe "A SearchKit Match" do
   
   before do
     Rucola::RCApp.stubs(:application_support_path).returns(file_fixture('')[0..-2])
-    @url = OSX::NSURL.fileURLWithPath(file_fixture('Karidoc', 'Mutex', 'try_lock.karidoc'))
+    @url = OSX::NSURL.fileURLWithPath(File.join('', 'Karidoc', 'Mutex', 'try_lock.karidoc'))
     @score = 1.2345
     @match = SearchKit::Match.alloc.initWithURL_score(@url, @score)
   end

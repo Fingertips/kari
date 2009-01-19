@@ -28,7 +28,7 @@ class SearchController < Rucola::RCController
   end
   
   def rowDoubleClicked(tableview)
-    @delegate.searchController_selectedFile(self, @results_array_controller.arrangedObjects[tableview.selectedRow].URL)
+    @delegate.searchController_selectedFile(self, @results_array_controller.arrangedObjects[tableview.selectedRow].filename)
   end
   
   private

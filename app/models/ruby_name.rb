@@ -33,7 +33,15 @@ class RubyName
   
   # Converts a Karidoc filename to a RubyName
   def self.from_karidoc_filename(filename)
-    parts = filename[karidoc_filepath.length+1..-1].split(File::SEPARATOR)
+    from_karidoc_path(filename[karidoc_filepath.length+1..-1])
+  end
+  
+  # Converts a Karidoc filepath to a RubyName
+  def self.from_karidoc_path(filepath)
+    parts = filepath.split(File::SEPARATOR)
+    if parts[0,2] == ['', 'Karidoc']
+      parts = parts[2..-1]
+    end
     parts[-1] = File.basename(parts[-1], '.karidoc')
     if parts.last.start_with?('#')
       parts[-2..-1] = parts[-2..-1].join
@@ -46,7 +54,12 @@ class RubyName
   # Example:
   #   RubyName.karidoc_filename('Module::SubModule#method') => '/path/to/Module/SubModule/#method.karidoc'
   def self.karidoc_filename(name)
-    File.join(karidoc_filepath, RubyName.split(name).join(File::SEPARATOR) + KARIDOC_EXTENSION)
+    File.join(karidoc_filepath, relative_karidoc_path(name))
+  end
+  
+  # Returns karidoc the path relative to Kari's Application Support path
+  def self.relative_karidoc_path(name)
+    RubyName.split(name).join(File::SEPARATOR) + KARIDOC_EXTENSION
   end
   
   # Returns the path where all the Karidoc files are written
