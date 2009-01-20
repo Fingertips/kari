@@ -75,9 +75,9 @@ describe "A Watcher" do
   
   it "should know the lastEventId" do
     @watcher.lastEventId.should.be.nil
-    @watcher.setLastEventId(34123)
+    @watcher.setLastEventId(OSX::NSNumber.numberWithInt(34123))
     @watcher.lastEventId.should == 34123
-    @watcher.setLastEventId(34140)
+    @watcher.setLastEventId(OSX::NSNumber.numberWithInt(34140))
     @watcher.lastEventId.should == 34140
   end
   
@@ -176,10 +176,10 @@ describe "A Watcher" do
   
   def events
     [
-      stub(:id => 234, :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/REST/Request/perform-i.yaml'),
-      stub(:id => 535, :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/created.rid'),
-      stub(:id => 540, :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/REST/cdesc-REST.yaml'),
-      stub(:id => 541, :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/REST/Response/new-c.yaml')
+      stub(:id => OSX::NSNumber.numberWithInt(234), :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/REST/Request/perform-i.yaml'),
+      stub(:id => OSX::NSNumber.numberWithInt(535), :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/created.rid'),
+      stub(:id => OSX::NSNumber.numberWithInt(540), :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/REST/cdesc-REST.yaml'),
+      stub(:id => OSX::NSNumber.numberWithInt(541), :path => '/Library/Ruby/Gems/1.8/doc/nap-0.2/ri/REST/Response/new-c.yaml')
     ]
   end
   
