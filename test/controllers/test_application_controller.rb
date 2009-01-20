@@ -28,12 +28,15 @@ module ApplicationControllerSpecHelper
     
     @watcher_mock = mock('Watcher')
     @watcher_mock.stubs(:delegate=)
-    @watcher_mock.stubs(:initWithWatchers).returns(@watcher_mock)
+    @watcher_mock.stubs(:start)
+    @watcher_mock.stubs(:init).returns(@watcher_mock)
     Watcher.stubs(:alloc).returns(@watcher_mock)
     
     @namespace_mock = stub('Manager#namespace')
     @namespace_mock.stubs(:tree).returns({})
     @manager_mock.stubs(:namespace).returns(@namespace_mock)
+    
+    OSX::NSTimer.stubs(:scheduledTimerWithTimeInterval_target_selector_userInfo_repeats)
     
     controller.stubs(:setup_splitView!)
   end
@@ -73,6 +76,11 @@ describe 'ApplicationController, during awakeFromNib' do
     ].each do |params|
       OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(*params)
     end
+    controller.awakeFromNib
+  end
+  
+  it "should set a scheduled timer to signal the watcher" do
+    OSX::NSTimer.expects(:scheduledTimerWithTimeInterval_target_selector_userInfo_repeats).with(5, @watcher_mock, 'signal:', nil, true)
     controller.awakeFromNib
   end
   
@@ -143,7 +151,7 @@ describe 'ApplicationController, in general' do
   include ApplicationControllerSpecHelper
   include TemporaryApplicationSupportPath
   
-  it "should update the `processing' state when a `KariDidStartIndexingNotification' is received" do
+  it "should update the `processing' state when the watcher finished indexing" do
     assigns(:processing, 0)
     
     controller.startedIndexing(nil)
@@ -153,7 +161,7 @@ describe 'ApplicationController, in general' do
     controller.valueForKey('processing').to_ruby.should.be 2
   end
   
-  it "should update the `processing' state when a `KariDidFinishIndexingNotification' is received" do
+  it "should update the `processing' state when the watcher finished indexing" do
     assigns(:processing, 2)
     
     controller.finishedIndexing(nil)
@@ -166,7 +174,7 @@ describe 'ApplicationController, in general' do
     controller.valueForKey('processing').to_ruby.should.be 0
   end
   
-  it "should update the `class_tree' when a `KariDidFinishIndexingNotification' is received" do
+  it "should update the `class_tree' when the watcher finished indexing" do
     assigns(:processing, 1)
     
     nodes = [mock('ClassTreeNode')]
@@ -174,6 +182,17 @@ describe 'ApplicationController, in general' do
     
     controller.finishedIndexing(nil)
     controller.class_tree.should.be nodes
+  end
+  
+  it "should keep the current selection in the class tree selected when updating the class tree" do
+    assigns(:processing, 1)
+    
+    selection = mock('NSIndexPath')
+    
+    assigns(:classTreeController).expects(:selectionIndexPath).returns(selection)
+    assigns(:classTreeController).expects(:setSelectionIndexPath).with(selection)
+    
+    controller.finishedIndexing(nil)
   end
   
   it "should set search_mode to `true' if a user started searching" do

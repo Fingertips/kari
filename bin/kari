@@ -26,22 +26,6 @@ end
 require 'tmpdir'
 require 'optparse'
 
-module Rucola
-  module RCApp
-    class << self
-      alias system_defined_application_support_path application_support_path
-      def application_support_path
-        @application_support_path
-      end
-      
-      def application_support_path=(path)
-        @application_support_path = path
-      end
-    end
-  end
-end
-Rucola::RCApp.application_support_path = File.join(Dir.tmpdir, 'Kari')
-
 class Kari
   attr_accessor :options
   
@@ -49,73 +33,73 @@ class Kari
     @options = options
   end
   
-  def clean
-    FileUtils.rm_rf(Rucola::RCApp.application_support_path)
-    FileUtils.mkdir_p(Rucola::RCApp.application_support_path)
-  end
-  
   def copy_karidoc
-    execute "rm -Rf '#{Rucola::RCApp.application_support_path}' && cp -R '#{Rucola::RCApp.system_defined_application_support_path}' '#{Rucola::RCApp.application_support_path}'"
+    execute "rm -Rf '#{options[:next_karidoc]}' && cp -r '#{options[:current_karidoc]}' '#{options[:next_karidoc]}'"
   end
   
-  def rebuild_karidoc
-    watcher = Watcher.alloc.init
-    unless options[:paths].blank?
-      watcher.examine(options[:paths])
-    else
-      watcher.examineAll
+  def update_karidoc
+    manager = Manager.new(:filepath => options[:next_karidoc])
+    options[:paths].each do |path|
+      manager.examine(path)
     end
-  end
-  
-  def replace_karidoc
-    execute "rm -Rf '#{Rucola::RCApp.system_defined_application_support_path}' && cp -R '#{Rucola::RCApp.application_support_path}' '#{Rucola::RCApp.system_defined_application_support_path}'"
-  end
-  
-  def package_karidoc
-    execute "cd #{Rucola::RCApp.application_support_path} && tar -cjf #{File.expand_path('Karidoc.tar.bz2', options[:output_directory])} *"
+    manager.write_to_disk
+    manager.update_symlink
+    manager.close
   end
   
   def execute(command)
-    log.debug("[^] #{command}")
+    log.debug("{E} #{command}")
     `#{command}`
   end
-  
+   
   def self.run_command(command, options)
-    rebuilder = new(options)
+    bin = new(options)
     
     case command
-    when 'update-karidoc'
-      rebuilder.clean
-      rebuilder.copy_karidoc
-      rebuilder.rebuild_karidoc
-    when 'replace-karidoc'
-      rebuilder.replace_karidoc
-    when 'package-karidoc'
-      rebuilder.clean
-      rebuilder.rebuild_karidoc
-      rebuilder.package_karidoc
+    when 'update'
+      bin.copy_karidoc
+      bin.update_karidoc
+    when 'cleanup'
+      Manager.cleanup
     else
       puts "[!] Unknown command `#{command}'"
+      exit -1
     end
   end
   
   def self.run(argv)
-    command = argv.shift
-    options = {
-      :output_directory => Dir.pwd
-    }
-    
-    OptionParser.new do |opts|
+    options = {}
+    parser = OptionParser.new do |opts|
       opts.banner = "Usage: kari [command] [options]"
       
-      opts.on("-d", "--output-directory DIRECTORY", String, "Specify the output directory") do |directory|
-        options[:output_directory] = File.expand_path(directory)
+      opts.separator ""
+      opts.separator "COMMANDS"
+      opts.separator "  update [options] <paths>"
+      opts.on("-c", "--current-karidoc DIRECTORY", String, "The Karidoc directory base the update on") do |directory|
+        options[:current_karidoc] = File.expand_path(directory)
       end
-    end.parse!(argv)
+      
+      opts.on("-n", "--next-karidoc DIRECTORY", String, "The Karidoc directory to write the update to") do |directory|
+        options[:next_karidoc] = File.expand_path(directory)
+      end
+      
+      opts.separator "  cleanup"
+      
+      opts.separator ""
+      opts.separator "OPTIONS"
+      opts.on("-h", "--help", "Show help") do
+        puts opts
+        exit
+      end
+    end
     
-    options[:paths] = argv
-    
-    run_command(command, options)
+    parser.parse!(argv)
+    if command = argv.shift
+      options[:paths] = argv
+      run_command(command, options)
+    else
+      puts parser.to_s
+    end
   end
 end
 

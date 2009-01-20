@@ -11,9 +11,10 @@ end
 
 # Class that generates Karidoc files from the RI description
 class KaridocGenerator
-  attr_accessor :description_files
+  attr_accessor :karidoc_path, :description_files
   
-  def initialize(*description_files)
+  def initialize(karidoc_path, *description_files)
+    self.karidoc_path      = karidoc_path
     self.description_files = description_files.flatten
   end
   
@@ -30,13 +31,13 @@ class KaridocGenerator
     
     unless descriptions.empty?
       full_name = descriptions.first.full_name
-      karidoc_filename = RubyName.karidoc_filename(full_name)
+      karidoc_filename = RubyName.karidoc_filename(karidoc_path, full_name)
       
       FileUtils.mkdir_p(File.dirname(karidoc_filename))
       File.open(karidoc_filename, 'w') do |file|
         file.write(render(descriptions))
       end
-      self.class.compute_relative_path(karidoc_filename)
+      compute_relative_path(karidoc_filename)
     end
   end
   
@@ -65,18 +66,22 @@ class KaridocGenerator
     self.class.template(template_file).result(namespace.binding)
   end
   
+  def compute_relative_path(filename)
+    self.class.compute_relative_path(karidoc_path, filename)
+  end
+  
   def self.template(template_file)
     @template ||= {}
     @template[template_file] ||= ERB.new(File.read(template_file))
     @template[template_file]
   end
   
-  def self.generate(*description_files)
-    new(*description_files).generate
+  def self.generate(karidoc_path, *description_files)
+    new(karidoc_path, *description_files).generate
   end
   
-  def self.clear(full_name)
-    file_name = RubyName.karidoc_filename(full_name)
+  def self.clear(karidoc_path, full_name)
+    file_name = RubyName.karidoc_filename(karidoc_path, full_name)
     dir_name  = File.dirname(file_name)
     
     begin
@@ -86,7 +91,7 @@ class KaridocGenerator
     
     clear_if_empty(dir_name)
     
-    compute_relative_path(file_name)
+    compute_relative_path(karidoc_path, file_name)
   end
   
   def self.clear_if_empty(dir_name)
@@ -96,7 +101,7 @@ class KaridocGenerator
     end
   end
   
-  def self.compute_relative_path(filename)
-    filename[Rucola::RCApp.application_support_path.length..-1]
+  def self.compute_relative_path(karidoc_path, filename)
+    filename[karidoc_path.length..-1]
   end
 end

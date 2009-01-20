@@ -70,8 +70,7 @@ describe 'WebViewController, in general' do
   end
   
   it "should show the rubyname of a link that a user is hovering the cursor over in the status bar if it's a karidoc" do
-    Rucola::RCApp.stubs(:application_support_path).returns('/Users/eloy/Library/Application Support/Kari')
-    url = OSX::NSURL.fileURLWithPath('/Users/eloy/Library/Application Support/Kari/Karidoc/Mutex/#exclusive_unlock.karidoc')
+    url = OSX::NSURL.fileURLWithPath(File.join(Manager.current_filepath, 'Mutex/#exclusive_unlock.karidoc'))
     
     controller.webView_mouseDidMoveOverElement_modifierFlags(nil, { 'WebElementLinkURL' => url }, nil)
     cursorOverLinkTextField.stringValue.should == 'Mutex#exclusive_unlock'

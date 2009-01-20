@@ -23,6 +23,46 @@ describe "Manager" do
     remove_manager_singleton!
   end
   
+  it "should generate file paths for Karidoc" do
+    file_path = Manager.generate_filepath(0)
+    file_path.should.start_with?(@application_support_path)
+    file_path.should.end_with?('0')
+    
+    file_path = Manager.generate_filepath(10)
+    file_path.should.start_with?(@application_support_path)
+    file_path.should.end_with?('10')
+  end
+  
+  it "should find the next usable file path for Karidoc" do
+    FileUtils.mkdir_p(file_path = Manager.next_filepath)
+    file_path.should.start_with?(@application_support_path)
+    file_path.should.end_with?('0')
+    
+    FileUtils.mkdir_p(file_path = Manager.next_filepath)
+    file_path.should.start_with?(@application_support_path)
+    file_path.should.end_with?('1')
+  end
+  
+  it "should return the location where to search the current Karidocs" do
+    Manager.current_filepath.should.start_with?(@application_support_path)
+    Manager.current_filepath.should.end_with?('Karidoc.current')
+  end
+  
+  it "should cleanup older Karidoc directories" do
+    support_path = Rucola::RCApp.application_support_path
+    symlink = File.basename(Manager.current_filepath)
+    
+    created = []
+    5.times do
+      FileUtils.mkdir_p(created << Manager.next_filepath)
+    end
+    FileUtils.ln_s(created[2], Manager.current_filepath)
+    
+    Dir.entries(support_path).sort.should == ['.', '..', symlink, *created.map { |c| File.basename(c) }].sort
+    Manager.cleanup
+    Dir.entries(support_path).sort.should == ['.', '..', symlink, File.basename(created[2])].sort
+  end
+  
   private
   
   def remove_manager_singleton!
@@ -133,7 +173,7 @@ describe "An empty Manager" do
   
   it "should add and update documents to/in the index" do
     %w{ Binding.karidoc Binding/#dup.karidoc }.each do |file|
-      karidoc_filename = File.join('', 'Karidoc', file)
+      karidoc_filename = File.join('', file)
       
       @manager.search_index.expects(:removeDocument).with(karidoc_filename)
       @manager.search_index.expects(:addDocumentWithText)
@@ -142,7 +182,7 @@ describe "An empty Manager" do
   end
   
   it "should remove documents from the index" do
-    @manager.search_index.expects(:removeDocument).with(File.join('', 'Karidoc', 'Binding', '#clone.karidoc'))
+    @manager.search_index.expects(:removeDocument).with(File.join('', 'Binding', '#clone.karidoc'))
     @manager.search_index.expects(:addDocumentWithText).never
     @manager.update_karidoc(['Binding#clone'])
   end
@@ -203,8 +243,16 @@ describe "A filled Manager" do
   
   it "should not break when updating the Karidocs and all YAML description turn out to be missing" do
     lambda {
-      @manager.update_karidoc(['Binding'])
       @manager.descriptions['Binding'] = ['/missing', '/missing', '/missing']
+      @manager.update_karidoc(['Binding'])
     }.should.not.raise
+  end
+  
+  it "should symlink the created Karidocs to the current Karidocs" do
+    File.should.not.exist(Manager.current_filepath)
+    @manager.update_symlink
+    File.should.exist(Manager.current_filepath)
+    @manager.update_symlink
+    File.should.exist(Manager.current_filepath)
   end
 end

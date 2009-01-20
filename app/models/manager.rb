@@ -5,10 +5,13 @@ class Manager
   SYSTEM_RI_PATH         = RI::Paths.path(true, false, false, false).first
   RI_PATH_VERSION_REGEXP = /\/\w*-([\d\.]*)\//
   
-  attr_accessor :descriptions, :namespace, :search_index
+  attr_accessor :descriptions, :namespace, :search_index, :filepath
   
-  def initialize
+  def initialize(options={})
     log.debug "Initializing new indices"
+    @filepath = options[:filepath] || self.class.next_filepath
+    ensure_filepath!
+    
     @descriptions = {}
     @namespace = HashTree.new
     
@@ -17,7 +20,6 @@ class Manager
       @search_index = SearchKit::Index.open(search_index_filename, nil, true)
     else
       log.debug "Creating SearchKit index (#{search_index_filename})"
-      ensure_filepath!
       @search_index = SearchKit::Index.create(search_index_filename)
     end
   end
@@ -116,13 +118,14 @@ class Manager
     log.debug "Updating Karidocs for #{changed.length} descriptions"
     changed.each do |full_name|
       if @descriptions[full_name]
-        karidoc_path = KaridocGenerator.generate(@descriptions[full_name])
-        karidoc_filename = File.join(filepath, karidoc_path)
-        
-        @search_index.removeDocument(karidoc_path)
-        @search_index.addDocumentWithText(karidoc_path, File.read(karidoc_filename))
+        if karidoc_path = KaridocGenerator.generate(filepath, @descriptions[full_name])
+          karidoc_filename = File.join(filepath, karidoc_path)
+          
+          @search_index.removeDocument(karidoc_path)
+          @search_index.addDocumentWithText(karidoc_path, File.read(karidoc_filename))
+        end
       else
-        karidoc_path = KaridocGenerator.clear(full_name)
+        karidoc_path = KaridocGenerator.clear(filepath, full_name)
         karidoc_filename = File.join(filepath, karidoc_path)
         
         @search_index.removeDocument(karidoc_path)
@@ -138,10 +141,6 @@ class Manager
   
   def search(query)
     @search_index.search(query)
-  end
-  
-  def filepath
-    Rucola::RCApp.application_support_path
   end
   
   def ensure_filepath!
@@ -176,15 +175,40 @@ class Manager
     end if exist?
   end
   
+  def update_symlink
+    log.debug "Symlinking #{self.class.current_filepath} => #{filepath}"
+    begin
+      File.unlink(self.class.current_filepath)
+    rescue Errno::ENOENT
+    end
+    FileUtils.ln_sf(filepath, self.class.current_filepath)
+  end
+  
   def close
     log.debug "Closing SearchKit index"
     @search_index.close
   end
   
+  def self.next_filepath
+    n = 0
+    while(File.exist?(next_filepath = generate_filepath(n)))
+      n += 1
+    end
+    next_filepath
+  end
+  
+  def self.generate_filepath(n)
+    File.join(Rucola::RCApp.application_support_path, "Karidoc.%d.%d" % [$$, n])
+  end
+  
+  def self.current_filepath
+    File.join(Rucola::RCApp.application_support_path, 'Karidoc.current')
+  end
+  
   def self.initialize_from_disk
-    index = new
-    index.read_from_disk
-    index
+    manager = new(:filepath => current_filepath)
+    manager.read_from_disk
+    manager
   end
   
   def self.instance
@@ -195,6 +219,17 @@ class Manager
     unless @instance.nil?
       @instance.close
       @instance = nil
+    end
+  end
+  
+  def self.cleanup
+    karidoc_path = Rucola::RCApp.application_support_path
+    (Dir.entries(karidoc_path) - ['.', '..']).each do |filename|
+      directory = File.join(karidoc_path, filename)
+      unless File.identical?(directory, current_filepath) 
+        log.debug("Sweeping old Karidoc: #{directory}")
+        FileUtils.rm_rf(directory)
+      end
     end
   end
 end
