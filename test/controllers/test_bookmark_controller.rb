@@ -11,12 +11,12 @@ describe "BookmarkController" do
                :removeBookmarkPopup => OSX::NSPopUpButton.alloc.init
     
     @bookmarks = [
-      { 'id' => 0, 'order_index' => 0, 'title' => 'String', 'url' => 'file:///Karidoc/String.karidoc' },
-      { 'id' => 1, 'order_index' => 1, 'title' => 'Array',  'url' => 'file:///Karidoc/Array.karidoc' }
+      { 'id' => 0, 'order_index' => 0, 'title' => 'String', 'url' => '/Karidoc/String.karidoc' },
+      { 'id' => 1, 'order_index' => 1, 'title' => 'Array',  'url' => '/Karidoc/Array.karidoc' }
     ]
     preferences.general.bookmarks = @bookmarks.to_ns
     
-    @hash = { 'id' => 2, 'order_index' => 2, 'title' => 'Hash',  'url' => 'file:///Karidoc/Hash.karidoc' }
+    @hash = { 'id' => 2, 'order_index' => 2, 'title' => 'Hash',  'url' => '/Karidoc/Hash.karidoc' }
   end
   
   it "should return a list of current bookmarks" do
@@ -42,7 +42,7 @@ describe "BookmarkController" do
   
   it "should add a bookmark with data from the addBookmarkSheet, save the changes, and close the addBookmarkSheet" do
     addBookmarkTitleTextField.stringValue = 'Hash'
-    webViewController.stubs(:url).returns('file:///Karidoc/Hash.karidoc')
+    webViewController.stubs(:url).returns(OSX::NSURL.fileURLWithPath('/Karidoc/Hash.karidoc'))
     
     controller.expects(:bookmarksChanged)
     controller.expects(:closeAddBookmarkSheet)

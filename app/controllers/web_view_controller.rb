@@ -60,11 +60,13 @@ class WebViewController < Rucola::RCController
   end
   
   def bookmarkable?
-    not url.nil? and not @webview.hidden? and not (url.to_s =~ /\/app\/assets\/index.html$/)
+    url && !@webview.hidden? && (url.path.to_s !~ /\/app\/assets\/index.html$/)
   end
   
   def url
-    @webview.mainFrameURL
+    if source = @webview.mainFrame.dataSource
+      source.request.URL
+    end
   end
   
   # Loads a regular file path like: "/some/path/to/file.karidoc"

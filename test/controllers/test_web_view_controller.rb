@@ -36,6 +36,10 @@ describe 'WebViewController, in general' do
     @file_url = /file:\/\/.*#{@file}/
   end
   
+  it "should return nil if nothing is loaded yet" do
+    webview.url.should.be nil
+  end
+  
   it "should take a NSURL instance and load it in the webview" do
     @mainframe.expects(:loadRequest).with do |request|
       request.URL.absoluteString.to_s =~ @file_url
@@ -113,7 +117,7 @@ describe 'WebViewController, helper methods' do
     webview.stubs(:hidden?).returns(true)
     controller.should.not.be.bookmarkable
     
-    controller.stubs(:url).returns('file:///some/path/file.karidoc')
+    controller.stubs(:url).returns(OSX::NSURL.fileURLWithPath('/some/path/file.karidoc'))
     
     webview.stubs(:hidden?).returns(false)
     controller.should.be.bookmarkable
@@ -121,7 +125,7 @@ describe 'WebViewController, helper methods' do
     webview.stubs(:hidden?).returns(true)
     controller.should.not.be.bookmarkable
     
-    controller.stubs(:url).returns('file:///some/path/Kari.app/Contents/Resources/app/assets/index.html')
+    controller.stubs(:url).returns(OSX::NSURL.fileURLWithPath('/some/path/Kari.app/Contents/Resources/app/assets/index.html'))
     
     webview.stubs(:hidden?).returns(false)
     controller.should.not.be.bookmarkable

@@ -25,16 +25,16 @@ class BookmarkController < Rucola::RCController
   end
   
   def addBookmark
-    bookmarks << Bookmark.createWithHash({ 'title' => @addBookmarkTitleTextField.stringValue, 'url' => @webViewController.url })
-    closeAddBookmarkSheet(self)
+    bookmarks << Bookmark.createWithHash({ 'title' => @addBookmarkTitleTextField.stringValue, 'url' => @webViewController.url.path })
     bookmarksChanged
+    closeAddBookmarkSheet(self)
   end
   
   def removeBookmark(sender)
     selected_title = @removeBookmarkPopup.titleOfSelectedItem.to_s
     bookmarks.delete(bookmarks.find { |bm| bm.title == selected_title })
-    closeRemoveBookmarkSheet(self)
     bookmarksChanged
+    closeRemoveBookmarkSheet(self)
   end
   
   def bookmarkSelected(menuItem)
