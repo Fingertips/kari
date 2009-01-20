@@ -5,12 +5,8 @@ ELOY
 
 MANFRED
 
-- Find a way to reload the indices without crashing
-  - Generate in the background
-  - Close manager
-  - Move to the Application Support directory
-  - Open manager
-- Lock the karidoc directory somehow when indexing so we don't accidentally revert index updates
+- Fix paths to assets in the generated Karidoc
+- Add a second index to the SKIndex so we can search ruby names
 - Think about a way to solve the uppercased instance method problem in the RubyName optimization
 
 ANYONE
