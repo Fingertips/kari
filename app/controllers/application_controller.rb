@@ -128,7 +128,7 @@ class ApplicationController < Rucola::RCController
   end
   
   def bookmarkSelected(bookmark)
-    @webViewController.load_url bookmark.url
+    @webViewController.load_file bookmark.url
   end
   
   def changedSearchFilter(sender)

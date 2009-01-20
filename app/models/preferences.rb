@@ -1,10 +1,9 @@
 class Preferences
   class General < Namespace
     BOOKMARKS = %w{ Object String Array Hash Numeric }.map do |title|
-      url = OSX::NSURL.fileURLWithPath(File.join(Rucola::RCApp.application_support_path, 'Karidoc', "#{title}.karidoc"))
-      { 'title' => title, 'url' => url.absoluteString }
+      { 'title' => title, 'url' => File.join(Manager.current_filepath, "#{title}.karidoc") }
     end
-    p BOOKMARKS
+    
     defaults_accessor :bookmarks, BOOKMARKS
     defaults_accessor :last_fs_event_id
   end

@@ -244,6 +244,14 @@ describe 'ApplicationController, in general' do
     controller.rebuildIndex
   end
   
+  it "should load the file that a bookmark points to when the bookmark is selected" do
+    url = 'file:///Karidoc/Hash.karidoc'
+    bookmark = Bookmark.createWithHash('url' => url)
+    
+    webViewController.expects(:load_file).with(url)
+    controller.bookmarkSelected(bookmark)
+  end
+  
   private
   
   def should_bring_webView_to_front
