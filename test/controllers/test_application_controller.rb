@@ -28,12 +28,15 @@ module ApplicationControllerSpecHelper
     
     @watcher_mock = mock('Watcher')
     @watcher_mock.stubs(:delegate=)
-    @watcher_mock.stubs(:initWithWatchers).returns(@watcher_mock)
+    @watcher_mock.stubs(:start)
+    @watcher_mock.stubs(:init).returns(@watcher_mock)
     Watcher.stubs(:alloc).returns(@watcher_mock)
     
     @namespace_mock = stub('Manager#namespace')
     @namespace_mock.stubs(:tree).returns({})
     @manager_mock.stubs(:namespace).returns(@namespace_mock)
+    
+    OSX::NSTimer.stubs(:scheduledTimerWithTimeInterval_target_selector_userInfo_repeats)
     
     controller.stubs(:setup_splitView!)
   end
@@ -73,6 +76,11 @@ describe 'ApplicationController, during awakeFromNib' do
     ].each do |params|
       OSX::NSDistributedNotificationCenter.defaultCenter.expects(:objc_send).with(*params)
     end
+    controller.awakeFromNib
+  end
+  
+  it "should set a scheduled timer to signal the watcher" do
+    OSX::NSTimer.expects(:scheduledTimerWithTimeInterval_target_selector_userInfo_repeats).with(5, @watcher_mock, 'signal:', nil, true)
     controller.awakeFromNib
   end
   

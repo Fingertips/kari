@@ -49,6 +49,7 @@ describe "A Watcher" do
   it "should know the environment for the kari task" do
     @watcher.kariEnvironment.keys.should.include('RUBYCOCOA_ROOT')
     @watcher.kariEnvironment.keys.should.include('RUBYCOCOA_ENV')
+    @watcher.kariEnvironment.keys.should.include('HOME')
   end
   
   it "should know which paths to watch" do

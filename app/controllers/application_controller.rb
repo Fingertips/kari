@@ -48,6 +48,8 @@ class ApplicationController < Rucola::RCController
     @watcher = Watcher.alloc.init
     @watcher.start
     
+    OSX::NSTimer.scheduledTimerWithTimeInterval_target_selector_userInfo_repeats(5, @watcher, 'signal:', nil, true)
+    
     @classTreeController.objc_send(
       :addObserver, self,
        :forKeyPath, 'selectionIndexPaths',
@@ -103,6 +105,7 @@ class ApplicationController < Rucola::RCController
       self.processing -= 1
     end
   end
+  
   
   def activateSearchField(sender = nil)
     @window.makeFirstResponder(@searchTextField)

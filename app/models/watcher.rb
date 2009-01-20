@@ -21,7 +21,7 @@ class Watcher < OSX::NSObject
   end
   
   def kariEnvironment
-    { 'RUBYCOCOA_ROOT' => Rucola::RCApp.root_path, 'RUBYCOCOA_ENV' => Rucola::RCApp.env }
+    { 'RUBYCOCOA_ROOT' => Rucola::RCApp.root_path, 'RUBYCOCOA_ENV' => Rucola::RCApp.env }.merge(ENV)
   end
   
   def watchPaths
@@ -70,7 +70,7 @@ class Watcher < OSX::NSObject
     setLastEventId(events.last.id)
   end
   
-  def signal
+  def signal(sender=nil)
     if !task or !task.isRunning
       delegate.finishedIndexing(self) if delegate and task
       
