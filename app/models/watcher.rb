@@ -73,8 +73,6 @@ class Watcher < OSX::NSObject
   def signal(sender=nil)
     if !task or !task.isRunning
       delegate.finishedIndexing(self) if delegate and task
-      
-      log_with_signature "Starting a new task"
       synchronize do
         paths = []
         examineQueue.synchronize do

@@ -151,7 +151,7 @@ describe 'ApplicationController, in general' do
   include ApplicationControllerSpecHelper
   include TemporaryApplicationSupportPath
   
-  it "should update the `processing' state when a `KariDidStartIndexingNotification' is received" do
+  it "should update the `processing' state when the watcher finished indexing" do
     assigns(:processing, 0)
     
     controller.startedIndexing(nil)
@@ -161,7 +161,7 @@ describe 'ApplicationController, in general' do
     controller.valueForKey('processing').to_ruby.should.be 2
   end
   
-  it "should update the `processing' state when a `KariDidFinishIndexingNotification' is received" do
+  it "should update the `processing' state when the watcher finished indexing" do
     assigns(:processing, 2)
     
     controller.finishedIndexing(nil)
@@ -174,7 +174,7 @@ describe 'ApplicationController, in general' do
     controller.valueForKey('processing').to_ruby.should.be 0
   end
   
-  it "should update the `class_tree' when a `KariDidFinishIndexingNotification' is received" do
+  it "should update the `class_tree' when the watcher finished indexing" do
     assigns(:processing, 1)
     
     nodes = [mock('ClassTreeNode')]
@@ -182,6 +182,17 @@ describe 'ApplicationController, in general' do
     
     controller.finishedIndexing(nil)
     controller.class_tree.should.be nodes
+  end
+  
+  it "should keep the current selection in the class tree selected when updating the class tree" do
+    assigns(:processing, 1)
+    
+    selection = mock('NSIndexPath')
+    
+    assigns(:classTreeController).expects(:selectionIndexPath).returns(selection)
+    assigns(:classTreeController).expects(:setSelectionIndexPath).with(selection)
+    
+    controller.finishedIndexing(nil)
   end
   
   it "should set search_mode to `true' if a user started searching" do

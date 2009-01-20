@@ -73,7 +73,7 @@ class ApplicationController < Rucola::RCController
     # We probably want to store the current selectionIndexPath as well before loading the new tree.
     if node = @classTreeController.selectedObjects.first
       unless !node.path or node.path.empty?
-        karidoc_filename = File.join(Rucola::RCApp.application_support_path, 'Karidoc', node.path)
+        karidoc_filename = File.join(Manager.instance.filepath, node.path)
         @webViewController.load_file(karidoc_filename)
       else
         log.debug("Can't open class browser at: `#{node.path}'")
@@ -99,13 +99,16 @@ class ApplicationController < Rucola::RCController
   end
   
   def finishedIndexing(sender)
-    Manager.reset!
-    self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
     if self.processing > 0
       self.processing -= 1
+      
+      Manager.reset!
+      
+      currentPath = @classTreeController.selectionIndexPath
+      self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
+      @classTreeController.setSelectionIndexPath(currentPath)
     end
   end
-  
   
   def activateSearchField(sender = nil)
     @window.makeFirstResponder(@searchTextField)
