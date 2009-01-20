@@ -48,6 +48,13 @@ class Kari
     manager.close
   end
   
+  def create_bundle
+    manager = Manager.new(:filepath => File.join(Dir.pwd, 'Karidoc.default'))
+    manager.examine(Manager::SYSTEM_RI_PATH)
+    manager.write_to_disk
+    manager.close
+  end
+  
   def execute(command)
     log.debug("{E} #{command}")
     `#{command}`
@@ -62,6 +69,8 @@ class Kari
       bin.update_karidoc
     when 'cleanup'
       Manager.cleanup
+    when 'bundle'
+      bin.create_bundle
     else
       puts "[!] Unknown command `#{command}'"
       exit -1
@@ -84,7 +93,8 @@ class Kari
         options[:next_karidoc] = File.expand_path(directory)
       end
       
-      opts.separator "  cleanup"
+      opts.separator "  cleanup (cleans up the Kari directory)"
+      opts.separator "  bundle  (bundles Karidocs for the system library)"
       
       opts.separator ""
       opts.separator "OPTIONS"
