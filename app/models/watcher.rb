@@ -62,12 +62,14 @@ class Watcher < OSX::NSObject
   end
   
   def handleEvents(events)
-    paths = events.map { |e| e.path }
-    log_with_signature "Found changes in #{paths.inspect}"
-    paths = self.class.basePaths(paths)
-    log_with_signature "Using paths: #{paths.inspect}"
-    self << paths
-    setLastEventId(events.last.id)
+    unless events.empty?
+      paths = events.map { |e| e.path }
+      log_with_signature "Found changes in #{paths.inspect}"
+      paths = self.class.basePaths(paths)
+      log_with_signature "Using paths: #{paths.inspect}"
+      self << paths
+      setLastEventId(events.last.id)
+    end
   end
   
   def signal(sender=nil)

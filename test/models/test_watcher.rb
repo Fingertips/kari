@@ -102,6 +102,13 @@ describe "A Watcher" do
     @watcher.lastEventId.should == 541
   end
   
+  it "should handle an empty event list" do
+    @watcher.stubs(:signal)
+    @watcher.expects(:<<).never
+    @watcher.expects(:setLastEventId).never
+    @watcher.handleEvents([])
+  end
+  
   it "should start a new task when signalled and having no task yet" do
     paths = expect_task_configured_and_launched
     @watcher << paths
