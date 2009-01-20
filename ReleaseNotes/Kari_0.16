@@ -1,0 +1,6 @@
+h1. Kari 0.16 2009-01-20
+
+* Replaced the update threads with a bunny-hop NSTask threading hybrid.
+* Changed preferences implementation.
+* Fix bookmarking.
+* Bootstrap the Karidocs on the first run.
