@@ -205,6 +205,10 @@ class Manager
     File.join(Rucola::RCApp.application_support_path, 'Karidoc.current')
   end
   
+  def self.default_karidoc_bundle_path
+    File.join(Rucola::RCApp.root_path, 'app', 'assets', 'Karidoc.default.tar.bz2')
+  end
+  
   def self.initialize_from_disk
     manager = new(:filepath => current_filepath)
     manager.read_from_disk
@@ -231,5 +235,19 @@ class Manager
         FileUtils.rm_rf(directory)
       end
     end
+  end
+  
+  def self.first_run?
+    !File.exist?(current_filepath)
+  end
+  
+  def self.bootstrap
+    FileUtils.mkdir_p(Rucola::RCApp.application_support_path)
+    log.debug "Unpacking #{default_karidoc_bundle_path} to #{Rucola::RCApp.application_support_path}"
+    `tar -xvjf #{default_karidoc_bundle_path} -C #{Rucola::RCApp.application_support_path}`
+    @instance = new(:filepath => File.join(Rucola::RCApp.application_support_path, 'Karidoc.default'))
+    @instance.update_symlink
+    @instance.read_from_disk
+    @instance
   end
 end

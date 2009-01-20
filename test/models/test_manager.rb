@@ -63,6 +63,22 @@ describe "Manager" do
     Dir.entries(support_path).sort.should == ['.', '..', symlink, File.basename(created[2])].sort
   end
   
+  it "should know when it's the first run" do
+    Manager.should.be.first_run
+  end
+  
+  it "should know when it's not the first run" do
+    FileUtils.mkdir_p(Manager.current_filepath)
+    Manager.should.not.be.first_run
+  end
+  
+  it "should bootstrap the manager on first run" do
+    Manager.should.be.first_run
+    manager = Manager.bootstrap
+    manager.length.should == 9102
+    Manager.should.not.be.first_run
+  end
+  
   private
   
   def remove_manager_singleton!
