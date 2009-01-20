@@ -39,6 +39,7 @@ class Kari
   
   def update_karidoc
     manager = Manager.new(:filepath => options[:next_karidoc])
+    manager.read_from_disk
     options[:paths].each do |path|
       manager.examine(path)
     end
