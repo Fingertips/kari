@@ -25,6 +25,8 @@ module ApplicationControllerSpecHelper
     @manager_mock.stubs(:namespace).returns([])
     @manager_mock.stubs(:examine)
     Manager.stubs(:instance).returns(@manager_mock)
+    Manager.stubs(:bootstrap)
+    Manager.stubs(:first_run?).returns(false)
     
     @watcher_mock = mock('Watcher')
     @watcher_mock.stubs(:delegate=)
@@ -81,6 +83,12 @@ describe 'ApplicationController, during awakeFromNib' do
   
   it "should set a scheduled timer to signal the watcher" do
     OSX::NSTimer.expects(:scheduledTimerWithTimeInterval_target_selector_userInfo_repeats).with(5, @watcher_mock, 'signal:', nil, true)
+    controller.awakeFromNib
+  end
+  
+  it "should bootstrap the manager on first run" do
+    Manager.expects(:first_run?).returns(true)
+    Manager.expects(:bootstrap)
     controller.awakeFromNib
   end
   

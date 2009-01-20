@@ -74,9 +74,12 @@ describe "Manager" do
   
   it "should bootstrap the manager on first run" do
     Manager.should.be.first_run
+    
     manager = Manager.bootstrap
+    
     manager.length.should == 9102
     Manager.should.not.be.first_run
+    Manager.instance.should === manager
   end
   
   private

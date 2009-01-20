@@ -42,6 +42,8 @@ class ApplicationController < Rucola::RCController
            :object, nil
     )
     
+    Manager.bootstrap if Manager.first_run?
+    
     @processing = 0
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
     @watcher = Watcher.alloc.init

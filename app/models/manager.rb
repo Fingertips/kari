@@ -244,7 +244,7 @@ class Manager
   def self.bootstrap
     FileUtils.mkdir_p(Rucola::RCApp.application_support_path)
     log.debug "Unpacking #{default_karidoc_bundle_path} to #{Rucola::RCApp.application_support_path}"
-    `tar -xvjf #{default_karidoc_bundle_path} -C #{Rucola::RCApp.application_support_path}`
+    `tar -xvjf '#{default_karidoc_bundle_path}' -C '#{Rucola::RCApp.application_support_path}'`
     @instance = new(:filepath => File.join(Rucola::RCApp.application_support_path, 'Karidoc.default'))
     @instance.update_symlink
     @instance.read_from_disk
