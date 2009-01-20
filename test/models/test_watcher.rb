@@ -203,7 +203,7 @@ describe "A Watcher" do
     task.stubs(:isRunning).returns(true)
     task.expects(:environment=).with(@watcher.kariEnvironment)
     task.expects(:launchPath=).with(@watcher.kariPath)
-    task.expects(:arguments=).with(['--old', Manager.instance.filepath, '--new', next_filepath, *paths])
+    task.expects(:arguments=).with(['update', '--current-karidoc', Manager.instance.filepath, '--next-karidoc', next_filepath, *paths])
     task.expects(:launch)
     
     paths

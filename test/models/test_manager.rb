@@ -23,7 +23,7 @@ describe "Manager" do
     remove_manager_singleton!
   end
   
-  it "should generate file paths for karidoc" do
+  it "should generate file paths for Karidoc" do
     file_path = Manager.generate_filepath(0)
     file_path.should.start_with?(@application_support_path)
     file_path.should.end_with?('0')
@@ -33,7 +33,7 @@ describe "Manager" do
     file_path.should.end_with?('10')
   end
   
-  it "should find the next usable file path for karidoc" do
+  it "should find the next usable file path for Karidoc" do
     FileUtils.mkdir_p(file_path = Manager.next_filepath)
     file_path.should.start_with?(@application_support_path)
     file_path.should.end_with?('0')
@@ -43,9 +43,24 @@ describe "Manager" do
     file_path.should.end_with?('1')
   end
   
-  it "should return the location where to search the current karidocs" do
+  it "should return the location where to search the current Karidocs" do
     Manager.current_filepath.should.start_with?(@application_support_path)
     Manager.current_filepath.should.end_with?('Karidoc.current')
+  end
+  
+  it "should cleanup older Karidoc directories" do
+    support_path = Rucola::RCApp.application_support_path
+    symlink = File.basename(Manager.current_filepath)
+    
+    created = []
+    5.times do
+      FileUtils.mkdir_p(created << Manager.next_filepath)
+    end
+    FileUtils.ln_s(created[2], Manager.current_filepath)
+    
+    Dir.entries(support_path).sort.should == ['.', '..', symlink, *created.map { |c| File.basename(c) }].sort
+    Manager.cleanup
+    Dir.entries(support_path).sort.should == ['.', '..', symlink, File.basename(created[2])].sort
   end
   
   private

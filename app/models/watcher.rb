@@ -84,12 +84,12 @@ class Watcher < OSX::NSObject
         
         unless paths.empty?
           log_with_signature "Starting task for paths: #{paths.inspect}"
-          log_with_signature "#{kariPath} --old #{Manager.instance.filepath} --new #{Manager.next_filepath} #{paths.join(' ')}"
+          log_with_signature "#{kariPath} update --current-karidoc '#{Manager.instance.filepath}' --next-karidoc '#{Manager.next_filepath}' #{paths.join(' ')}"
           
           self.task = OSX::NSTask.alloc.init
           task.environment = kariEnvironment
           task.launchPath  = kariPath
-          task.arguments   = ['--old', Manager.instance.filepath, '--new', Manager.next_filepath, *paths]
+          task.arguments   = ['update', '--current-karidoc', Manager.instance.filepath, '--next-karidoc', Manager.next_filepath, *paths]
           task.launch
           
           log_with_signature "Notify the delegate that we started indexing"

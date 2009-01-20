@@ -177,6 +177,10 @@ class Manager
   
   def update_symlink
     log.debug "Symlinking #{self.class.current_filepath} => #{filepath}"
+    begin
+      File.unlink(self.class.current_filepath)
+    rescue Errno::ENOENT
+    end
     FileUtils.ln_sf(filepath, self.class.current_filepath)
   end
   
@@ -202,9 +206,9 @@ class Manager
   end
   
   def self.initialize_from_disk
-    index = new(:filepath => current_filepath)
-    index.read_from_disk
-    index
+    manager = new(:filepath => current_filepath)
+    manager.read_from_disk
+    manager
   end
   
   def self.instance
@@ -215,6 +219,17 @@ class Manager
     unless @instance.nil?
       @instance.close
       @instance = nil
+    end
+  end
+  
+  def self.cleanup
+    karidoc_path = Rucola::RCApp.application_support_path
+    (Dir.entries(karidoc_path) - ['.', '..']).each do |filename|
+      directory = File.join(karidoc_path, filename)
+      unless File.identical?(directory, current_filepath) 
+        log.debug("Sweeping old Karidoc: #{directory}")
+        FileUtils.rm_rf(directory)
+      end
     end
   end
 end
