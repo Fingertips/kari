@@ -30,6 +30,11 @@
 		51CAD5FE0EF02CC7008F5EDF /* match.h in Headers */ = {isa = PBXBuildFile; fileRef = 51CAD5FC0EF02CC7008F5EDF /* match.h */; };
 		51CAD5FF0EF02CC7008F5EDF /* match.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CAD5FD0EF02CC7008F5EDF /* match.m */; };
 		51E0DC1C0D80411600C898A2 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 51E0DBCA0D80411600C898A2 /* lib */; };
+		51F2708E0F27850C003D4A54 /* MGRecessedPopUpButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 51F270890F27850C003D4A54 /* MGRecessedPopUpButtonCell.h */; };
+		51F2708F0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F2708A0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m */; };
+		51F270900F27850C003D4A54 /* MGScopeBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 51F2708B0F27850C003D4A54 /* MGScopeBar.h */; };
+		51F270910F27850C003D4A54 /* MGScopeBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F2708C0F27850C003D4A54 /* MGScopeBar.m */; };
+		51F270920F27850C003D4A54 /* MGScopeBarDelegateProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 51F2708D0F27850C003D4A54 /* MGScopeBarDelegateProtocol.h */; };
 		638CCA7D0DF06404008C4936 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = 638CCA7C0DF06404008C4936 /* BridgeSupport */; };
 		6392E19B0F0278AC00000DEE /* bin in Resources */ = {isa = PBXBuildFile; fileRef = 6392E1970F0278AC00000DEE /* bin */; };
 		AE975ACCD6AC76DA87E3FF08 /* RubyCocoa.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */; };
@@ -75,8 +80,8 @@
 		51137C0C0D854905000EADF3 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		51137C130D854A14000EADF3 /* KariDocImporter.mdimporter */ = {isa = PBXFileReference; lastKnownFileType = folder; path = KariDocImporter.mdimporter; sourceTree = "<group>"; };
 		51137C210D854B70000EADF3 /* Kari.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Kari.icns; sourceTree = "<group>"; };
-		5130B8370EFAB20000944BE5 /* MGViewAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGViewAnimation.h; sourceTree = "<group>"; };
-		5130B8380EFAB20000944BE5 /* MGViewAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGViewAnimation.m; sourceTree = "<group>"; };
+		5130B8370EFAB20000944BE5 /* MGViewAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGViewAnimation.h; path = vendor_objc/MGViewAnimation.h; sourceTree = "<group>"; };
+		5130B8380EFAB20000944BE5 /* MGViewAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGViewAnimation.m; path = vendor_objc/MGViewAnimation.m; sourceTree = "<group>"; };
 		514292B90CC66CDC00F9CEEF /* app */ = {isa = PBXFileReference; lastKnownFileType = folder; path = app; sourceTree = "<group>"; };
 		514292C10CC66CDC00F9CEEF /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
 		514292C40CC66CDC00F9CEEF /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
@@ -88,6 +93,11 @@
 		51CAD5FC0EF02CC7008F5EDF /* match.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = match.h; path = lib/search_kit/match.h; sourceTree = "<group>"; };
 		51CAD5FD0EF02CC7008F5EDF /* match.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = match.m; path = lib/search_kit/match.m; sourceTree = "<group>"; };
 		51E0DBCA0D80411600C898A2 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
+		51F270890F27850C003D4A54 /* MGRecessedPopUpButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGRecessedPopUpButtonCell.h; path = vendor_objc/MGRecessedPopUpButtonCell.h; sourceTree = "<group>"; };
+		51F2708A0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGRecessedPopUpButtonCell.m; path = vendor_objc/MGRecessedPopUpButtonCell.m; sourceTree = "<group>"; };
+		51F2708B0F27850C003D4A54 /* MGScopeBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGScopeBar.h; path = vendor_objc/MGScopeBar.h; sourceTree = "<group>"; };
+		51F2708C0F27850C003D4A54 /* MGScopeBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGScopeBar.m; path = vendor_objc/MGScopeBar.m; sourceTree = "<group>"; };
+		51F2708D0F27850C003D4A54 /* MGScopeBarDelegateProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGScopeBarDelegateProtocol.h; path = vendor_objc/MGScopeBarDelegateProtocol.h; sourceTree = "<group>"; };
 		638CCA7C0DF06404008C4936 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BridgeSupport; path = misc/BridgeSupport; sourceTree = "<group>"; };
 		6392E1970F0278AC00000DEE /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
 		E8F5E24E03AEB6EC03A81C6F /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /System/Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
@@ -176,6 +186,11 @@
 				516499AE0EEEBFBD0000C1E3 /* Index.m */,
 				51CAD5FC0EF02CC7008F5EDF /* match.h */,
 				51CAD5FD0EF02CC7008F5EDF /* match.m */,
+				51F270890F27850C003D4A54 /* MGRecessedPopUpButtonCell.h */,
+				51F2708A0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m */,
+				51F2708B0F27850C003D4A54 /* MGScopeBar.h */,
+				51F2708C0F27850C003D4A54 /* MGScopeBar.m */,
+				51F2708D0F27850C003D4A54 /* MGScopeBarDelegateProtocol.h */,
 				5130B8370EFAB20000944BE5 /* MGViewAnimation.h */,
 				5130B8380EFAB20000944BE5 /* MGViewAnimation.m */,
 				638CCA7C0DF06404008C4936 /* BridgeSupport */,
@@ -242,6 +257,9 @@
 				516499AF0EEEBFBD0000C1E3 /* Index.h in Headers */,
 				51CAD5FE0EF02CC7008F5EDF /* match.h in Headers */,
 				5130B8390EFAB20000944BE5 /* MGViewAnimation.h in Headers */,
+				51F2708E0F27850C003D4A54 /* MGRecessedPopUpButtonCell.h in Headers */,
+				51F270900F27850C003D4A54 /* MGScopeBar.h in Headers */,
+				51F270920F27850C003D4A54 /* MGScopeBarDelegateProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,6 +337,8 @@
 				516499B00EEEBFBD0000C1E3 /* Index.m in Sources */,
 				51CAD5FF0EF02CC7008F5EDF /* match.m in Sources */,
 				5130B83A0EFAB20000944BE5 /* MGViewAnimation.m in Sources */,
+				51F2708F0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m in Sources */,
+				51F270910F27850C003D4A54 /* MGScopeBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +375,7 @@
 		4D7A7B580ABF745500C2D4C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
