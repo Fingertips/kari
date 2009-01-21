@@ -47,6 +47,24 @@ describe "KaridocGenerator" do
     File.should.exist(base_path)
     File.should.not.exist(very_long_empty_path)
   end
+  
+  it "should compute relative path from root" do
+    KaridocGenerator.compute_relative_path_from_root('/path/to', '/path/to/file').should == '/file'
+  end
+  
+  it "should compute relative path to root" do
+    KaridocGenerator.compute_relative_path_to_root('/path').should == ''
+    KaridocGenerator.compute_relative_path_to_root('/path/to').should == '..'
+    KaridocGenerator.compute_relative_path_to_root('/path/to/file').should == '../..'
+  end
+  
+  it "should freeze assets" do
+    generator = stub
+    generator.expects(:freeze_assets)
+    KaridocGenerator.expects(:new).with(@karidoc_path).returns(generator)
+    
+    KaridocGenerator.freeze_assets(@karidoc_path)
+  end
 end
 
 describe "KaridocGenerator, on a generated karidoc tree" do
@@ -103,11 +121,13 @@ describe "A KaridocGenerator" do
   it "should generate" do
     filename = @generator.generate
     filename.should == '/Binding.karidoc'
-    File.read(File.join(@karidoc_path, filename)).should =~ /<title>Binding<\/title>/
+    generated = File.read(File.join(@karidoc_path, filename))
+    generated.should =~ /<title>Binding<\/title>/
+    generated.should =~ %r%<link href="KaridocAssets/karidoc.css"%
   end
   
   it "should render ri descriptions" do
-    result = @generator.render([YAML::load_file(@generator.description_files.first)])
+    result = @generator.render([YAML::load_file(@generator.description_files.first)], :relative_path_to_root => '../..')
     result.should =~ /<title>Binding<\/title>/
   end
   
@@ -121,5 +141,16 @@ describe "A KaridocGenerator" do
   it "should not generate when all YAML descriptions are missing" do
     @generator.description_files = []
     @generator.generate.should.be.nil
+  end
+  
+  it "should know it's assets path" do
+    @generator.karidoc_asset_path.should.start_with(@karidoc_path)
+    @generator.karidoc_asset_path.should.end_with('KaridocAssets')
+  end
+  
+  it "should freeze it's assets to the karidoc path" do
+    File.should.not.exist(@generator.karidoc_asset_path)
+    @generator.freeze_assets
+    Dir.entries(@generator.karidoc_asset_path).sort.should == (%w(. ..)+KaridocGenerator::ASSETS).sort
   end
 end

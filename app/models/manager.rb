@@ -136,6 +136,7 @@ class Manager
   def examine(path)
     changed = update(path).uniq
     update_karidoc(changed)
+    KaridocGenerator.freeze_assets(filepath)
     changed
   end
   

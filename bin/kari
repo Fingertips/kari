@@ -48,11 +48,16 @@ class Kari
     manager.close
   end
   
-  def create_bundle
+  def create_karidoc_bundle
     manager = Manager.new(:filepath => File.join(Dir.pwd, 'Karidoc.default'))
     manager.examine(Manager::SYSTEM_RI_PATH)
     manager.write_to_disk
     manager.close
+  end
+  
+  def create_karidoc_bundle_tarball
+    create_karidoc_bundle
+    execute "tar -cvjf Karidoc.default.tar.bz2 Karidoc.default && rm -Rf Karidoc.default"
   end
   
   def execute(command)
@@ -64,13 +69,15 @@ class Kari
     bin = new(options)
     
     case command
-    when 'update'
+    when 'update', 'up'
       bin.copy_karidoc
       bin.update_karidoc
-    when 'cleanup'
+    when 'cleanup', 'clean'
       Manager.cleanup
-    when 'bundle'
-      bin.create_bundle
+    when 'create-bundle', 'cb'
+      bin.create_karidoc_bundle
+    when 'create-bundle-tarball', 'cbt'
+      bin.create_karidoc_bundle_tarball
     else
       puts "[!] Unknown command `#{command}'"
       exit -1
@@ -84,7 +91,7 @@ class Kari
       
       opts.separator ""
       opts.separator "COMMANDS"
-      opts.separator "  update [options] <paths>"
+      opts.separator "  update | up [options] <paths>"
       opts.on("-c", "--current-karidoc DIRECTORY", String, "The Karidoc directory base the update on") do |directory|
         options[:current_karidoc] = File.expand_path(directory)
       end
@@ -93,8 +100,12 @@ class Kari
         options[:next_karidoc] = File.expand_path(directory)
       end
       
-      opts.separator "  cleanup (cleans up the Kari directory)"
-      opts.separator "  bundle  (bundles Karidocs for the system library)"
+      opts.separator "  cleanup | clean"
+      opts.separator "    throws away all the stale Karidoc directories"
+      opts.separator "  create-bundle | cb"
+      opts.separator "    creates a Karidoc.default directory for the system ri directory"
+      opts.separator "  create-bundle-tarball | cbt"
+      opts.separator "    same as create-bundle, only in a tarball"
       
       opts.separator ""
       opts.separator "OPTIONS"

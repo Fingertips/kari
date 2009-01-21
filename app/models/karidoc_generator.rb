@@ -11,6 +11,8 @@ end
 
 # Class that generates Karidoc files from the RI description
 class KaridocGenerator
+  ASSETS = %w(karidoc.css karidoc.js jquery-1.2.6.min.js)
+  
   attr_accessor :karidoc_path, :description_files
   
   def initialize(karidoc_path, *description_files)
@@ -33,41 +35,61 @@ class KaridocGenerator
       full_name = descriptions.first.full_name
       karidoc_filename = RubyName.karidoc_filename(karidoc_path, full_name)
       
+      karidoc_path = compute_relative_path_from_root(karidoc_filename)
       FileUtils.mkdir_p(File.dirname(karidoc_filename))
       File.open(karidoc_filename, 'w') do |file|
-        file.write(render(descriptions))
+        file.write(render(descriptions, :relative_path_to_root => self.class.compute_relative_path_to_root(karidoc_path)))
       end
-      compute_relative_path(karidoc_filename)
+      karidoc_path
     end
   end
   
-  def render(descriptions)
-    template_path = File.expand_path('../../views/karidoc', __FILE__)
+  def render(descriptions, options={})
+    raise ArgumentError, "Please specify :relative_path_to_root in the option hash." if options[:relative_path_to_root].nil?
+    
+    template_path = File.join(Rucola::RCApp.root_path, 'app', 'views', 'karidoc')
     template_file = File.join(template_path, 'layout.erb')
     
     partials = ['method', 'class', 'module'].inject({}) do |partials, t|
       partials[t] = self.class.template(File.join(template_path, "#{t}.erb")); partials
     end
     
-    namespace = Namespace.new(
-      :descriptions => descriptions,
-      :full_name => descriptions.first.full_name,
-      :template_path => template_path,
-      :stylesheet => File.expand_path('../../assets/karidoc.css', __FILE__),
-      :javascripts => [
-        File.expand_path('../../assets/jquery-1.2.6.min.js', __FILE__), 
-        File.expand_path('../../assets/karidoc.js', __FILE__)
-      ],
-      :partials => partials
-    )
+    unless options[:relative_path_to_root].empty?
+      relative_path = "#{options[:relative_path_to_root]}/KaridocAssets/"
+    else
+      relative_path = "KaridocAssets/"
+    end
+    
+    namespace = Namespace.new({
+      :descriptions        => descriptions,
+      :full_name           => descriptions.first.full_name,
+      :template_path       => template_path,
+      :partials            => partials,
+      :stylesheet          => "#{relative_path}karidoc.css",
+      :javascripts         => [
+        "#{relative_path}jquery-1.2.6.min.js",
+        "#{relative_path}karidoc.js"
+      ]
+    })
     namespace.extend HTMLHelpers
     namespace.extend FlowHelpers
     
     self.class.template(template_file).result(namespace.binding)
   end
   
-  def compute_relative_path(filename)
-    self.class.compute_relative_path(karidoc_path, filename)
+  def compute_relative_path_from_root(filename)
+    self.class.compute_relative_path_from_root(karidoc_path, filename)
+  end
+  
+  def karidoc_asset_path
+    File.join(karidoc_path, 'KaridocAssets')
+  end
+  
+  def freeze_assets
+    FileUtils.mkdir_p(karidoc_asset_path)
+    ASSETS.each do |asset|
+      FileUtils.cp(File.join(Rucola::RCApp.root_path, 'app', 'assets', asset), File.join(karidoc_asset_path, asset))
+    end
   end
   
   def self.template(template_file)
@@ -78,6 +100,10 @@ class KaridocGenerator
   
   def self.generate(karidoc_path, *description_files)
     new(karidoc_path, *description_files).generate
+  end
+  
+  def self.freeze_assets(karidoc_path)
+    new(karidoc_path).freeze_assets
   end
   
   def self.clear(karidoc_path, full_name)
@@ -91,7 +117,7 @@ class KaridocGenerator
     
     clear_if_empty(dir_name)
     
-    compute_relative_path(karidoc_path, file_name)
+    compute_relative_path_from_root(karidoc_path, file_name)
   end
   
   def self.clear_if_empty(dir_name)
@@ -101,7 +127,13 @@ class KaridocGenerator
     end
   end
   
-  def self.compute_relative_path(karidoc_path, filename)
+  def self.compute_relative_path_from_root(karidoc_path, filename)
     filename[karidoc_path.length..-1]
   end
+  
+  def self.compute_relative_path_to_root(karidoc_path)
+    level = karidoc_path.split('/').length-2
+    level = 0 if level < 0
+    (['..']*level).join('/')
+  end  
 end

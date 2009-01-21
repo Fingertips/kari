@@ -106,6 +106,13 @@ describe "A Manager" do
       @manager.add('#JSON', '/path/to/JSON/JSON-i.yml')
     }.should.not.raise
   end
+  
+  it "should freeze Karidoc assets after updating the Karidoc documentation" do
+    @manager.stubs(:update).returns([])
+    @manager.stubs(:update_karidoc)
+    KaridocGenerator.expects(:freeze_assets).with(@manager.filepath)
+    @manager.examine('/path/to/ri')
+  end
 end
 
 describe "An empty Manager" do
