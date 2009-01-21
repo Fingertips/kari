@@ -10,7 +10,7 @@ module SearchKit
     objc_method :name, [:id]
     
     def filename
-      OSX::NSURL.fileURLWithPath(File.join(Rucola::RCApp.application_support_path, URL().path))
+      OSX::NSURL.fileURLWithPath(File.join(Manager.current_filepath, URL().path))
     end
     
     def inspect

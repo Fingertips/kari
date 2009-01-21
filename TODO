@@ -5,6 +5,7 @@ ELOY
 
 MANFRED
 
+- Find a good way to query names and content in a SearchKit index
 - Think about a way to solve the uppercased instance method problem in the RubyName optimization
 
 ANYONE
