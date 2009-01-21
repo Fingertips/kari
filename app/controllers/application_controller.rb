@@ -20,6 +20,7 @@ class ApplicationController < Rucola::RCController
   ib_outlet :classTreeController
   ib_outlet :splitView
   ib_outlet :toggleClassBrowserVisbilityButton
+  ib_outlet :scopeBar
   
   kvc_accessor :class_tree
   kvc_accessor :processing
