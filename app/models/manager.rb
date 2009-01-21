@@ -5,7 +5,8 @@ class Manager
   SYSTEM_RI_PATH         = RI::Paths.path(true, false, false, false).first
   RI_PATH_VERSION_REGEXP = /\/\w*-([\d\.]*)\//
   
-  attr_accessor :descriptions, :namespace, :search_index, :filepath
+  attr_accessor :descriptions, :namespace, :filepath
+  attr_accessor :content_search_index, :path_search_index
   
   def initialize(options={})
     log.debug "Initializing new indices"
@@ -17,10 +18,12 @@ class Manager
     
     if File.exist?(search_index_filename)
       log.debug "Opening SearchKit index (#{search_index_filename})"
-      @search_index = SearchKit::Index.open(search_index_filename, nil, true)
+      @content_search_index = SearchKit::Index.open(search_index_filename, 'content', true)
+      @path_search_index    = SearchKit::Index.open(search_index_filename, 'path', true)
     else
       log.debug "Creating SearchKit index (#{search_index_filename})"
-      @search_index = SearchKit::Index.create(search_index_filename)
+      @content_search_index = SearchKit::Index.create(search_index_filename, 'content')
+      @path_search_index    = SearchKit::Index.create(search_index_filename, 'path')
     end
   end
   
@@ -121,14 +124,18 @@ class Manager
         if karidoc_path = KaridocGenerator.generate(filepath, @descriptions[full_name])
           karidoc_filename = File.join(filepath, karidoc_path)
           
-          @search_index.removeDocument(karidoc_path)
-          @search_index.addDocumentWithText(karidoc_path, File.read(karidoc_filename))
+          @content_search_index.removeDocument(karidoc_path)
+          @path_search_index.removeDocument(karidoc_path)
+          
+          @content_search_index.addDocumentWithText(karidoc_path, File.read(karidoc_filename))
+          @path_search_index.addDocumentWithText(karidoc_path, full_name)
         end
       else
         karidoc_path = KaridocGenerator.clear(filepath, full_name)
         karidoc_filename = File.join(filepath, karidoc_path)
         
-        @search_index.removeDocument(karidoc_path)
+        @content_search_index.removeDocument(karidoc_path)
+        @path_search_index.removeDocument(karidoc_path)
       end
     end
   end
@@ -141,7 +148,7 @@ class Manager
   end
   
   def search(query)
-    @search_index.search(query)
+    @path_search_index.search(query)
   end
   
   def ensure_filepath!
@@ -163,7 +170,10 @@ class Manager
   def write_to_disk
     log.debug "Writing index to disk (#{filename} #{@descriptions.length} descriptions)"
     ensure_filepath!
-    @search_index.flush
+    
+    @content_search_index.flush
+    @path_search_index.flush
+    
     File.open(filename, 'w') do |file|
       file.write(Marshal.dump([@descriptions, @namespace]))
     end
@@ -187,7 +197,8 @@ class Manager
   
   def close
     log.debug "Closing SearchKit index"
-    @search_index.close
+    @content_search_index.close
+    @path_search_index.close
   end
   
   def self.next_filepath

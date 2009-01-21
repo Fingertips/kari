@@ -41,6 +41,7 @@ class ManagerTestCache
       manager = Manager.new
       manager.examine(ri_path)
       manager.write_to_disk
+      manager.update_symlink
       manager.close
       
       FileUtils.cp_r(BASE_PATH_TMP, BASE_PATH_CACHE)
@@ -50,9 +51,7 @@ class ManagerTestCache
       t('c')
       FileUtils.touch(BASE_PATH_CACHE)
       FileUtils.rm_rf(BASE_PATH_TMP)
-      `cp -r #{BASE_PATH_CACHE} #{BASE_PATH_TMP}`
-      karidoc = File.join(application_support_path, Dir.entries(application_support_path).grep(/Karidoc\.\d+\.\d+/).first)
-      FileUtils.ln_sf(karidoc, File.join(application_support_path, 'Karidoc.current'))
+      `cp -R #{BASE_PATH_CACHE} #{BASE_PATH_TMP}`
     end
     
     def setup_manager
