@@ -5,7 +5,6 @@ ELOY
 
 MANFRED
 
-- Fix paths to assets in the generated Karidoc
 - Add a second index to the SKIndex so we can search ruby names
 - Think about a way to solve the uppercased instance method problem in the RubyName optimization
 

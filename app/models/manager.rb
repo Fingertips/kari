@@ -227,14 +227,21 @@ class Manager
     end
   end
   
-  def self.cleanup
-    karidoc_path = Rucola::RCApp.application_support_path
-    (Dir.entries(karidoc_path) - ['.', '..']).each do |filename|
-      directory = File.join(karidoc_path, filename)
-      unless File.identical?(directory, current_filepath) 
-        log.debug("Sweeping old Karidoc: #{directory}")
-        FileUtils.rm_rf(directory)
+  def self.stale_karidocs
+    path = Rucola::RCApp.application_support_path
+    (Dir.entries(path)-%w(. ..)).inject([]) do |stale, directory|
+      if directory.start_with?('Karidoc') and !File.identical?(File.join(path, directory), current_filepath)
+        stale << directory
       end
+      stale
+    end.map { |directory| File.join(path, directory) } if File.exist?(path)
+  end
+  
+  def self.cleanup
+    stale = stale_karidocs
+    unless stale.nil? or stale.empty?
+      log.debug("Sweeping old Karidocs: #{stale_karidocs.inspect}")
+      FileUtils.rm_rf(stale)
     end
   end
   

@@ -108,6 +108,8 @@ class ApplicationController < Rucola::RCController
       currentPath = @classTreeController.selectionIndexPath
       self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
       @classTreeController.setSelectionIndexPath(currentPath)
+      
+      Thread.start { Manager.cleanup }
     end
   end
   

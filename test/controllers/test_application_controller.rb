@@ -26,6 +26,7 @@ module ApplicationControllerSpecHelper
     @manager_mock.stubs(:examine)
     Manager.stubs(:instance).returns(@manager_mock)
     Manager.stubs(:bootstrap)
+    Manager.stubs(:cleanup)
     Manager.stubs(:first_run?).returns(false)
     
     @watcher_mock = mock('Watcher')
@@ -200,6 +201,12 @@ describe 'ApplicationController, in general' do
     assigns(:classTreeController).expects(:selectionIndexPath).returns(selection)
     assigns(:classTreeController).expects(:setSelectionIndexPath).with(selection)
     
+    controller.finishedIndexing(nil)
+  end
+  
+  it "should cleanup the Karidocs when the watcher finished indexing" do
+    assigns(:processing, 1)
+    Manager.expects(:cleanup)
     controller.finishedIndexing(nil)
   end
   

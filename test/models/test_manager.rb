@@ -48,7 +48,17 @@ describe "Manager" do
     Manager.current_filepath.should.end_with?('Karidoc.current')
   end
   
-  it "should cleanup older Karidoc directories" do
+  it "should know which Karidoc directories are stale" do
+    Manager.stale_karidocs.should.be.nil
+    
+    created = []
+    5.times { FileUtils.mkdir_p(created << Manager.next_filepath) }
+    FileUtils.ln_s(created.last, Manager.current_filepath)
+    
+    Manager.stale_karidocs.sort.should == (created-[created.last]).sort
+  end
+  
+  it "should cleanup stale Karidoc directories" do
     support_path = Rucola::RCApp.application_support_path
     symlink = File.basename(Manager.current_filepath)
     
@@ -57,10 +67,17 @@ describe "Manager" do
       FileUtils.mkdir_p(created << Manager.next_filepath)
     end
     FileUtils.ln_s(created[2], Manager.current_filepath)
+    FileUtils.touch(File.join(Rucola::RCApp.application_support_path, 'BrowseHistory'))
     
-    Dir.entries(support_path).sort.should == ['.', '..', symlink, *created.map { |c| File.basename(c) }].sort
+    Dir.entries(support_path).sort.should == ['.', '..', symlink, 'BrowseHistory', *created.map { |c| File.basename(c) }].sort
     Manager.cleanup
-    Dir.entries(support_path).sort.should == ['.', '..', symlink, File.basename(created[2])].sort
+    Dir.entries(support_path).sort.should == ['.', '..', symlink, 'BrowseHistory', File.basename(created[2])].sort
+  end
+  
+  it "should not cleanup stale Karidoc directories when there are none" do
+    Manager.stubs(:stale_karidocs).returns(nil)
+    FileUtils.expects(:rm_rf).at_most(1) # After block calls rm_rf
+    Manager.cleanup
   end
   
   it "should know when it's the first run" do
