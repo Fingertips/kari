@@ -1,4 +1,4 @@
-class ApplicationController < Rucola::RCController
+class ApplicationController
   def searchControllerWillStartSearching
     self.search_mode = true
     @addBookmarkToolbarButton.enabled = false

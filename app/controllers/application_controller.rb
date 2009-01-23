@@ -5,6 +5,7 @@ class ApplicationController < Rucola::RCController
   
   concerned_with 'split_view'
   concerned_with 'web_view'
+  concerned_with 'scope_bar'
   concerned_with 'search'
   
   ib_outlet :window
@@ -34,6 +35,8 @@ class ApplicationController < Rucola::RCController
   def awakeFromNib
     # First things first, make it look as it should!
     setup_splitView!
+    
+    setup_scopeBar!
     
     # Register notifications
     OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
