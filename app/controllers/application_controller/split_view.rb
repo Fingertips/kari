@@ -1,4 +1,4 @@
-class ApplicationController
+class ApplicationController < Rucola::RCController
   STATUS_BAR_HEIGHT = 20
   FILTER_BAR_HEIGHT = 25
   

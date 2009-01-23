@@ -1,4 +1,4 @@
-class ApplicationController
+class ApplicationController < Rucola::RCController
   def webViewFinishedLoading(aNotification)
     @addBookmarkToolbarButton.enabled = @webViewController.bookmarkable?
     self.search_mode = false

@@ -1,4 +1,4 @@
-class ApplicationController
+class ApplicationController < Rucola::RCController
   ITEM_IDENTIFIER = 'Identifier'
   ITEM_NAME = "Name"
   
