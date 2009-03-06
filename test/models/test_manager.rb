@@ -218,19 +218,15 @@ describe "An empty Manager" do
     %w{ Binding.karidoc Binding/#dup.karidoc }.each do |file|
       karidoc_filename = File.join('', file)
       
-      @manager.content_search_index.expects(:removeDocument).with(karidoc_filename)
-      @manager.content_search_index.expects(:addDocumentWithText)
-      @manager.path_search_index.expects(:removeDocument).with(karidoc_filename)
-      @manager.path_search_index.expects(:addDocumentWithText)
+      @manager.search_index.expects(:removeDocument).with(karidoc_filename)
+      @manager.search_index.expects(:addDocumentWithText)
     end
     @manager.examine(ALTERNATE_RI_PATH)
   end
   
   it "should remove documents from the index" do
-    @manager.content_search_index.expects(:removeDocument).with(File.join('', 'Binding', '#clone.karidoc'))
-    @manager.content_search_index.expects(:addDocumentWithText).never
-    @manager.path_search_index.expects(:removeDocument).with(File.join('', 'Binding', '#clone.karidoc'))
-    @manager.path_search_index.expects(:addDocumentWithText).never
+    @manager.search_index.expects(:removeDocument).with(File.join('', 'Binding', '#clone.karidoc'))
+    @manager.search_index.expects(:addDocumentWithText).never
     @manager.update_karidoc(['Binding#clone'])
   end
 end
@@ -284,7 +280,7 @@ describe "A filled Manager" do
   end
   
   it "should forward search queries to the SearchKit::Index instance" do
-    @manager.path_search_index.expects(:search).with('a pot of gold')
+    @manager.search_index.expects(:search).with('a pot of gold')
     @manager.search('a pot of gold')
   end
   
