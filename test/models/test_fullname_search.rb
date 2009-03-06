@@ -12,6 +12,18 @@ describe "FullnameSearch" do
     FullnameSearch.search('actba', DESCRIPTIONS).should == [
       ['ActiveRecord::Base', "<strong>Act</strong>iveRecord::<strong>Ba</strong>se"]
     ]
+    FullnameSearch.search('ier', DESCRIPTIONS).should == [
+      ['ActiveRecord::Associations', 'Act<strong>i</strong>v<strong>eR</strong>ecord::Associations'],
+      ['ActiveRecord::Base', 'Act<strong>i</strong>v<strong>eR</strong>ecord::Base'],
+      ['Integer', '<strong>I</strong>nt<strong>e</strong>ge']
+    ]
+  end
+  
+  it "should order matches by alphabetic order" do
+    FullnameSearch.search('a', DESCRIPTIONS).should == [
+      ['ActiveRecord::Associations', "<strong>A</strong>ctiveRecord::Associations"],
+      ['ActiveRecord::Base', "<strong>A</strong>ctiveRecord::Base"]
+    ]
   end
   
   it "should match fullnames" do

@@ -6,7 +6,7 @@ module FullnameSearch
         matches << m
       end
     end
-    matches
+    matches.sort
   end
   
   def self.match(query, fullname)
@@ -24,14 +24,14 @@ module FullnameSearch
     
     while(!eoq)
       if fullname_downcased[fullname_cursor] == query_downcased[query_cursor]
-        if !in_marked
+        if !in_marked and !accumulator.empty?
           marked_fullname << accumulator
           accumulator = ''
         end
         in_marked = true
         query_cursor += 1
       else
-        if in_marked
+        if in_marked and !accumulator.empty?
           marked_fullname << '<strong>'
           marked_fullname << accumulator
           marked_fullname << '</strong>'
