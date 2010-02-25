@@ -31,8 +31,6 @@ class ResultsTableView < OSX::NSTableView
     scrollToRow(selectedRow + 1)
   end
   
-  private
-  
   def scrollToRow(row, select = true)
     unless row < 0 or row == numberOfRows
       selectRow_byExtendingSelection(row, false) if select

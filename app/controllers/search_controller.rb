@@ -20,7 +20,7 @@ class SearchController < Rucola::RCController
     @delegate.searchControllerWillStartSearching
     @results_array_controller.search(sender)
     @delegate.searchControllerFinishedSearching
-    @results_table_view.scrollToRow(0, false)
+    @results_table_view.scrollToRow(0)
   end
   
   def rowDoubleClicked(tableview)
