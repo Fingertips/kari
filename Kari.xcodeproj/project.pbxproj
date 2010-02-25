@@ -32,9 +32,6 @@
 		51E0DC1C0D80411600C898A2 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 51E0DBCA0D80411600C898A2 /* lib */; };
 		51F2708E0F27850C003D4A54 /* MGRecessedPopUpButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 51F270890F27850C003D4A54 /* MGRecessedPopUpButtonCell.h */; };
 		51F2708F0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F2708A0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m */; };
-		51F270900F27850C003D4A54 /* MGScopeBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 51F2708B0F27850C003D4A54 /* MGScopeBar.h */; };
-		51F270910F27850C003D4A54 /* MGScopeBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F2708C0F27850C003D4A54 /* MGScopeBar.m */; };
-		51F270920F27850C003D4A54 /* MGScopeBarDelegateProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 51F2708D0F27850C003D4A54 /* MGScopeBarDelegateProtocol.h */; };
 		638CCA7D0DF06404008C4936 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = 638CCA7C0DF06404008C4936 /* BridgeSupport */; };
 		6392E19B0F0278AC00000DEE /* bin in Resources */ = {isa = PBXBuildFile; fileRef = 6392E1970F0278AC00000DEE /* bin */; };
 		63F1F8711136B48200B2330F /* FilteringArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F1F86F1136B48200B2330F /* FilteringArrayController.h */; };
@@ -286,8 +283,6 @@
 				51CAD5FE0EF02CC7008F5EDF /* match.h in Headers */,
 				5130B8390EFAB20000944BE5 /* MGViewAnimation.h in Headers */,
 				51F2708E0F27850C003D4A54 /* MGRecessedPopUpButtonCell.h in Headers */,
-				51F270900F27850C003D4A54 /* MGScopeBar.h in Headers */,
-				51F270920F27850C003D4A54 /* MGScopeBarDelegateProtocol.h in Headers */,
 				63F1F8711136B48200B2330F /* FilteringArrayController.h in Headers */,
 				63F1F8771136B49600B2330F /* ScoredRubyName.h in Headers */,
 			);
@@ -368,7 +363,6 @@
 				51CAD5FF0EF02CC7008F5EDF /* match.m in Sources */,
 				5130B83A0EFAB20000944BE5 /* MGViewAnimation.m in Sources */,
 				51F2708F0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m in Sources */,
-				51F270910F27850C003D4A54 /* MGScopeBar.m in Sources */,
 				63F1F8721136B48200B2330F /* FilteringArrayController.m in Sources */,
 				63F1F8781136B49600B2330F /* ScoredRubyName.m in Sources */,
 			);

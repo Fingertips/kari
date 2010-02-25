@@ -1,6 +1,5 @@
 class ApplicationController < Rucola::RCController
   STATUS_BAR_HEIGHT = 20
-  FILTER_BAR_HEIGHT = 25
   
   def topViewOfSplitView
     @topViewOfSplitView ||= @splitView.subviews.first
@@ -85,7 +84,7 @@ class ApplicationController < Rucola::RCController
   
   def effective_contentView
     frame = @window.contentView.frame.dup
-    frame.height -= (STATUS_BAR_HEIGHT + FILTER_BAR_HEIGHT)
+    frame.height -= STATUS_BAR_HEIGHT
     frame.y += STATUS_BAR_HEIGHT
     frame
   end

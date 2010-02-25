@@ -5,7 +5,6 @@ class ApplicationController < Rucola::RCController
   
   concerned_with 'split_view'
   concerned_with 'web_view'
-  concerned_with 'scope_bar'
   concerned_with 'search'
   
   ib_outlet :window
@@ -14,14 +13,11 @@ class ApplicationController < Rucola::RCController
   ib_outlet :searchController
   ib_outlet :searchProgressIndicator
   ib_outlet :searchTextField
-  ib_outlet :bookmarkController
   ib_outlet :resultsScrollView
-  ib_outlet :addBookmarkToolbarButton
   ib_outlet :classBrowser
   ib_outlet :classTreeController
   ib_outlet :splitView
   ib_outlet :toggleClassBrowserVisbilityButton
-  ib_outlet :scopeBar
   
   kvc_accessor :class_tree
   kvc_accessor :processing
@@ -35,8 +31,6 @@ class ApplicationController < Rucola::RCController
   def awakeFromNib
     # First things first, make it look as it should!
     setup_splitView!
-    
-    setup_scopeBar!
     
     # Register notifications
     OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
@@ -74,7 +68,6 @@ class ApplicationController < Rucola::RCController
     @splitView.delegate = self
     
     @window.delegate = self
-    @bookmarkController.delegate = self
     @searchController.delegate = self
     @webViewController.delegate = self
     @watcher.delegate = self
@@ -141,10 +134,6 @@ class ApplicationController < Rucola::RCController
   
   def windowWillClose(notification)
     OSX::NSApplication.sharedApplication.terminate(self)
-  end
-  
-  def bookmarkSelected(bookmark)
-    @webViewController.load_file bookmark.url
   end
   
   def changedSearchFilter(sender)

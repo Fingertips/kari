@@ -1,10 +1,5 @@
 class Preferences
   class General < Namespace
-    BOOKMARKS = %w{ Object String Array Hash Numeric }.map do |title|
-      Bookmark.createWithHash({ 'title' => title, 'url' => File.join(Manager.current_filepath, "#{title}.karidoc") }).to_hash
-    end
-    
-    defaults_accessor :bookmarks, BOOKMARKS
     defaults_accessor :last_fs_event_id
   end
   

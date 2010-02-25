@@ -1,7 +1,6 @@
 class ApplicationController < Rucola::RCController
   def searchControllerWillStartSearching
     self.search_mode = true
-    @addBookmarkToolbarButton.enabled = false
     @searchProgressIndicator.startAnimation(self)
   end
   
