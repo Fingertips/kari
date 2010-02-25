@@ -13,7 +13,7 @@
   Boolean more = true;
   CFIndex pos;
   
-  NSMutableArray *matches = [[[NSMutableArray alloc] init] autorelease];
+  NSMutableArray *matches = [[NSMutableArray alloc] init];
   
   SKSearchRef search = SKSearchCreate(_index, (CFStringRef) query, kSKSearchOptionDefault);
   [(id) search autorelease];
@@ -35,7 +35,7 @@
     }
   }
   
-  return matches;
+  return [matches autorelease];
 }
 
 @end
