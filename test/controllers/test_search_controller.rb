@@ -20,7 +20,6 @@ describe "A SearchController, when awaking from nib" do
   
   it "should assign itself as the target for the double click action of the search results table view" do
     results_table_view.target.should == controller
-    results_table_view.doubleAction.should == 'rowDoubleClicked:'
   end
   
   it "should assign the search results table view as the key delegate for the search text field, delegating up/down arrow events" do

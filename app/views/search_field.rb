@@ -4,8 +4,7 @@ class SearchField < OSX::NSSearchField
   attr_accessor :keyDelegate
   
   def textView_doCommandBySelector(textView, selector)
-    #p selector
-    if @keyDelegate.wantsForwardedKeyEvents? and FORWARD_SELECTORS.include? selector
+    if @keyDelegate.wantsForwardedKeyEvents? and FORWARD_SELECTORS.include?(selector)
       @keyDelegate.tryToPerform_with(selector, textView)
     else
       tryToPerform_with(selector, textView)

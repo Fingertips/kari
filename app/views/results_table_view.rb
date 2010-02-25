@@ -20,7 +20,7 @@ class ResultsTableView < OSX::NSTableView
   # handlers for keys that are being pressed in the search field
   
   def insertNewline(sender)
-    target.performSelector_withObject(doubleAction, self) if !numberOfRows.zero? and target.respondsToSelector(doubleAction)
+    target.rowDoubleClicked(self) if !numberOfRows.zero?
   end
   
   def moveUp(sender)
@@ -45,12 +45,7 @@ class ResultCell < OSX::NSCell
   LEFT_MARGIN = 10
   
   def drawInteriorWithFrame_inView(frame, view)
-    attributes = { OSX::NSFontAttributeName => OSX::NSFont.fontWithName_size('Baskerville', 16) }
-    
-    objectValue.drawAtPoint_withAttributes(
-      OSX::NSMakePoint(frame.origin.x + LEFT_MARGIN, frame.origin.y - 2),
-      attributes
-    )
+    objectValue.drawAtPoint(OSX::NSMakePoint(frame.origin.x + LEFT_MARGIN, frame.origin.y - 2))
   end
   
   def drawsBackground

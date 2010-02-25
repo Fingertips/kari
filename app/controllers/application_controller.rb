@@ -53,6 +53,14 @@ class ApplicationController < Rucola::RCController
     @watcher = Watcher.alloc.init
     @watcher.start
     
+    @searchController.results = Manager.instance.descriptions.map do |name, definitions|
+      OSX::ScoredRubyName.alloc.initWithName_karidocFilename_query(
+        name,
+        RubyName.karidoc_filename(Manager.current_filepath, name),
+        nil
+      )
+    end
+    
     OSX::NSTimer.scheduledTimerWithTimeInterval_target_selector_userInfo_repeats(5, @watcher, 'signal:', nil, true)
     
     @classTreeController.objc_send(

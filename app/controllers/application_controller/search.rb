@@ -9,8 +9,8 @@ class ApplicationController < Rucola::RCController
     @searchProgressIndicator.stopAnimation(self)
   end
   
-  def searchController_selectedFile(sender, url)
-    @webViewController.load_url(url)
+  def searchController_selectedFile(sender, karidocFilename)
+    @webViewController.load_file(karidocFilename)
     @webViewController.add_search_back_forward_item(@searchTextField.stringValue)
     self.search_mode = false
     @window.makeFirstResponder(@webView)

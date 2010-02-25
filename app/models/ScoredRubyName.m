@@ -9,11 +9,12 @@
 
 @synthesize nameWithMarkup, score;
 
--(id)initWithName:(NSString *)aName query:(NSString *)aQuery;
+-(id)initWithName:(NSString *)aName karidocFilename:(NSString *)aFilename query:(NSString *)aQuery
 {
   if ([super init])
   {
     [self setName:aName];
+    [self setKaridocFilename:aFilename];
     [self setQuery:aQuery];
     return self;
   }
@@ -41,6 +42,17 @@
 -(NSString *)name
 {
   return name;
+}
+
+-(void)setKaridocFilename:(NSString *)aFilename
+{
+  [karidocFilename autorelease];
+  karidocFilename = [aFilename copy];
+}
+
+-(NSString *)karidocFilename
+{
+  return karidocFilename;
 }
 
 -(NSAttributedString *)createAttributedString:(NSString *)aString
@@ -103,6 +115,7 @@
 -(void)dealloc
 {
   [name release];
+  [karidocFilename release];
   [query release];
   [nameWithMarkup release];
 }

@@ -1,14 +1,15 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 describe "ScoredRubyName" do
-  it "should instantiate with name and query" do
-    name = OSX::ScoredRubyName.alloc.initWithName_query("ActiveRecord::Base", 'ast')
+  it "should instantiate with name, karidocFilename, and query" do
+    name = OSX::ScoredRubyName.alloc.initWithName_karidocFilename_query("ActiveRecord::Base", '/path/to/karidoc', 'ast')
     name.name.should == 'ActiveRecord::Base'
+    name.karidocFilename.should == '/path/to/karidoc'
     name.query.should == 'ast'
   end
   
   it "should compute a score for the match between the name and the query" do
-    name = OSX::ScoredRubyName.alloc.initWithName_query("ActiveRecord::Base", nil)
+    name = OSX::ScoredRubyName.alloc.initWithName_karidocFilename_query("ActiveRecord::Base", '', nil)
     name.score.should == 0
     
     [
@@ -24,7 +25,7 @@ describe "ScoredRubyName" do
   end
   
   it "should return the name marked with its match" do
-    name = OSX::ScoredRubyName.alloc.initWithName_query("ActiveRecord::Base", 'ase')
+    name = OSX::ScoredRubyName.alloc.initWithName_karidocFilename_query("ActiveRecord::Base", '', 'ase')
     markedString = name.nameWithMarkup
     markedString.string.should == "ActiveRecord::Base"
     

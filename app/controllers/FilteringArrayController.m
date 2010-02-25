@@ -1,4 +1,4 @@
-#import "filtering_array_controller.h"
+#import "FilteringArrayController.h"
 #import <Foundation/NSKeyValueObserving.h>
 
 @implementation FilteringArrayController
@@ -6,7 +6,7 @@
 - (void)search:(id)sender
 {
     [self setSearchString:[sender stringValue]];
-    [self rearrangeObjects];    
+    [self rearrangeObjects];
 }
 
 - (NSArray *)arrangeObjects:(NSArray *)objects
@@ -17,7 +17,6 @@
   }
   
   NSMutableArray *matchedObjects = [NSMutableArray arrayWithCapacity:[objects count]];
-  NSString *lowerSearch = [searchString lowercaseString];
   NSEnumerator *oEnum = [objects objectEnumerator];
   id item;
   
