@@ -729,7 +729,7 @@
 					<characters key="NS.bytes">View</characters>
 				</object>
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
-				<string key="NSWindowContentMinSize">{250, 134}</string>
+				<string key="NSWindowContentMinSize">{430, 140}</string>
 				<object class="NSView" key="NSWindowView" id="869287963">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -756,7 +756,7 @@
 													<bool key="EncodedWithXMLCoder">YES</bool>
 													<object class="NSCustomView" id="3588758">
 														<reference key="NSNextResponder" ref="541196921"/>
-														<int key="NSvFlags">290</int>
+														<int key="NSvFlags">306</int>
 														<object class="NSMutableArray" key="NSSubviews">
 															<bool key="EncodedWithXMLCoder">YES</bool>
 															<object class="NSBrowser" id="512834108">
@@ -888,7 +888,7 @@
 															<object class="NSTableView" id="617442522">
 																<reference key="NSNextResponder" ref="68079917"/>
 																<int key="NSvFlags">256</int>
-																<string key="NSFrameSize">{618, 478}</string>
+																<string key="NSFrameSize">{620, 480}</string>
 																<reference key="NSSuperview" ref="68079917"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="_NSCornerView" key="NSCornerView">
@@ -899,7 +899,7 @@
 																<object class="NSMutableArray" key="NSTableColumns">
 																	<bool key="EncodedWithXMLCoder">YES</bool>
 																	<object class="NSTableColumn" id="582651728">
-																		<double key="NSWidth">615</double>
+																		<double key="NSWidth">617</double>
 																		<double key="NSMinWidth">40</double>
 																		<double key="NSMaxWidth">1000</double>
 																		<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -976,7 +976,7 @@
 																<int key="NSTableViewDraggingDestinationStyle">0</int>
 															</object>
 														</object>
-														<string key="NSFrame">{{1, 1}, {618, 478}}</string>
+														<string key="NSFrameSize">{620, 480}</string>
 														<reference key="NSSuperview" ref="652670063"/>
 														<reference key="NSNextKeyView" ref="617442522"/>
 														<reference key="NSDocView" ref="617442522"/>
@@ -1006,7 +1006,7 @@
 												<string key="NSFrameSize">{620, 480}</string>
 												<reference key="NSSuperview" ref="13892935"/>
 												<reference key="NSNextKeyView" ref="68079917"/>
-												<int key="NSsFlags">562</int>
+												<int key="NSsFlags">560</int>
 												<reference key="NSVScroller" ref="1000260444"/>
 												<reference key="NSHScroller" ref="735465219"/>
 												<reference key="NSContentView" ref="68079917"/>
@@ -1114,7 +1114,7 @@
 					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
-				<string key="NSMinSize">{250, 156}</string>
+				<string key="NSMinSize">{430, 162}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSFrameAutosaveName">MainWindow</string>
 			</object>
@@ -3247,16 +3247,16 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{76, 569}, {55, 25}}</string>
-					<string>{{331, 429}, {620, 500}}</string>
+					<string>{{384, 430}, {620, 500}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{331, 429}, {620, 500}}</string>
+					<string>{{384, 430}, {620, 500}}</string>
 					<integer value="1"/>
 					<integer value="1"/>
 					<string>{{843, 639}, {619, 485}}</string>
 					<boolean value="NO"/>
 					<integer value="1"/>
 					<string>{619, 500}</string>
-					<string>{250, 134}</string>
+					<string>{430, 140}</string>
 					<string>{{170, 310}, {233, 25}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
