@@ -16,8 +16,8 @@ describe "Watcher" do
     Watcher.basePaths([]).should == []
     Watcher.basePaths(['/Library/Ruby']).should == ['/Library/Ruby']
     Watcher.basePaths(['/Library/Ruby/1', '/Library/Ruby/2']).should == ['/Library/Ruby']
-    Watcher.basePaths(['/System/Frameworks/Ruby/Current/Doc', '/Library/Ruby/1', '/Library/Ruby/2']).should == ['/Library/Ruby', '/System/Frameworks/Ruby/Current/Doc']
-    Watcher.basePaths(['/', '/Library/Ruby/1', '/Library/Ruby/2', '/tmp/something']).should == ["/Library/Ruby", "/tmp/something"]
+    Watcher.basePaths(['/System/Frameworks/Ruby/Current/Doc', '/Library/Ruby/1', '/Library/Ruby/2']).should == ['/System/Frameworks/Ruby/Current/Doc', '/Library/Ruby', ]
+    Watcher.basePaths(['/', '/Library/Ruby/1', '/Library/Ruby/2', '/tmp/something']).should == ["/tmp/something", "/Library/Ruby"]
   end
   
   it "should empty the queue during init" do

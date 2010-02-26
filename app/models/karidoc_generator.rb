@@ -3,10 +3,17 @@ require 'fileutils'
 require 'rdoc/ri/ri_descriptions'
 require 'rdoc/markup/simple_markup/to_flow'
 
+# Include some extentions to RI::Description so it's easier to work with the information
 module RI
   class Description
     include DescriptionExtensions
   end
+end
+
+# Alias some classes and modules for newer versions of RDoc RI YAML files
+module RDoc
+  module RI; include ::RI; end
+  module Markup; include ::SM; end
 end
 
 # Class that generates Karidoc files from the RI description
@@ -26,8 +33,13 @@ class KaridocGenerator
         description = YAML.load_file(file)
         description.filename = file
         description
-      rescue Errno::ENOENT
-        nil
+      rescue Errno::ENOENT => e
+        log.debug("Couldn't load YAML file with path `#{file}' (#{e.message})")
+      rescue TypeError => e
+        log.debug("Couldn't parse YAML file with path `#{file}' (#{e.message})")
+      rescue NoMethodError => e
+        log.debug("Couldn't use description for the YAML file with path `#{file}' (#{e.message});")
+        log.debug("- #{description.inspect}")
       end
     end.compact
     

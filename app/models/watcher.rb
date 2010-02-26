@@ -33,7 +33,7 @@ class Watcher < OSX::NSObject
   end
   
   def start
-    log.debug("Watching FSEvents since #{lastEventId}")
+    log.debug("Watching FSEvents since #{lastEventId} on #{watchPaths.inspect}")
     @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
       handleEvents(events)
     end

@@ -62,9 +62,9 @@
 }
 
 -(void)update
-{  
-  NSFont *normalFont = [NSFont fontWithName:@"Baskerville" size:16];
-  NSFont *boldFont = [NSFont fontWithName:@"Baskerville Bold" size:16];
+{
+  NSFont *normalFont = [NSFont systemFontOfSize:[NSFont systemFontSize]];
+  NSFont *boldFont = [NSFont boldSystemFontOfSize:[NSFont systemFontSize]];
   
   NSMutableAttributedString *newNameWithMarkup = [[NSMutableAttributedString alloc] initWithString:name];
   [newNameWithMarkup addAttribute:NSFontAttributeName

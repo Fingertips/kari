@@ -15,7 +15,8 @@ Rucola::Initializer.run do |config|
   # FIXME: Hack to get around the fact that we don't use rubygems in release.
   module Gem
     def self.path
-      ["/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8", "/Library/Ruby/Gems/1.8"]
+      homedir = ENV['HOME'] || ENV['USERPROFILE'] || ENV['HOMEPATH']
+      ["/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8", "/Library/Ruby/Gems/1.8/gems", File.expand_path('.gem/ruby/1.8', homedir)]
     end
   end
 end
