@@ -56,6 +56,12 @@ describe "A HashTree in general" do
   it "should be equal to itself" do
     @tree.should == @tree
   end
+  
+  it "should return a list of indices to a certain path" do
+    @tree.indices_for_path(%w(Binding clone)).should == [0, 0]
+    @tree.indices_for_path(%w(Binding dup)).should == [0, 1]
+    @tree.indices_for_path(%w(Kernel Fun dup)).should == [1, 0, 0]
+  end
 end
 
 describe "An empty HashTree" do

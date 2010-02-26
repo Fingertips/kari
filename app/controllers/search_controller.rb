@@ -4,7 +4,8 @@ class SearchController < Rucola::RCController
   
   ib_outlets :results_array_controller,
     :results_table_view,
-    :search_field
+    :search_field,
+    :class_tree_controller
   
   def after_init
     @results = OSX::NSMutableArray.alloc.init
@@ -24,7 +25,8 @@ class SearchController < Rucola::RCController
   end
   
   def rowDoubleClicked(tableview)
-    @delegate.searchController_selectedFile(self, @results_array_controller.arrangedObjects[tableview.selectedRow].karidocFilename)
-    @class_tree_controller.setSelectionIndexPath(currentPath)
+    scoredKariName = @results_array_controller.arrangedObjects[tableview.selectedRow]
+    @delegate.searchController_selectedFile(self, scoredKariName.karidocFilename)
+    @class_tree_controller.setSelectionRubyName(scoredKariName.name)
   end
 end

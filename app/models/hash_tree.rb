@@ -53,4 +53,17 @@ class HashTree
   def ==(other)
     @tree == other.tree
   end
+  
+  def indices_for_path(path, at=nil)
+    at ||= @tree
+    head = path.first
+    rest = path[1..-1]
+    index = at[:children].keys.sort.index(head)
+    
+    unless rest.empty?
+      [index, *indices_for_path(rest, at[:children][head])]
+    else
+      [index]
+    end
+  end
 end
