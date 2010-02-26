@@ -1,4 +1,5 @@
 #import <Cocoa/Cocoa.h>
+#import <math.h>
 
 @interface ScoredRubyName : NSObject
 {

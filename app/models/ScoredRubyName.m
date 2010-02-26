@@ -98,7 +98,7 @@
         
         nameCursor += matchScore;
         queryCursor += matchScore;
-        newScore += matchScore;
+        newScore += pow(matchScore, 2);
       }
       
       // When we've reached the end of the name or query we're done
