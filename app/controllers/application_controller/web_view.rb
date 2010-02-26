@@ -1,8 +1,4 @@
 class ApplicationController < Rucola::RCController
-  def webViewFinishedLoading(aNotification)
-    self.search_mode = false
-  end
-  
   def webView_didSelectSearchQuery(webView, query)
     @searchTextField.stringValue = query
     @searchController.search(@searchTextField)

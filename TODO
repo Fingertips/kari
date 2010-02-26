@@ -6,9 +6,10 @@ ELOY
 MANFRED
 
 - Update the filtering array controller objects when there is a new index
+- Update the active item in the class browser when a link is clicked
 - Refactor tests, throw away unused crap and make them run
-- Think about a way to solve the uppercased instance method problem in the RubyName optimization
 - Take out Search Kit
+- Think about a way to solve the uppercased instance method problem in the RubyName optimization
 
 ANYONE
 

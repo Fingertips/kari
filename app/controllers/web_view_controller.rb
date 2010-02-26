@@ -25,7 +25,6 @@ class WebViewController < Rucola::RCController
   def webViewFinishedLoading(aNotification)
     @backForwardButton.setEnabled_forSegment(can_go_back?, BACK_BUTTON)
     @backForwardButton.setEnabled_forSegment(can_go_forward?, FORWARD_BUTTON)
-    @delegate.webViewFinishedLoading(aNotification)
   end
   
   def webView_decidePolicyForNavigationAction_request_frame_decisionListener(webView, information, request, frame, listener)
