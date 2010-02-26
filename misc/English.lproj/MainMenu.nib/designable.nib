@@ -21,11 +21,11 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="767"/>
-			<integer value="29"/>
-			<integer value="703"/>
 			<integer value="439"/>
+			<integer value="703"/>
 			<integer value="214"/>
+			<integer value="29"/>
+			<integer value="770"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -745,7 +745,7 @@
 								<object class="NSTabViewItem" id="957414017">
 									<string key="NSIdentifier">1</string>
 									<object class="NSView" key="NSView" id="286077859">
-										<reference key="NSNextResponder" ref="378012704"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">274</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -855,7 +855,6 @@
 											</object>
 										</object>
 										<string key="NSFrameSize">{620, 480}</string>
-										<reference key="NSSuperview" ref="378012704"/>
 									</object>
 									<string key="NSLabel">SplitView</string>
 									<object class="NSColor" key="NSColor" id="667085848">
@@ -872,7 +871,7 @@
 								<object class="NSTabViewItem" id="99741641">
 									<string key="NSIdentifier">2</string>
 									<object class="NSView" key="NSView" id="13892935">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="378012704"/>
 										<int key="NSvFlags">274</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1014,21 +1013,22 @@
 												<bytes key="NSScrollAmts">QSAAAEEgAABBmAAAQZgAAA</bytes>
 											</object>
 										</object>
-										<string key="NSFrame">{{10, 33}, {157, 78}}</string>
+										<string key="NSFrameSize">{620, 480}</string>
+										<reference key="NSSuperview" ref="378012704"/>
 									</object>
 									<string key="NSLabel">ResultsView</string>
 									<reference key="NSColor" ref="667085848"/>
 									<reference key="NSTabView" ref="378012704"/>
 								</object>
 							</object>
-							<reference key="NSSelectedTabViewItem" ref="957414017"/>
+							<reference key="NSSelectedTabViewItem" ref="99741641"/>
 							<reference key="NSFont" ref="887103348"/>
 							<int key="NSTvFlags">6</int>
 							<bool key="NSAllowTruncatedLabels">YES</bool>
 							<bool key="NSDrawsBackground">YES</bool>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference ref="286077859"/>
+								<reference ref="13892935"/>
 							</object>
 						</object>
 						<object class="NSCustomView" id="764101758">
@@ -2064,6 +2064,22 @@
 						<reference key="destination" ref="378012704"/>
 					</object>
 					<int key="connectionID">772</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">selectedIndex: search_mode</string>
+						<reference key="source" ref="378012704"/>
+						<reference key="destination" ref="231439656"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="378012704"/>
+							<reference key="NSDestination" ref="231439656"/>
+							<string key="NSLabel">selectedIndex: search_mode</string>
+							<string key="NSBinding">selectedIndex</string>
+							<string key="NSKeyPath">search_mode</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">775</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3389,7 +3405,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">772</int>
+			<int key="maxID">775</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
