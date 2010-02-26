@@ -3,9 +3,10 @@ class ApplicationController < Rucola::RCController
     require File.expand_path("../application_controller/#{name}", __FILE__)
   end
   
+  concerned_with 'class_tree'
+  concerned_with 'search'
   concerned_with 'split_view'
   concerned_with 'web_view'
-  concerned_with 'search'
   
   ib_outlet :classBrowser
   ib_outlet :classTreeController
@@ -32,6 +33,8 @@ class ApplicationController < Rucola::RCController
   def awakeFromNib
     # First things first, make it look as it should!
     setup_splitView!
+    setup_classTree!
+    setup_search!
     
     # Register notifications
     OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
@@ -44,26 +47,11 @@ class ApplicationController < Rucola::RCController
     Manager.bootstrap if Manager.first_run?
     
     @processing = 0
-    self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
+    
     @watcher = Watcher.alloc.init
     @watcher.start
     
-    @searchController.results = Manager.instance.descriptions.map do |name, definitions|
-      OSX::ScoredRubyName.alloc.initWithName_karidocFilename_query(
-        name,
-        RubyName.karidoc_filename(Manager.current_filepath, name),
-        nil
-      )
-    end
-    
     OSX::NSTimer.scheduledTimerWithTimeInterval_target_selector_userInfo_repeats(5, @watcher, 'signal:', nil, true)
-    
-    @classTreeController.objc_send(
-      :addObserver, self,
-       :forKeyPath, 'selectionIndexPaths',
-          :options, OSX::NSKeyValueObservingOptionNew,
-          :context, nil
-    )
     
     # Lets wrap it up!
     @splitView.delegate = self
