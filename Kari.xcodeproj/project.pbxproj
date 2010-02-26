@@ -96,9 +96,6 @@
 		51E0DBCA0D80411600C898A2 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
 		51F270890F27850C003D4A54 /* MGRecessedPopUpButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGRecessedPopUpButtonCell.h; path = vendor_objc/MGRecessedPopUpButtonCell.h; sourceTree = "<group>"; };
 		51F2708A0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGRecessedPopUpButtonCell.m; path = vendor_objc/MGRecessedPopUpButtonCell.m; sourceTree = "<group>"; };
-		51F2708B0F27850C003D4A54 /* MGScopeBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGScopeBar.h; path = vendor_objc/MGScopeBar.h; sourceTree = "<group>"; };
-		51F2708C0F27850C003D4A54 /* MGScopeBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGScopeBar.m; path = vendor_objc/MGScopeBar.m; sourceTree = "<group>"; };
-		51F2708D0F27850C003D4A54 /* MGScopeBarDelegateProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGScopeBarDelegateProtocol.h; path = vendor_objc/MGScopeBarDelegateProtocol.h; sourceTree = "<group>"; };
 		638CCA7C0DF06404008C4936 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BridgeSupport; path = misc/BridgeSupport; sourceTree = "<group>"; };
 		6392E1970F0278AC00000DEE /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
 		63F1F86F1136B48200B2330F /* FilteringArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FilteringArrayController.h; path = app/controllers/FilteringArrayController.h; sourceTree = "<group>"; };
@@ -195,9 +192,6 @@
 				51CAD5FD0EF02CC7008F5EDF /* match.m */,
 				51F270890F27850C003D4A54 /* MGRecessedPopUpButtonCell.h */,
 				51F2708A0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m */,
-				51F2708B0F27850C003D4A54 /* MGScopeBar.h */,
-				51F2708C0F27850C003D4A54 /* MGScopeBar.m */,
-				51F2708D0F27850C003D4A54 /* MGScopeBarDelegateProtocol.h */,
 				5130B8370EFAB20000944BE5 /* MGViewAnimation.h */,
 				5130B8380EFAB20000944BE5 /* MGViewAnimation.m */,
 				638CCA7C0DF06404008C4936 /* BridgeSupport */,
