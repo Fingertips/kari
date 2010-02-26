@@ -21,11 +21,11 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="439"/>
-			<integer value="703"/>
-			<integer value="214"/>
 			<integer value="29"/>
+			<integer value="214"/>
 			<integer value="770"/>
+			<integer value="703"/>
+			<integer value="439"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -777,7 +777,7 @@
 																</object>
 																<string key="NSPathSeparator">/</string>
 																<int key="NSMinColumnWidth">150</int>
-																<int key="NSNumberOfVisibleColumns">4</int>
+																<int key="NSNumberOfVisibleColumns">1</int>
 																<int key="NSColumnResizingType">2</int>
 																<double key="NSPreferedColumnWidth">200</double>
 																<bool key="NSAllowsTypeSelect">YES</bool>
@@ -2080,6 +2080,26 @@
 						</object>
 					</object>
 					<int key="connectionID">775</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: search_mode</string>
+						<reference key="source" ref="468252614"/>
+						<reference key="destination" ref="231439656"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="468252614"/>
+							<reference key="NSDestination" ref="231439656"/>
+							<string key="NSLabel">enabled: search_mode</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">search_mode</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSNegateBoolean</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">779</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3405,7 +3425,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">775</int>
+			<int key="maxID">779</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
