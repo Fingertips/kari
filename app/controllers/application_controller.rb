@@ -7,16 +7,17 @@ class ApplicationController < Rucola::RCController
   concerned_with 'web_view'
   concerned_with 'search'
   
-  ib_outlet :window
-  ib_outlet :webView
-  ib_outlet :webViewController
-  ib_outlet :searchController
-  ib_outlet :searchProgressIndicator
-  ib_outlet :searchTextField
-  ib_outlet :resultsScrollView
   ib_outlet :classBrowser
   ib_outlet :classTreeController
+  ib_outlet :webView
+  ib_outlet :webViewController
+  ib_outlet :window
+  ib_outlet :resultsScrollView
+  ib_outlet :searchController
+  ib_outlet :searchTextField
+  ib_outlet :searchProgressIndicator
   ib_outlet :splitView
+  ib_outlet :tabView
   ib_outlet :toggleClassBrowserVisbilityButton
   
   kvc_accessor :class_tree
