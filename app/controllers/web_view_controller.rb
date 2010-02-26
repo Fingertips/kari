@@ -85,19 +85,19 @@ class WebViewController < Rucola::RCController
   end
   
   def can_go_back?
-    @webview.canGoBack == 1
+    [1, true].include?(@webview.canGoBack)
   end
   
   def can_go_forward?
-    @webview.canGoForward == 1
+    [1, true].include?(@webview.canGoForward)
   end
   
   def can_make_text_smaller?
-    @webview.canMakeTextSmaller == 1
+    [1, true].include?(@webview.canMakeTextSmaller)
   end
   
   def can_make_text_larger?
-    @webview.canMakeTextLarger == 1
+    [1, true].include?(@webview.canMakeTextLarger)
   end
   
   # helpers
@@ -137,7 +137,7 @@ class WebViewController < Rucola::RCController
   def validateMenuItem(item)
     case item.action
     when 'fontLarger:' then can_make_text_larger?
-    when 'fontSmaller:' then can_make_text_smaller?
+    when 'fontSmaller:' then can_make_text_smaller? 
     else
       true
     end
