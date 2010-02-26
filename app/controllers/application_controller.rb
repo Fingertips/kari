@@ -103,6 +103,8 @@ class ApplicationController < Rucola::RCController
       self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
       @classTreeController.setSelectionIndexPath(currentPath)
       
+      @searchController.setResultsForDescriptions(Manager.instance.descriptions)
+      
       Thread.start { Manager.cleanup }
     end
   end

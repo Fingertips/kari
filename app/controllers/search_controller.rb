@@ -29,4 +29,14 @@ class SearchController < Rucola::RCController
     @delegate.searchController_selectedFile(self, scoredKariName.karidocFilename)
     @class_tree_controller.setSelectionRubyName(scoredKariName.name)
   end
+  
+  def setResultsForDescriptions(descriptions)
+    self.results = descriptions.map do |name, definitions|
+      OSX::ScoredRubyName.alloc.initWithName_karidocFilename_query(
+        name,
+        RubyName.karidoc_filename(Manager.current_filepath, name),
+        nil
+      )
+    end
+  end
 end
