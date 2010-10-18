@@ -1,4 +1,4 @@
-class ClassTreeNode < OSX::NSObject
+class ClassTreeNode
   class << self
     def classTreeNodesWithHash_path(hash, at)
       return [] if hash.empty?
@@ -13,7 +13,7 @@ class ClassTreeNode < OSX::NSObject
     end
   end
   
-  kvc_accessor :children, :title
+  attr_accessor :children, :title
   attr_reader :tree, :at
   
   def initWithHash_path(tree, at)

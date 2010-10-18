@@ -1,19 +1,9 @@
-== RubyCocoa
+== MacRuby
 
-During development I run the RubyCocoa edge code (at least r1983).
+Get the latest daily build for now.
 
-Get it:
-$ svn co https://rubycocoa.svn.sourceforge.net/svnroot/rubycocoa/trunk/src rubycocoa
+== Gems
 
-Build it (thread tests will fail! it needs a patched libruby):
-$ cd rubycocoa
-$ rake build
-
-Optionally build Ruby-style Cocoa API reference (needs Hpricot & latest reference update (july 2007), Xcode.app -> Prefs -> Doc. -> Update):
-$ rake doc
-
-Install it:
-$ sudo rake install
-
-Build/Run it:
-$ rake run
+$ macgem install bacon --format-executable
+$ macgem install mocha-macruby --format-executable
+$ macgem install mocha-on-bacon --format-executable

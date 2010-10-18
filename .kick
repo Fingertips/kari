@@ -1,0 +1,13 @@
+recipe :ruby
+
+Ruby.test_type  = 'spec'
+Ruby.runner_bin = 'macbacon --quiet'
+
+process do |files|
+  Ruby.run_tests(files.take_and_map do |file|
+    case file
+    when %r{^config/boot.rb$}
+      puts "[!] Run all functional tests"
+    end
+  end)
+end
