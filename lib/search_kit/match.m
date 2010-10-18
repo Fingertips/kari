@@ -36,5 +36,3 @@
 }
 
 @end
-
-void Init_Match() {}

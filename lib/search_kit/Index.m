@@ -39,5 +39,3 @@
 }
 
 @end
-
-void Init_Index() {}

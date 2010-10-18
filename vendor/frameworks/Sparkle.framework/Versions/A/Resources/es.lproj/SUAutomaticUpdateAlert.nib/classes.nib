@@ -5,11 +5,21 @@
 	<key>IBClasses</key>
 	<array>
 		<dict>
+			<key>CLASS</key>
+			<string>SUWindowController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSWindowController</string>
+		</dict>
+		<dict>
 			<key>ACTIONS</key>
 			<dict>
-				<key>relaunchLater</key>
+				<key>doNotInstall</key>
 				<string>id</string>
-				<key>relaunchNow</key>
+				<key>installLater</key>
+				<string>id</string>
+				<key>installNow</key>
 				<string>id</string>
 			</dict>
 			<key>CLASS</key>
@@ -17,7 +27,7 @@
 			<key>LANGUAGE</key>
 			<string>ObjC</string>
 			<key>SUPERCLASS</key>
-			<string>NSWindowController</string>
+			<string>SUWindowController</string>
 		</dict>
 		<dict>
 			<key>CLASS</key>
@@ -26,6 +36,12 @@
 			<string>ObjC</string>
 			<key>SUPERCLASS</key>
 			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>NSObject</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
 		</dict>
 	</array>
 	<key>IBVersion</key>

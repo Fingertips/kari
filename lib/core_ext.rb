@@ -1,3 +1,3 @@
-require File.expand_path('../core_ext/string', __FILE__)
-require File.expand_path('../core_ext/nil_class', __FILE__)
-require File.expand_path('../core_ext/array', __FILE__)
+%w(array kernel nil_class string).each do |name|
+  require File.expand_path("../core_ext/#{name}", __FILE__)
+end

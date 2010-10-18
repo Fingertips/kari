@@ -1,7 +1,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-PRIMARY_RI_PATH = File.join(TEST_ROOT, 'fixtures', 'normal', 'ri')
-ALTERNATE_RI_PATH = File.join(TEST_ROOT, 'fixtures', 'alternate', 'ri')
+PRIMARY_RI_PATH = File.join(TEST_ROOT_PATH, 'fixtures', 'normal', 'ri')
+ALTERNATE_RI_PATH = File.join(TEST_ROOT_PATH, 'fixtures', 'alternate', 'ri')
 
 describe "Manager" do
   include TemporaryApplicationSupportPath

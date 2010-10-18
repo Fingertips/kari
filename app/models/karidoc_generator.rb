@@ -1,19 +1,13 @@
 require 'yaml'
 require 'fileutils'
-require 'rdoc/ri/ri_descriptions'
-require 'rdoc/markup/simple_markup/to_flow'
+require 'rdoc/ri/descriptions'
+require 'rdoc/markup/to_flow'
 
 # Include some extentions to RI::Description so it's easier to work with the information
 module RI
   class Description
     include DescriptionExtensions
   end
-end
-
-# Alias some classes and modules for newer versions of RDoc RI YAML files
-module RDoc
-  module RI; include ::RI; end
-  module Markup; include ::SM; end
 end
 
 # Class that generates Karidoc files from the RI description
@@ -59,7 +53,7 @@ class KaridocGenerator
   def render(descriptions, options={})
     raise ArgumentError, "Please specify :relative_path_to_root in the option hash." if options[:relative_path_to_root].nil?
     
-    template_path = File.join(Rucola::RCApp.root_path, 'app', 'views', 'karidoc')
+    template_path = File.join(Kari.root_path, 'app', 'views', 'karidoc')
     template_file = File.join(template_path, 'layout.erb')
     
     partials = ['method', 'class', 'module'].inject({}) do |partials, t|
@@ -100,7 +94,7 @@ class KaridocGenerator
   def freeze_assets
     FileUtils.mkdir_p(karidoc_asset_path)
     ASSETS.each do |asset|
-      FileUtils.cp(File.join(Rucola::RCApp.root_path, 'app', 'assets', asset), File.join(karidoc_asset_path, asset))
+      FileUtils.cp(File.join(Kari.root_path, 'app', 'assets', asset), File.join(karidoc_asset_path, asset))
     end
   end
   

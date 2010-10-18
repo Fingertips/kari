@@ -1,8 +1,8 @@
 require 'find'
-require 'rdoc/ri/ri_paths'
+require 'rdoc/ri/paths'
 
 class Manager
-  SYSTEM_RI_PATH         = RI::Paths.path(true, false, false, false).first
+  SYSTEM_RI_PATH         = RDoc::RI::Paths.path(true, false, false, false).first
   RI_PATH_VERSION_REGEXP = /\/\w*-([\d\.]*)\//
   
   attr_accessor :descriptions, :namespace, :filepath, :search_index
@@ -199,15 +199,15 @@ class Manager
   end
   
   def self.generate_filepath(n)
-    File.join(Rucola::RCApp.application_support_path, "Karidoc.%d.%d" % [$$, n])
+    File.join(Kari.application_support_path, "Karidoc.%d.%d" % [$$, n])
   end
   
   def self.current_filepath
-    File.join(Rucola::RCApp.application_support_path, 'Karidoc.current')
+    File.join(Kari.application_support_path, 'Karidoc.current')
   end
   
   def self.default_karidoc_bundle_path
-    File.join(Rucola::RCApp.root_path, 'app', 'assets', 'Karidoc.default.tar.bz2')
+    File.join(Kari.root_path, 'app', 'assets', 'Karidoc.default.tar.bz2')
   end
   
   def self.initialize_from_disk
@@ -228,7 +228,7 @@ class Manager
   end
   
   def self.stale_karidocs
-    path = Rucola::RCApp.application_support_path
+    path = Kari.application_support_path
     (Dir.entries(path)-%w(. ..)).inject([]) do |stale, directory|
       if directory.start_with?('Karidoc') and !File.identical?(File.join(path, directory), current_filepath)
         stale << directory
@@ -250,10 +250,10 @@ class Manager
   end
   
   def self.bootstrap
-    FileUtils.mkdir_p(Rucola::RCApp.application_support_path)
-    log.debug "Unpacking #{default_karidoc_bundle_path} to #{Rucola::RCApp.application_support_path}"
-    system "tar -xvjf '#{default_karidoc_bundle_path}' -C '#{Rucola::RCApp.application_support_path}' &> /dev/null"
-    @instance = new(:filepath => File.join(Rucola::RCApp.application_support_path, 'Karidoc.default'))
+    FileUtils.mkdir_p(Kari.application_support_path)
+    log.debug "Unpacking #{default_karidoc_bundle_path} to #{Kari.application_support_path}"
+    system "tar -xvjf '#{default_karidoc_bundle_path}' -C '#{Kari.application_support_path}' &> /dev/null"
+    @instance = new(:filepath => File.join(Kari.application_support_path, 'Karidoc.default'))
     @instance.update_symlink
     @instance.read_from_disk
     @instance

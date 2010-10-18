@@ -5,7 +5,7 @@ require 'benchmark'
 class ManagerTestCache
   BASE_PATH_CACHE = File.join(Dir.tmpdir, 'kari-integration-tests', 'cache')
   BASE_PATH_TMP   = File.join(Dir.tmpdir, 'kari-integration-tests', 'tmp')
-  RI_BALL         = File.join(TEST_ROOT, 'fixtures', 'regression-ri.tar.bz2')
+  RI_BALL         = File.join(TEST_ROOT_PATH, 'fixtures', 'regression-ri.tar.bz2')
   
   class << self
     def base_path

@@ -6,6 +6,10 @@ Ruby.runner_bin = 'macbacon --quiet'
 process do |files|
   Ruby.run_tests(files.take_and_map do |file|
     case file
+    when %r{^app/(.*).rb$}
+      "spec/#{$1}_spec.rb"
+    when %r{^spec/spec_helper}
+      puts "[!] Run all tests"
     when %r{^config/boot.rb$}
       puts "[!] Run all functional tests"
     end

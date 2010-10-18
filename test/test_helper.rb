@@ -31,7 +31,7 @@ ObjectiveC.require('app/models/ScoredRubyName')
 
 require File.expand_path('../../config/boot', __FILE__)
 
-TEST_ROOT = File.expand_path(File.dirname(__FILE__))
+TEST_ROOT_PATH = File.expand_path(File.dirname(__FILE__))
 
 # Needed by some OSX classes, like WebView, to function properly.
 require 'osx/cocoa'

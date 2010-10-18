@@ -25,11 +25,11 @@ class Watcher < OSX::NSObject
   end
   
   def watchPaths
-    self.class.basePaths(RI::Paths.path(false, true, true, true))
+    self.class.basePaths(RDoc::RI::Paths.path(false, true, true, true))
   end
   
   def riPaths
-    self.class.basePaths(RI::Paths.path(true, true, true, true))
+    self.class.basePaths(RDoc::RI::Paths.path(true, true, true, true))
   end
   
   def start

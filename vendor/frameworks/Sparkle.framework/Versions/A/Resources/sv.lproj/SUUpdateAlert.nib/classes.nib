@@ -27,6 +27,11 @@
                 description = NSTextField;
                 releaseNotesView = WebView;
             };
+            SUPERCLASS = SUWindowController;
+        },
+                {
+            CLASS = SUWindowController;
+            LANGUAGE = ObjC;
             SUPERCLASS = NSWindowController;
         }
     );

@@ -121,5 +121,3 @@
 }
 
 @end
-
-void Init_ScoredRubyName() {}

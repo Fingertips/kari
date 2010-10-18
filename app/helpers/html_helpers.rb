@@ -1,6 +1,8 @@
+require 'erb'
+
 module HTMLHelpers
   include ERB::Util
-
+  
   def tag_attributes(attributes={})
     return '' if attributes.empty?
     ' ' << attributes.inject([]) do |attrs, (k, v)|
