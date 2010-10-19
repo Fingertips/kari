@@ -118,6 +118,7 @@
   [karidocFilename release];
   [query release];
   [nameWithMarkup release];
+  [super dealloc];
 }
 
 @end

@@ -36,10 +36,10 @@ describe "The SearchKit Index" do
 end
 
 describe "A SearchKit Index" do
-  include FixtureHelpers
+  extend FixtureHelpers
   
   before do
-    @path = File.join(Dir.tmpdir, 'search_kit_index')
+    @path = File.join(Dir.tmpdir, 'search_kit_index') 
     File.unlink(@path) rescue nil
     
     @index = SearchKit::Index.create(@path)
@@ -125,11 +125,11 @@ describe "A SearchKit Index" do
 end
 
 describe "A SearchKit Match" do
-  include FixtureHelpers
+  extend FixtureHelpers
   
   before do
     Kari.stubs(:application_support_path).returns(file_fixture('')[0..-2])
-    @url = OSX::NSURL.fileURLWithPath(File.join('', 'Mutex', 'try_lock.karidoc'))
+    @url = NSURL.fileURLWithPath(File.join('', 'Mutex', 'try_lock.karidoc'))
     @score = 1.2345
     @match = SearchKit::Match.alloc.initWithURL_score(@url, @score)
   end
@@ -142,7 +142,7 @@ describe "A SearchKit Match" do
   it "should return the name of the matched class/method" do
     begin
       @match.valueForKey('name').should == 'Mutex::try_lock'
-    rescue OSX::OCException
+    rescue OCException
       @match.name.should == 'Mutex::try_lock'
     end
   end

@@ -1,5 +1,5 @@
 require 'set'
-require 'rucola/fsevents'
+require 'fsevents'
 require 'rdoc/ri/ri_paths'
 require 'monitor'
 
@@ -34,7 +34,7 @@ class Watcher < OSX::NSObject
   
   def start
     log.debug("Watching FSEvents since #{lastEventId} on #{watchPaths.inspect}")
-    @fsevents = Rucola::FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
+    @fsevents = FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
       handleEvents(events)
     end
   end

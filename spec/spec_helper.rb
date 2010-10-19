@@ -1,8 +1,12 @@
 TEST_ROOT_PATH = File.expand_path('..', __FILE__)
 
 require 'rubygems'
-gem 'mocha-macruby'
-require 'mocha-on-bacon'
+require 'bacon'
+# gem 'mocha-macruby'
+# require 'mocha-on-bacon'
+
+Bacon.extend Bacon::TestUnitOutput
+Bacon.summary_on_exit
 
 framework 'Cocoa'
 
@@ -13,8 +17,8 @@ require 'fixture_helpers'
 require 'temporary_application_support_path'
 require 'objective-c'
 
-require File.expand_path('../../config/boot', __FILE__)
-
 ObjectiveC.require('lib/search_kit/Match')
 ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
 ObjectiveC.require('app/models/ScoredRubyName')
+
+require File.expand_path('../../config/boot', __FILE__)

@@ -1,3 +1,5 @@
+require 'active_support/core_ext/string/inflections'
+
 recipe :ruby
 
 Ruby.test_type  = 'spec'
@@ -6,8 +8,13 @@ Ruby.runner_bin = 'macbacon --quiet'
 process do |files|
   Ruby.run_tests(files.take_and_map do |file|
     case file
-    when %r{^app/(.*).rb$}
-      "spec/#{$1}_spec.rb"
+    when %r{^lib/search_kit(.*).(m|rb)}
+      "spec/lib/search_kit_spec.rb"
+    when %r{^app/(.*).(m|rb)$},
+         %r{^(lib/.*).(m|rb)$}
+      parts = $1.split('/')
+      parts[-1] = parts[-1].underscore
+      "spec/#{parts.join('/')}_spec.rb"
     when %r{^spec/spec_helper}
       puts "[!] Run all tests"
     when %r{^config/boot.rb$}

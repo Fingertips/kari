@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module ObjectiveC
   class CompileError < ::StandardError; end
   
@@ -13,8 +15,12 @@ module ObjectiveC
       File.basename(path)
     end
     
+    def root_path
+      File.expand_path('../../../', __FILE__)
+    end
+    
     def output_dir
-      File.join(Kari.root_path, 'build', 'bundles')
+      File.join(root_path, 'build', 'bundles')
     end
     
     def ensure_output_dir!
@@ -22,11 +28,11 @@ module ObjectiveC
     end
     
     def header_file(path)
-      File.join(Kari.root_path, "#{path}.h")
+      File.join(root_path, "#{path}.h")
     end
     
     def implementation_file(path)
-      File.join(Kari.root_path, "#{path}.m")
+      File.join(root_path, "#{path}.m")
     end
     
     def source_file(path)
@@ -50,7 +56,7 @@ module ObjectiveC
       prepare_source_file(path)
       source_path = source_file(path)
       frameworks.unshift 'Foundation'
-      command = "gcc -o #{bundle_path(path)} -flat_namespace -undefined suppress -bundle #{frameworks.map { |f| "-framework #{f}" }.join(' ')} -I#{File.dirname(source_path)} #{source_path}"
+      command = "gcc -o #{bundle_path(path)} -fobjc-gc -flat_namespace -undefined suppress -bundle #{frameworks.map { |f| "-framework #{f}" }.join(' ')} -I#{File.dirname(source_path)} #{source_path}"
       unless system(command)
         raise CompileError, "Unable to compile class `#{klass(path)}' at path: `#{source_path}'."
       end

@@ -28,7 +28,6 @@ Rucola::Dependencies.run do
   
   # We'll assume that you'll want to bundle rucola by default.
   dependency 'rucola'
-  dependency 'rucola/fsevents'
   
   dependency 'fileutils'
 end
