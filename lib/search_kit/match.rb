@@ -1,5 +1,7 @@
 module SearchKit
-  class Match < ::Match
+  Match = ::Match
+  
+  class Match
     attr_accessor :name
     
     def name

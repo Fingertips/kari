@@ -115,12 +115,12 @@ describe "A SearchKit Index" do
     @index.flush
     
     matches = @index.search('set_trace_func')
-    matches.length.should.be 1
+    matches.length.should == 1
     match = matches.first
     
-    match.should.be.an.instance_of SearchKit::Match
+    match.should.be.kind_of ::Match
     match.URL.path.should == @filenames.find { |f| File.basename(f) == 'cdesc-Binding.yaml' }
-    match.score.to_ruby.should.be.an.instance_of Float
+    match.score.should.be.an.instance_of Float
   end
 end
 
