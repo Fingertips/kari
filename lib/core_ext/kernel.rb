@@ -5,7 +5,7 @@ module Kernel
   #
   # Examples:
   #
-  #   log.level = Rucola::Log::DEBUG
+  #   log.level = Log::DEBUG
   #   log.info "Couldn't load preferences, using defaults"
   #   log.debug "Initiating primary foton drive…"
   #

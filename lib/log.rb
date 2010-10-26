@@ -57,8 +57,3 @@ class Log
     NSLog(*args) if message_level >= level
   end
 end
-
-class Kernel
-  def log
-  end
-end
