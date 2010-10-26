@@ -132,12 +132,12 @@ describe "A SearchKit Match" do
     Kari.stubs(:application_support_path).returns(file_fixture('')[0..-2])
     @url = NSURL.fileURLWithPath(File.join('', 'Mutex', 'try_lock.karidoc'))
     @score = 1.2345
-    @match = SearchKit::Match.alloc.initWithURL_score(@url, @score)
+    @match = SearchKit::Match.alloc.initWithURL(@url, score: @score)
   end
   
   it "should initialize with a document NSURL and relevance score" do
     @match.valueForKey('URL').path.should == @url.path
-    @match.valueForKey('score').to_ruby.should == @score
+    @match.valueForKey('score').should == @score
   end
   
   it "should return the name of the matched class/method" do
