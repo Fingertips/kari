@@ -9,7 +9,7 @@ module Kari
   end
   
   def self.application_support_path
-    File.expand_path('/Library/Application Support/Kari')
+    File.expand_path('~/Library/Application Support/Kari')
   end
   
   def self.root_path
