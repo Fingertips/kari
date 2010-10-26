@@ -17,12 +17,8 @@ require 'fixture_helpers'
 require 'temporary_application_support_path'
 require 'objective-c'
 
-# ObjectiveC.require('lib/search_kit/Match')
-# ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
-# ObjectiveC.require('app/models/ScoredRubyName')
-
-system "xcodebuild -target KariTest -configuration Debug"
-ENV['DYLD_FRAMEWORK_PATH'] = File.expand_path('../../build/Debug', __FILE__)
-framework 'KariTest'
+ObjectiveC.require('lib/search_kit/Match')
+ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
+ObjectiveC.require('app/models/ScoredRubyName')
 
 require File.expand_path('../../config/boot', __FILE__)

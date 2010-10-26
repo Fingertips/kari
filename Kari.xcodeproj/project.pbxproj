@@ -29,12 +29,6 @@
 		631D1EC0126C9D250046D982 /* boot.m in Sources */ = {isa = PBXBuildFile; fileRef = 631D1EBF126C9D250046D982 /* boot.m */; };
 		631D1F03126C9F200046D982 /* MacRuby.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 631D1F02126C9F200046D982 /* MacRuby.framework */; };
 		631D1F11126C9FA70046D982 /* boot.rb in Resources */ = {isa = PBXBuildFile; fileRef = 631D1F10126C9FA70046D982 /* boot.rb */; };
-		634025B2127706B0008E0C49 /* ScoredRubyName.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F1F8761136B49600B2330F /* ScoredRubyName.m */; };
-		634025B3127706C6008E0C49 /* Index.m in Sources */ = {isa = PBXBuildFile; fileRef = 516499AE0EEEBFBD0000C1E3 /* Index.m */; };
-		634025B4127706C6008E0C49 /* match.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CAD5FD0EF02CC7008F5EDF /* match.m */; };
-		634025B5127706D6008E0C49 /* ScoredRubyName.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F1F8751136B49600B2330F /* ScoredRubyName.h */; };
-		634025B6127706D6008E0C49 /* Index.h in Headers */ = {isa = PBXBuildFile; fileRef = 516499AD0EEEBFBD0000C1E3 /* Index.h */; };
-		634025B7127706D6008E0C49 /* match.h in Headers */ = {isa = PBXBuildFile; fileRef = 51CAD5FC0EF02CC7008F5EDF /* match.h */; };
 		638CCA7D0DF06404008C4936 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = 638CCA7C0DF06404008C4936 /* BridgeSupport */; };
 		6392E19B0F0278AC00000DEE /* bin in Resources */ = {isa = PBXBuildFile; fileRef = 6392E1970F0278AC00000DEE /* bin */; };
 		63F1F8711136B48200B2330F /* FilteringArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F1F86F1136B48200B2330F /* FilteringArrayController.h */; };
@@ -85,7 +79,6 @@
 		631D1EBF126C9D250046D982 /* boot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = boot.m; path = config/boot.m; sourceTree = "<group>"; };
 		631D1F02126C9F200046D982 /* MacRuby.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacRuby.framework; path = /Library/Frameworks/MacRuby.framework; sourceTree = "<absolute>"; };
 		631D1F10126C9FA70046D982 /* boot.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = boot.rb; path = config/boot.rb; sourceTree = "<group>"; };
-		6340258B1277053A008E0C49 /* KariTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KariTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6340258C1277053A008E0C49 /* KariTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KariTest-Info.plist"; sourceTree = "<group>"; };
 		638CCA7C0DF06404008C4936 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BridgeSupport; path = misc/BridgeSupport; sourceTree = "<group>"; };
 		6392E1970F0278AC00000DEE /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
@@ -103,13 +96,6 @@
 				51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */,
 				4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */,
 				631D1F03126C9F200046D982 /* MacRuby.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		634025891277053A008E0C49 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +134,6 @@
 			isa = PBXGroup;
 			children = (
 				4DDCA7120ACC9A6100E082CE /* Kari.app */,
-				6340258B1277053A008E0C49 /* KariTest.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -245,16 +230,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		634025861277053A008E0C49 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				634025B5127706D6008E0C49 /* ScoredRubyName.h in Headers */,
-				634025B6127706D6008E0C49 /* Index.h in Headers */,
-				634025B7127706D6008E0C49 /* match.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -278,24 +253,6 @@
 			productReference = 4DDCA7120ACC9A6100E082CE /* Kari.app */;
 			productType = "com.apple.product-type.application";
 		};
-		6340258A1277053A008E0C49 /* KariTest */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 6340258F1277053B008E0C49 /* Build configuration list for PBXNativeTarget "KariTest" */;
-			buildPhases = (
-				634025861277053A008E0C49 /* Headers */,
-				634025871277053A008E0C49 /* Resources */,
-				634025881277053A008E0C49 /* Sources */,
-				634025891277053A008E0C49 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = KariTest;
-			productName = KariTest;
-			productReference = 6340258B1277053A008E0C49 /* KariTest.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -316,7 +273,6 @@
 			projectRoot = "";
 			targets = (
 				4DDCA7030ACC9A6100E082CE /* Kari */,
-				6340258A1277053A008E0C49 /* KariTest */,
 			);
 		};
 /* End PBXProject section */
@@ -341,13 +297,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		634025871277053A008E0C49 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -362,16 +311,6 @@
 				63F1F8721136B48200B2330F /* FilteringArrayController.m in Sources */,
 				63F1F8781136B49600B2330F /* ScoredRubyName.m in Sources */,
 				631D1EC0126C9D250046D982 /* boot.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		634025881277053A008E0C49 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				634025B3127706C6008E0C49 /* Index.m in Sources */,
-				634025B4127706C6008E0C49 /* match.m in Sources */,
-				634025B2127706B0008E0C49 /* ScoredRubyName.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,60 +402,6 @@
 			};
 			name = Release;
 		};
-		6340258D1277053B008E0C49 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "KariTest-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = KariTest;
-			};
-			name = Debug;
-		};
-		6340258E1277053B008E0C49 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "KariTest-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = KariTest;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -534,15 +419,6 @@
 			buildConfigurations = (
 				4DDCA70F0ACC9A6100E082CE /* Debug */,
 				4DDCA7100ACC9A6100E082CE /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		6340258F1277053B008E0C49 /* Build configuration list for PBXNativeTarget "KariTest" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6340258D1277053B008E0C49 /* Debug */,
-				6340258E1277053B008E0C49 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
