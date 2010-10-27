@@ -46,6 +46,7 @@ else
   require 'hash_tree'
   require 'karidoc_generator'
   require 'manager'
+  require 'namespace'
   require 'ruby_name'
 end
 

@@ -20,5 +20,5 @@ class Namespace
     super or @namespace.has_key?(method.to_s)
   end
   
-  public :binding
+  def _binding; binding; end
 end

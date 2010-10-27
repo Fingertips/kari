@@ -7,7 +7,7 @@ describe "A Namespace" do
   
   it "should know what it responds to" do
     @namespace.respond_to?(:full_name).should == true
-    @namespace.respond_to?(:binding).should == true
+    @namespace.respond_to?(:_binding).should == true
     @namespace.respond_to?(:respond_to?).should == true
     @namespace.respond_to?(:unknown).should == false
   end
@@ -30,7 +30,7 @@ describe "A Namespace" do
   
   it "should have a public binding" do
     lambda {
-      @namespace.binding
+      @namespace._binding
     }.should.not.raise
   end
 end
