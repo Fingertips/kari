@@ -16,17 +16,17 @@ module FlowHelpers
   
   def flow_part(part)
     case part
-    when SM::Flow::P
+    when RDoc::Markup::Flow::P
       content_tag('p', part.body)
-    when SM::Flow::LI
+    when RDoc::Markup::Flow::LI
       content_tag('li', part.body)
-    when SM::Flow::LIST
+    when RDoc::Markup::Flow::LIST
       flow_list(part)
-    when SM::Flow::VERB
+    when RDoc::Markup::Flow::VERB
       content_tag('pre', part.body)
-    when SM::Flow::H
+    when RDoc::Markup::Flow::H
       "<h#{part.level+2}>#{h(part.text)}</h#{part.level+2}>"
-    when SM::Flow::RULE
+    when RDoc::Markup::Flow::RULE
       "<hr />"
     end
   end

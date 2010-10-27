@@ -19,7 +19,7 @@ module DescriptionExtensions
   end
   
   def ri_type
-    self.class.to_s =~ /^RI::(.*)Description$/ ? $1 : 'Module'
+    self.class.to_s =~ /^RDoc::RI::(.*)Description$/ ? $1 : 'Module'
   end
   
   def template_name
