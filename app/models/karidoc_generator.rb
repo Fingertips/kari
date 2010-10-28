@@ -1,9 +1,27 @@
+require 'erb'
 require 'yaml'
 require 'fileutils'
+
+# Load all RDoc classes and reshuffle them a bit so we
+# can read RI YAML descriptions created by Ruby 1.8.
 require 'rdoc/ri/descriptions'
 require 'rdoc/markup/to_flow'
 
-# Include some extentions to RI::Description so it's easier to work with the information
+::RI = RDoc::RI
+
+class ::Struct
+  module SM
+    module Flow
+      P = RDoc::Markup::Flow::P
+      VERB = RDoc::Markup::Flow::VERB
+    end
+  end
+end
+
+require 'description_extensions'
+require 'flow_helpers'
+require 'html_helpers'
+
 module RI
   class Description
     include DescriptionExtensions
@@ -80,7 +98,7 @@ class KaridocGenerator
     namespace.extend HTMLHelpers
     namespace.extend FlowHelpers
     
-    self.class.template(template_file).result(namespace.binding)
+    self.class.template(template_file).result(namespace._binding)
   end
   
   def compute_relative_path_from_root(filename)

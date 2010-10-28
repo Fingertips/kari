@@ -1,7 +1,6 @@
 TEST_ROOT_PATH = File.expand_path('..', __FILE__)
 
 require 'rubygems'
-require 'bacon'
 gem 'mocha-macruby'
 require 'mocha-on-bacon'
 

@@ -8,6 +8,15 @@ module TemporaryApplicationSupportPath
     end
   end
   
+  def self.extended(base)
+    base.before do
+      @application_support_path = TemporaryApplicationSupportPath.stub
+    end
+    base.after do
+      TemporaryApplicationSupportPath.cleanup(@application_support_path)
+    end
+  end
+  
   def self.stub
     application_support_path = File.join(Dir.tmpdir, 'kari-application-support-path')
     Kari.stubs(:application_support_path).returns(application_support_path)
