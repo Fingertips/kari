@@ -20,12 +20,11 @@ class RubyName
   def self.from_ri_filename(filename, basepath='')
     parts = filename[basepath.length+1..-1].split(File::SEPARATOR)
     module_name = parts[0..-2].join('::')
-    
     full_name = case parts.last
     when /^cdesc-\w*.yaml$/
       module_name
     when /^(.*)-(i|c).yaml/
-      [module_name, CGI.unescape($1)].join($2 == 'i' ? '#' : '::')
+      "#{module_name}#{$2 == 'i' ? '#' : '::'}#{CGI.unescape($1)}"
     else
       raise ArgumentError, "Unknown RI definition file: #{parts.last}"
     end
