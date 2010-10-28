@@ -3,8 +3,4 @@ class NilClass
   def blank?
     true
   end
-  
-  def to_ruby
-    nil
-  end
 end
