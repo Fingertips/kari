@@ -21,3 +21,13 @@ ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
 ObjectiveC.require('app/models/ScoredRubyName')
 
 require File.expand_path('../../config/boot', __FILE__)
+
+def show_logs(&block)
+  level = log.level
+  log.level = Log::DEBUG
+  begin
+    yield
+  ensure
+    log.level = level
+  end
+end
