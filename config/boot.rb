@@ -52,4 +52,10 @@ else
   require 'preferences'
   require 'ruby_name'
   require 'watcher'
+  
+  $:.unshift(File.join(ROOT_PATH, 'app/views'))
+  
+  require 'results_table_view'
+  require 'search_field'
+  require 'split_view_with_disableable_divider'
 end

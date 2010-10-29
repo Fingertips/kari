@@ -1,6 +1,6 @@
-class ResultsTableView < OSX::NSTableView
+class ResultsTableView < NSTableView
   def _highlightColorForCell(cell)
-    OSX::NSColor.secondarySelectedControlColor
+    NSColor.secondarySelectedControlColor
   end
   
   def acceptsFirstResponder

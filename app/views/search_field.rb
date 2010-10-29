@@ -1,13 +1,13 @@
-class SearchField < OSX::NSSearchField
+class SearchField < NSSearchField
   FORWARD_SELECTORS = %w(moveUp: moveDown: insertNewline:)
   
   attr_accessor :keyDelegate
   
   def textView_doCommandBySelector(textView, selector)
     if @keyDelegate.wantsForwardedKeyEvents? and FORWARD_SELECTORS.include?(selector)
-      @keyDelegate.tryToPerform_with(selector, textView)
+      @keyDelegate.tryToPerform(selector, with: textView)
     else
-      tryToPerform_with(selector, textView)
+      tryToPerform(selector, with: textView)
     end
   end
 end

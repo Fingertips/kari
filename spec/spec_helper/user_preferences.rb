@@ -16,6 +16,7 @@ class UserPreferences
   end
   alias_method :objectForKey, :[]
   alias_method :boolForKey, :[]
+  alias_method :integerForKey, :[]
   
   def []=(key, value)
     @preferences[key] = value
