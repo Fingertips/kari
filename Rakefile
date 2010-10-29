@@ -9,6 +9,19 @@ namespace :spec do
       sh "macbacon #{specs.join(' ')}"
     end
   end
+  
+  desc "Run all specs one by one to isolate crashes"
+  task :one_by_one do
+    filelist = []
+    
+    SPEC_DIRECTORIES.each do |part|
+      filelist.concat FileList["spec/#{part}**/*_spec.rb"]
+    end
+    
+    filelist.each do |filename|
+      sh "macbacon #{filename}"
+    end
+  end
 end
 
 desc "Run all specs"
