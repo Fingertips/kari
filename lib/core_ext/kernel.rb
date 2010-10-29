@@ -13,4 +13,8 @@ module Kernel
   def log
     Log.instance
   end
+  
+  def preferences
+    NSUserDefaults.standardUserDefaults
+  end
 end

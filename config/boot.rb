@@ -1,11 +1,11 @@
 framework 'Cocoa'
 
-release = (ENV['RUCOLA_ENV'] != 'test')
-ROOT_PATH = release ? NSBundle.mainBundle.resourcePath.fileSystemRepresentation : File.expand_path('../../', __FILE__)
+release = (ENV['KARI_ENV'] != 'test')
+ROOT_PATH = ENV['KARI_ROOT'] || (release ? NSBundle.mainBundle.resourcePath.fileSystemRepresentation : File.expand_path('../../', __FILE__))
 
 module Kari
   def self.env
-    ENV['RUCOLA_ENV']
+    ENV['KARI_ENV']
   end
   
   def self.application_support_path
@@ -16,6 +16,8 @@ module Kari
     ROOT_PATH
   end
 end
+
+require 'tmpdir'
 
 if release
   frameworks = NSBundle.mainBundle.privateFrameworksPath.to_s
@@ -47,7 +49,7 @@ else
   require 'karidoc_generator'
   require 'manager'
   require 'namespace'
+  require 'preferences'
   require 'ruby_name'
+  require 'watcher'
 end
-
-require 'tmpdir'

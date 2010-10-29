@@ -1,1 +1,0 @@
-require File.expand_path('../lib/abstract_preferences', __FILE__)

@@ -1,9 +1,9 @@
 require 'set'
-require 'fsevents'
-require 'rdoc/ri/ri_paths'
 require 'monitor'
+require 'fsevents'
+require 'rdoc/ri/paths'
 
-class Watcher < OSX::NSObject
+class Watcher
   attr_accessor :fsevents, :delegate
   attr_accessor :examineQueue, :task
   
@@ -17,19 +17,19 @@ class Watcher < OSX::NSObject
   end
   
   def kariPath
-    File.join(Rucola::RCApp.root_path, 'bin', 'kari')
+    File.join(Kari.root_path, 'bin', 'kari')
   end
   
   def kariEnvironment
-    { 'RUBYCOCOA_ROOT' => Rucola::RCApp.root_path, 'RUBYCOCOA_ENV' => Rucola::RCApp.env }.merge(ENV)
+    { 'KARI_ROOT' => Kari.root_path, 'KARI_ENV' => Kari.env }.merge(ENV)
   end
   
   def watchPaths
-    self.class.basePaths(RDoc::RI::Paths.path(false, true, true, true))
+    self.class.basePaths(RDoc::RI::Paths.raw_path(false, true, true, true))
   end
   
   def riPaths
-    self.class.basePaths(RDoc::RI::Paths.path(true, true, true, true))
+    self.class.basePaths(RDoc::RI::Paths.raw_path(true, true, true, true))
   end
   
   def start
@@ -44,13 +44,13 @@ class Watcher < OSX::NSObject
   end
   
   def lastEventId
-    preferences.general.last_fs_event_id
+    preferences['general.last_fs_event_id']
   end
   
   def setLastEventId(id)
     log.debug("Setting last event ID to #{id}")
-    preferences.general.last_fs_event_id = id
-    preferences.save
+    preferences['general.last_fs_event_id'] = id
+    preferences.synchronize
   end
   
   def <<(paths)
@@ -72,6 +72,15 @@ class Watcher < OSX::NSObject
     end
   end
   
+  def execute(*arguments)
+    self.task = NSTask.alloc.init
+    task.environment = kariEnvironment
+    task.launchPath  = kariPath
+    task.arguments   = arguments
+    task.launch
+    task
+  end
+  
   def signal(sender=nil)
     if !task or !task.isRunning
       delegate.finishedIndexing(self) if delegate and task
@@ -85,13 +94,7 @@ class Watcher < OSX::NSObject
         unless paths.empty?
           log_with_signature "Starting task for paths: #{paths.inspect}"
           log_with_signature "#{kariPath} update --current-karidoc '#{Manager.instance.filepath}' --next-karidoc '#{Manager.next_filepath}' #{paths.join(' ')}"
-          
-          self.task = OSX::NSTask.alloc.init
-          task.environment = kariEnvironment
-          task.launchPath  = kariPath
-          task.arguments   = ['update', '--current-karidoc', Manager.instance.filepath, '--next-karidoc', Manager.next_filepath, *paths]
-          task.launch
-          
+          task = execute('update', '--current-karidoc', Manager.instance.filepath, '--next-karidoc', Manager.next_filepath, *paths)
           log_with_signature "Notify the delegate that we started indexing"
           delegate.startedIndexing(self) if delegate
         end

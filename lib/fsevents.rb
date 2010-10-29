@@ -1,4 +1,4 @@
-framework 'CarbonCore'
+# framework 'CarbonCore'
 # require_framework '/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework'
 
 class FSEvents
@@ -43,17 +43,17 @@ class FSEvents
   # block is used as a handler for events, which are passed as the block's argument. This method is the easiest
   # way to start watching some directories if you don't care about the details of setting up the event stream.
   #
-  #   Rucola::FSEvents.start_watching('/tmp') do |events|
+  #   FSEvents.start_watching('/tmp') do |events|
   #     events.each { |event| log.debug("#{event.files.inspect} were changed.") }
   #   end
   #   
-  #   Rucola::FSEvents.start_watching('/var/log/system.log', '/var/log/secure.log', :since => last_id, :latency => 5) do
+  #   FSEvents.start_watching('/var/log/system.log', '/var/log/secure.log', :since => last_id, :latency => 5) do
   #     Growl.notify("Something was added to your log files!")
   #   end
   #
   # Note that the method also returns the FSEvents object. This enables you to control the event stream if you want to.
   #
-  #   fsevents = Rucola::FSEvents.start_watching('/Volumes') do |events|
+  #   fsevents = FSEvents.start_watching('/Volumes') do |events|
   #     events.each { |event| Growl.notify("Volume changes: #{event.files.to_sentence}") }
   #   end
   #   fsevents.stop
@@ -107,28 +107,28 @@ class FSEvents
     @callback = Proc.new do |stream, client_callback_info, number_of_events, paths_pointer, event_flags, event_ids|
       paths_pointer.regard_as('*')
       events = []
-      number_of_events.times {|i| events << Rucola::FSEvents::FSEvent.new(self, event_ids[i], paths_pointer[i]) }
+      number_of_events.times {|i| events << FSEvents::FSEvent.new(self, event_ids[i], paths_pointer[i]) }
       @user_callback.call(events)
     end
   end
   
   # Create the stream.
-  # Raises a Rucola::FSEvents::StreamError if the stream could not be created.
+  # Raises a FSEvents::StreamError if the stream could not be created.
   def create_stream
-    @stream = OSX.FSEventStreamCreate(@allocator, @callback, @context, @paths, @since, @latency, @flags)
+    @stream = FSEventStreamCreate(@allocator, @callback, @context, @paths, @since, @latency, @flags)
     raise(StreamError, 'Unable to create FSEvents stream.') unless @stream
-    OSX.FSEventStreamScheduleWithRunLoop(@stream, OSX.CFRunLoopGetCurrent, KCFRunLoopDefaultMode)
+    FSEventStreamScheduleWithRunLoop(@stream, CFRunLoopGetCurrent, KCFRunLoopDefaultMode)
   end
   
   # Start the stream.
-  # Raises a Rucola::FSEvents::StreamError if the stream could not be started.
+  # Raises a FSEvents::StreamError if the stream could not be started.
   def start
-    raise(StreamError, 'Unable to start FSEvents stream.') unless OSX.FSEventStreamStart(@stream)
+    raise(StreamError, 'Unable to start FSEvents stream.') unless FSEventStreamStart(@stream)
   end
   
   # Stop the stream.
   # You can resume it by calling `start` again.
   def stop
-    OSX.FSEventStreamStop(@stream)
+    FSEventStreamStop(@stream)
   end
 end

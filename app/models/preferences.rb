@@ -1,19 +1,21 @@
-class Preferences
-  class General < Namespace
-    defaults_accessor :last_fs_event_id
+module Preferences
+  module Search
+    TYPES  = {
+      :path => 0,
+      :content => 1
+    }
+    SCOPES = {
+      :all => 0,
+      :class => 1,
+      :method => 2
+    }
   end
   
-  class Interface < Namespace
-    defaults_accessor :class_browser_visible, false
-    defaults_accessor :class_browser_height,  138
-  end
-  
-  class Search < Namespace
-    TYPES = { :path => 0, :content => 1 }
-    SCOPES = { :all => 0, :class => 1, :method => 2 }
-    
-    defaults_accessor :index_type, TYPES[:path]
-    defaults_accessor :scope,      SCOPES[:all]
+  def self.register_default_values!
+    preferences['interface.class_browser_visible'] = true
+    preferences['interface.class_browser_height']  = 138
+    preferences['search.index_type']               = Preferences::Search::TYPES[:path]
+    preferences['search.scope']                    = Preferences::Search::SCOPES[:all]
   end
   
   register_default_values!
