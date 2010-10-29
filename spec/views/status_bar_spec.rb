@@ -2,7 +2,7 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 describe "StatusBar" do
   before do
-    @frame = NSMakeRect(0, 0, 10, 10)
+    @frame = CGRectMake(0, 0, 10, 10)
     @status_bar = StatusBar.alloc.initWithFrame(@frame)
   end
   
