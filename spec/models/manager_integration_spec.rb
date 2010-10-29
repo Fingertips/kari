@@ -95,9 +95,7 @@ end
 
 describe "A Manager" do
   before do
-    show_backtrace do
-      @manager = ManagerTestCache.setup_manager
-    end
+    @manager = ManagerTestCache.setup_manager
   end
   
   after do
