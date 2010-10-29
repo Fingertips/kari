@@ -79,10 +79,8 @@ describe "A Watcher" do
   end
   
   it "should know the path to the kari commandline utility" do
-    show_backtrace do
-      @watcher.kariPath.should.start_with?(Kari.root_path)
-      @watcher.kariPath.should.end_with?('kari')
-    end
+    @watcher.kariPath.should.start_with?(Kari.root_path)
+    @watcher.kariPath.should.end_with?('kari')
   end
   
   it "should know the environment for the kari task" do
@@ -149,10 +147,8 @@ describe "A Watcher" do
   end
   
   it "should start a new task when signalled and having no task yet" do
-    show_backtrace do
-      paths = expect_task_configured_and_launched
-      @watcher << paths
-    end
+    paths = expect_task_configured_and_launched
+    @watcher << paths
   end
   
   it "should start a new task when signalled and having no running task" do
