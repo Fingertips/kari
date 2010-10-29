@@ -28,6 +28,8 @@ module FlowHelpers
       "<h#{part.level+2}>#{h(part.text)}</h#{part.level+2}>"
     when RDoc::Markup::Flow::RULE
       "<hr />"
+    else
+      ''
     end
   end
 end

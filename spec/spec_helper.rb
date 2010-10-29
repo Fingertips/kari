@@ -31,3 +31,14 @@ def show_logs(&block)
     log.level = level
   end
 end
+
+def show_backtrace(&block)
+  yield
+rescue Exception => e
+  puts '---'
+  p e
+  e.backtrace.each do |line|
+    puts "  #{line}"
+  end
+  raise
+end
