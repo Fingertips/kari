@@ -58,4 +58,5 @@ else
   require 'results_table_view'
   require 'search_field'
   require 'split_view_with_disableable_divider'
+  require 'status_bar'
 end
