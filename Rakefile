@@ -1,5 +1,5 @@
 APP_NAME         = 'Kari'
-SPEC_DIRECTORIES = %w(helpers models lib views)
+SPEC_DIRECTORIES = %w(helpers models lib views controllers)
 
 namespace :spec do
   SPEC_DIRECTORIES.each do |part|

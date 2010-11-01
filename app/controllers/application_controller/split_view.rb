@@ -1,4 +1,4 @@
-class ApplicationController < Rucola::RCController
+class ApplicationController
   STATUS_BAR_HEIGHT = 20
   
   def topViewOfSplitView
@@ -91,10 +91,10 @@ class ApplicationController < Rucola::RCController
   
   def animate(views)
     view_animations = views.map do |view, frame|
-      { OSX::NSViewAnimationTargetKey => view, OSX::NSViewAnimationEndFrameKey => OSX::NSValue.valueWithRect(frame) }
+      { NSViewAnimationTargetKey => view, NSViewAnimationEndFrameKey => NSValue.valueWithRect(frame) }
     end
-    animation = OSX::MGViewAnimation.alloc.initWithViewAnimations(view_animations)
-    animation.animationBlockingMode = OSX::NSAnimationBlocking
+    animation = MGViewAnimation.alloc.initWithViewAnimations(view_animations)
+    animation.animationBlockingMode = NSAnimationBlocking
     animation.duration = 0.3
     animation.startAnimation
   end

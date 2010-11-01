@@ -1,4 +1,4 @@
-class AssertDifferenceAssertions
+module AssertDifferenceAssertions
   def assert_difference(eval_str, difference)
     before = eval(eval_str)
     yield

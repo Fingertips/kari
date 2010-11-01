@@ -13,6 +13,7 @@ ENV['KARI_ENV'] = 'test'
 
 $:.unshift File.expand_path('../spec_helper', __FILE__)
 require 'assert_difference'
+require 'controllers'
 require 'dangerous_methods_override'
 require 'fixture_helpers'
 require 'objective-c'

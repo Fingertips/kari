@@ -1,4 +1,4 @@
-class ApplicationController < Rucola::RCController
+class ApplicationController < NSController
   def self.concerned_with(name)
     require File.expand_path("../application_controller/#{name}", __FILE__)
   end
@@ -8,40 +8,42 @@ class ApplicationController < Rucola::RCController
   concerned_with 'split_view'
   concerned_with 'web_view'
   
-  ib_outlet :classBrowser
-  ib_outlet :classTreeController
-  ib_outlet :webView
-  ib_outlet :webViewController
-  ib_outlet :window
-  ib_outlet :resultsScrollView
-  ib_outlet :searchController
-  ib_outlet :searchTextField
-  ib_outlet :searchProgressIndicator
-  ib_outlet :splitView
-  ib_outlet :tabView
-  ib_outlet :toggleClassBrowserVisbilityButton
+  attr_writer :classBrowser
+  attr_writer :classTreeController
+  attr_writer :webView
+  attr_writer :webViewController
+  attr_writer :window
+  attr_writer :resultsScrollView
+  attr_writer :searchController
+  attr_writer :searchTextField
+  attr_writer :searchProgressIndicator
+  attr_writer :splitView
+  attr_writer :tabView
+  attr_writer :toggleClassBrowserVisbilityButton
   
-  kvc_accessor :class_tree
-  kvc_accessor :processing
-  kvc_accessor :search_mode
+  attr_accessor :class_tree
+  attr_accessor :processing
+  attr_accessor :search_mode
   
-  def after_init
-    self.search_mode = false
-    OSX::NSApplication.sharedApplication.setDelegate(self)
+  def init
+    if super
+      self.search_mode = false
+      NSApplication.sharedApplication.setDelegate(self)
+      self
+    end
   end
   
   def awakeFromNib
-    # First things first, make it look as it should!
+    # Initialize the UI
     setup_splitView!
     setup_classTree!
     setup_search!
     
     # Register notifications
-    OSX::NSDistributedNotificationCenter.defaultCenter.objc_send(
-      :addObserver, self,
-         :selector, 'externalRequestForDocumentation:',
-             :name, 'KariOpenDocumentation',
-           :object, nil
+    NSDistributedNotificationCenter.defaultCenter.addObserver(self,
+      selector: 'externalRequestForDocumentation:',
+          name: 'KariOpenDocumentation',
+        object: nil
     )
     
     Manager.bootstrap if Manager.first_run?
@@ -51,7 +53,7 @@ class ApplicationController < Rucola::RCController
     @watcher = Watcher.alloc.init
     @watcher.start
     
-    OSX::NSTimer.scheduledTimerWithTimeInterval_target_selector_userInfo_repeats(5, @watcher, 'signal:', nil, true)
+    NSTimer.scheduledTimerWithTimeInterval(5, target: @watcher, selector: 'signal:', userInfo: nil, repeats: true)
     
     # Lets wrap it up!
     @splitView.delegate = self
@@ -124,7 +126,7 @@ class ApplicationController < Rucola::RCController
   end
   
   def windowWillClose(notification)
-    OSX::NSApplication.sharedApplication.terminate(self)
+    NSApplication.sharedApplication.terminate(self)
   end
   
   def changedSearchFilter(sender)

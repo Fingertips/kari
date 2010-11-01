@@ -1,20 +1,23 @@
-class SearchController < Rucola::RCController
-  kvc_accessor :results
+class SearchController < NSController
+  attr_accessor :results
   attr_accessor :delegate
   
-  ib_outlets :results_array_controller,
-    :results_table_view,
-    :search_field,
-    :class_tree_controller
+  attr_writer :results_array_controller
+  attr_writer :results_table_view
+  attr_writer :search_field
+  attr_writer :class_tree_controller
   
-  def after_init
-    @results = OSX::NSMutableArray.alloc.init
+  def init
+    if super
+      @results = NSMutableArray.alloc.init
+      self
+    end
   end
   
   def awakeFromNib
     @search_field.keyDelegate = @results_table_view
     @results_table_view.target = self
-    @results_array_controller.sortDescriptors = [OSX::NSSortDescriptor.alloc.initWithKey_ascending('score', false)]
+    @results_array_controller.sortDescriptors = [NSSortDescriptor.alloc.initWithKey_ascending('score', false)]
   end
   
   def search(sender)
@@ -32,7 +35,7 @@ class SearchController < Rucola::RCController
   
   def setResultsForDescriptions(descriptions)
     self.results = descriptions.map do |name, definitions|
-      OSX::ScoredRubyName.alloc.initWithName_karidocFilename_query(
+      ScoredRubyName.alloc.initWithName_karidocFilename_query(
         name,
         RubyName.karidoc_filename(Manager.current_filepath, name),
         nil

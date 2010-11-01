@@ -1,11 +1,10 @@
-class ApplicationController < Rucola::RCController
+class ApplicationController
   def setup_classTree!
     self.class_tree = ClassTreeNode.classTreeNodesWithHashTree(Manager.instance.namespace)
-    @classTreeController.objc_send(
-      :addObserver, self,
-       :forKeyPath, 'selectionIndexPaths',
-          :options, OSX::NSKeyValueObservingOptionNew,
-          :context, nil
+    @classTreeController.addObserver(self,
+       forKeyPath: 'selectionIndexPaths',
+          options: NSKeyValueObservingOptionNew,
+          context: nil
     )
   end
 end

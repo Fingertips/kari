@@ -10,7 +10,7 @@ class Watcher
   include MonitorMixin
   
   def init
-    if super_init
+    if super
       emptyQueue
       self
     end

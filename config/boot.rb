@@ -1,4 +1,5 @@
 framework 'Cocoa'
+framework 'WebKit'
 
 release = (ENV['KARI_ENV'] != 'test')
 ROOT_PATH = ENV['KARI_ROOT'] || (release ? NSBundle.mainBundle.resourcePath.fileSystemRepresentation : File.expand_path('../../', __FILE__))
@@ -14,6 +15,10 @@ module Kari
   
   def self.root_path
     ROOT_PATH
+  end
+  
+  def self.assets_path
+    File.join(root_path, 'app/assets')
   end
 end
 
@@ -59,4 +64,12 @@ else
   require 'search_field'
   require 'split_view_with_disableable_divider'
   require 'status_bar'
+  
+  $:.unshift(File.join(ROOT_PATH, 'app/controllers'))
+  
+  require 'application_controller'
+  # require 'class_tree_controller'
+  # require 'web_history_controller'
+  require 'search_controller'
+  require 'web_view_controller'
 end

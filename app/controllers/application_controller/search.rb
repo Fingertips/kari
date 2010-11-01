@@ -1,4 +1,4 @@
-class ApplicationController < Rucola::RCController
+class ApplicationController
   def setup_search!
     @searchController.setResultsForDescriptions(Manager.instance.descriptions)
   end
