@@ -71,6 +71,6 @@ else
   # require 'class_tree_controller'
   require 'toolbar_controller'
   require 'search_controller'
-  # require 'web_history_controller'
+  require 'web_history_controller'
   require 'web_view_controller'
 end
