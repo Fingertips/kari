@@ -23,6 +23,7 @@ require 'user_preferences'
 ObjectiveC.require('lib/search_kit/Match')
 ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
 ObjectiveC.require('app/models/ScoredRubyName')
+ObjectiveC.require('app/controllers/FilteringArrayController')
 
 require File.expand_path('../../config/boot', __FILE__)
 

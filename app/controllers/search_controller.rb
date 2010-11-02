@@ -17,7 +17,7 @@ class SearchController < NSController
   def awakeFromNib
     @search_field.keyDelegate = @results_table_view
     @results_table_view.target = self
-    @results_array_controller.sortDescriptors = [NSSortDescriptor.alloc.initWithKey_ascending('score', false)]
+    @results_array_controller.sortDescriptors = [NSSortDescriptor.alloc.initWithKey('score', ascending: false)]
   end
   
   def search(sender)
@@ -35,10 +35,9 @@ class SearchController < NSController
   
   def setResultsForDescriptions(descriptions)
     self.results = descriptions.map do |name, definitions|
-      ScoredRubyName.alloc.initWithName_karidocFilename_query(
-        name,
-        RubyName.karidoc_filename(Manager.current_filepath, name),
-        nil
+      ScoredRubyName.alloc.initWithName(name,
+        karidocFilename: RubyName.karidoc_filename(Manager.current_filepath, name),
+                  query: nil
       )
     end
   end

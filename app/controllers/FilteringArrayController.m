@@ -1,11 +1,12 @@
 #import "FilteringArrayController.h"
+#import "ScoredRubyName.h"
 #import <Foundation/NSKeyValueObserving.h>
 
 @implementation FilteringArrayController
 
 - (void)search:(id)sender
 {
-    [self setSearchString:[sender stringValue]];
+    [self setSearchString: sender];
     [self rearrangeObjects];
 }
 
@@ -13,12 +14,12 @@
 {
   if ((searchString == nil) || ([searchString isEqualToString:@""]))
   {
-    return [super arrangeObjects:objects];   
+    return [super arrangeObjects:objects];
   }
   
   NSMutableArray *matchedObjects = [NSMutableArray arrayWithCapacity:[objects count]];
   NSEnumerator *oEnum = [objects objectEnumerator];
-  id item;
+  ScoredRubyName *item;
   
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   while (item = [oEnum nextObject]) {
