@@ -6,7 +6,7 @@ namespace :spec do
     desc "Run all specs in the #{part} directory"
     task part do
       specs = FileList["spec/#{part}**/*_spec.rb"]
-      sh "macbacon #{specs.join(' ')}"
+      sh "macruby #{specs.join(' ')}"
     end
   end
   
@@ -19,7 +19,7 @@ namespace :spec do
     end
     
     filelist.each do |filename|
-      sh "macbacon #{filename}"
+      sh "macruby #{filename}"
     end
   end
 end
