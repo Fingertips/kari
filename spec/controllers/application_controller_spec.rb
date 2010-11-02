@@ -1,11 +1,11 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-class ApplicationController
-  # Directly apply the frame instead of animating, so we can use assert_difference.
-  def animate(views)
-    views.each { |view, frame| view.frame = frame }
-  end
-end
+# class ApplicationController
+#   # Directly apply the frame instead of animating, so we can use assert_difference.
+#   def animate(views)
+#     views.each { |view, frame| view.frame = frame }
+#   end
+# end
 
 module ApplicationControllerSpecHelper
   def self.extended(instance)
@@ -21,11 +21,10 @@ module ApplicationControllerSpecHelper
         :searchController        => SearchController.alloc.init,
         :splitView               => NSSplitView.alloc.init,
         :window                  => NSWindow.alloc.init,
-        :searchProgressIndicator => mock('Progress Indicator', :startAnimation => nil, :stopAnimation => nil)
+        :searchProgressIndicator => mock('Progress Indicator')
       )
       
       @webViewController.webview = @webView
-      @webViewController.stubs(:load_file)
       
       @searchTextField.stringValue = 'ActiveRecord'
       
@@ -60,66 +59,57 @@ module ApplicationControllerSpecHelper
     end
   end
   
-  def should_bring_webView_to_front
-    @webView.hidden = true
-    @resultsScrollView.hidden = false
-    yield
-    @webView.hidden?.should.be false
-    @resultsScrollView.hidden?.should.be true
-  end
-  
   def load_url!(file = nil)
     @controller.searchController_selectedFile(nil, file)
   end
 end
 
-# describe 'ApplicationController, during awakeFromNib' do
-#   extend Controllers
-#   extend FixtureHelpers
-#   extend ApplicationControllerSpecHelper
-#   
-#   # DISABLED: was already disabled when I started porting
-#   # it "should setup the splitView so the top is hidden if necessary" do
-#   #   controller.expects(:setup_splitView!)
-#   #   controller.awakeFromNib
-#   # end
-#   
-#   it "should set the correct default kvc values" do
-#     @controller.stubs(:buildIndex)
-#     @controller.awakeFromNib
-#     
-#     @controller.processing.should == 0
-#     @controller.class_tree.should == []
-#   end
-#   
-#   it "should initialize a Manager instance" do
-#     Manager.expects(:instance).returns(@manager_mock)
-#     @controller.awakeFromNib
-#   end
-#   
-#   it "should set itself as the delegate of the watcher" do
-#     @watcher_mock.expects(:delegate=).with(@controller)
-#     @controller.awakeFromNib
-#   end
-#   
-#   # DISABLED: defaultCenter doesn't appear to want to expect stuff
-#   # it "should register for notifications" do
-#   #   NSDistributedNotificationCenter.defaultCenter.expects(:addObserver).with(@controller, { selector: 'externalRequestForDocumentation:', name: 'KariOpenDocumentation', object: nil})
-#   #   @controller.awakeFromNib
-#   # end
-#   
-#   # DISABLED: NSTimer doesn't appear to want to expect stuff
-#   # it "should set a scheduled timer to signal the watcher" do
-#   #   NSTimer.expects(:scheduledTimerWithTimeInterval).with(5, target: @watcher_mock, selector: 'signal:', userInfo: nil, repeats: true)
-#   #   @controller.awakeFromNib
-#   # end
-#   
-#   it "should bootstrap the manager on first run" do
-#     Manager.expects(:first_run?).returns(true)
-#     Manager.expects(:bootstrap)
-#     @controller.awakeFromNib
-#   end
-# end
+describe 'ApplicationController, during awakeFromNib' do
+  extend Controllers
+  extend FixtureHelpers
+  extend ApplicationControllerSpecHelper
+  
+  # DISABLED: was already disabled when I started porting
+  # it "should setup the splitView so the top is hidden if necessary" do
+  #   controller.expects(:setup_splitView!)
+  #   controller.awakeFromNib
+  # end
+  
+  it "should set the correct default kvc values" do
+    @controller.awakeFromNib
+    
+    @controller.processing.should == 0
+    @controller.class_tree.should == []
+  end
+  
+  it "should initialize a Manager instance" do
+    Manager.expects(:instance).returns(@manager_mock)
+    @controller.awakeFromNib
+  end
+  
+  it "should set itself as the delegate of the watcher" do
+    @watcher_mock.expects(:delegate=).with(@controller)
+    @controller.awakeFromNib
+  end
+  
+  # DISABLED: defaultCenter doesn't appear to want to expect stuff
+  # it "should register for notifications" do
+  #   NSDistributedNotificationCenter.defaultCenter.expects(:addObserver).with(@controller, { selector: 'externalRequestForDocumentation:', name: 'KariOpenDocumentation', object: nil})
+  #   @controller.awakeFromNib
+  # end
+  
+  # DISABLED: NSTimer doesn't appear to want to expect stuff
+  # it "should set a scheduled timer to signal the watcher" do
+  #   NSTimer.expects(:scheduledTimerWithTimeInterval).with(5, target: @watcher_mock, selector: 'signal:', userInfo: nil, repeats: true)
+  #   @controller.awakeFromNib
+  # end
+  
+  it "should bootstrap the manager on first run" do
+    Manager.expects(:first_run?).returns(true)
+    Manager.expects(:bootstrap)
+    @controller.awakeFromNib
+  end
+end
 
 # describe "ApplicationController, when dealing with the positioning of the splitView" do
 #   extend Controllers
@@ -226,51 +216,53 @@ describe 'ApplicationController, in general' do
   end
   
   it "should set search_mode to `true' if a user started searching" do
+    @searchProgressIndicator.expects(:startAnimation)
+    
     @controller.search_mode = false
     @controller.searchControllerWillStartSearching
+    
     @controller.valueForKey('search_mode').should == true
   end
   
-  # it "should set search_mode to `false' if a user selected a search result"  do
-  #   controller.search_mode = true
-  #   load_url!
-  #   controller.valueForKey('search_mode').to_ruby.should.be false
-  # end
-  # 
-  # it "should create a special search back forward item when a switching back to the webView" do
-  #   load_url!
-  #   webView.backForwardList.currentItem.URLString.should == 'kari://search/ActiveRecord'
-  # end
-  # 
-  # it "should tell the webViewController to load a file if the searchController calls its selectedFile delegate method" do
-  #   webViewController.expects(:load_url).with('/some/file.karidoc')
-  #   load_url! '/some/file.karidoc'
-  # end
-  # 
-  # it "should start a new search if a search back forward item was requested" do
-  #   searchController.expects(:search).with(searchTextField)
-  #   controller.webView_didSelectSearchQuery(nil, 'Binding')
-  #   searchTextField.stringValue.should == 'Binding'
-  # end
-  # 
+  it "should set search_mode to `false' if a user selected a search result"  do
+    @webViewController.stubs(:load_file)
+    @controller.search_mode = true
+    load_url!
+    @controller.valueForKey('search_mode').should == false
+  end
+  
+  it "should create a special search back forward item when a switching back to the webView" do
+    @webViewController.stubs(:load_file)
+    load_url!
+    @webView.backForwardList.currentItem.URLString.should == 'kari://search/ActiveRecord'
+  end
+  
+  it "should tell the webViewController to load a file if the searchController calls its selectedFile delegate method" do
+    @webViewController.expects(:load_url).with(NSURL.fileURLWithPath('/some/file.karidoc'))
+    load_url! '/some/file.karidoc'
+  end
+  
+  it "should start a new search if a search back forward item was requested" do
+    @searchController.expects(:search).with(@searchTextField)
+    @controller.webView_didSelectSearchQuery(nil, 'Binding')
+    @searchTextField.stringValue.should == 'Binding'
+  end
+  
+  # DISABLED: not sure if we want this to actually be the case
   # it "should always bring the webview to the front if the loaded page is bookmarkable" do
-  #   webViewController.stubs(:bookmarkable?).returns(true)
-  #   controller.search_mode = true
-  #   controller.webViewFinishedLoading(nil)
-  #   controller.valueForKey('search_mode').to_ruby.should.be false
   # end
-  # 
-  # it "should close all resources when terminating" do
-  #   assigns(:watcher, @watcher_mock)
-  #   
-  #   @watcher_mock.expects(:stop)
-  #   @manager_mock.expects(:close)
-  #   controller.applicationWillTerminate(nil)
-  # end
-  # 
-  # it "should rebuild the index when forced from the menu" do
-  #   assigns(:watcher, @watcher_mock)
-  #   @watcher_mock.expects(:forceRebuild)
-  #   controller.rebuildIndex
-  # end
+  
+  it "should close all resources when terminating" do
+    @controller.instance_variable_set('@watcher', @watcher_mock)
+    @watcher_mock.expects(:stop)
+    @manager_mock.expects(:close)
+    
+    @controller.applicationWillTerminate(nil)
+  end
+  
+  it "should rebuild the index when forced from the menu" do
+    @controller.instance_variable_set('@watcher', @watcher_mock)
+    @watcher_mock.expects(:forceRebuild)
+    @controller.rebuildIndex
+  end
 end

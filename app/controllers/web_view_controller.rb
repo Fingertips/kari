@@ -27,8 +27,8 @@ class WebViewController < NSController
   end
   
   def webViewFinishedLoading(aNotification)
-    @backForwardButton.setEnabled_forSegment(can_go_back?, BACK_BUTTON)
-    @backForwardButton.setEnabled_forSegment(can_go_forward?, FORWARD_BUTTON)
+    @backForwardButton.setEnabled(can_go_back?, forSegment: BACK_BUTTON)
+    @backForwardButton.setEnabled(can_go_forward?, forSegment: FORWARD_BUTTON)
   end
   
   def webView_decidePolicyForNavigationAction_request_frame_decisionListener(webView, information, request, frame, listener)
@@ -84,7 +84,7 @@ class WebViewController < NSController
   end
   
   def add_search_back_forward_item(query)
-    @webview.backForwardList.addItem WebHistoryItem.alloc.initWithURLString_title_lastVisitedTimeInterval("kari://search/#{query}", "Kari Search Query Item", 0)
+    @webview.backForwardList.addItem WebHistoryItem.alloc.initWithURLString("kari://search/#{query}", title: "Kari Search Query Item", lastVisitedTimeInterval: 0)
   end
   
   def can_go_back?

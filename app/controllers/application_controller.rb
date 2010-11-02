@@ -120,7 +120,7 @@ class ApplicationController < NSController
   end
   
   def applicationWillTerminate(aNotification)
-    preferences.save
+    preferences.synchronize
     @watcher.stop
     Manager.instance.close
   end

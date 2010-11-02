@@ -46,3 +46,9 @@ rescue Exception => e
   end
   raise
 end
+
+class Thread
+  def self.start
+    yield
+  end
+end
