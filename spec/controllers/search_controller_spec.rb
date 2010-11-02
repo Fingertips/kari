@@ -123,12 +123,10 @@ describe "A SearchController, in general" do
   
   # DISABLED: need to figure out how this is supposed to work first
   # it "should tell its delegate that a specific search result was chosen" do
-  #   show_backtrace do
-  #     @results_table_view.stubs(:selectedRow).returns(0)
-  #     @delegate.expects(:searchController_selectedFile).with do |search_controller, matched_url|
-  #       search_controller == @controller and matched_url.path[-@urls.last.path.length..-1] == @urls.last.path
-  #     end
-  #     @controller.rowDoubleClicked(@results_table_view)
+  #   @results_table_view.stubs(:selectedRow).returns(0)
+  #   @delegate.expects(:searchController_selectedFile).with do |search_controller, matched_url|
+  #     search_controller == @controller and matched_url.path[-@urls.last.path.length..-1] == @urls.last.path
   #   end
+  #   @controller.rowDoubleClicked(@results_table_view)
   # end
 end

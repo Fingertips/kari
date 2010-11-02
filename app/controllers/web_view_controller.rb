@@ -1,9 +1,10 @@
 class WebViewController < NSController
-  attr_accessor :webview
-  attr_accessor :backForwardButton
-  attr_accessor :cursorOverLinkTextField
+  attr_writer :webview
+  attr_writer :backForwardButton
+  attr_writer :cursorOverLinkTextField
   
-  attr_accessor :delegate, :doc_title
+  attr_accessor :delegate
+  attr_accessor :doc_title
   
   def init
     if super
@@ -13,16 +14,16 @@ class WebViewController < NSController
   end
   
   def awakeFromNib
-    @webview.objc_send(:preferences).tabsToLinks = true
+    @webview.preferences.setTabsToLinks(true)
     
     @webview.frameLoadDelegate = self
     @webview.policyDelegate = self
     @webview.UIDelegate = self
     
     NSNotificationCenter.defaultCenter.addObserver(self,
-        selector: 'webViewFinishedLoading:',
-            name: WebViewProgressFinishedNotification,
-          object: nil
+      selector: 'webViewFinishedLoading:',
+          name: WebViewProgressFinishedNotification,
+        object: nil
     )
   end
   

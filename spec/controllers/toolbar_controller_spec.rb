@@ -15,8 +15,6 @@ describe "ToolbarController" do
   end
   
   it "should setup a NSToolbar instance" do
-    show_backtrace do
-      @controller.instance_variable_get('@toolbar').should.be.kind_of(NSToolbar)
-    end
+    @controller.instance_variable_get('@toolbar').should.be.kind_of(NSToolbar)
   end
 end

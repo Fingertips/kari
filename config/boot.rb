@@ -68,7 +68,7 @@ else
   $:.unshift(File.join(ROOT_PATH, 'app/controllers'))
   
   require 'application_controller'
-  # require 'class_tree_controller'
+  require 'class_tree_controller'
   require 'toolbar_controller'
   require 'search_controller'
   require 'web_history_controller'
