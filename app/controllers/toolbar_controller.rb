@@ -1,10 +1,16 @@
-class ToolbarController < Rucola::RCController
-  ib_outlet :window, :historyBackAndForwardView, :searchView, :toggleClassBrowserView
+class ToolbarController < NSController
+  attr_writer :window
+  attr_writer :historyBackAndForwardView
+  attr_writer :searchView
+  attr_writer :toggleClassBrowserView
   
-  def after_init
-    @toolbar = OSX::NSToolbar.alloc.initWithIdentifier('MainWindowToolbar')
-    @toolbar.delegate = self
-    @toolbar.displayMode = OSX::NSToolbarDisplayModeIconOnly
+  def init
+    if super
+      @toolbar = NSToolbar.alloc.initWithIdentifier('MainWindowToolbar')
+      @toolbar.delegate = self
+      @toolbar.displayMode = NSToolbarDisplayModeIconOnly
+      self
+    end
   end
   
   def awakeFromNib
@@ -12,20 +18,23 @@ class ToolbarController < Rucola::RCController
     @window.toolbar = @toolbar
   end
   
-  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'ToggleClassBrowserItem', OSX::NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
+  def toolbar_itemForItemIdentifier_willBeInsertedIntoToolbar(toolbar, identifier, flag)
+    item = NSToolbarItem.alloc.initWithItemIdentifier(identifier)
+    return item if identifier == NSToolbarFlexibleSpaceItemIdentifier
+    custom_view = self.instance_variable_get("@#{identifier[0...1].downcase + identifier[1..-1].gsub(/Item$/, 'View')}".to_sym)
+    item.view = custom_view
+    item.minSize = item.maxSize = NSMakeSize(NSWidth(custom_view.frame), NSHeight(custom_view.frame))
+    return item
+  end
+  
+  TOOLBAR_ITEMS = ['HistoryBackAndForwardItem', 'ToggleClassBrowserItem', NSToolbarFlexibleSpaceItemIdentifier, 'SearchItem']
   def toolbarAllowedItemIdentifiers(toolbar)
     TOOLBAR_ITEMS
   end
   def toolbarDefaultItemIdentifiers(toolbar)
     TOOLBAR_ITEMS
   end
-  
-  def toolbar_itemForItemIdentifier_willBeInsertedIntoToolbar(toolbar, identifier, flag)
-    item = OSX::NSToolbarItem.alloc.initWithItemIdentifier(identifier)
-    return item if identifier == OSX::NSToolbarFlexibleSpaceItemIdentifier
-    custom_view = self.instance_variable_get("@#{identifier[0...1].downcase + identifier[1..-1].gsub(/Item$/, 'View')}".to_sym)
-    item.view = custom_view
-    item.minSize = item.maxSize = OSX::NSMakeSize(OSX::NSWidth(custom_view.frame), OSX::NSHeight(custom_view.frame))
-    return item
+  def toolbarSelectableItemIdentifiers(toolbar)
+    TOOLBAR_ITEMS
   end
 end
