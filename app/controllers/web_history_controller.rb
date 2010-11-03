@@ -1,22 +1,10 @@
-class WebHistory
-  def last
-    if last_day = orderedLastVisitedDays.first
-      orderedItemsLastVisitedOnDay(last_day).first
-    end
-  end
-  
-  def allItems
-    orderedLastVisitedDays.collect{ |day| orderedItemsLastVisitedOnDay(day).to_a }.flatten.reverse
-  end
-end
-
 class WebHistoryController < NSController
   attr_writer :historyMenu
   attr_writer :webViewController
   
   def init
     if super
-      WebHistory.optionalSharedHistory = @history = WebHistory.alloc.init
+      WebHistory.optionalSharedHistory = @history = OrderedWebHistory.alloc.init
       
       # Ensure the application support directory
       application_support_path = Kari.application_support_path
@@ -45,7 +33,7 @@ class WebHistoryController < NSController
         object: nil
     )
     
-    @history.loadFromURL_error(@history_file_path)
+    @history.loadFromURL(@history_file_path, error: nil)
   end
   
   def goToHistoryItem(sender)
