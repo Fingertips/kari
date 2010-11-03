@@ -1,3 +1,5 @@
+ENV['KARI_ENV'] ||= 'release'
+
 framework 'Cocoa'
 framework 'WebKit'
 

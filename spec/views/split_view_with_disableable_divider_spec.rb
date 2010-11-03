@@ -47,12 +47,12 @@ describe "SplitViewWithDisableableDivider, when the divider is enabled" do
   
   it "should process mouseDown events as normal" do
     event = mock('Mouse down event')
-    @split_view.expects(:super_mouseDown).with(event)
+    @split_view.expects(:_mouseDown).with(event)
     @split_view.mouseDown(event)
   end
   
   it "should setup cursor rects as normal" do
-    @split_view.expects(:super_resetCursorRects)
+    @split_view.expects(:_resetCursorRects)
     @split_view.resetCursorRects
   end
 end

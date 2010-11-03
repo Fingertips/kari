@@ -263,6 +263,6 @@ describe 'ApplicationController, in general' do
   it "should rebuild the index when forced from the menu" do
     @controller.instance_variable_set('@watcher', @watcher_mock)
     @watcher_mock.expects(:forceRebuild)
-    @controller.rebuildIndex
+    @controller.rebuildIndex(nil)
   end
 end

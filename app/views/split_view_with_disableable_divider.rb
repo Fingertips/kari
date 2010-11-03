@@ -6,11 +6,13 @@ class SplitViewWithDisableableDivider < NSSplitView
     resetCursorRects
   end
   
+  alias_method :_mouseDown, :mouseDown
   def mouseDown(event)
-    super_mouseDown(event) unless disableDivider
+    _mouseDown(event) unless disableDivider
   end
   
+  alias_method :_resetCursorRects, :resetCursorRects
   def resetCursorRects
-    super_resetCursorRects unless disableDivider
+    _resetCursorRects unless disableDivider
   end
 end

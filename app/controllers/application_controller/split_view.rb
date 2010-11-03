@@ -39,22 +39,22 @@ class ApplicationController
     else
       # Since the class browser fits to the top frame, and the top frame returns the correct
       # height whereas the browser does not for some reason, we actually store the height of the top frame.
-      self.class_browser_height = topViewOfSplitView.frame.height
+      self.class_browser_height = topViewOfSplitView.frame.size.height
     end
   end
   
   def class_browser_height=(height)
-    @class_browser_height = preferences.interface.class_browser_height = height
+    @class_browser_height = preferences['interface.class_browser_height'] = height
   end
   
   def class_browser_height
-    @class_browser_height ||= preferences.interface.class_browser_height
+    @class_browser_height ||= preferences['interface.class_browser_height']
   end
   
   private
   
   def class_browser_visible?
-    preferences.interface.class_browser_visible
+    preferences['interface.class_browser_visible']
   end
   
   def updating_splitView?
@@ -84,8 +84,8 @@ class ApplicationController
   
   def effective_contentView
     frame = @window.contentView.frame.dup
-    frame.height -= STATUS_BAR_HEIGHT
-    frame.y += STATUS_BAR_HEIGHT
+    frame.size.height -= STATUS_BAR_HEIGHT
+    frame.origin.y += STATUS_BAR_HEIGHT
     frame
   end
   
@@ -104,16 +104,16 @@ class ApplicationController
     top_frame = topViewOfSplitView.frame
     bottom_frame = bottomViewOfSplitView.frame
     
-    top_frame.height = class_browser_height
-    top_frame.width = bottom_frame.width = splitView_frame.width
-    bottom_frame.y = top_frame.height + @splitView.dividerThickness
+    top_frame.size.height = class_browser_height
+    top_frame.size.width = bottom_frame.size.width = splitView_frame.size.width
+    bottom_frame.origin.y = top_frame.size.height + @splitView.dividerThickness
     
     if class_browser_visible?
-      splitView_frame.height = effective_contentView.height
-      bottom_frame.height = splitView_frame.height - top_frame.height - @splitView.dividerThickness
+      splitView_frame.size.height = effective_contentView.size.height
+      bottom_frame.size.height = splitView_frame.size.height - top_frame.size.height - @splitView.dividerThickness
     else
-      bottom_frame.height = effective_contentView.height
-      splitView_frame.height = top_frame.height + @splitView.dividerThickness + bottom_frame.height
+      bottom_frame.size.height = effective_contentView.size.height
+      splitView_frame.size.height = top_frame.size.height + @splitView.dividerThickness + bottom_frame.size.height
     end
     
     [splitView_frame, top_frame, bottom_frame]

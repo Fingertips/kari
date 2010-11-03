@@ -28,4 +28,14 @@ desc "Run all specs"
 task :spec => SPEC_DIRECTORIES.map { |s| "spec:#{s}" } do
 end
 
-task :default => :spec
+desc "Compile the app"
+task :compile do
+  sh "xcodebuild -configuration Debug"
+end
+
+desc "Run the app"
+task :run => :compile do
+  sh "env KARI_ENV=debug open #{File.expand_path("../build/Debug/Kari.app", __FILE__)}"
+end
+
+task :default => :run
