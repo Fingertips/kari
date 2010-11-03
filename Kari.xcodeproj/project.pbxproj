@@ -15,7 +15,6 @@
 		514292CE0CC66CDC00F9CEEF /* app in Resources */ = {isa = PBXBuildFile; fileRef = 514292B90CC66CDC00F9CEEF /* app */; };
 		514292CF0CC66CDC00F9CEEF /* config in Resources */ = {isa = PBXBuildFile; fileRef = 514292C10CC66CDC00F9CEEF /* config */; };
 		514292D00CC66CDC00F9CEEF /* misc in Resources */ = {isa = PBXBuildFile; fileRef = 514292C40CC66CDC00F9CEEF /* misc */; };
-		514292D10CC66CDC00F9CEEF /* test in Resources */ = {isa = PBXBuildFile; fileRef = 514292CA0CC66CDC00F9CEEF /* test */; };
 		514292D20CC66CDC00F9CEEF /* vendor in Resources */ = {isa = PBXBuildFile; fileRef = 514292CC0CC66CDC00F9CEEF /* vendor */; };
 		514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 514292ED0CC6823A00F9CEEF /* MainMenu.nib */; };
 		516499AF0EEEBFBD0000C1E3 /* Index.h in Headers */ = {isa = PBXBuildFile; fileRef = 516499AD0EEEBFBD0000C1E3 /* Index.h */; };
@@ -66,7 +65,6 @@
 		514292B90CC66CDC00F9CEEF /* app */ = {isa = PBXFileReference; lastKnownFileType = folder; path = app; sourceTree = "<group>"; };
 		514292C10CC66CDC00F9CEEF /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
 		514292C40CC66CDC00F9CEEF /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
-		514292CA0CC66CDC00F9CEEF /* test */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test; sourceTree = "<group>"; };
 		514292CC0CC66CDC00F9CEEF /* vendor */ = {isa = PBXFileReference; lastKnownFileType = folder; path = vendor; sourceTree = "<group>"; };
 		514292EE0CC6823A00F9CEEF /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = misc/English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		516499AD0EEEBFBD0000C1E3 /* Index.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Index.h; path = lib/search_kit/Index.h; sourceTree = "<group>"; };
@@ -79,7 +77,6 @@
 		631D1EBF126C9D250046D982 /* boot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = boot.m; path = config/boot.m; sourceTree = "<group>"; };
 		631D1F02126C9F200046D982 /* MacRuby.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacRuby.framework; path = /Library/Frameworks/MacRuby.framework; sourceTree = "<absolute>"; };
 		631D1F10126C9FA70046D982 /* boot.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = boot.rb; path = config/boot.rb; sourceTree = "<group>"; };
-		6340258C1277053A008E0C49 /* KariTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KariTest-Info.plist"; sourceTree = "<group>"; };
 		638CCA7C0DF06404008C4936 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BridgeSupport; path = misc/BridgeSupport; sourceTree = "<group>"; };
 		6392E1970F0278AC00000DEE /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
 		63F1F86F1136B48200B2330F /* FilteringArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FilteringArrayController.h; path = app/controllers/FilteringArrayController.h; sourceTree = "<group>"; };
@@ -149,7 +146,6 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				4DDCA7110ACC9A6100E082CE /* Info.plist */,
 				51E0DBCA0D80411600C898A2 /* lib */,
-				6340258C1277053A008E0C49 /* KariTest-Info.plist */,
 			);
 			name = Kari;
 			sourceTree = "<group>";
@@ -180,7 +176,6 @@
 				514292C10CC66CDC00F9CEEF /* config */,
 				6392E1970F0278AC00000DEE /* bin */,
 				514292C40CC66CDC00F9CEEF /* misc */,
-				514292CA0CC66CDC00F9CEEF /* test */,
 				514292CC0CC66CDC00F9CEEF /* vendor */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -286,7 +281,6 @@
 				514292CE0CC66CDC00F9CEEF /* app in Resources */,
 				514292CF0CC66CDC00F9CEEF /* config in Resources */,
 				514292D00CC66CDC00F9CEEF /* misc in Resources */,
-				514292D10CC66CDC00F9CEEF /* test in Resources */,
 				514292D20CC66CDC00F9CEEF /* vendor in Resources */,
 				514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */,
 				51E0DC1C0D80411600C898A2 /* lib in Resources */,
