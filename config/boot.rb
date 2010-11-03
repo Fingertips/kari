@@ -1,10 +1,10 @@
-ENV['KARI_ENV'] ||= 'release'
-
 framework 'Cocoa'
 framework 'WebKit'
 
-release = (ENV['KARI_ENV'] != 'test')
-ROOT_PATH = ENV['KARI_ROOT'] || (release ? NSBundle.mainBundle.resourcePath.fileSystemRepresentation : File.expand_path('../../', __FILE__))
+source_root = ENV['KARI_ENV'] != 'test' ? NSBundle.mainBundle.resourcePath.fileSystemRepresentation : File.expand_path('../../', __FILE__)
+ENV['KARI_ENV']   ||= 'release'
+ENV['STANDALONE'] ||= 'true'
+ROOT_PATH = ENV['KARI_ROOT'] || source_root
 
 module Kari
   def self.env
@@ -39,8 +39,6 @@ end
   end
 end
 
-ToolbarController.alloc.init
-
-unless Kari.env == 'test'
+if (ENV['STANDALONE'].to_s == 'true') and (Kari.env != 'test')
   NSApplicationMain(0, nil)
 end

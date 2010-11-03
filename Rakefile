@@ -33,8 +33,13 @@ task :compile do
   sh "xcodebuild -configuration Debug"
 end
 
+desc "Clean the compiled app"
+task :clean do
+  sh "rm -Rf #{File.expand_path('../build', __FILE__)}"
+end
+
 desc "Run the app"
-task :run => :compile do
+task :run => [:clean, :compile] do
   sh "env KARI_ENV=debug open #{File.expand_path("../build/Debug/Kari.app", __FILE__)}"
 end
 

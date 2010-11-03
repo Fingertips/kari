@@ -1,27 +1,16 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env macruby
 
-ENV['RUBYCOCOA_ROOT'] ||= SOURCE_ROOT = File.expand_path('../../', __FILE__)
-ENV['RUBYCOCOA_ENV']  ||= 'debug'
-ENV['DONT_START_RUBYCOCOA_APP'] = 'true'
+ENV['KARI_ROOT']  ||= File.expand_path('../../', __FILE__)
+ENV['KARI_ENV']   ||= 'debug'
+ENV['STANDALONE'] = 'false'
 
-require 'osx/cocoa'
-
-module OSX
-  class Index < OSX::NSObject
-    attr_accessor :index
-    
-    def lopsidedCount
-      0
-    end
-  end
-  class Match < OSX::NSObject; end
+class Index
+  attr_accessor :index
+  def lopsidedCount; 0; end
 end
+class Match; end
 
-begin
-  require File.join(ENV['RUBYCOCOA_ROOT'], 'rb_main')
-rescue LoadError
-  require File.join(ENV['RUBYCOCOA_ROOT'], 'misc', 'rb_main')
-end
+require File.join(ENV["KARI_ROOT"], 'config/boot')
 
 require 'tmpdir'
 require 'optparse'
