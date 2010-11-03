@@ -87,7 +87,7 @@ class ApplicationController < NSController
     PreferencesController.alloc.init.showWindow(self)
   end
   
-  def rebuildIndex
+  def rebuildIndex(sender)
     @watcher.forceRebuild
   end
   

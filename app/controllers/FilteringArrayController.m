@@ -26,7 +26,7 @@
     [item setQuery:searchString];
     if ([item score] > 0) [matchedObjects addObject:item];
   }
-  [pool release];
+  [pool drain];
   
   return [super arrangeObjects:matchedObjects];
 }
