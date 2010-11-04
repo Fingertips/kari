@@ -1,4 +1,4 @@
-class SearchController < NSController
+class SearchController
   attr_accessor :results
   attr_accessor :delegate
   

@@ -1,4 +1,4 @@
-class WebViewController < NSController
+class WebViewController
   attr_writer :webview
   attr_writer :backForwardButton
   attr_writer :cursorOverLinkTextField

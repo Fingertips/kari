@@ -1,4 +1,4 @@
-class PreferencesController < NSController
+class PreferencesController
   def browseForRubyInstallation(sender)
     openDirectoryPanel = NSOpenPanel.openPanel
     openDirectoryPanel.canChooseDirectories = true

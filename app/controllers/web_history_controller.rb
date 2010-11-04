@@ -1,4 +1,4 @@
-class WebHistoryController < NSController
+class WebHistoryController
   attr_writer :historyMenu
   attr_writer :webViewController
   

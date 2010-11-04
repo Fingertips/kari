@@ -1,4 +1,4 @@
-class ToolbarController < NSController
+class ToolbarController
   attr_writer :window
   attr_writer :historyBackAndForwardView
   attr_writer :searchView

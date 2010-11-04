@@ -1,4 +1,4 @@
-class ApplicationController < NSController
+class ApplicationController
   def self.concerned_with(name)
     require File.expand_path("../application_controller/#{name}", __FILE__)
   end
