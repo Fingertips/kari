@@ -25,7 +25,11 @@ class ManagerTestCache
     end
     
     def stale?
-      !ENV['REFRESH'].nil? or !File.exist?(BASE_PATH_CACHE) or cache_age > (15*60)
+      if ENV['REFRESH']
+        ENV['REFRESH'] = nil
+        return true
+      end
+      !File.exist?(BASE_PATH_CACHE) or cache_age > (15*60)
     end
     
     def bootstrap

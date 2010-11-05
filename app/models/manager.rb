@@ -17,7 +17,7 @@ class Manager
     
     if File.exist?(search_index_filename)
       log.debug "Opening SearchKit index (#{search_index_filename})"
-      @searchIndex = Index.alloc.initWithPath(search_index_filename)
+      @search_index = Index.alloc.initWithPath(search_index_filename)
     else
       log.debug "Creating SearchKit index (#{search_index_filename})"
       @search_index = Index.createWithPath(search_index_filename)

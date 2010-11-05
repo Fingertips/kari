@@ -8,6 +8,6 @@ class Match
   end
   
   def inspect
-    "#<SearchKit::Match:#{object_id} name=#{name} url=#{URL().path} score=#{score}>"
+    "#<Match:#{object_id} name=#{name} url=#{URL().path} score=#{score}>"
   end
 end

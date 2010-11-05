@@ -280,7 +280,7 @@ describe "A filled Manager" do
   #   end
   # end
   
-  it "should forward search queries to the SearchKit::Index instance" do
+  it "should forward search queries to the Search Kit Index instance" do
     @manager.search_index.expects(:search).with('a pot of gold')
     @manager.search('a pot of gold')
   end

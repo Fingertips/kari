@@ -109,8 +109,8 @@ describe "A SearchController, in general" do
       NSURL.fileURLWithPath('/Karidoc/Mutex/try_lock.karidoc')
     ]
     @matches = [
-      SearchKit::Match.alloc.initWithURL(@urls.first, score: 1.2345),
-      SearchKit::Match.alloc.initWithURL(@urls.last, score: 2.3456)
+      Match.alloc.initWithURL(@urls.first, score: 1.2345),
+      Match.alloc.initWithURL(@urls.last, score: 2.3456)
     ]
     @results_array_controller.content = @matches
     
