@@ -17,17 +17,18 @@
 		514292D00CC66CDC00F9CEEF /* misc in Resources */ = {isa = PBXBuildFile; fileRef = 514292C40CC66CDC00F9CEEF /* misc */; };
 		514292D20CC66CDC00F9CEEF /* vendor in Resources */ = {isa = PBXBuildFile; fileRef = 514292CC0CC66CDC00F9CEEF /* vendor */; };
 		514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 514292ED0CC6823A00F9CEEF /* MainMenu.nib */; };
-		516499AF0EEEBFBD0000C1E3 /* Index.h in Headers */ = {isa = PBXBuildFile; fileRef = 516499AD0EEEBFBD0000C1E3 /* Index.h */; };
-		516499B00EEEBFBD0000C1E3 /* Index.m in Sources */ = {isa = PBXBuildFile; fileRef = 516499AE0EEEBFBD0000C1E3 /* Index.m */; };
 		51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
-		51CAD5FE0EF02CC7008F5EDF /* match.h in Headers */ = {isa = PBXBuildFile; fileRef = 51CAD5FC0EF02CC7008F5EDF /* match.h */; };
-		51CAD5FF0EF02CC7008F5EDF /* match.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CAD5FD0EF02CC7008F5EDF /* match.m */; };
 		51E0DC1C0D80411600C898A2 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 51E0DBCA0D80411600C898A2 /* lib */; };
 		51F2708E0F27850C003D4A54 /* MGRecessedPopUpButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 51F270890F27850C003D4A54 /* MGRecessedPopUpButtonCell.h */; };
 		51F2708F0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F2708A0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m */; };
+		6319DBBA12840CEA003495DF /* Index.m in Sources */ = {isa = PBXBuildFile; fileRef = 6319DBB812840CEA003495DF /* Index.m */; };
+		6319DBBB12840CEA003495DF /* Match.m in Sources */ = {isa = PBXBuildFile; fileRef = 6319DBB912840CEA003495DF /* Match.m */; };
+		6319DBBE12840CFC003495DF /* Index.h in Headers */ = {isa = PBXBuildFile; fileRef = 6319DBBC12840CFC003495DF /* Index.h */; };
+		6319DBBF12840CFC003495DF /* Match.h in Headers */ = {isa = PBXBuildFile; fileRef = 6319DBBD12840CFC003495DF /* Match.h */; };
 		631D1EC0126C9D250046D982 /* boot.m in Sources */ = {isa = PBXBuildFile; fileRef = 631D1EBF126C9D250046D982 /* boot.m */; };
 		631D1F03126C9F200046D982 /* MacRuby.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 631D1F02126C9F200046D982 /* MacRuby.framework */; };
 		631D1F11126C9FA70046D982 /* boot.rb in Resources */ = {isa = PBXBuildFile; fileRef = 631D1F10126C9FA70046D982 /* boot.rb */; };
+		636542A21283124A0062AD80 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 636542A11283124A0062AD80 /* CoreServices.framework */; };
 		638CCA7D0DF06404008C4936 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = 638CCA7C0DF06404008C4936 /* BridgeSupport */; };
 		6392E19B0F0278AC00000DEE /* bin in Resources */ = {isa = PBXBuildFile; fileRef = 6392E1970F0278AC00000DEE /* bin */; };
 		63F1F8711136B48200B2330F /* FilteringArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F1F86F1136B48200B2330F /* FilteringArrayController.h */; };
@@ -67,16 +68,17 @@
 		514292C40CC66CDC00F9CEEF /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
 		514292CC0CC66CDC00F9CEEF /* vendor */ = {isa = PBXFileReference; lastKnownFileType = folder; path = vendor; sourceTree = "<group>"; };
 		514292EE0CC6823A00F9CEEF /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = misc/English.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		516499AD0EEEBFBD0000C1E3 /* Index.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Index.h; path = lib/search_kit/Index.h; sourceTree = "<group>"; };
-		516499AE0EEEBFBD0000C1E3 /* Index.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Index.m; path = lib/search_kit/Index.m; sourceTree = "<group>"; };
-		51CAD5FC0EF02CC7008F5EDF /* match.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = match.h; path = lib/search_kit/match.h; sourceTree = "<group>"; };
-		51CAD5FD0EF02CC7008F5EDF /* match.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = match.m; path = lib/search_kit/match.m; sourceTree = "<group>"; };
 		51E0DBCA0D80411600C898A2 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
 		51F270890F27850C003D4A54 /* MGRecessedPopUpButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGRecessedPopUpButtonCell.h; path = vendor_objc/MGRecessedPopUpButtonCell.h; sourceTree = "<group>"; };
 		51F2708A0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGRecessedPopUpButtonCell.m; path = vendor_objc/MGRecessedPopUpButtonCell.m; sourceTree = "<group>"; };
+		6319DBB812840CEA003495DF /* Index.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Index.m; path = app/models/Index.m; sourceTree = "<group>"; };
+		6319DBB912840CEA003495DF /* Match.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Match.m; path = app/models/Match.m; sourceTree = "<group>"; };
+		6319DBBC12840CFC003495DF /* Index.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Index.h; path = app/models/Index.h; sourceTree = "<group>"; };
+		6319DBBD12840CFC003495DF /* Match.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Match.h; path = app/models/Match.h; sourceTree = "<group>"; };
 		631D1EBF126C9D250046D982 /* boot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = boot.m; path = config/boot.m; sourceTree = "<group>"; };
 		631D1F02126C9F200046D982 /* MacRuby.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacRuby.framework; path = /Library/Frameworks/MacRuby.framework; sourceTree = "<absolute>"; };
 		631D1F10126C9FA70046D982 /* boot.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = boot.rb; path = config/boot.rb; sourceTree = "<group>"; };
+		636542A11283124A0062AD80 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		638CCA7C0DF06404008C4936 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BridgeSupport; path = misc/BridgeSupport; sourceTree = "<group>"; };
 		6392E1970F0278AC00000DEE /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
 		63F1F86F1136B48200B2330F /* FilteringArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FilteringArrayController.h; path = app/controllers/FilteringArrayController.h; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */,
 				4DDCA70C0ACC9A6100E082CE /* Cocoa.framework in Frameworks */,
 				631D1F03126C9F200046D982 /* MacRuby.framework in Frameworks */,
+				636542A21283124A0062AD80 /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +117,7 @@
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				1D71E4C3139CD53D99A6E93C /* Sparkle.framework */,
 				631D1F02126C9F200046D982 /* MacRuby.framework */,
+				636542A11283124A0062AD80 /* CoreServices.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -163,10 +167,6 @@
 			isa = PBXGroup;
 			children = (
 				514292ED0CC6823A00F9CEEF /* MainMenu.nib */,
-				516499AD0EEEBFBD0000C1E3 /* Index.h */,
-				516499AE0EEEBFBD0000C1E3 /* Index.m */,
-				51CAD5FC0EF02CC7008F5EDF /* match.h */,
-				51CAD5FD0EF02CC7008F5EDF /* match.m */,
 				51F270890F27850C003D4A54 /* MGRecessedPopUpButtonCell.h */,
 				51F2708A0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m */,
 				5130B8370EFAB20000944BE5 /* MGViewAnimation.h */,
@@ -203,6 +203,10 @@
 		63F1F8741136B48B00B2330F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6319DBBC12840CFC003495DF /* Index.h */,
+				6319DBB812840CEA003495DF /* Index.m */,
+				6319DBBD12840CFC003495DF /* Match.h */,
+				6319DBB912840CEA003495DF /* Match.m */,
 				63F1F8751136B49600B2330F /* ScoredRubyName.h */,
 				63F1F8761136B49600B2330F /* ScoredRubyName.m */,
 			);
@@ -216,12 +220,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				516499AF0EEEBFBD0000C1E3 /* Index.h in Headers */,
-				51CAD5FE0EF02CC7008F5EDF /* match.h in Headers */,
 				5130B8390EFAB20000944BE5 /* MGViewAnimation.h in Headers */,
 				51F2708E0F27850C003D4A54 /* MGRecessedPopUpButtonCell.h in Headers */,
 				63F1F8711136B48200B2330F /* FilteringArrayController.h in Headers */,
 				63F1F8771136B49600B2330F /* ScoredRubyName.h in Headers */,
+				6319DBBE12840CFC003495DF /* Index.h in Headers */,
+				6319DBBF12840CFC003495DF /* Match.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,13 +302,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				516499B00EEEBFBD0000C1E3 /* Index.m in Sources */,
-				51CAD5FF0EF02CC7008F5EDF /* match.m in Sources */,
 				5130B83A0EFAB20000944BE5 /* MGViewAnimation.m in Sources */,
 				51F2708F0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m in Sources */,
 				63F1F8721136B48200B2330F /* FilteringArrayController.m in Sources */,
 				63F1F8781136B49600B2330F /* ScoredRubyName.m in Sources */,
 				631D1EC0126C9D250046D982 /* boot.m in Sources */,
+				6319DBBA12840CEA003495DF /* Index.m in Sources */,
+				6319DBBB12840CEA003495DF /* Match.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

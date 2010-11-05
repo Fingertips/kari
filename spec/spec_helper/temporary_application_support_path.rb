@@ -1,16 +1,8 @@
 module TemporaryApplicationSupportPath
-  def self.included(base)
-    base.send(:before) do
-      @application_support_path = TemporaryApplicationSupportPath.stub
-    end
-    base.send(:after) do
-      TemporaryApplicationSupportPath.cleanup(@application_support_path)
-    end
-  end
-  
   def self.extended(base)
     base.before do
       @application_support_path = TemporaryApplicationSupportPath.stub
+      TemporaryApplicationSupportPath.cleanup(@application_support_path)
     end
     base.after do
       TemporaryApplicationSupportPath.cleanup(@application_support_path)
