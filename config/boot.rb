@@ -24,22 +24,15 @@ module Kari
   end
 end
 
-load_bridge_support_file File.join(Kari.root_path, 'misc', 'BridgeSupport', 'SearchKit.bridgesupport')
-
 require 'tmpdir'
 
-# %w(lib app/helpers app/models app/views app/controllers).each do |subdir|
-#   $:.unshift("#{Kari.root_path}/#{subdir}")
-#   Dir.glob("#{Kari.root_path}/#{subdir}/*.{rb,rbo}").each do |file|
-#     library = File.basename(file, File.extname(file))
-#     require library
-#   end
-# end
-
-$:.unshift("#{Kari.root_path}/app/models")
-require 'manager'
-require 'ruby_name'
-require 'Match'
+%w(lib app/helpers app/models app/views app/controllers).each do |subdir|
+  $:.unshift("#{Kari.root_path}/#{subdir}")
+  Dir.glob("#{Kari.root_path}/#{subdir}/*.{rb,rbo}").each do |file|
+    library = File.basename(file, File.extname(file))
+    require library
+  end
+end
 
 if (ENV['STANDALONE'].to_s == 'true') and (Kari.env != 'test')
   NSApplicationMain(0, nil)

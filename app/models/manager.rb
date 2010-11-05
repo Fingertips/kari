@@ -17,10 +17,10 @@ class Manager
     
     if File.exist?(search_index_filename)
       log.debug "Opening SearchKit index (#{search_index_filename})"
-      @search_index = SearchKit::Index.open(search_index_filename, nil, true)
+      @searchIndex = Index.alloc.initWithPath(search_index_filename)
     else
       log.debug "Creating SearchKit index (#{search_index_filename})"
-      @search_index = SearchKit::Index.create(search_index_filename)
+      @search_index = Index.createWithPath(search_index_filename)
     end
   end
   
@@ -122,7 +122,7 @@ class Manager
           karidoc_filename = File.join(filepath, karidoc_path)
           
           @search_index.removeDocument(karidoc_path)
-          @search_index.addDocumentWithText(karidoc_path, File.read(karidoc_filename))
+          @search_index.addDocument(karidoc_path, withText:File.read(karidoc_filename))
         end
       else
         karidoc_path = KaridocGenerator.clear(filepath, full_name)

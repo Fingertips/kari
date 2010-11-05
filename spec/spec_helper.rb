@@ -20,8 +20,6 @@ require 'objective-c'
 require 'temporary_application_support_path'
 require 'user_preferences'
 
-# ObjectiveC.require('lib/search_kit/Match')
-# ObjectiveC.require('lib/search_kit/Index', 'CoreServices')
 ObjectiveC.require('app/models/Match')
 ObjectiveC.require('app/models/Index', 'CoreServices')
 ObjectiveC.require('app/models/ScoredRubyName')

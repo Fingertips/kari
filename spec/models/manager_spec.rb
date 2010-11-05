@@ -217,14 +217,14 @@ describe "An empty Manager" do
       karidoc_filename = File.join('', file)
       
       @manager.search_index.expects(:removeDocument).with(karidoc_filename)
-      @manager.search_index.expects(:addDocumentWithText)
+      @manager.search_index.expects('addDocument:withText:')
     end
     @manager.examine(ALTERNATE_RI_PATH)
   end
   
   it "should remove documents from the index" do
     @manager.search_index.expects(:removeDocument).with(File.join('', 'Binding', '#clone.karidoc'))
-    @manager.search_index.expects(:addDocumentWithText).never
+    @manager.search_index.expects('addDocument:withText:').never
     @manager.update_karidoc(['Binding#clone'])
   end
 end
