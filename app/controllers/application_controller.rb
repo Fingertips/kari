@@ -34,6 +34,8 @@ class ApplicationController
   end
   
   def awakeFromNib
+    Manager.bootstrap if Manager.first_run?
+    
     # Initialize the UI
     setup_splitView!
     setup_classTree!
@@ -45,8 +47,6 @@ class ApplicationController
           name: 'KariOpenDocumentation',
         object: nil
     )
-    
-    Manager.bootstrap if Manager.first_run?
     
     @processing = 0
     
@@ -65,7 +65,7 @@ class ApplicationController
     @webViewController.home!
   end
   
-  def observeValueForKeyPath_ofObject_change_context(key_path, object, change, context)
+  def observeValueForKeyPath(key_path, ofObject:object, change:change, context:context)
     # `node' is nil when the selection changes when we load a new tree.
     # We probably want to store the current selectionIndexPath as well before loading the new tree.
     if node = @classTreeController.selectedObjects.first

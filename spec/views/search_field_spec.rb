@@ -11,7 +11,7 @@ describe "SearchField" do
     @keyDelegate.stubs(:wantsForwardedKeyEvents?).returns(true)
     SearchField::FORWARD_SELECTORS.each do |key|
       @keyDelegate.expects(:tryToPerform).with(key, with: nil)
-      @search_field.textView_doCommandBySelector(nil, key)
+      @search_field.textView(nil, doCommandBySelector:key)
     end
   end
   
@@ -19,7 +19,7 @@ describe "SearchField" do
     @keyDelegate.stubs(:wantsForwardedKeyEvents?).returns(true)
     %w(does: not: exist:).each do |key|
       @keyDelegate.expects(key.to_sym).with(key, nil).times(0)
-      @search_field.textView_doCommandBySelector(nil, key)
+      @search_field.textView(nil, doCommandBySelector:key)
     end
   end
   

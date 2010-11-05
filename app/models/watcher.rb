@@ -25,18 +25,18 @@ class Watcher
   end
   
   def watchPaths
-    self.class.basePaths(RDoc::RI::Paths.raw_path(false, true, true, true))
+    self.class.basePaths(RDoc::RI::Paths.path(false, true, true, true))
   end
   
   def riPaths
-    self.class.basePaths(RDoc::RI::Paths.raw_path(true, true, true, true))
+    self.class.basePaths(RDoc::RI::Paths.path(true, true, true, true))
   end
   
   def start
     log.debug("Watching FSEvents since #{lastEventId} on #{watchPaths.inspect}")
     @fsevents = FSEvents.start_watching(watchPaths, :since => lastEventId, :latency => 5.0) do |events|
       handleEvents(events)
-    end
+    end unless watchPaths.empty?
   end
   
   def stop

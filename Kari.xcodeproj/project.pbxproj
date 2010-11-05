@@ -14,7 +14,6 @@
 		5130B83A0EFAB20000944BE5 /* MGViewAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5130B8380EFAB20000944BE5 /* MGViewAnimation.m */; };
 		514292CE0CC66CDC00F9CEEF /* app in Resources */ = {isa = PBXBuildFile; fileRef = 514292B90CC66CDC00F9CEEF /* app */; };
 		514292CF0CC66CDC00F9CEEF /* config in Resources */ = {isa = PBXBuildFile; fileRef = 514292C10CC66CDC00F9CEEF /* config */; };
-		514292D00CC66CDC00F9CEEF /* misc in Resources */ = {isa = PBXBuildFile; fileRef = 514292C40CC66CDC00F9CEEF /* misc */; };
 		514292D20CC66CDC00F9CEEF /* vendor in Resources */ = {isa = PBXBuildFile; fileRef = 514292CC0CC66CDC00F9CEEF /* vendor */; };
 		514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 514292ED0CC6823A00F9CEEF /* MainMenu.nib */; };
 		51BF18090D8572C000B04481 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D71E4C3139CD53D99A6E93C /* Sparkle.framework */; };
@@ -29,7 +28,6 @@
 		631D1F03126C9F200046D982 /* MacRuby.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 631D1F02126C9F200046D982 /* MacRuby.framework */; };
 		631D1F11126C9FA70046D982 /* boot.rb in Resources */ = {isa = PBXBuildFile; fileRef = 631D1F10126C9FA70046D982 /* boot.rb */; };
 		636542A21283124A0062AD80 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 636542A11283124A0062AD80 /* CoreServices.framework */; };
-		638CCA7D0DF06404008C4936 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = 638CCA7C0DF06404008C4936 /* BridgeSupport */; };
 		6392E19B0F0278AC00000DEE /* bin in Resources */ = {isa = PBXBuildFile; fileRef = 6392E1970F0278AC00000DEE /* bin */; };
 		63F1F8711136B48200B2330F /* FilteringArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F1F86F1136B48200B2330F /* FilteringArrayController.h */; };
 		63F1F8721136B48200B2330F /* FilteringArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F1F8701136B48200B2330F /* FilteringArrayController.m */; };
@@ -79,7 +77,6 @@
 		631D1F02126C9F200046D982 /* MacRuby.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacRuby.framework; path = /Library/Frameworks/MacRuby.framework; sourceTree = "<absolute>"; };
 		631D1F10126C9FA70046D982 /* boot.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = boot.rb; path = config/boot.rb; sourceTree = "<group>"; };
 		636542A11283124A0062AD80 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
-		638CCA7C0DF06404008C4936 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BridgeSupport; path = misc/BridgeSupport; sourceTree = "<group>"; };
 		6392E1970F0278AC00000DEE /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
 		63F1F86F1136B48200B2330F /* FilteringArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FilteringArrayController.h; path = app/controllers/FilteringArrayController.h; sourceTree = "<group>"; };
 		63F1F8701136B48200B2330F /* FilteringArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FilteringArrayController.m; path = app/controllers/FilteringArrayController.m; sourceTree = "<group>"; };
@@ -171,7 +168,6 @@
 				51F2708A0F27850C003D4A54 /* MGRecessedPopUpButtonCell.m */,
 				5130B8370EFAB20000944BE5 /* MGViewAnimation.h */,
 				5130B8380EFAB20000944BE5 /* MGViewAnimation.m */,
-				638CCA7C0DF06404008C4936 /* BridgeSupport */,
 				514292B90CC66CDC00F9CEEF /* app */,
 				514292C10CC66CDC00F9CEEF /* config */,
 				6392E1970F0278AC00000DEE /* bin */,
@@ -284,12 +280,10 @@
 				4DDCA7070ACC9A6100E082CE /* InfoPlist.strings in Resources */,
 				514292CE0CC66CDC00F9CEEF /* app in Resources */,
 				514292CF0CC66CDC00F9CEEF /* config in Resources */,
-				514292D00CC66CDC00F9CEEF /* misc in Resources */,
 				514292D20CC66CDC00F9CEEF /* vendor in Resources */,
 				514292EF0CC6823A00F9CEEF /* MainMenu.nib in Resources */,
 				51E0DC1C0D80411600C898A2 /* lib in Resources */,
 				51137C220D854B70000EADF3 /* Kari.icns in Resources */,
-				638CCA7D0DF06404008C4936 /* BridgeSupport in Resources */,
 				6392E19B0F0278AC00000DEE /* bin in Resources */,
 				631D1F11126C9FA70046D982 /* boot.rb in Resources */,
 			);
