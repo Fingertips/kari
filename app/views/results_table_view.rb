@@ -1,8 +1,4 @@
 class ResultsTableView < NSTableView
-  def _highlightColorForCell(cell)
-    NSColor.secondarySelectedControlColor
-  end
-    
   def control(control, textView:textView, doCommandBySelector:commandSelector)
     case commandSelector.to_s
     when 'moveUp:'
