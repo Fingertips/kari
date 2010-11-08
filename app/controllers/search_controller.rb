@@ -8,7 +8,8 @@ class SearchController
   
   def init
     if super
-      @results = NSMutableArray.alloc.init
+      @results     = NSMutableArray.alloc.init
+      @searchQueue = Dispatch::Queue.new('com.fngtps.com.Kari')
       self
     end
   end
@@ -19,10 +20,12 @@ class SearchController
   end
   
   def search(sender)
-    @delegate.searchControllerWillStartSearching
-    @results_array_controller.search(sender)
-    @delegate.searchControllerFinishedSearching
-    @results_table_view.scrollToRow(0)
+    @searchQueue.async do
+      @delegate.searchControllerWillStartSearching
+      @results_array_controller.search(sender)
+      @delegate.searchControllerFinishedSearching
+      @results_table_view.scrollToRow(0)
+    end
   end
   
   def rowDoubleClicked(tableview)
