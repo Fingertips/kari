@@ -4,7 +4,6 @@ class SearchController
   
   attr_writer :results_array_controller
   attr_writer :results_table_view
-  attr_writer :search_field
   attr_writer :class_tree_controller
   
   def init
@@ -15,7 +14,6 @@ class SearchController
   end
   
   def awakeFromNib
-    @search_field.keyDelegate = @results_table_view
     @results_table_view.target = self
     @results_array_controller.sortDescriptors = [NSSortDescriptor.alloc.initWithKey('score', ascending: false)]
   end

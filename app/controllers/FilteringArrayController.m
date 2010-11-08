@@ -8,7 +8,7 @@
 
 - (void)search:(id)sender
 {
-    [self setSearchString: sender];
+    [self setSearchString: [sender stringValue]];
     [self rearrangeObjects];
 }
 
