@@ -93,7 +93,7 @@ class ApplicationController
     view_animations = views.map do |view, frame|
       { NSViewAnimationTargetKey => view, NSViewAnimationEndFrameKey => NSValue.valueWithRect(frame) }
     end
-    animation = NSViewAnimation.alloc.initWithViewAnimations(view_animations)
+    animation = MGViewAnimation.alloc.initWithViewAnimations(view_animations)
     animation.animationBlockingMode = NSAnimationBlocking
     animation.duration = 0.3
     animation.startAnimation
