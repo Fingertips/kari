@@ -270,14 +270,12 @@ describe "A filled Manager" do
   
   # DISABLED somehow this triggers a reference count problem in MacRuby and I don't wanna…
   # it "should be able to write index to disk and read it back" do
-  #   show_logs do
   #     @manager.write_to_disk
   #     @manager.close
   #     
   #     manager = Manager.initialize_from_disk
   #     manager.descriptions.should == @manager.descriptions
   #     manager.namespace.should == @manager.namespace
-  #   end
   # end
   
   it "should forward search queries to the Search Kit Index instance" do

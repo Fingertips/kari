@@ -8,7 +8,6 @@ module SearchControllerSpecHelper
       stub_outlets(@controller,
         :results_array_controller => FilteringArrayController.alloc.init,
         :results_table_view => ResultsTableView.alloc.init,
-        :search_field => SearchField.alloc.init,
         :class_tree_controller => NSTreeController.alloc.init
       )
     end
@@ -35,10 +34,6 @@ describe "A SearchController, when awaking from nib" do
   it "should assign itself as the target for the double click action of the search results table view" do
     @results_table_view.target.should == @controller
   end
-  
-  it "should assign the search results table view as the key delegate for the search text field, delegating up/down arrow events" do
-    @search_field.keyDelegate.should == @results_table_view
-  end
 end
 
 describe "A SearchController, when performing a search" do
@@ -48,6 +43,7 @@ describe "A SearchController, when performing a search" do
   before do
     @delegate = mock('SearchController delegate')
     @controller.delegate = @delegate
+    @searchField = NSSearchField.alloc.init
   end
   
   # DISABLED: current implementation doesn't use the manager to search
@@ -83,15 +79,17 @@ describe "A SearchController, when performing a search" do
   # end
   
   it "should send a notification to it's delegate when a search will commence" do
+    @searchField.stringValue = 'foo'
     @delegate.expects(:searchControllerWillStartSearching)
     @delegate.stubs(:searchControllerFinishedSearching)
-    @controller.search('foo')
+    @controller.search(@searchField)
   end
   
   it "should send a notification to it's delegate when a search has finished" do
+    @searchField.stringValue = 'foo'
     @delegate.stubs(:searchControllerWillStartSearching)
     @delegate.expects(:searchControllerFinishedSearching)
-    @controller.search('foo')
+    @controller.search(@searchField)
   end
 end
 

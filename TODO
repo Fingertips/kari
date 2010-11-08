@@ -1,12 +1,9 @@
 ELOY
 
-- Rewrite to MacRuby.
 - Consistenly use snake/camel case for all the ib_outlets.
 
 MANFRED
 
-- Update the active item in the class browser when a link is clicked
-- Refactor tests, throw away unused crap and make them run
 - Take out Search Kit
 - Think about a way to solve the uppercased instance method problem in the RubyName optimization
 - Write tests for when the manager is don't indexing
@@ -20,7 +17,6 @@ ANYONE
 
 IMPROVEMENTS
 
-- Resize search filter bar buttons so they aren't bigger than necessary. Don't use NSMatrix if we want this. (For instance MGScopeBar)
 - Move splitView related code from ApplicationController into a subclass of NSSplitView.
 - Find and show Ruby installations in the source list of the 'Browse Ruby Installation' dialog
 - Use a code highlighter to highlight examples

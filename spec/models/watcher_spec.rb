@@ -99,7 +99,10 @@ describe "A Watcher" do
   end
   
   it "should start watching the watchPaths when started" do
-    FSEvents.expects(:start_watching).with(@watcher.watchPaths, :since => nil, :latency => 5.0).returns(stub(:stop))
+    watchPaths = ['/path/to/nowhere', '/path/to/ri']
+    @watcher.stubs(:watchPaths).returns(watchPaths)
+    
+    FSEvents.expects(:start_watching).with(watchPaths, :since => nil, :latency => 5.0).returns(stub(:stop))
     @watcher.start
   end
   
