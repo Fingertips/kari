@@ -6,8 +6,8 @@
   NSString *searchString;
 }
 
+@property (retain) NSString* searchString;
+
 - (void)search:(id)sender;
-- (NSString *)searchString;
-- (void)setSearchString:(NSString *)newSearchString;
 
 @end

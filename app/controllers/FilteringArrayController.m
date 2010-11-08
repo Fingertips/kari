@@ -4,6 +4,8 @@
 
 @implementation FilteringArrayController
 
+@synthesize searchString;
+
 - (void)search:(id)sender
 {
     [self setSearchString: sender];
@@ -33,22 +35,8 @@
 
 - (void)dealloc
 {
-  [self setSearchString:nil];
+  [searchString release];
   [super dealloc];
-}
-
-- (NSString *)searchString
-{
-  return searchString;
-}
-
-- (void)setSearchString:(NSString *)newSearchString
-{
-  if (searchString != newSearchString)
-  {
-    [searchString autorelease];
-    searchString = [newSearchString copy];
-  }
 }
 
 @end
