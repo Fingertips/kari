@@ -44,17 +44,17 @@ class ApplicationController
   end
   
   def class_browser_height=(height)
-    @class_browser_height = preferences['interface.class_browser_height'] = height
+    @class_browser_height = preferences['Preferences.Interface.class_browser_height'] = height
   end
   
   def class_browser_height
-    @class_browser_height ||= preferences['interface.class_browser_height']
+    @class_browser_height ||= preferences['Preferences.Interface.class_browser_height']
   end
   
   private
   
   def class_browser_visible?
-    preferences['interface.class_browser_visible']
+    preferences['Preferences.Interface.class_browser_visible']
   end
   
   def updating_splitView?
@@ -93,7 +93,7 @@ class ApplicationController
     view_animations = views.map do |view, frame|
       { NSViewAnimationTargetKey => view, NSViewAnimationEndFrameKey => NSValue.valueWithRect(frame) }
     end
-    animation = MGViewAnimation.alloc.initWithViewAnimations(view_animations)
+    animation = NSViewAnimation.alloc.initWithViewAnimations(view_animations)
     animation.animationBlockingMode = NSAnimationBlocking
     animation.duration = 0.3
     animation.startAnimation

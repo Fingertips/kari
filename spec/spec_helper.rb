@@ -24,6 +24,7 @@ ObjectiveC.require('app/models/Match')
 ObjectiveC.require('app/models/Index', 'CoreServices')
 ObjectiveC.require('app/models/ScoredRubyName')
 ObjectiveC.require('app/controllers/FilteringArrayController')
+# ObjectiveC.require('vendor_objc/MGViewAnimation')
 
 require File.expand_path('../../config/boot', __FILE__)
 

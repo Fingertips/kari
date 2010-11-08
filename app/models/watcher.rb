@@ -44,12 +44,12 @@ class Watcher
   end
   
   def lastEventId
-    preferences['general.last_fs_event_id']
+    preferences['Preferences.General.last_fs_event_id']
   end
   
   def setLastEventId(id)
     log.debug("Setting last event ID to #{id}")
-    preferences['general.last_fs_event_id'] = id
+    preferences['Preferences.General.last_fs_event_id'] = id
     preferences.synchronize
   end
   

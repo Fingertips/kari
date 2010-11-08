@@ -12,10 +12,10 @@ module Preferences
   end
   
   def self.register_default_values!
-    preferences['interface.class_browser_visible'] = true
-    preferences['interface.class_browser_height']  = 138
-    preferences['search.index_type']               = Preferences::Search::TYPES[:path]
-    preferences['search.scope']                    = Preferences::Search::SCOPES[:all]
+    preferences['Preferences.Interface.class_browser_visible'] = true
+    preferences['Preferences.Interface.class_browser_height']  = 138
+    preferences['Preferences.Search.index_type']               = Preferences::Search::TYPES[:path]
+    preferences['Preferences.Search.scope']                    = Preferences::Search::SCOPES[:all]
   end
   
   register_default_values!

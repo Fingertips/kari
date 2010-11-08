@@ -1,11 +1,11 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-# class ApplicationController
-#   # Directly apply the frame instead of animating, so we can use assert_difference.
-#   def animate(views)
-#     views.each { |view, frame| view.frame = frame }
-#   end
-# end
+class ApplicationController
+  # Directly apply the frame instead of animating, so we can use assert_difference.
+  def animate(views)
+    views.each { |view, frame| view.frame = frame }
+  end
+end
 
 module ApplicationControllerSpecHelper
   def self.extended(instance)
@@ -111,54 +111,53 @@ describe 'ApplicationController, during awakeFromNib' do
   end
 end
 
-# describe "ApplicationController, when dealing with the positioning of the splitView" do
-#   extend Controllers
-#   extend AssertDifferenceAssertions
-#   extend ApplicationControllerSplitViewSpecHelper
-#   
-#   before do
-#     @controller = ApplicationController.alloc.init
-#     stub_outlets(@controller,
-#       :classBrowser => NSBrowser.alloc.initWithFrame([0, 200, 200, 100]),
-#       :splitView    => SplitViewWithDisableableDivider.alloc.initWithFrame([0, 20, 200, 280]),
-#       :window       => NSWindow.alloc.init
-#     )
-#     
-#     @window.stubs(:contentView).returns(NSView.alloc.initWithFrame(NSRect.new(0, 0, 200, 200)))
-#     
-#     @splitView.vertical = false
-#     @splitView.addSubview NSView.alloc.initWithFrame([0, 0, 200, 100]) # top
-#     @splitView.addSubview NSView.alloc.initWithFrame([0, 109, 200, 180]) # bottom
-#     @splitView.stubs(:super_resetCursorRects)
-#     
-#     preferences['interface.class_browser_height'] = @classBrowser.frame.height
-#   end
-#   
-#   it "should make the split view span the complete content view of the window, minus the status bar, when the `toggle class browser' button state is turned on" do
-#     preferences['interface.class_browser_visible'] = true
-#     
-#     #assert_difference("splitView.frame.height", -classBrowser.frame.height) do
-#       assert_no_difference('controller.topViewOfSplitView.frame.height') do
-#         #assert_difference("controller.bottomViewOfSplitView.frame.height", -(classBrowser.frame.height + splitView.dividerThickness)) do
-#           controller.toggleClassBrowser(nil)
-#         #end
-#       end
-#     #end
-#   end
-#   
-#   it "should only show the bottom part of the split view when the `toggle class browser' button state is turned off" do
-#     preferences['interface.class_browser_visible'] = false
-#     controller.toggleClassBrowser(nil)
-#     
-#     assert_difference('splitView.frame.height', +(classBrowser.frame.height + splitView.dividerThickness)) do
-#       #assert_no_difference('controller.topViewOfSplitView.frame.height') do
-#         assert_difference('controller.bottomViewOfSplitView.frame.height', +(classBrowser.frame.height + splitView.dividerThickness)) do
-#           controller.toggleClassBrowser(nil)
-#         end
-#       #end
-#     end
-#   end
-# end
+describe "ApplicationController, when dealing with the positioning of the splitView" do
+  extend Controllers
+  extend AssertDifferenceAssertions
+  extend ApplicationControllerSpecHelper
+  
+  before do
+    @controller = ApplicationController.alloc.init
+    stub_outlets(@controller,
+      :classBrowser => NSBrowser.alloc.initWithFrame([0, 200, 200, 100]),
+      :splitView    => SplitViewWithDisableableDivider.alloc.initWithFrame([0, 20, 200, 280]),
+      :window       => NSWindow.alloc.init
+    )
+    
+    @window.stubs(:contentView).returns(NSView.alloc.initWithFrame(CGRectMake(0, 0, 200, 200)))
+    
+    @splitView.vertical = false
+    @splitView.addSubview NSView.alloc.initWithFrame([0, 0, 200, 100]) # top
+    @splitView.addSubview NSView.alloc.initWithFrame([0, 109, 200, 180]) # bottom
+    @splitView.stubs(:super_resetCursorRects)
+    
+    preferences['Preferences.Interface.class_browser_height'] = CGRectGetHeight(@classBrowser.frame)
+  end
+  
+  it "should make the split view span the complete content view of the window, minus the status bar, when the `toggle class browser' button state is turned on" do
+    preferences['Preferences.Interface.class_browser_visible'] = true
+    assert_difference("CGRectGetHeight(@splitView.frame)", -CGRectGetHeight(@classBrowser.frame)) do
+      assert_no_difference('CGRectGetHeight(@controller.topViewOfSplitView.frame)') do
+        assert_difference("CGRectGetHeight(@controller.bottomViewOfSplitView.frame)", -(CGRectGetHeight(@classBrowser.frame) + @splitView.dividerThickness)) do
+          @controller.toggleClassBrowser(nil)
+        end
+      end
+    end
+  end
+  
+  it "should only show the bottom part of the split view when the `toggle class browser' button state is turned off" do
+    preferences['Preferences.Interface.class_browser_visible'] = true
+    @controller.toggleClassBrowser(nil)
+    preferences['Preferences.Interface.class_browser_visible'] = false
+    assert_difference('CGRectGetHeight(@splitView.frame)', CGRectGetHeight(@classBrowser.frame) + @splitView.dividerThickness) do
+      assert_no_difference('CGRectGetHeight(@controller.topViewOfSplitView.frame)') do
+        assert_difference('CGRectGetHeight(@controller.bottomViewOfSplitView.frame)', CGRectGetHeight(@classBrowser.frame) + @splitView.dividerThickness) do
+          @controller.toggleClassBrowser(nil)
+        end
+      end
+    end
+  end
+end
 
 describe 'ApplicationController, in general' do
   extend Controllers
