@@ -90,12 +90,12 @@ describe "A Watcher" do
   end
   
   it "should know which paths to watch" do
-    @watcher.watchPaths.length.should == 0
+    @watcher.watchPaths.length.should == 1
   end
   
   it "should know all the ri paths on the system" do
-    (@watcher.riPaths - @watcher.watchPaths).length.should == 1
-    @watcher.riPaths.length.should == 1
+    (@watcher.riPaths - @watcher.watchPaths).length.should == 2
+    @watcher.riPaths.length.should == 2
   end
   
   it "should start watching the watchPaths when started" do

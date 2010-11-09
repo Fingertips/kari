@@ -22,6 +22,10 @@ module Kari
   def self.assets_path
     File.join(root_path, 'app/assets')
   end
+  
+  def self.windowed?
+    ENV['STANDALONE'].to_s != 'false'
+  end
 end
 
 require 'tmpdir'
@@ -34,6 +38,6 @@ require 'tmpdir'
   end
 end
 
-if (ENV['STANDALONE'].to_s == 'true') and (Kari.env != 'test')
+if Kari.windowed? and (Kari.env != 'test')
   NSApplicationMain(0, nil)
 end

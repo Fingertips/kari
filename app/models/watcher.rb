@@ -24,12 +24,22 @@ class Watcher
     { 'KARI_ROOT' => Kari.root_path, 'KARI_ENV' => Kari.env }.merge(ENV)
   end
   
+  def _existing(paths)
+    paths.select { |path| File.exist?(path) }
+  end
+  
   def watchPaths
-    self.class.basePaths(RDoc::RI::Paths.path(false, true, true, true))
+    _existing(
+      %w(/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8) +
+      self.class.basePaths(RDoc::RI::Paths.raw_path(false, true, true, true))
+    )
   end
   
   def riPaths
-    self.class.basePaths(RDoc::RI::Paths.path(true, true, true, true))
+    _existing(
+      %w(/Library/Ruby/Gems/1.8) +
+      self.class.basePaths(RDoc::RI::Paths.raw_path(true, true, true, true))
+    )
   end
   
   def start
@@ -115,7 +125,7 @@ class Watcher
   
   def log_with_signature(message)
     method = caller(1)[0].split(' ').last[1..-2]
-    log.debug "[#{self.class.name}##{method}] #{message}"
+    log.info "[#{self.class.name}##{method}] #{message}"
   end
   
   protected

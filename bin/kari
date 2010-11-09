@@ -4,13 +4,17 @@ ENV['KARI_ROOT']  ||= File.expand_path('../../', __FILE__)
 ENV['KARI_ENV']   ||= 'debug'
 ENV['STANDALONE'] = 'false'
 
-class Index
-  attr_accessor :index
-  def lopsidedCount; 0; end
-end
-class Match; end
-
 require File.join(ENV["KARI_ROOT"], 'config/boot')
+
+# Define a few stubs for the Index so we don't have
+# to load the classes defined in Obj-C.
+class Index
+  def initWithPath(path)
+    self
+  end
+  def flush; end
+  def close; end
+end
 
 require 'tmpdir'
 require 'optparse'
