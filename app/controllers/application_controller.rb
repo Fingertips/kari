@@ -128,8 +128,4 @@ class ApplicationController
   def windowWillClose(notification)
     NSApplication.sharedApplication.terminate(self)
   end
-  
-  def changedSearchFilter(sender)
-    puts sender.selectedTag
-  end
 end

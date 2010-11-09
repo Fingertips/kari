@@ -1,6 +1,3 @@
-# framework 'CarbonCore'
-# require_framework '/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework'
-
 class FSEvents
   class FSEvent
     attr_reader :fsevents_object
